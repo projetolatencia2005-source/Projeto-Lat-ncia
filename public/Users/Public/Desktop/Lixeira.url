@@ -1,0 +1,6 @@
+[InternetShortcut]
+BaseURL=FileExplorer
+Comment=Abre a lixeira da simulação
+IconFile=/System/Doors/lixeira.svg
+Type=System
+URL=/Users/Public/Lixeira

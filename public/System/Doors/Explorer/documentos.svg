@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 323.61 345.03">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #f7edd7;
+      }
+
+      .cls-3 {
+        fill: #231f20;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1" data-name="Layer 1">
+    <g>
+      <path class="cls-1" d="M64.7,21.57v129.38h194.22V21.57H64.7ZM194.17,108.87h-107.9v-21.57h107.9v21.57ZM237.29,62.73H86.27v-21.56h151.02v21.56Z"/>
+      <g>
+        <polygon class="cls-3" points="323.61 86.26 323.61 323.46 302.05 323.46 302.05 345.03 21.58 345.03 21.58 323.46 280.48 323.46 280.48 301.9 258.92 301.9 258.92 172.51 21.56 172.51 21.56 323.46 .15 323.46 .15 172.51 0 172.51 0 150.95 21.56 150.95 21.56 129.39 43.14 129.39 43.14 21.57 64.7 21.57 64.7 150.95 258.92 150.95 258.92 21.57 280.42 21.57 280.42 64.69 302.05 64.69 302.05 86.26 323.61 86.26"/>
+        <rect class="cls-3" x="21.56" y="194.08" width=".15" height="21.56"/>
+        <rect class="cls-3" x="21.56" y="172.51" width=".15" height="21.57"/>
+        <rect class="cls-3" x="21.56" y="280.33" width=".15" height="21.57"/>
+        <rect class="cls-3" x="21.56" y="258.77" width=".15" height="21.56"/>
+        <rect class="cls-3" x="21.56" y="237.21" width=".15" height="21.56"/>
+        <rect class="cls-3" x="21.56" y="215.64" width=".15" height="21.57"/>
+        <rect class="cls-3" x="21.56" y="301.9" width=".15" height="21.56"/>
+        <g>
+          <rect class="cls-3" x="64.7" width="194.16" height="21.57"/>
+          <rect class="cls-3" x="258.86" y="107.82" width=".06" height="21.57"/>
+          <rect class="cls-3" x="258.86" y="129.39" width=".06" height="21.56"/>
+          <rect class="cls-3" x="258.86" y="86.26" width=".06" height="21.56"/>
+          <rect class="cls-3" x="258.86" y="64.69" width=".06" height="21.57"/>
+          <rect class="cls-3" x="258.86" y="43.13" width=".06" height="21.56"/>
+          <rect class="cls-3" x="258.86" y="21.57" width=".06" height="21.56"/>
+          <rect class="cls-3" x="86.27" y="41.17" width="151.02" height="21.56"/>
+          <rect class="cls-3" x="86.27" y="87.3" width="107.9" height="21.57"/>
+        </g>
+      </g>
+      <polygon class="cls-2" points="280.48 301.9 280.48 323.46 21.56 323.46 21.56 172.51 258.92 172.51 258.92 301.9 280.48 301.9"/>
+    </g>
+  </g>
+</svg>

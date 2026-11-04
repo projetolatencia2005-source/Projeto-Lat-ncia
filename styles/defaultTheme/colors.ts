@@ -1,0 +1,58 @@
+const colors = {
+  background: "#7d94b8",
+  fileEntry: {
+    background: "hsla(43, 61%, 91%, 35%)",
+    backgroundFocused: "hsla(43, 72%, 91%, 55%)",
+    backgroundFocusedHover: "hsla(43, 80%, 95%, 70%)",
+    border: "hsla(43, 58%, 96%, 58%)",
+    borderFocused: "hsla(43, 80%, 98%, 85%)",
+    borderFocusedHover: "hsla(43, 90%, 99%, 95%)",
+    text: "#211F1B",
+    textShadow: "0 1px 0 rgba(255, 247, 221, 88%)",
+  },
+  highlight: "#E2483D",
+  progress: "hsla(113, 78%, 56%, 90%)",
+  progressBackground: "hsla(104, 22%, 45%, 70%)",
+  progressBarRgb: "rgb(6, 176, 37)",
+  selectionHighlight: "hsla(207, 100%, 45%, 90%)",
+  selectionHighlightBackground: "hsla(207, 100%, 45%, 30%)",
+  taskbar: {
+    active: "hsla(42, 62%, 87%, 88%)",
+    activeForeground: "hsla(42, 72%, 94%, 96%)",
+    ai: {
+      balanced: ["rgb(112, 203, 255)", "rgb(40, 112, 234)", "rgb(0, 95, 184)"],
+      creative: [
+        "rgb(215, 167, 187)",
+        "rgb(145, 72, 135)",
+        "rgb(139, 37, 126)",
+      ],
+      precise: ["rgb(167, 224, 235)", "rgb(0, 104, 128)", "rgb(0, 83, 102)"],
+    },
+    background: "rgb(125, 148, 184)",
+    button: { color: "#302D28" },
+    foreground: "hsla(43, 68%, 93%, 96%)",
+    foregroundHover: "hsla(43, 85%, 97%, 100%)",
+    foregroundProgress: "hsla(43, 48%, 48%, 38%)",
+    hover: "hsla(43, 55%, 93%, 52%)",
+    peekBorder: "hsla(43, 80%, 96%, 92%)",
+  },
+  text: "rgba(255, 255, 255, 96%)",
+  titleBar: {
+    background: "rgb(222, 211, 187)",
+    backgroundHover: "rgb(241, 232, 208)",
+    backgroundInactive: "rgb(194, 184, 164)",
+    buttonInactive: "rgb(48, 45, 40)",
+    closeHover: "rgb(221, 56, 48)",
+    text: "rgb(38, 35, 30)",
+    textInactive: "rgb(70, 65, 56)",
+  },
+  window: {
+    background: "#E1EDFF",
+    outline: "rgb(47, 44, 39)",
+    outlineInactive: "rgb(83, 77, 67)",
+    shadow: "4px 4px 0 #31302c",
+    shadowInactive: "4px 4px 0 #31302c",
+  },
+};
+
+export default colors;

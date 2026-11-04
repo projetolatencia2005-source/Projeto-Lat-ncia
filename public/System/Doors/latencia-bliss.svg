@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#42a0e6"/><stop offset=".58" stop-color="#a7ddfb"/><stop offset="1" stop-color="#d4efff"/></linearGradient>
+    <linearGradient id="hillBack" x1="0" y1="0" x2=".2" y2="1"><stop offset="0" stop-color="#b1df57"/><stop offset=".48" stop-color="#76c62d"/><stop offset="1" stop-color="#45a51f"/></linearGradient>
+    <linearGradient id="hillFront" x1=".1" y1="0" x2=".55" y2="1"><stop offset="0" stop-color="#9bd641"/><stop offset=".52" stop-color="#62b92d"/><stop offset="1" stop-color="#2e8c20"/></linearGradient>
+    <linearGradient id="hillRight" x1="0" y1="0" x2=".1" y2="1"><stop offset="0" stop-color="#a6dc4b"/><stop offset=".5" stop-color="#6fbd2d"/><stop offset="1" stop-color="#379520"/></linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".94">
+    <path d="M20 175c30-58 111-69 157-30 19-64 105-87 158-40 22-47 93-57 131-18 23 24 25 57 5 82H39c-19 0-29-10-19-24Z"/>
+    <path d="M680 102c26-50 91-59 130-23 18-55 94-77 138-35 21-39 78-45 109-12 19 20 20 46 4 66H694c-14 0-20-7-14-16Z"/>
+    <path d="M1330 198c27-54 104-63 147-24 20-59 104-80 151-34 23-43 83-49 117-13 20 21 21 50 4 71h-398c-17 0-28-6-21-17Z"/>
+    <path d="M1520 64c15-31 60-39 84-16 13-37 66-51 96-20 15-26 54-29 75-7 13 14 13 32 3 45h-245c-12 0-19-2-13-2Z"/>
+  </g>
+  <path d="M0 692c164-45 299-87 450-65 159 23 221 71 390 62 165-9 248-97 411-83 159 14 240 88 375 82 112-5 198-56 294-82v474H0Z" fill="url(#hillBack)"/>
+  <path d="M0 791c192-77 329-86 499-48 143 32 228 92 378 86 172-7 252-89 401-74 181 18 282 117 442 104 77-6 143-25 200-47v268H0Z" fill="url(#hillFront)"/>
+  <path d="M0 915c167-34 268-27 416 8 122 29 213 60 357 42 130-16 244-68 376-45 156 27 241 101 372 100 155-2 276-88 399-121v181H0Z" fill="url(#hillRight)"/>
+  <path d="M0 1004c188-38 329-37 512 7 128 31 232 45 365 26 149-21 244-67 384-35 150 35 279 107 426 83 87-14 165-45 233-69v64H0Z" fill="#338d22" opacity=".72"/>
+</svg>

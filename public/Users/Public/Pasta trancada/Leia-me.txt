@@ -1,0 +1,1 @@
+Esta pasta só abre quando as cinco palavras-chave corretas forem digitadas.
