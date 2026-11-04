@@ -36,12 +36,6 @@ jobs:
       - name: Gerar site
         run: yarn build
 
-      - name: Ajustar caminhos dos arquivos
-        run: |
-          REPO_PATH="${GITHUB_REPOSITORY#*/}"
-          sed -i "s|/projeto-latencia|/$REPO_PATH|g" next.config.js scripts/prefixGithubPagesAssets.js
-          node scripts/prefixGithubPagesAssets.js
-
       - uses: actions/upload-pages-artifact@v4
         with:
           path: ./out
