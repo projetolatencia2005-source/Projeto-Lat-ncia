@@ -4,8 +4,6 @@ import type * as WebampFunctions from "components/apps/Webamp/functions";
 import useTransferDialog, {
   type ObjectReader,
 } from "components/system/Dialogs/Transfer/useTransferDialog";
-import { useRequestLockedFolderAccess } from "components/system/Files/LockedFolder";
-import { isLockedFolderEntry } from "components/system/Files/LockedFolder/constants";
 import { EXTRACTABLE_EXTENSIONS } from "components/system/Files/FileEntry/constants";
 import extensions from "components/system/Files/FileEntry/extensions";
 import {
@@ -16,6 +14,8 @@ import useFile from "components/system/Files/FileEntry/useFile";
 import { type FileStat } from "components/system/Files/FileManager/functions";
 import { type FocusEntryFunctions } from "components/system/Files/FileManager/useFocusableEntries";
 import { type FileActions } from "components/system/Files/FileManager/useFolder";
+import { useRequestLockedFolderAccess } from "components/system/Files/LockedFolder";
+import { isLockedFolderEntry } from "components/system/Files/LockedFolder/constants";
 import { Share } from "components/system/Menu/MenuIcons";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
 import { isMountedFolder } from "contexts/fileSystem/core";

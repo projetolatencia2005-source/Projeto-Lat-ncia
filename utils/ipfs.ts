@@ -111,7 +111,7 @@ export const getIpfsResource = async (ipfsUrl: string): Promise<Buffer> => {
     keepalive: false,
     mode: "cors",
     referrerPolicy: "no-referrer",
-    // eslint-disable-next-line unicorn/no-null
+    // 
     window: null,
   } as RequestInit;
 

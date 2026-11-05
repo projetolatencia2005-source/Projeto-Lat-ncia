@@ -98,6 +98,7 @@ const loadPixelifySansFont = async (): Promise<void> => {
   }
 };
 
+// oxlint-disable-next-line unicorn/prefer-top-level-await -- Keep worker startup responsive while the optional font loads.
 void loadPixelifySansFont();
 
 let initialized = false;

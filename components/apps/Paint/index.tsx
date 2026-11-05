@@ -1,5 +1,5 @@
 import { basename, dirname, join } from "path";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import StyledPaint from "components/apps/Paint/StyledPaint";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import StyledLoading from "components/system/Apps/StyledLoading";
@@ -15,8 +15,8 @@ import {
   ONE_TIME_PASSIVE_EVENT,
   PICUTRES_PATH,
 } from "utils/constants";
-import { blobToBuffer } from "utils/functions";
 import { installDoorsCursorStyles } from "utils/doorsCursor";
+import { blobToBuffer } from "utils/functions";
 
 type JsPaint = {
   close: () => void;
@@ -127,6 +127,23 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
   const [loaded, setLoaded] = useState(false);
   const [jsPaintInstance, setJsPaintInstance] = useState<JsPaint>();
   const { prependFileToTitle } = useTitle(id);
+  const handlePaintLoad = useCallback((): void => {
+    const paintDocument = iframeRef.current?.contentDocument;
+
+    if (
+      paintDocument?.head &&
+      !paintDocument.querySelector("#doors-paint-styles")
+    ) {
+      const style = paintDocument.createElement("style");
+
+      style.id = "doors-paint-styles";
+      style.textContent = DOORS_PAINT_STYLES;
+      paintDocument.head.append(style);
+    }
+
+    installDoorsCursorStyles(paintDocument || null);
+    setLoaded(true);
+  }, []);
   const setWallpaperFromCanvas =
     (fit: WallpaperFit) =>
     (canvas: HTMLCanvasElement): void => {
@@ -267,23 +284,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
           aria-busy={!loaded || undefined}
           height="100%"
           id={`jspaint-${id}`}
-          onLoad={() => {
-            const paintDocument = iframeRef.current?.contentDocument;
-
-            if (
-              paintDocument?.head &&
-              !paintDocument.getElementById("doors-paint-styles")
-            ) {
-              const style = paintDocument.createElement("style");
-
-              style.id = "doors-paint-styles";
-              style.textContent = DOORS_PAINT_STYLES;
-              paintDocument.head.append(style);
-            }
-
-            installDoorsCursorStyles(paintDocument || null);
-            setLoaded(true);
-          }}
+          onLoad={handlePaintLoad}
           src={paintSrc}
           title={windowTitle}
           width="100%"

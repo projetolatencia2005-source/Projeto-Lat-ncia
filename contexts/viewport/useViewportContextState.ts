@@ -71,7 +71,7 @@ const toggleKeyboardLock = async (
 
 const useViewportContextState = (): ViewportContextState => {
   const [fullscreenElement, setFullscreenElement] = useState<Element | null>(
-    // eslint-disable-next-line unicorn/no-null
+    // 
     null
   );
   const restoreDesktopRef = useRef(false);

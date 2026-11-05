@@ -402,7 +402,7 @@ const streamingMetadataProviders: Record<string, MetadataProvider> = {
         keepalive: false,
         mode: "cors",
         referrerPolicy: "no-referrer",
-        // eslint-disable-next-line unicorn/no-null
+        // 
         window: null,
       })
     ).text();

@@ -1,9 +1,9 @@
-import { type Variant } from "motion/react";
-import { useRef, useState } from "react";
+
+import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import FileManager from "components/system/Files/FileManager";
 import DirectionArrow from "components/system/DirectionArrow";
+import FileManager from "components/system/Files/FileManager";
 import ShutdownDialog from "components/system/StartMenu/ShutdownDialog";
 import StyledStartMenu from "components/system/StartMenu/StyledStartMenu";
 import {
@@ -12,6 +12,10 @@ import {
 } from "components/system/Taskbar/functions";
 import { updateInputValueOnReactElement } from "components/system/Taskbar/Search/functions";
 import useTaskbarItemTransition from "components/system/Taskbar/useTaskbarItemTransition";
+import { useRootFs } from "contexts/fileSystem";
+import { resetStorageAndReload } from "contexts/fileSystem/useAsyncFs";
+import { useProcessesActions } from "contexts/process";
+import { useSessionActions } from "contexts/session";
 import {
   FOCUSABLE_ELEMENT,
   FOLDER_ICON,
@@ -28,18 +32,10 @@ import {
   isVisibleElement,
   restoreFocus,
 } from "utils/keyboard";
-import { useRootFs } from "contexts/fileSystem";
-import { resetStorageAndReload } from "contexts/fileSystem/useAsyncFs";
-import { useProcessesActions } from "contexts/process";
-import { useSessionActions } from "contexts/session";
 
 type StartMenuProps = {
   toggleSearch: (showSearch?: boolean) => void;
   toggleStartMenu: (showMenu?: boolean) => void;
-};
-
-type StyleVariant = Variant & {
-  height?: string;
 };
 
 const getEntries = (list?: Element | null): HTMLButtonElement[] =>
@@ -61,8 +57,9 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
   const [showPrograms, setShowPrograms] = useState(false);
   const [showShutdownPrompt, setShowShutdownPrompt] = useState(false);
   const [showScrolling, setShowScrolling] = useState(false);
-  const [canCustomizeScrollbarWidth] = useState(() =>
-    CSS.supports("selector(::-webkit-scrollbar)")
+  const canCustomizeScrollbarWidth = useMemo(
+    () => CSS.supports("selector(::-webkit-scrollbar)"),
+    []
   );
   const focusOnRenderCallback = (element: HTMLElement | null): void => {
     if (element && !element.contains(document.activeElement)) {
@@ -127,8 +124,6 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
     } else if (isPrintable) openSearch(key);
   };
   const startMenuTransition = useTaskbarItemTransition(startMenu.maxHeight);
-  const { height } =
-    (startMenuTransition.variants?.active as StyleVariant) ?? {};
   const revealScrolling: React.MouseEventHandler = ({ clientX = 0 }) =>
     setShowScrolling(clientX > startMenu.size - 18);
 
@@ -137,8 +132,8 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
       <StyledStartMenu
         ref={focusOnRenderCallback}
         $showScrolling={showScrolling && canCustomizeScrollbarWidth}
-        aria-label="Menu Iniciar"
         aria-keyshortcuts="Escape"
+        aria-label="Menu Iniciar"
         id="startMenu"
         onBlurCapture={(event) => {
           if (!closingRef.current && !showShutdownPrompt) {

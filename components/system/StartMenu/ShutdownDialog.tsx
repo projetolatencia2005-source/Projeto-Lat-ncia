@@ -10,14 +10,14 @@ type ShutdownDialogProps = {
 type DialogPosition = { x: number; y: number };
 
 type DialogDrag = {
+  height: number;
+  left: number;
+  origin: DialogPosition;
   pointerId: number;
   startX: number;
   startY: number;
-  left: number;
   top: number;
   width: number;
-  height: number;
-  origin: DialogPosition;
 };
 
 const ShutdownDialog: FC<ShutdownDialogProps> = ({
@@ -101,10 +101,10 @@ const ShutdownDialog: FC<ShutdownDialogProps> = ({
 
   return (
     <StyledShutdownDialog
+      onKeyDown={onKeyDown}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onCancel();
       }}
-      onKeyDown={onKeyDown}
     >
       <section
         aria-labelledby="doors-shutdown-title"
@@ -159,17 +159,17 @@ const ShutdownDialog: FC<ShutdownDialogProps> = ({
             <p>Se você desligar o computador, você perderá todo o progresso!</p>
             <div className="doors-shutdown-actions">
               <button
+                ref={confirmRef}
                 className="doors-shutdown-confirm"
                 onClick={onConfirm}
-                ref={confirmRef}
                 type="button"
               >
                 Sim, quero desligar!
               </button>
               <button
+                ref={cancelRef}
                 className="doors-shutdown-cancel"
                 onClick={onCancel}
-                ref={cancelRef}
                 type="button"
               >
                 Não, não quero desligar!

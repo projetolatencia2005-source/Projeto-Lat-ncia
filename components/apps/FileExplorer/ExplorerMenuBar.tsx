@@ -63,6 +63,17 @@ const ExplorerMenuBar: FC<ExplorerMenuBarProps> = ({ id }) => {
   };
 
   const menus: Record<string, MenuItem[]> = {
+    Ajuda: [
+      {
+        label: "Atalhos do Explorador",
+        menu: [
+          { disabled: true, label: "Ctrl+A — Selecionar tudo" },
+          { disabled: true, label: "Ctrl+C / Ctrl+X — Copiar / recortar" },
+          { disabled: true, label: "Ctrl+V — Colar" },
+          { disabled: true, label: "F2 — Renomear" },
+        ],
+      },
+    ],
     Arquivos: [
       {
         action: () => open("FileExplorer", { url }),
@@ -106,16 +117,6 @@ const ExplorerMenuBar: FC<ExplorerMenuBarProps> = ({ id }) => {
         label: "Renomear",
       },
     ],
-    Visualizar: [
-      {
-        action: () => chooseView("Medium icons view"),
-        label: "Ícones médios",
-      },
-      {
-        action: () => chooseView("Details view"),
-        label: "Detalhes",
-      },
-    ],
     Favoritos: FAVORITE_LOCATIONS.map(([name, path]) => ({
       action: () => changeUrl(id, path),
       icon: path === "/" ? MY_COMPUTER_ICON : FOLDER_ICON,
@@ -127,15 +128,14 @@ const ExplorerMenuBar: FC<ExplorerMenuBarProps> = ({ id }) => {
         label: "Abrir Terminal aqui",
       },
     ],
-    Ajuda: [
+    Visualizar: [
       {
-        label: "Atalhos do Explorador",
-        menu: [
-          { disabled: true, label: "Ctrl+A — Selecionar tudo" },
-          { disabled: true, label: "Ctrl+C / Ctrl+X — Copiar / recortar" },
-          { disabled: true, label: "Ctrl+V — Colar" },
-          { disabled: true, label: "F2 — Renomear" },
-        ],
+        action: () => chooseView("Medium icons view"),
+        label: "Ícones médios",
+      },
+      {
+        action: () => chooseView("Details view"),
+        label: "Detalhes",
       },
     ],
   };

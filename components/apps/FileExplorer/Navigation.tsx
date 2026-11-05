@@ -117,14 +117,14 @@ const Navigation: FC<NavigationProps> = ({
     if (navRef.current) observer.observe(navRef.current);
 
     return () => observer.disconnect();
-  }, [compactToolbar, searchVisible]);
+  }, [searchVisible]);
 
   const foldersMenu = contextMenu(
     () =>
-      QUICK_ACCESS_LOCATIONS.map(({ icon, label, path }) => ({
+      QUICK_ACCESS_LOCATIONS.map(({ icon, label: locationLabel, path }) => ({
         action: () => changeUrl(id, path),
         icon,
-        label,
+        label: locationLabel,
       })),
     "Pastas",
     true
@@ -146,10 +146,10 @@ const Navigation: FC<NavigationProps> = ({
   return (
     <StyledNavigationShell>
       <StyledNavigation
+        ref={navRef}
         className={["file-explorer-navigation", compactToolbar && "compact"]
           .filter(Boolean)
           .join(" ")}
-        ref={navRef}
         role="presentation"
         {...useTitlebarContextMenu(id)}
         onDragOver={haltEvent}
@@ -186,9 +186,9 @@ const Navigation: FC<NavigationProps> = ({
         <div className="toolbar-group explorer-tools">
           {!hideSearch && (
             <Button
+              ref={searchButtonRef}
               aria-expanded={searchVisible}
               className="tool-button"
-              ref={searchButtonRef}
               onClick={() => setShowSearch((visible) => !visible)}
               {...label("Pesquisar")}
             >

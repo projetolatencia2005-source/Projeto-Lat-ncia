@@ -2,7 +2,7 @@ import { useState } from "react";
 import StyledCalculator from "components/apps/Calculator/StyledCalculator";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 
-type Operator = "+" | "−" | "×" | "÷";
+type Operator = "+" | "÷" | "×" | "−";
 
 type PendingOperation = {
   left: number;
@@ -40,7 +40,7 @@ const Calculator: FC<ComponentProcessProps> = () => {
   const [display, setDisplay] = useState("0");
   const [expression, setExpression] = useState("");
   const [pendingOperation, setPendingOperation] =
-    useState<PendingOperation | null>(null);
+    useState<null | PendingOperation>(null);
   const [replaceDisplay, setReplaceDisplay] = useState(false);
 
   const clear = (): void => {
@@ -159,10 +159,10 @@ const Calculator: FC<ComponentProcessProps> = () => {
   const onKeyDown: React.KeyboardEventHandler<HTMLElement> = (event) => {
     const { key } = event;
 
-    if (/^[0-9]$/.test(key)) appendDigit(key);
+    if (/^\d$/.test(key)) appendDigit(key);
     else if (key === "." || key === ",") appendDecimal();
     else if (key === "+" || key === "-")
-      chooseOperator(key === "+" ? "+" : "−");
+      {chooseOperator(key === "+" ? "+" : "−");}
     else if (key === "*") chooseOperator("×");
     else if (key === "/") chooseOperator("÷");
     else if (key === "%") applyPercent();
@@ -191,7 +191,7 @@ const Calculator: FC<ComponentProcessProps> = () => {
           role="status"
         >
           <span className="doors-calculator-expression">
-            {expression || "\u00a0"}
+            {expression || "\u00A0"}
           </span>
           <output aria-label="Visor" className="doors-calculator-result">
             {display}
@@ -232,8 +232,8 @@ const Calculator: FC<ComponentProcessProps> = () => {
           </button>
           {["7", "8", "9"].map((digit) => (
             <button
-              className="doors-calculator-key"
               key={digit}
+              className="doors-calculator-key"
               onClick={() => appendDigit(digit)}
               type="button"
             >
@@ -250,8 +250,8 @@ const Calculator: FC<ComponentProcessProps> = () => {
           </button>
           {["4", "5", "6"].map((digit) => (
             <button
-              className="doors-calculator-key"
               key={digit}
+              className="doors-calculator-key"
               onClick={() => appendDigit(digit)}
               type="button"
             >
@@ -268,8 +268,8 @@ const Calculator: FC<ComponentProcessProps> = () => {
           </button>
           {["1", "2", "3"].map((digit) => (
             <button
-              className="doors-calculator-key"
               key={digit}
+              className="doors-calculator-key"
               onClick={() => appendDigit(digit)}
               type="button"
             >

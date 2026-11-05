@@ -12,18 +12,17 @@ export const installSystemAudioVolume = (
   const audioNodePrototype = targetWindow.AudioNode?.prototype;
 
   if (!audioNodePrototype || patchedAudioNodePrototypes.has(audioNodePrototype))
-    return;
+    {return;}
 
   const nativeConnect = audioNodePrototype.connect;
   const nativeDisconnect = audioNodePrototype.disconnect;
-  const patchedConnect = function (
+  const patchedConnect = function  patchedConnect(
     this: AudioNode,
     destination: AudioNode | AudioParam,
-    output?: number,
-    input?: number
+    ...optionalArgs: (AudioNode | AudioParam | number)[]
   ): AudioNode | void {
-    const args = Array.from(arguments) as (AudioNode | AudioParam | number)[];
-    const context = this.context;
+    const args = [destination, ...optionalArgs];
+    const {context} = this;
 
     if (
       destination === context.destination &&
@@ -46,7 +45,9 @@ export const installSystemAudioVolume = (
       }
 
       const routedArgs: (AudioNode | number)[] = [masterGain];
-      if (args.length > 1) routedArgs.push(output ?? 0);
+      if (optionalArgs.length > 0) {
+        routedArgs.push((optionalArgs[0] as number | undefined) ?? 0);
+      }
       if (args.length > 2) routedArgs.push(0);
       Reflect.apply(nativeConnect, this, routedArgs);
       routedAudioNodes.add(this);
@@ -55,15 +56,14 @@ export const installSystemAudioVolume = (
       return destination;
     }
 
-    return Reflect.apply(nativeConnect, this, args);
+    return Reflect.apply(nativeConnect, this, args) as AudioNode | void;
   };
-  const patchedDisconnect = function (
+  const patchedDisconnect = function  patchedDisconnect(
     this: AudioNode,
-    destinationOrOutput?: AudioNode | AudioParam | number,
-    output?: number,
-    input?: number
+    ...args: (AudioNode | AudioParam | number)[]
   ): void {
-    const args = Array.from(arguments) as (AudioNode | AudioParam | number)[];
+    const destinationOrOutput = args[0];
+    let nativeArgs = args;
 
     if (
       destinationOrOutput === this.context.destination &&
@@ -72,12 +72,13 @@ export const installSystemAudioVolume = (
       const masterGain = masterGainByContext.get(this.context);
 
       if (masterGain) {
-        args[0] = masterGain;
-        if (args.length > 2) args[2] = 0;
+        nativeArgs = [...args];
+        nativeArgs[0] = masterGain;
+        if (nativeArgs.length > 2) nativeArgs[2] = 0;
       }
     }
 
-    Reflect.apply(nativeDisconnect, this, args);
+    Reflect.apply(nativeDisconnect, this, nativeArgs);
   };
 
   Object.defineProperty(audioNodePrototype, "connect", {

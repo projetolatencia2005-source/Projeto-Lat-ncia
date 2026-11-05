@@ -153,9 +153,9 @@ const AddressBar: FCWithRef<HTMLInputElement, AddressBarProps> = ({
         {...useAddressBarContextMenu(url)}
       />
       <Button
+        ref={actionButtonRef}
         aria-expanded={menu.label === "Endereço"}
         aria-haspopup="menu"
-        ref={actionButtonRef}
         className="action"
         onClick={(event) => {
           if (inputing) {

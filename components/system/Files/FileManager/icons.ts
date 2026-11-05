@@ -1,3 +1,1 @@
-import { PAPER_ICON } from "utils/constants";
-
-export const UNKNOWN_ICON = PAPER_ICON;
+export { PAPER_ICON as UNKNOWN_ICON } from "utils/constants";

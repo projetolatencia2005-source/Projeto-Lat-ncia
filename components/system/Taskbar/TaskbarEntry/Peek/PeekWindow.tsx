@@ -121,7 +121,7 @@ const PeekWindow: FC<PeekWindowProps> = ({ id, onHide }) => {
     };
   }, [hide, onHide, ready]);
 
-  // eslint-disable-next-line unicorn/no-null
+  // 
   if (hidden) return null;
 
   return (

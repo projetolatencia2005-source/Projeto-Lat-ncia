@@ -1,6 +1,7 @@
 import { basename, dirname } from "path";
 import type Stats from "browserfs/dist/node/core/node_fs_stats";
 import { useEffect, useRef, useState } from "react";
+import DirectionArrow from "components/system/DirectionArrow";
 import { getModifiedTime } from "components/system/Files/FileEntry/functions";
 import SubIcons from "components/system/Files/FileEntry/SubIcons";
 import { UNKNOWN_ICON } from "components/system/Files/FileManager/icons";
@@ -13,7 +14,6 @@ import {
   Open,
   OpenFolder,
 } from "components/system/Taskbar/Search/Icons";
-import DirectionArrow from "components/system/DirectionArrow";
 import StyledDetails from "components/system/Taskbar/Search/StyledDetails";
 import { useFileSystemActions, useFs } from "contexts/fileSystem";
 import { type ProcessArguments } from "contexts/process/types";

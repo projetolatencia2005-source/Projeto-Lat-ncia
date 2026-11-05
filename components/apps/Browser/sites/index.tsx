@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
+import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   getInternalSite,
   INTERNAL_SITES,
-  SITE_URLS,
   type InternalSiteId,
+  SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
-import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 
 type InternalSitesProps = {
   url: string;
@@ -72,12 +72,12 @@ const GluugliPage: FC<{ url: string }> = ({ url }) => {
         <span>l</span>
         <span>i</span>
       </h1>
-      <SearchField initialValue={query} key={query} label="Pesquisar no Gluugli" onSearch={search} />
+      <SearchField key={query} initialValue={query} label="Pesquisar no Gluugli" onSearch={search} />
       {query ? (
-        <div className="search-results" aria-live="polite">
+        <div aria-live="polite" className="search-results">
           <strong>Resultados nas páginas internas para “{query}”</strong>
-          {(results.length ? results : INTERNAL_SITES).map((site) => (
-            <button key={site.id} onClick={() => browserTabs?.navigate(site.url)}>
+          {(results.length > 0 ? results : INTERNAL_SITES).map((site) => (
+            <button key={site.id} onClick={() => browserTabs?.navigate(site.url)} type="button">
               <strong>{site.title}</strong>
               <span>
                 {site.id === "gluugli"
@@ -88,9 +88,9 @@ const GluugliPage: FC<{ url: string }> = ({ url }) => {
           ))}
         </div>
       ) : (
-        <div className="site-shortcuts" aria-label="Sites internos">
+        <div aria-label="Sites internos" className="site-shortcuts">
           {INTERNAL_SITES.filter(({ id }) => id !== "gluugli").map((site) => (
-            <button key={site.id} onClick={() => browserTabs?.navigate(site.url)}>
+            <button key={site.id} onClick={() => browserTabs?.navigate(site.url)} type="button">
               {site.title}
             </button>
           ))}
@@ -107,11 +107,13 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const [posts, setPosts] = useState([
     {
       author: "Marina Costa",
+      id: "post-marina-costa",
       message: "Alguém lembra das comunidades que a gente passava horas lendo? 💗",
       time: "há 12 minutos",
     },
     {
       author: "Rafael Lima",
+      id: "post-rafael-lima",
       message: "Compartilhei algumas fotos da lan house. Que saudade de 2005!",
       time: "há 1 hora",
     },
@@ -124,7 +126,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
           <strong>Bubble</strong>
           <nav aria-label="Navegação do Bubble">
             {["Início", "Amigos", "Comunidades", "Recados"].map((item) => (
-              <button key={item} onClick={() => undefined} type="button">
+              <button key={item} type="button" disabled>
                 {item}
               </button>
             ))}
@@ -140,7 +142,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
             </div>
             <h3>Olá, visitante!</h3>
             <p>Seu perfil local</p>
-            <button className="bubble-action" onClick={() => undefined} type="button">
+            <button className="bubble-action" type="button" disabled>
               Editar perfil
             </button>
             <p>Amigos: 24</p>
@@ -154,7 +156,12 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
                   event.preventDefault();
                   if (!postText.trim()) return;
                   setPosts((current) => [
-                    { author: "Você", message: postText.trim(), time: "agora" },
+                    {
+                      author: "Você",
+                      id: `post-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+                      message: postText.trim(),
+                      time: "agora",
+                    },
                     ...current,
                   ]);
                   setPostText("");
@@ -171,8 +178,8 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
                 </button>
               </form>
             </div>
-            {posts.map((post, index) => (
-              <article className="bubble-post" key={`${post.author}-${index}`}>
+            {posts.map((post) => (
+              <article key={post.id} className="bubble-post">
                 <h3>{post.author}</h3>
                 <p>{post.message}</p>
                 <small>{post.time}</small>
@@ -242,19 +249,19 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
 
 const wikiArticles = [
   {
-    title: "Página Principal",
-    path: "/",
     body: "A EncicloWeb é uma enciclopédia livre, criada para reunir conhecimento, curiosidades e histórias em um só lugar.",
+    path: "/",
+    title: "Página Principal",
   },
   {
-    title: "História da internet",
-    path: "/artigo/historia-da-internet",
     body: "A internet conectou redes de computadores e transformou a maneira como pessoas pesquisam, conversam e compartilham conhecimento.",
+    path: "/artigo/historia-da-internet",
+    title: "História da internet",
   },
   {
-    title: "Lan house",
-    path: "/artigo/lan-house",
     body: "Lan houses foram espaços de acesso coletivo à internet, jogos e comunidades digitais, muito presentes no cotidiano dos anos 2000.",
+    path: "/artigo/lan-house",
+    title: "Lan house",
   },
 ];
 
@@ -263,7 +270,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const query = new URL(url).searchParams.get("q") || "";
   const slug = new URL(url).pathname;
   const article = wikiArticles.find(({ path }) => path === slug) || wikiArticles[0];
-  const matchingArticles = wikiArticles.filter(({ title, body }) =>
+  const matchingArticles = wikiArticles.filter(({ body, title }) =>
     `${title} ${body}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())
   );
   const search = (value: string): void =>
@@ -280,8 +287,8 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           </div>
         </div>
         <SearchField
-          initialValue={query}
           key={query}
+          initialValue={query}
           label="Pesquisar na EncicloWeb"
           onSearch={search}
         />
@@ -313,7 +320,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           {query ? (
             <>
               <h1>Resultados para “{query}”</h1>
-              {(matchingArticles.length ? matchingArticles : wikiArticles).map((item) => (
+              {(matchingArticles.length > 0 ? matchingArticles : wikiArticles).map((item) => (
                 <p key={item.path}>
                   <button
                     onClick={() => browserTabs?.navigate(`${SITE_URLS.encicloweb}${item.path.replace(/^\//, "")}`)}
@@ -420,8 +427,8 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
         <img alt="YouSpace" src="/System/Doors/sites/youspace-logo.png" />
         <small>Seu acervo digital de vídeos</small>
         <SearchField
-          initialValue={query}
           key={query}
+          initialValue={query}
           label="Pesquisar vídeos"
           onSearch={search}
         />
@@ -448,10 +455,10 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
             {query ? `Resultados para “${query}”` : "Vídeos em alta"}
           </h2>
           <div className="you-video-grid">
-            {(visibleVideos.length ? visibleVideos : videos).map((item) => (
+            {(visibleVideos.length > 0 ? visibleVideos : videos).map((item) => (
               <button
-                className="you-video-card"
                 key={item.id}
+                className="you-video-card"
                 onClick={() => {
                   setPlaying(false);
                   navigate(`watch/${item.id}`);
@@ -474,7 +481,7 @@ const InternalSites: FC<InternalSitesProps> = ({ url }) => {
   const siteId: InternalSiteId = site?.id || "gluugli";
 
   return (
-    <StyledInternalSites $site={siteId} key={url}>
+    <StyledInternalSites key={url} $site={siteId}>
       {siteId === "gluugli" && <GluugliPage url={url} />}
       {siteId === "bubble" && <BubblePage url={url} />}
       {siteId === "encicloweb" && <EncicloWebPage url={url} />}

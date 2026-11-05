@@ -312,7 +312,7 @@ const FileManager: FC<FileManagerProps> = ({
                 className={
                   !isDesktop &&
                   view === "icon" &&
-                  /^(meu computador|área de trabalho)$/i.test(
+                  /^(?:meu computador|área de trabalho)$/i.test(
                     basename(file, SHORTCUT_EXTENSION).trim()
                   )
                     ? "doors-computer-file-entry"

@@ -1,24 +1,24 @@
 import { basename } from "path";
 import { useRef } from "react";
-import rndDefaults from "components/system/Window/RndWindow/rndDefaults";
-import StyledTitlebar from "components/system/Window/Titlebar/StyledTitlebar";
-import useTitlebarContextMenu from "components/system/Window/Titlebar/useTitlebarContextMenu";
-import useWindowActions from "components/system/Window/Titlebar/useWindowActions";
+import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   isPostItPath,
   POST_IT_INITIAL_CONTENT,
 } from "components/apps/TinyMCE/functions";
+import rndDefaults from "components/system/Window/RndWindow/rndDefaults";
+import StyledTitlebar from "components/system/Window/Titlebar/StyledTitlebar";
+import useTitlebarContextMenu from "components/system/Window/Titlebar/useTitlebarContextMenu";
+import useWindowActions from "components/system/Window/Titlebar/useWindowActions";
 import {
   MaximizedIcon,
   MaximizeIcon,
   MinimizeIcon,
   TitlebarCloseIcon,
 } from "components/system/Window/Titlebar/WindowActionIcons";
+import { useFileSystemActions } from "contexts/fileSystem";
 import { menuIsOpen, useMenuActions } from "contexts/menu";
 import { type MenuState } from "contexts/menu/useMenuContextState";
 import { useProcess, useProcessesActions } from "contexts/process";
-import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
-import { useFileSystemActions } from "contexts/fileSystem";
 import { useForegroundId, useSessionActions } from "contexts/session";
 import useDoubleClick from "hooks/useDoubleClick";
 import Button from "styles/common/Button";
@@ -161,9 +161,9 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
       className={`${rndDefaults.dragHandleClassName}${
         isPostIt ? " doors-post-it-titlebar" : ""
       }`}
+      onDoubleClick={isBrowser ? onBrowserTitlebarDoubleClick : undefined}
       onDragOver={haltEvent}
       onDrop={haltEvent}
-      onDoubleClick={isBrowser ? onBrowserTitlebarDoubleClick : undefined}
       {...titlebarContextMenu}
     >
       {isPostIt && (
@@ -184,8 +184,8 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
         >
           {browserTabs.tabs.map((tab) => (
             <div
-              className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
               key={tab.id}
+              className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
             >
               <Button
                 aria-selected={tab.id === browserTabs.activeTab.id}
@@ -223,6 +223,7 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
             {!isPostIt &&
               !hideTitlebarIcon &&
               (isFileExplorer ? (
+                // oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- The image is inside the keyboard-operable titlebar control and opens its context menu.
                 <img
                   alt=""
                   className="explorer-titlebar-icon"

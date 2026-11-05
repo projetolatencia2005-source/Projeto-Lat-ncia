@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Editor } from "tinymce";
-import { fairyDustCursor, type CursorEffectResult } from "cursor-effects";
-import DirectionArrow from "components/system/DirectionArrow";
+import StyledTextos from "components/apps/Textos/StyledTextos";
+import useTinyMCE from "components/apps/TinyMCE/useTinyMCE";
 import AppContainer, {
   useAppContainer,
 } from "components/system/Apps/AppContainer";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
-import useTinyMCE from "components/apps/TinyMCE/useTinyMCE";
-import StyledTextos from "components/apps/Textos/StyledTextos";
+import DirectionArrow from "components/system/DirectionArrow";
 import { useFileSystemActions } from "contexts/fileSystem";
 import { useProcess, useProcessesActions } from "contexts/process";
 
@@ -327,13 +327,12 @@ const updateLegacyTemplates = (content: string, url: string): string => {
   })();
   const text = templateContentText(quizContent);
 
-  if (fileName.startsWith("códigos do gta")) {
-    if (
-      text === "" ||
-      text === templateContentText(LEGACY_GTA_CODES_TEMPLATE_CONTENT)
-    ) {
-      return GTA_CODES_TEMPLATE_CONTENT;
-    }
+  if (
+    fileName.startsWith("códigos do gta") &&
+    (text === "" ||
+      text === templateContentText(LEGACY_GTA_CODES_TEMPLATE_CONTENT))
+  ) {
+    return GTA_CODES_TEMPLATE_CONTENT;
   }
 
   if (
@@ -386,6 +385,10 @@ type TextosRibbonProps = {
 type TextAlignment = "center" | "justify" | "left" | "right";
 type TextosColorTarget = "highlight" | "text";
 
+const keepEditorSelection: React.MouseEventHandler<HTMLButtonElement> = (
+  event
+) => event.preventDefault();
+
 const TEXTOS_COLOR_SWATCHES = [
   { color: "#31302c", name: "Preto" },
   { color: "#6b6257", name: "Cinza escuro" },
@@ -413,7 +416,7 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
   const { open } = useProcessesActions();
   const [activeAlignment, setActiveAlignment] = useState<TextAlignment>("left");
   const [openColorPalette, setOpenColorPalette] =
-    useState<TextosColorTarget | null>(null);
+    useState<null | TextosColorTarget>(null);
   const [colorPalettePosition, setColorPalettePosition] = useState({
     left: 8,
     top: 48,
@@ -422,15 +425,15 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
   const [selectedHighlightColor, setSelectedHighlightColor] =
     useState("#fff29b");
   const colorPaletteRef = useRef<HTMLDivElement | null>(null);
-  const selectionBookmark = useRef<ReturnType<
+  const selectionBookmark = useRef<null | ReturnType<
     Editor["selection"]["getBookmark"]
-  > | null>(null);
+  >>(null);
 
   useEffect(() => {
     if (!openColorPalette) return;
 
     const closePaletteOnOutsideClick = (event: PointerEvent): void => {
-      const target = event.target;
+      const {target} = event;
 
       if (!(target instanceof Element)) return;
       if (
@@ -509,7 +512,7 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
 
   const captureEditorSelection = (): void => {
     if (editor)
-      selectionBookmark.current = editor.selection.getBookmark(2, true);
+      {selectionBookmark.current = editor.selection.getBookmark(2, true);}
   };
 
   const commandOnSelection = (name: string, value?: string): void => {
@@ -566,10 +569,6 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
     setOpenColorPalette(null);
   };
 
-  const keepEditorSelection: React.MouseEventHandler<HTMLButtonElement> = (
-    event
-  ) => event.preventDefault();
-
   return (
     <>
       <div aria-label="Ferramentas de edição" className="textos-ribbon">
@@ -583,6 +582,7 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
               type="button"
             >
               <img
+                alt=""
                 aria-hidden="true"
                 className="textos-home-icon"
                 src="/System/Doors/textos/my-computer.svg"
@@ -826,13 +826,13 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
             ] as const
           ).map(([action, alignment, label]) => (
             <button
+              key={action}
               aria-label={label}
               aria-pressed={activeAlignment === alignment}
               className={`textos-ribbon-button textos-alignment-button${
                 activeAlignment === alignment ? " is-active" : ""
               }`}
               disabled={!editor}
-              key={action}
               onClick={() => command(action)}
               onMouseDown={keepEditorSelection}
               title={label}
@@ -877,13 +877,13 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
       </div>
       {openColorPalette && (
         <div
+          ref={colorPaletteRef}
           aria-label={
             openColorPalette === "text"
               ? "Amostras de cor do texto"
               : "Amostras de cor de destaque"
           }
           className="textos-color-palette"
-          ref={colorPaletteRef}
           role="dialog"
           style={colorPalettePosition}
         >
@@ -909,10 +909,10 @@ const TextosRibbon: FC<TextosRibbonProps> = ({
 
               return (
                 <button
+                  key={color}
                   aria-label={`${name} ${color}`}
                   aria-pressed={selectedColor === color}
                   className="textos-color-swatch"
-                  key={color}
                   onClick={() => applyPaletteColor(color)}
                   onMouseDown={keepEditorSelection}
                   style={{ backgroundColor: color }}
@@ -932,7 +932,8 @@ type TextosModelsProps = ComponentProcessProps;
 
 const TextosModels: FC<TextosModelsProps> = ({ id }) => {
   const containerProps = useAppContainer(id);
-  const { createPath, readFile, readdir, unlink, updateFolder } =
+  const { setLoading } = containerProps;
+  const { createPath, readdir, readFile, unlink, updateFolder } =
     useFileSystemActions();
   const { open, url: setProcessUrl } = useProcessesActions();
   const templateMigrationStarted = useRef(false);
@@ -951,52 +952,56 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
         return;
       }
 
+      // Move one file at a time so a failed copy never removes its source.
+      // oxlint-disable no-await-in-loop -- The migration must copy, then delete, then refresh each file.
       for (const fileName of documentFiles) {
-        if (!fileName.toLowerCase().endsWith(".whtml")) continue;
+        if (fileName.toLowerCase().endsWith(".whtml")) {
+          const baseName = fileName
+            .replace(/\.whtml$/i, "")
+            .replace(/ \(\d+\)$/, "");
+          const template = templates.find(
+            ({ name }) =>
+              name.toLocaleLowerCase() === baseName.toLocaleLowerCase()
+          );
 
-        const baseName = fileName
-          .replace(/\.whtml$/i, "")
-          .replace(/ \(\d+\)$/, "");
-        const template = templates.find(
-          ({ name }) =>
-            name.toLocaleLowerCase() === baseName.toLocaleLowerCase()
-        );
+          if (template) {
+            const sourcePath = `${DOCUMENTS_PATH}/${fileName}`;
+            let contents: Buffer | undefined;
 
-        if (!template) continue;
+            try {
+              contents = await readFile(sourcePath);
+            } catch {
+              contents = undefined;
+            }
 
-        const sourcePath = `${DOCUMENTS_PATH}/${fileName}`;
-        let contents: Buffer;
+            if (contents) {
+              const hiddenName = await createPath(
+                fileName,
+                INTERNAL_DOCUMENTS_PATH,
+                contents
+              );
 
-        try {
-          contents = await readFile(sourcePath);
-        } catch {
-          continue;
-        }
-
-        const hiddenName = await createPath(
-          fileName,
-          INTERNAL_DOCUMENTS_PATH,
-          contents
-        );
-
-        if (!hiddenName) continue;
-
-        if (await unlink(sourcePath)) {
-          await updateFolder(DOCUMENTS_PATH, undefined, fileName);
-          await updateFolder(INTERNAL_DOCUMENTS_PATH, hiddenName);
-        } else {
-          await unlink(`${INTERNAL_DOCUMENTS_PATH}/${hiddenName}`);
+              if (hiddenName) {
+                if (await unlink(sourcePath)) {
+                  await updateFolder(DOCUMENTS_PATH, undefined, fileName);
+                  await updateFolder(INTERNAL_DOCUMENTS_PATH, hiddenName);
+                } else {
+                  await unlink(`${INTERNAL_DOCUMENTS_PATH}/${hiddenName}`);
+                }
+              }
+            }
+          }
         }
       }
+      // oxlint-enable no-await-in-loop
     };
 
     void hideExistingTemplateFiles();
   }, [createPath, readFile, readdir, unlink, updateFolder]);
 
-  useEffect(
-    () => containerProps.setLoading(false),
-    [containerProps.setLoading]
-  );
+  useEffect(() => {
+    setLoading(false);
+  }, [setLoading]);
 
   const createFromTemplate = async (
     name: string,
@@ -1052,11 +1057,11 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
           <div className="textos-template-list">
             {templates.map(({ content, name, preview }) => (
               <button
+                key={name}
                 aria-label={`Abrir modelo: ${name}`}
                 className={`textos-template-card${
                   name === "Trabalho de escola" ? " is-school-test" : ""
                 }`}
-                key={name}
                 onClick={() => createFromTemplate(name, content)}
                 type="button"
               >
@@ -1077,10 +1082,11 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
 
 const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
   const containerProps = useAppContainer(id);
-  const editor = useTinyMCE(containerProps, {
-    ...TINYMCE_OPTIONS,
-    transformContent: updateLegacyTemplates,
-  });
+  const editorOptions = useMemo(
+    () => ({ ...TINYMCE_OPTIONS, transformContent: updateLegacyTemplates }),
+    []
+  );
+  const editor = useTinyMCE(containerProps, editorOptions);
   const { url: setProcessUrl } = useProcessesActions();
   const [showReturnPrompt, setShowReturnPrompt] = useState(false);
 

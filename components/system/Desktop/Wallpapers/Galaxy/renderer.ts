@@ -511,7 +511,7 @@ export const createGalaxyRenderer = (
 
       gl2.bindVertexArray(vertexArray);
       applyState();
-      // eslint-disable-next-line unicorn/no-null
+      // 
       gl2.bindVertexArray(null);
       vertexArrays.push(vertexArray);
 
@@ -523,7 +523,7 @@ export const createGalaxyRenderer = (
 
       vaoExtension.bindVertexArrayOES(vertexArray);
       applyState();
-      // eslint-disable-next-line unicorn/no-null
+      // 
       vaoExtension.bindVertexArrayOES(null);
       vertexArrays.push(vertexArray);
 
@@ -640,7 +640,7 @@ export const createGalaxyRenderer = (
       0,
       gl.RGBA,
       sized.type,
-      // eslint-disable-next-line unicorn/no-null
+      // 
       null
     );
     gl.bindFramebuffer(gl.FRAMEBUFFER, sized.framebuffer);
@@ -703,7 +703,7 @@ export const createGalaxyRenderer = (
       gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
   }
 
-  // eslint-disable-next-line unicorn/no-null
+  // 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   gl.disable(gl.DEPTH_TEST);
   // The sprite shader's own dither makes driver dithering redundant work
@@ -1064,7 +1064,7 @@ export const createGalaxyRenderer = (
       gl.bindFramebuffer(gl.FRAMEBUFFER, dustTarget.framebuffer);
       gl.clear(gl.COLOR_BUFFER_BIT);
       drawGroup("dust", targetScale, targetWidth, targetHeight);
-      // eslint-disable-next-line unicorn/no-null
+      // 
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     }
 

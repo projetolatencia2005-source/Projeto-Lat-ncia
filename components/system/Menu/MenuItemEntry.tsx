@@ -246,7 +246,7 @@ const MenuItemEntry: FC<MenuItemEntryProps> = ({
       )}
       {showSubMenu && menu && (
         <Menu
-          subMenu={{ items: menu, isFileExplorerMenu, label, ...subMenuOffset }}
+          subMenu={{ isFileExplorerMenu, items: menu, label, ...subMenuOffset }}
         />
       )}
     </li>

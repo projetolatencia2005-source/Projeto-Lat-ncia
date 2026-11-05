@@ -193,7 +193,7 @@ const BlobImage: FC<{ blob: Blob }> = ({ blob }) => {
     return () => URL.revokeObjectURL(url);
   }, [blob]);
 
-  // eslint-disable-next-line unicorn/no-null
+  // 
   return src ? <img alt="Attachment" src={src} /> : null;
 };
 
