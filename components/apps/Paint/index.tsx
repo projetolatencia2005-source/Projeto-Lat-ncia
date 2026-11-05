@@ -322,8 +322,8 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
           id={`jspaint-${id}`}
           onLoad={handlePaintLoad}
           src={paintSrc}
-          title={windowTitle}
           style={loadError ? { visibility: "hidden" } : undefined}
+          title={windowTitle}
           width="100%"
           {...IFRAME_CONFIG}
         />
