@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  DESKTOP_ENTRIES_SELECTOR,
   DESKTOP_MENU_ITEMS,
   DESKTOP_SELECTOR,
   NEW_FILE_LABEL,
