@@ -16,6 +16,12 @@ const INTERNAL_DOCUMENTS_PATH = `${DOCUMENTS_PATH}/.Textos`;
 const DEFAULT_SAVE_PATH = `${INTERNAL_DOCUMENTS_PATH}/Novo documento.whtml`;
 const CONTENT_STYLE = `
   html,
+  body,
+  body * {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
+  }
+
+  html,
   body {
     scrollbar-width: none;
   }

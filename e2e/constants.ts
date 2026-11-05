@@ -209,25 +209,22 @@ export const FILE_MENU_ITEMS = [
   /^Properties$/,
 ];
 export const FOLDER_MENU_ITEMS: MenuItems = {
-  "Add file(s)": true,
-  "Map directory": (browserName: string): boolean =>
+  "Adicionar arquivo(s)": true,
+  Atualizar: true,
+  Colar: true,
+  "Mapear pasta": (browserName: string): boolean =>
     !DIRECTORY_PICKER_NOT_SUPPORTED_BROWSERS.has(browserName),
-  New: true,
-  "Open Terminal here": true,
-  Paste: true,
-  Properties: true,
-  Refresh: true,
-  "Sort by": true,
+  Novo: true,
+  "Ordenar por": true,
+  Propriedades: true,
 };
 export const DESKTOP_MENU_ITEMS: MenuItems = {
   ...FOLDER_MENU_ITEMS,
-  Background: true,
-  "Capture screen": (browserName: string): boolean =>
+  "Capturar tela": (browserName: string): boolean =>
     !MEDIA_RECORDER_HEADLESS_NOT_SUPPORTED_BROWSERS.has(browserName),
-  Inspect: true,
-  Properties: false,
-  "View page source": true,
-  "Window close effect": true,
+  "Efeito ao fechar a janela": true,
+  "Plano de fundo": true,
+  Propriedades: false,
 };
 
 export const CLOCK_MENU_ITEMS = [/^Local time$/, /^Server time$/];

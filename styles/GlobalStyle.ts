@@ -398,10 +398,10 @@ const GlobalStyle = styled.createGlobalStyle`
     gap: clamp(14px, 2vw, 28px);
     grid-template-columns: 164px minmax(0, 1fr);
     margin: 0 auto;
-    min-height: 300px;
-    padding: 80px;
+    min-height: 250px;
+    padding: 55px 80px;
     max-width: 100%;
-    width: 1000px;
+    width: 1200px;
   }
 
   .doors-tutorial-about-icon {
@@ -520,7 +520,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-login-intro {
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     flex-direction: column;
     grid-column: 1;
@@ -537,6 +537,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-login-intro p {
     font-size: clamp(16px, 1.667vw, 32px);
     margin-top: 4.45vh;
+    text-align: right;
     white-space: nowrap;
   }
 

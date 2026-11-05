@@ -497,10 +497,6 @@ const useFolderContextMenu = (
         : [
             MENU_SEPERATOR,
             ...FS_COMMANDS,
-            {
-              action: () => open("Terminal", { url }),
-              label: "Abrir Terminal aqui",
-            },
             MENU_SEPERATOR,
             {
               action: () => pasteToFolder(event),

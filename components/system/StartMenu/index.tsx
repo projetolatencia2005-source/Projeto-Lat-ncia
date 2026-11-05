@@ -205,11 +205,15 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
               <li>
                 <button
                   onClick={() =>
-                    openFavorite("Paint", undefined, "/System/Doors/paint.svg")
+                    openFavorite(
+                      "Paint",
+                      undefined,
+                      "/System/Doors/figma/icon-paint-rabisco.png"
+                    )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/paint.svg" />
+                  <img alt="" src="/System/Doors/figma/icon-paint-rabisco.png" />
                   <span>Rabisco</span>
                 </button>
               </li>

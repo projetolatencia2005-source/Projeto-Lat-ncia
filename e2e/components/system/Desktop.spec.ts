@@ -43,6 +43,53 @@ test.afterEach(closePage);
 
 test("has file entry", desktopEntriesAreVisible);
 
+test("has the Pastas shortcut", async ({ page }) => {
+  await desktopEntryIsVisible(/^Pastas$/, { page });
+});
+
+test("can move a desktop shortcut", async ({ page }) => {
+  const entry = page.locator(DESKTOP_ENTRIES_SELECTOR).getByLabel(/^Rabisco$/);
+  const desktop = page.locator(DESKTOP_SELECTOR);
+  const [entryBefore, desktopBounds] = await Promise.all([
+    entry.boundingBox(),
+    desktop.boundingBox(),
+  ]);
+
+  if (!entryBefore || !desktopBounds) {
+    throw new Error("Não foi possível localizar o atalho e a área de trabalho.");
+  }
+
+  const { height, width, x, y } = entryBefore;
+  const {
+    height: desktopHeight,
+    width: desktopWidth,
+    x: desktopX,
+    y: desktopY,
+  } = desktopBounds;
+  const targetX = Math.min(desktopWidth - 20, x - desktopX + width + 100);
+  const targetY = Math.min(desktopHeight - 20, y - desktopY + height + 40);
+
+  await entry.dragTo(desktop, { targetPosition: { x: targetX, y: targetY } });
+
+  await expect
+    .poll(async () => (await entry.boundingBox())?.x)
+    .toBeGreaterThan(x + 30);
+});
+
+test("can open Rabisco", async ({ page }) => {
+  await doubleClickDesktopEntry(/^Rabisco$/, { page });
+
+  const paintFrame = page.locator('iframe[id^="jspaint-"]');
+
+  await expect(paintFrame).toBeVisible();
+  await expect
+    .poll(async () =>
+      page.frameLocator('iframe[id^="jspaint-"]').locator(".menus").count()
+    )
+    .toBe(1);
+  await expect(page.getByRole("alert")).toHaveCount(0);
+});
+
 test.describe("has selection", () => {
   test("has effect", async ({ page }) => {
     const { height = 0, width = 0 } =
@@ -88,8 +135,8 @@ test.describe("has context menu", () => {
     test("can create folder", async ({ page }) => {
       await desktopEntryIsHidden(NEW_FOLDER_LABEL, { page });
 
-      await clickContextMenuEntry(/^New$/, { page });
-      await clickContextMenuEntry(/^Folder$/, { page });
+      await clickContextMenuEntry(/^Novo$/, { page });
+      await clickContextMenuEntry(/^Pasta$/, { page });
 
       await desktopEntryIsVisible(NEW_FOLDER_LABEL, { page });
       // Reloading before the lazy rename box loads aborts its chunk
@@ -104,8 +151,8 @@ test.describe("has context menu", () => {
     test("can create file", async ({ page }) => {
       await desktopEntryIsHidden(NEW_FILE_LABEL, { page });
 
-      await clickContextMenuEntry(/^New$/, { page });
-      await clickContextMenuEntry(/^Text Document$/, { page });
+      await clickContextMenuEntry(/^Novo$/, { page });
+      await clickContextMenuEntry(/^Documento de texto$/, { page });
 
       await desktopEntryIsVisible(NEW_FILE_LABEL, { page });
       await desktopEntryIsRenaming({ page });
@@ -121,7 +168,7 @@ test.describe("has context menu", () => {
 
       const uploadPromise = page.waitForEvent("filechooser");
 
-      await clickContextMenuEntry(/^Add file\(s\)$/, { page });
+      await clickContextMenuEntry(/^Adicionar arquivo\(s\)$/, { page });
 
       await (
         await uploadPromise
@@ -137,7 +184,7 @@ test.describe("has context menu", () => {
     test("can reopen added file with icon", async ({ page }) => {
       const uploadPromise = page.waitForEvent("filechooser");
 
-      await clickContextMenuEntry(/^Add file\(s\)$/, { page });
+      await clickContextMenuEntry(/^Adicionar arquivo\(s\)$/, { page });
 
       await (
         await uploadPromise
@@ -158,19 +205,10 @@ test.describe("has context menu", () => {
     });
   });
 
-  test("can inspect page", async ({ page }) => {
-    await clickContextMenuEntry(/^Inspect$/, { page });
-    await appIsOpen(/^DevTools$/, page);
-  });
-
-  test("can view page source", async ({ page }) => {
-    await clickContextMenuEntry(/^View page source$/, { page });
-    await appIsOpen(/^index.html - Monaco Editor$/, page);
-  });
-
-  test("can open terminal", async ({ page }) => {
-    await clickContextMenuEntry(/^Open Terminal here$/, { page });
-    await appIsOpen(/^Terminal$/, page);
+  test("hides browser developer and terminal actions", async ({ page }) => {
+    await contextMenuEntryIsHidden(/^Inspect$/, { page });
+    await contextMenuEntryIsHidden(/^View page source$/, { page });
+    await contextMenuEntryIsHidden(/^Abrir Terminal aqui$/, { page });
   });
 });
 

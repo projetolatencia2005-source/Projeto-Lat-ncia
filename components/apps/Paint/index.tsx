@@ -194,8 +194,18 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     const { contentWindow } = iframeRef.current || {};
     let cleanup: (() => void) | undefined;
 
-    if (loaded && contentWindow && !jsPaintInstance) {
-      const jsPaint = contentWindow as unknown as JsPaint;
+    if (loaded && !loadError && contentWindow && !jsPaintInstance) {
+      const candidate = contentWindow as unknown as Partial<JsPaint>;
+
+      if (
+        typeof candidate.file_new !== "function" ||
+        typeof candidate.systemHooks?.showOpenFileDialog !== "function"
+      ) {
+        setLoadError(true);
+        return;
+      }
+
+      const jsPaint = candidate as JsPaint;
       const previousOpenFileDialog = jsPaint.systemHooks.showOpenFileDialog;
       const previousFileNew = jsPaint.file_new;
 
@@ -255,9 +265,11 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     id,
     jsPaintInstance,
     loaded,
+    loadError,
     onDragOver,
     onDrop,
     prependFileToTitle,
+    setLoadError,
     setWallpaperFromCanvas,
     updateFolder,
     writeFile,

@@ -36,6 +36,7 @@ public/Users/Public/**
 !public/Users/Public/Desktop/Internet.url
 !public/Users/Public/Desktop/Internet Expandida.url
 !public/Users/Public/Desktop/Pasta trancada.url
+!public/Users/Public/Desktop/Pastas.url
 !public/Users/Public/Desktop/Abrir porta.url
 !public/Users/Public/Recycle Bin
 !public/Users/Public/Recycle Bin/**
@@ -50,6 +51,14 @@ public/Users/Public/**
 !public/Users/Public/Pictures
 !public/Users/Public/Pictures/prompts.json
 !public/Users/Public/Pictures/slideshow.json
+!public/Users/Public/Pictures/dance.png
+!public/Users/Public/Pictures/dupla.png
+!public/Users/Public/Pictures/grupo.png
+!public/Users/Public/Pictures/moda 2.png
+!public/Users/Public/Pictures/moda 3.png
+!public/Users/Public/Pictures/moda.png
+!public/Users/Public/Pictures/rihanna.png
+!public/Users/Public/Pictures/serie antiga.png
 !public/Users/Public/Start Menu
 !public/Users/Public/Start Menu/*.url
 !public/Users/Public/Start Menu/Emulators
