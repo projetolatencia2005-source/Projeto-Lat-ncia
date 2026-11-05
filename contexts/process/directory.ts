@@ -224,7 +224,7 @@ const directory: Processes = {
     backgroundColor: "#808080",
     Component: dynamic(() => import("components/apps/Paint")),
     icon: "/System/Doors/figma/icon-paint-rabisco.png",
-    libs: ["/jspaint/index.html"],
+    libs: ["/jspaint/"],
     title: "Paint",
   },
   PDF: {
