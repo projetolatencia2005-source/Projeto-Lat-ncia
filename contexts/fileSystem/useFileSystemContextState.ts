@@ -680,7 +680,7 @@ const useFileSystemContextState = (): {
           .replace(/<[^>]*>/g, "")
           .replace(/&nbsp;|&#160;/gi, " ")
           .trim();
-        const hasMedia = /<(img|audio|video|iframe|object|embed)\b/i.test(
+        const hasMedia = /<(?:img|audio|video|iframe|object|embed)\b/i.test(
           currentPostIt
         );
 

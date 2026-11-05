@@ -323,8 +323,8 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
           onLoad={handlePaintLoad}
           src={paintSrc}
           title={windowTitle}
-          width="100%"
           style={loadError ? { visibility: "hidden" } : undefined}
+          width="100%"
           {...IFRAME_CONFIG}
         />
       )}

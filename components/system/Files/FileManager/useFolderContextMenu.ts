@@ -83,8 +83,8 @@ const CLOSE_EFFECT_LABELS: Record<string, string> = {
   Random: "Aleatório",
   "RGB Warp": "Distorção RGB",
   Snap: "Estalo",
-  TeamRocket: "Team Rocket",
   "T-Rex Attack": "Ataque do T-Rex",
+  TeamRocket: "Team Rocket",
   "TV Effect": "Efeito de TV",
   Wisps: "Fagulhas",
 };
