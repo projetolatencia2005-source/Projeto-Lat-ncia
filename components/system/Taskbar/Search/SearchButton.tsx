@@ -16,8 +16,8 @@ type StartButtonProps = {
 
 const SearchIcon: FC = () => (
   <img
-    aria-hidden="true"
     alt=""
+    aria-hidden="true"
     className="taskbar-search-icon"
     draggable={false}
     src={SEARCH_ICON}

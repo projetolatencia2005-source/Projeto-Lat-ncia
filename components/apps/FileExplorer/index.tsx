@@ -2,13 +2,13 @@ import { basename, dirname } from "path";
 import { useEffect, useRef } from "react";
 import ExplorerMenuBar from "components/apps/FileExplorer/ExplorerMenuBar";
 import Navigation from "components/apps/FileExplorer/Navigation";
+import QuickAccessSidebar, {
+  getExplorerDirectoryLabel,
+} from "components/apps/FileExplorer/QuickAccessSidebar";
 import StyledFileExplorer from "components/apps/FileExplorer/StyledFileExplorer";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import { getIconFromIni } from "components/system/Files/FileEntry/functions";
 import FileManager from "components/system/Files/FileManager";
-import QuickAccessSidebar, {
-  getExplorerDirectoryLabel,
-} from "components/apps/FileExplorer/QuickAccessSidebar";
 import { useFileSystemActions, useFs, useRootFs } from "contexts/fileSystem";
 import { getMountUrl, isMountedFolder } from "contexts/fileSystem/core";
 import { useProcess, useProcessesActions } from "contexts/process";
@@ -195,7 +195,7 @@ const FileExplorer: FC<ComponentProcessProps> = ({ id }) => {
         </div>
       </div>
     </StyledFileExplorer>
-  ) : // eslint-disable-next-line unicorn/no-null
+  ) : // 
   null;
 };
 

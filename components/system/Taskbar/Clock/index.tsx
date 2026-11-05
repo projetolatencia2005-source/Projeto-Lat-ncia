@@ -167,7 +167,7 @@ const Clock: FC<ClockProps> = ({
       const clockCanvas = clockContainer.querySelector("canvas");
 
       if (clockDate && clockCanvas) {
-        clockContainer.insertBefore(clockCanvas, clockDate);
+        clockDate.before(clockCanvas);
       }
 
       currentWorker.current.postMessage(
@@ -207,7 +207,7 @@ const Clock: FC<ClockProps> = ({
     } else setClockWidth(getMeasuredWidth());
   }, [currentWorker, getMeasuredWidth, setClockWidth, supportsOffscreenCanvas]);
 
-  // eslint-disable-next-line unicorn/no-null
+  // 
   if (!time) return null;
 
   return (

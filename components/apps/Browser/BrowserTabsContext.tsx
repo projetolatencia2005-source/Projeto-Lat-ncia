@@ -2,6 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useId,
   useMemo,
   useState,
 } from "react";
@@ -50,7 +51,7 @@ export const BrowserTabsProvider: FC<{
   children: React.ReactNode;
   initialUrl?: string;
 }> = ({ children, initialUrl = HOME_PAGE }) => {
-  const [firstId] = useState(() => `browser-tab-${Math.random().toString(36).slice(2)}`);
+  const firstId = `browser-tab-${useId()}`;
   const [tabs, setTabs] = useState<BrowserTab[]>(() => [
     makeTab(initialUrl, firstId),
   ]);

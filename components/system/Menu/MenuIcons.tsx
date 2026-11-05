@@ -1,5 +1,5 @@
-import DirectionArrow from "components/system/DirectionArrow";
 import { useTheme } from "styled-components";
+import DirectionArrow from "components/system/DirectionArrow";
 
 type SvgProps = {
   className?: string;

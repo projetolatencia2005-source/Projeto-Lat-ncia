@@ -32,6 +32,15 @@ const Calendar = dynamic(importCalendar);
 const Search = dynamic(importSearch);
 const StartMenu = dynamic(importStartMenu);
 
+const onSystemMediaPlay = (event: Event): void => {
+  if (
+    event.target &&
+    (event.target as Element).matches?.("audio, video")
+  ) {
+    registerSystemMedia(event.target as HTMLMediaElement);
+  }
+};
+
 const SystemTray: FC = () => {
   const [volume, setVolume] = useState(() =>
     Math.round(getSystemVolume() * 100)
@@ -50,7 +59,7 @@ const SystemTray: FC = () => {
       if (node.nodeType !== 1 && node.nodeType !== 9) return [];
 
       const root = node as ParentNode;
-      const matches = Array.from(root.querySelectorAll(selector));
+      const matches = [...root.querySelectorAll(selector)];
 
       if (node.nodeType === 1 && (node as Element).matches(selector)) {
         matches.unshift(node as Element);
@@ -62,10 +71,12 @@ const SystemTray: FC = () => {
     const syncMediaInNode = (node: Node, register: boolean): void => {
       elementsInNode(node, "audio, video").forEach((element) => {
         const media = element as HTMLMediaElement;
-        register ? registerSystemMedia(media) : unregisterSystemMedia(media);
+        if (register) registerSystemMedia(media);
+        else unregisterSystemMedia(media);
       });
     };
 
+    // oxlint-disable no-use-before-define, func-style -- These observer helpers call each other to manage nested iframes.
     const stopObservingDocument = (targetDocument: Document): void => {
       const observed = observedDocuments.get(targetDocument);
       if (!observed) return;
@@ -79,24 +90,15 @@ const SystemTray: FC = () => {
       observedDocuments.delete(targetDocument);
     };
 
-    const observeDocument = (targetDocument: Document): void => {
+    function observeDocument(targetDocument: Document): void {
       if (observedDocuments.has(targetDocument)) return;
 
-      const targetWindow = targetDocument.defaultView as
-        (Window & typeof globalThis) | null;
+      const targetWindow = targetDocument.defaultView;
       if (!targetWindow) return;
 
       installSystemAudioVolume(targetWindow);
       syncMediaInNode(targetDocument, true);
 
-      const onPlay = (event: Event): void => {
-        if (
-          event.target &&
-          (event.target as Element).matches?.("audio, video")
-        ) {
-          registerSystemMedia(event.target as HTMLMediaElement);
-        }
-      };
       const observer = new targetWindow.MutationObserver((mutations) => {
         mutations.forEach(({ addedNodes, removedNodes }) => {
           addedNodes.forEach((node) => {
@@ -118,14 +120,17 @@ const SystemTray: FC = () => {
         childList: true,
         subtree: true,
       });
-      targetDocument.addEventListener("play", onPlay, true);
-      observedDocuments.set(targetDocument, { observer, onPlay });
+      targetDocument.addEventListener("play", onSystemMediaPlay, true);
+      observedDocuments.set(targetDocument, {
+        observer,
+        onPlay: onSystemMediaPlay,
+      });
       elementsInNode(targetDocument, "iframe").forEach((element) => {
         observeFrame(element as HTMLIFrameElement);
       });
-    };
+    }
 
-    const observeFrame = (frame: HTMLIFrameElement): void => {
+    function observeFrame(frame: HTMLIFrameElement): void {
       if (observedFrames.has(frame)) return;
 
       const onLoad = (): void => {
@@ -139,9 +144,9 @@ const SystemTray: FC = () => {
       observedFrames.set(frame, onLoad);
       frame.addEventListener("load", onLoad);
       onLoad();
-    };
+    }
 
-    const removeFrame = (frame: HTMLIFrameElement): void => {
+    function removeFrame(frame: HTMLIFrameElement): void {
       const onLoad = observedFrames.get(frame);
       if (!onLoad) return;
 
@@ -154,7 +159,8 @@ const SystemTray: FC = () => {
       } catch {
         // Cross-origin frames cannot be controlled by the desktop volume.
       }
-    };
+    }
+    // oxlint-enable no-use-before-define, func-style
 
     observeDocument(document);
 
@@ -162,7 +168,7 @@ const SystemTray: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!volumeControlOpen) return undefined;
+    if (!volumeControlOpen) return;
 
     const closeOnOutsideClick = (event: PointerEvent): void => {
       if (
@@ -191,7 +197,7 @@ const SystemTray: FC = () => {
   };
 
   return (
-    <div className="doors-system-tray" ref={trayRef}>
+    <div ref={trayRef} className="doors-system-tray">
       <img
         alt=""
         aria-hidden="true"

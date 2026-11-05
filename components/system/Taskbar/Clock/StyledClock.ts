@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 type StyledClockProps = {
   $hasAI: boolean;
   $width: number;

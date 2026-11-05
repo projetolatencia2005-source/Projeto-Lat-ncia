@@ -677,8 +677,8 @@ const Chess: FC<ComponentProcessProps> = ({ id }) => {
 
     applySvgPieces();
     observer.observe(boardElement, {
-      attributes: true,
       attributeFilter: ["src", "style"],
+      attributes: true,
       childList: true,
       subtree: true,
     });

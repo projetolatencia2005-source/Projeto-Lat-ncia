@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import FileManager from "components/system/Files/FileManager";
-import LockedFolderProvider from "components/system/Files/LockedFolder";
 import StyledDesktop from "components/system/Desktop/StyledDesktop";
 import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
+import FileManager from "components/system/Files/FileManager";
+import LockedFolderProvider from "components/system/Files/LockedFolder";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
 import {
   applyAccessibilityPreferences,
@@ -64,14 +64,14 @@ const WindowControls: FC = () => (
 
 const SessionStatus: FC<SessionStatusProps> = ({ startedAt }) => {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [position, setPosition] = useState<StatusPosition | null>(null);
+  const [position, setPosition] = useState<null | StatusPosition>(null);
   const statusRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<{
+    originX: number;
+    originY: number;
     pointerId: number;
     startX: number;
     startY: number;
-    originX: number;
-    originY: number;
   } | null>(null);
 
   useEffect(() => {
@@ -224,7 +224,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ startedAt }) => {
     <aside
       ref={statusRef}
       aria-label={
-        "Latência System. Tempo decorrido " + time + ". Valor R$ 4,00."
+        `Latência System. Tempo decorrido ${  time  }. Valor R$ 4,00.`
       }
       className="doors-session-status"
       onPointerCancel={endDrag}
@@ -241,7 +241,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ startedAt }) => {
         aria-label="Arraste para mover o contador. Use as setas do teclado para movê-lo."
         className="metrics"
         onKeyDown={moveByKeyboard}
-        role="group"
+        role="button"
         tabIndex={0}
       >
         <span>
@@ -267,7 +267,7 @@ const Desktop: FC = ({ children }) => {
   const [bootDestination, setBootDestination] =
     useState<BootDestination | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [startedAt, setStartedAt] = useState<null | number>(null);
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
   useWallpaper(desktopRef);
@@ -286,11 +286,11 @@ const Desktop: FC = ({ children }) => {
   useEffect(() => {
     if (bootStage !== "loading" || !bootDestination) return;
 
-    const startedAt = Date.now();
+    const bootStartedAt = Date.now();
     const interval = window.setInterval(() => {
       const progress = Math.min(
         100,
-        ((Date.now() - startedAt) / BOOT_LOADING_DURATION_MS) * 100
+        ((Date.now() - bootStartedAt) / BOOT_LOADING_DURATION_MS) * 100
       );
       setLoadingProgress(progress);
 

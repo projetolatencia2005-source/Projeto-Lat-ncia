@@ -643,24 +643,24 @@ const useFileSystemContextState = (): {
       const oldPath = "/Users/Public/Recycle Bin";
       const newPath = "/Users/Public/Lixeira";
 
-      if (!(await exists(newPath)) && (await exists(oldPath))) {
-        if (await rename(oldPath, newPath)) {
-          await updateFolder("/Users/Public");
-        }
+      if (
+        !(await exists(newPath)) &&
+        (await exists(oldPath)) &&
+        (await rename(oldPath, newPath))
+      ) {
+        await updateFolder("/Users/Public");
       }
 
       const documentShortcutPaths = [
         "/Users/Public/Documents/Meu Computador.url",
         "/Users/Public/Documents/Área de Trabalho.url",
       ];
-      let removedDocumentShortcut = false;
-
-      for (const shortcutPath of documentShortcutPaths) {
-        if (await exists(shortcutPath)) {
-          removedDocumentShortcut =
-            (await unlink(shortcutPath)) || removedDocumentShortcut;
-        }
-      }
+      const removedDocumentShortcuts = await Promise.all(
+        documentShortcutPaths.map(async (shortcutPath) =>
+          (await exists(shortcutPath)) ? unlink(shortcutPath) : false
+        )
+      );
+      const removedDocumentShortcut = removedDocumentShortcuts.some(Boolean);
 
       if (removedDocumentShortcut) {
         await updateFolder("/Users/Public/Documents");
@@ -680,22 +680,22 @@ const useFileSystemContextState = (): {
         ["/Users/Public/Desktop/Post-it.url", "/System/Doors/postit.svg"],
       ] as const;
 
+      // Keep updates sequential so folder refreshes don't race each other.
+      // oxlint-disable no-await-in-loop -- Each shortcut update is followed by a folder refresh.
       for (const [path, iconFile, urlLine] of shortcutsToRefresh) {
-        if (!(await exists(path))) continue;
+        if (await exists(path)) {
+          const shortcut = (await readFile(path)).toString();
+          const updatedShortcut = shortcut
+            .replace(/^IconFile=.*$/m, `IconFile=${iconFile}`)
+            .replace(/^URL=.*$/m, urlLine ?? "$&");
 
-        const shortcut = (await readFile(path)).toString();
-        const updatedShortcut = shortcut
-          .replace(
-            /^IconFile=.*$/m,
-            `IconFile=${iconFile}`
-          )
-          .replace(/^URL=.*$/m, urlLine ?? "$&");
-
-        if (updatedShortcut !== shortcut) {
-          await writeFile(path, Buffer.from(updatedShortcut), true);
-          await updateFolder(dirname(path), basename(path));
+          if (updatedShortcut !== shortcut) {
+            await writeFile(path, Buffer.from(updatedShortcut), true);
+            await updateFolder(dirname(path), basename(path));
+          }
         }
       }
+      // oxlint-enable no-await-in-loop
 
       if (await exists(newPath)) {
         await writeFile(
@@ -711,7 +711,7 @@ const useFileSystemContextState = (): {
     void migrateSystemIcons().catch((error: unknown) => {
       console.warn("Could not update Doors shortcut icons.", error);
     });
-  }, [exists, fs, readFile, rename, rootFs, updateFolder, writeFile]);
+  }, [exists, fs, readFile, rename, rootFs, unlink, updateFolder, writeFile]);
 
   useEffect(() => {
     if (!restoredFsHandles.current && rootFs) {

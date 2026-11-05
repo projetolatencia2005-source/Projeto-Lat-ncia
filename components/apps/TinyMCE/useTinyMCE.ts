@@ -7,7 +7,6 @@ import {
   useState,
 } from "react";
 import { type Editor, type NotificationSpec } from "tinymce";
-import { installDoorsCursorStyles } from "utils/doorsCursor";
 import { config, DEFAULT_SAVE_PATH } from "components/apps/TinyMCE/config";
 import {
   draggableEditor,
@@ -28,6 +27,7 @@ import {
   DEFAULT_SCROLLBAR_WIDTH,
   ONE_TIME_PASSIVE_EVENT,
 } from "utils/constants";
+import { installDoorsCursorStyles } from "utils/doorsCursor";
 import { getExtension, loadFiles } from "utils/functions";
 
 const TITLE_DATE_FORMATTER = new Intl.DateTimeFormat(DEFAULT_LOCALE, {
@@ -44,13 +44,13 @@ const scrollEditorToTop = (editor: Editor): void => {
 
 type TinyMCEHookOptions = {
   contentStyle?: string;
-  transformContent?: (content: string, url: string) => string;
   editable?: boolean;
   menubar?: false | string;
   plugins?: string;
   savePath?: string;
   statusbar?: boolean;
   toolbar?: false | string;
+  transformContent?: (content: string, url: string) => string;
 };
 
 const useTinyMCE = (
@@ -211,16 +211,11 @@ const useTinyMCE = (
     }
   }, [
     editor,
-    id,
     isEditable,
-    libs,
     linksToProcesses,
-    options.transformContent,
-    prependFileToTitle,
+    options,
     readFile,
     savePath,
-    setUrl,
-    stat,
     updateFolder,
     updateTitle,
     url,
@@ -241,8 +236,8 @@ const useTinyMCE = (
         if (window.tinymce && containerRef.current) {
           window.tinymce
             .init({
-              selector: `.${[...containerRef.current.classList].join(".")} div[id="${id}"]`,
               readonly: Boolean(url) && !isEditable,
+              selector: `.${[...containerRef.current.classList].join(".")} div[id="${id}"]`,
               setup: (editorInstance) => {
                 editorInstance.on("ExecCommand", ({ command }) => {
                   if (command === "mceNewDocument") {
@@ -252,15 +247,15 @@ const useTinyMCE = (
                 });
               },
               ...config,
-              menubar: options.menubar ?? (isPostIt ? false : undefined),
-              plugins: options.plugins ?? config.plugins,
-              statusbar: options.statusbar ?? (isPostIt ? false : undefined),
-              toolbar: options.toolbar ?? (isPostIt ? false : config.toolbar),
               content_style:
                 options.contentStyle ??
                 (isPostIt
                   ? `@font-face { font-family: "Pixelify Sans"; src: url("/System/Doors/figma/PixelifySans-Latin.woff2") format("woff2"); } body { background: #e1edff; color: #31302c; font-family: "Pixelify Sans", sans-serif; font-size: 16px; margin: 0; padding: 20px; } p { margin: 0; }`
                   : undefined),
+              menubar: options.menubar ?? (isPostIt ? false : undefined),
+              plugins: options.plugins ?? config.plugins,
+              statusbar: options.statusbar ?? (isPostIt ? false : undefined),
+              toolbar: options.toolbar ?? (isPostIt ? false : config.toolbar),
             })
             .then(([activeEditor]) => {
               const iframe = containerRef.current?.querySelector("iframe");
@@ -302,14 +297,12 @@ const useTinyMCE = (
     containerRef,
     editor,
     id,
+    isEditable,
     isPostIt,
     libs,
     options.contentStyle,
-    options.transformContent,
-    options.editable,
     options.menubar,
     options.plugins,
-    options.savePath,
     onDragOver,
     onDrop,
     prependFileToTitle,
@@ -323,6 +316,8 @@ const useTinyMCE = (
 
   useEffect(() => {
     if (editor) void loadFileRef.current();
+    // The URL triggers document reloads through the latest callback in the ref.
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- This URL dependency is an intentional reload signal.
   }, [editor, url]);
 
   // Layout cleanup runs before the window leaves the DOM, Firefox throws if

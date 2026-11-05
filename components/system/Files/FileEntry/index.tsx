@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { useTheme } from "styled-components";
+import DirectionArrow from "components/system/DirectionArrow";
 import {
   getCachedIconUrl,
   getCachedShortcut,
@@ -19,14 +20,11 @@ import {
   getTextWrapData,
 } from "components/system/Files/FileEntry/functions";
 import StyledFigure from "components/system/Files/FileEntry/StyledFigure";
-import DirectionArrow from "components/system/DirectionArrow";
 import SubIcons from "components/system/Files/FileEntry/SubIcons";
 import useFile from "components/system/Files/FileEntry/useFile";
 import useFileContextMenu from "components/system/Files/FileEntry/useFileContextMenu";
 import useFileInfo from "components/system/Files/FileEntry/useFileInfo";
 import FileManager from "components/system/Files/FileManager";
-import { useRequestLockedFolderAccess } from "components/system/Files/LockedFolder";
-import { isLockedFolderEntry } from "components/system/Files/LockedFolder/constants";
 import { type Columns } from "components/system/Files/FileManager/Columns/constants";
 import { type FileStat } from "components/system/Files/FileManager/functions";
 import { isSelectionIntersecting } from "components/system/Files/FileManager/Selection/functions";
@@ -34,6 +32,8 @@ import { type SelectionRect } from "components/system/Files/FileManager/Selectio
 import useFileDrop from "components/system/Files/FileManager/useFileDrop";
 import { type FocusEntryFunctions } from "components/system/Files/FileManager/useFocusableEntries";
 import { type FileActions } from "components/system/Files/FileManager/useFolder";
+import { useRequestLockedFolderAccess } from "components/system/Files/LockedFolder";
+import { isLockedFolderEntry } from "components/system/Files/LockedFolder/constants";
 import {
   FileEntryIconSize,
   type FileManagerViewNames,
@@ -199,7 +199,7 @@ const FileEntry: FC<FileEntryProps> = ({
   const extension = getExtension(path);
   const isShortcut = extension === SHORTCUT_EXTENSION;
   const isComputerShortcut =
-    !isDesktop && /^(meu computador|área de trabalho)$/i.test(name.trim());
+    !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -229,7 +229,7 @@ const FileEntry: FC<FileEntryProps> = ({
         ]
       );
   const displayName =
-    isDesktop && /^(documents|documentos)$/i.test(name)
+    isDesktop && /^(?:documents|documentos)$/i.test(name)
       ? "Pastas"
       : isComputerShortcut
         ? "Área de Trabalho"
@@ -578,6 +578,9 @@ const FileEntry: FC<FileEntryProps> = ({
     <>
       <Button
         ref={buttonRef}
+        aria-describedby={showColumn ? columnRowId : undefined}
+        aria-label={displayName}
+        aria-pressed={listView ? undefined : focusedEntries.includes(fileName)}
         className={
           [
             isDesktop &&
@@ -591,9 +594,6 @@ const FileEntry: FC<FileEntryProps> = ({
             .filter(Boolean)
             .join(" ") || undefined
         }
-        aria-describedby={showColumn ? columnRowId : undefined}
-        aria-label={displayName}
-        aria-pressed={listView ? undefined : focusedEntries.includes(fileName)}
         onFocusCapture={() => {
           // Keyboard focus gets what hovering gives, like the tooltip
           if (isKeyboardNavigating()) onMouseOverButton();
@@ -647,9 +647,9 @@ const FileEntry: FC<FileEntryProps> = ({
             icon={icon}
             isDesktop={isDesktop}
             loadedIcon={loadedIcon}
-            showShortcutIcon={Boolean(
+            showShortcutIcon={
               hideShortcutIcon || stats.systemShortcut || isComputerShortcut
-            )}
+            }
             subIcons={subIcons}
             view={view}
           />
@@ -667,7 +667,7 @@ const FileEntry: FC<FileEntryProps> = ({
               className={
                 [
                   isDesktop &&
-                    /^(documents|documentos)$/i.test(name) &&
+                    /^(?:documents|documentos)$/i.test(name) &&
                     "desktop-documents-label",
                   isComputerShortcut && "computer-shortcut-label",
                 ]
@@ -675,12 +675,12 @@ const FileEntry: FC<FileEntryProps> = ({
                   .join(" ") || undefined
               }
             >
-              {displayName !== name
-                ? displayName
-                : !showColumn &&
-                    (!isOnlyFocusedEntry || name.length === truncatedName.length)
-                  ? truncatedName
-                  : name}
+              {displayName === name
+                ? showColumn ||
+                  (isOnlyFocusedEntry && name.length !== truncatedName.length)
+                  ? name
+                  : truncatedName
+                : displayName}
             </figcaption>
           )}
           {listView && openInFileExplorer && (

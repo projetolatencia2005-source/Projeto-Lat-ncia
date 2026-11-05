@@ -149,7 +149,7 @@ const Icon: FCWithRef<
             failedUrls.length > 0 &&
             failedUrls.includes(srcSet.split(" ")[0])
           ) {
-            // eslint-disable-next-line unicorn/no-null
+            // 
             return null;
           }
 

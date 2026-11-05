@@ -23,8 +23,8 @@ export const SideMenu: FC = () => (
 
 export const Search: FC = () => (
   <img
-    aria-hidden="true"
     alt=""
+    aria-hidden="true"
     className="sidebar-search-icon"
     draggable={false}
     src={SEARCH_ICON}
@@ -33,8 +33,8 @@ export const Search: FC = () => (
 
 export const Documents: FC = () => (
   <img
-    aria-hidden="true"
     alt=""
+    aria-hidden="true"
     className="paper-icon"
     draggable={false}
     src={PAPER_ICON}

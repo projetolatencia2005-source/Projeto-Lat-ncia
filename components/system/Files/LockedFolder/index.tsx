@@ -7,11 +7,11 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
 import {
   LOCKED_FOLDER_QUIZ_KEYWORD,
   LOCKED_FOLDER_WORDS,
 } from "components/system/Files/LockedFolder/constants";
+import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
 
 type RequestAccess = (onUnlocked: () => void) => void;
 
@@ -30,7 +30,7 @@ const RequestAccessContext = createContext<RequestAccess>((onUnlocked) =>
 const normalizeWord = (word: string): string =>
   word
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\u0300-\u036F]/g, "")
     .trim()
     .replace(/\s+/g, " ")
     .toLocaleLowerCase("pt-BR");
@@ -69,7 +69,7 @@ const LockedFolderProvider: FC = ({ children }) => {
     setOnUnlocked(null);
   };
 
-  const submit = (event: React.FormEvent<HTMLFormElement>): void => {
+  const submit: React.SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
     const enteredWords = words.filter((word) => word.trim());
@@ -163,16 +163,16 @@ const LockedFolderProvider: FC = ({ children }) => {
         typeof document !== "undefined" &&
         createPortal(
           <StyledLockedFolderDialog
+            onKeyDown={onDialogKeyDown}
             onMouseDown={(event) => {
               if (event.target === event.currentTarget) close();
             }}
-            onKeyDown={onDialogKeyDown}
           >
             <section
+              ref={dialogRef}
               aria-labelledby="doors-locked-folder-title"
               aria-modal="true"
               className="doors-locked-folder-window"
-              ref={dialogRef}
               role="dialog"
               style={{
                 transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0)`,
@@ -211,7 +211,7 @@ const LockedFolderProvider: FC = ({ children }) => {
                 <div className="doors-locked-folder-words">
                   {words.map((word, index) => (
                     <input
-                      key={index}
+                      key={LOCKED_FOLDER_WORDS[index]}
                       ref={index === 0 ? firstInputRef : undefined}
                       aria-label={`Palavra ${index + 1}`}
                       autoCapitalize="none"

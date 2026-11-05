@@ -49,8 +49,8 @@ export const Up: FC = () => <PixelArrow direction="up" size={30} />;
 
 export const Search: FC = () => (
   <img
-    aria-hidden="true"
     alt=""
+    aria-hidden="true"
     className="doors-search-icon"
     draggable={false}
     src={SEARCH_ICON}
@@ -59,8 +59,8 @@ export const Search: FC = () => (
 
 export const ExplorerSearch: FC = () => (
   <img
-    aria-hidden="true"
     alt=""
+    aria-hidden="true"
     className="figma-search-icon"
     draggable={false}
     src={FILE_EXPLORER_SEARCH_ICON}

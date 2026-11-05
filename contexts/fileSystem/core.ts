@@ -47,7 +47,7 @@ const IDX_FILE_MODE = 33206;
 const IDX_DIR_MODE = 16822;
 const IDX_UID = 0;
 const IDX_GID = 0;
-// eslint-disable-next-line unicorn/no-null
+// 
 const FILE_ENTRY = null;
 const fsroot = index.fsroot as FS9PV4[];
 

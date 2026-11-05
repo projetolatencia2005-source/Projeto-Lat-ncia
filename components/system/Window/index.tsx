@@ -1,5 +1,5 @@
-import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import { BrowserTabsProvider } from "components/apps/Browser/BrowserTabsContext";
+import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import StyledPeekViewport from "components/system/Taskbar/TaskbarEntry/Peek/StyledPeekViewport";
 import RndWindow from "components/system/Window/RndWindow";
 import useRnd from "components/system/Window/RndWindow/useRnd";

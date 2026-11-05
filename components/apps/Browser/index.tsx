@@ -5,9 +5,9 @@ import {
   INTERNAL_SITES,
   normalizeInternalUrl,
 } from "components/apps/Browser/config";
-import StyledBrowser from "components/apps/Browser/StyledBrowser";
-import InternalSites from "components/apps/Browser/sites";
 import { Arrow, Refresh } from "components/apps/Browser/NavigationIcons";
+import InternalSites from "components/apps/Browser/sites";
+import StyledBrowser from "components/apps/Browser/StyledBrowser";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import { useProcess, useProcessesActions } from "contexts/process";
 import Button from "styles/common/Button";
@@ -25,25 +25,28 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
   const browserTabs = useBrowserTabs();
   const { icon: setIcon, url: changeUrl } = useProcessesActions();
   const { icon, url: processUrl } = useProcess(id);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<null | string>(null);
   const [openMenuLeft, setOpenMenuLeft] = useState(6);
   const [refreshKey, setRefreshKey] = useState(0);
   const [addressValue, setAddressValue] = useState<string>(HOME_PAGE);
 
+  // This effect synchronizes the editable address field with browser navigation.
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect -- The field is a local draft that must follow the active tab URL.
     if (browserTabs) setAddressValue(browserTabs.activeTab.url);
-  }, [browserTabs?.activeTab.id, browserTabs?.activeTab.url]);
+  }, [browserTabs]);
 
+  const activeTabUrl = browserTabs?.activeTab.url;
   useEffect(() => {
-    if (!browserTabs) return;
+    if (!activeTabUrl) return;
 
-    if (processUrl !== browserTabs.activeTab.url) {
-      changeUrl(id, browserTabs.activeTab.url);
+    if (processUrl !== activeTabUrl) {
+      changeUrl(id, activeTabUrl);
     }
     if (icon !== "/System/Doors/figma/icon-internet-expanded.png") {
       setIcon(id, "/System/Doors/figma/icon-internet-expanded.png");
     }
-  }, [browserTabs?.activeTab.url, changeUrl, icon, id, processUrl, setIcon]);
+  }, [activeTabUrl, changeUrl, icon, id, processUrl, setIcon]);
 
   if (!browserTabs) return null;
 
@@ -53,9 +56,9 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
     canGoForward,
     closeTab,
     createTab,
+    goToHistory,
     moveHistory,
     navigate,
-    goToHistory,
   } = browserTabs;
 
   const closeMenu = (): void => setOpenMenu(null);
@@ -102,10 +105,10 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
       >
         {MENU_ITEMS.map(([title, menuId]) => (
           <Button
+            key={menuId}
             aria-expanded={openMenu === menuId}
             aria-haspopup="menu"
             className="menu-item cancel"
-            key={menuId}
             onClick={(event) => onMenuClick(event, menuId)}
             type="button"
           >

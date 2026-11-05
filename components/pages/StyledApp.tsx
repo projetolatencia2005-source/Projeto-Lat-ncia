@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { type FeatureBundle, LazyMotion, MotionConfig } from "motion/react";
+import { useEffect, useState } from "react";
 import { StyleSheetManager, ThemeProvider } from "styled-components";
 import { useThemeName } from "contexts/session";
 import GlobalStyle from "styles/GlobalStyle";

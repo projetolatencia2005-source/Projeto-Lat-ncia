@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import {
-  DEFAULT_ACCESSIBILITY_PREFERENCES,
   type AccessibilityPreferences,
+  DEFAULT_ACCESSIBILITY_PREFERENCES,
   readAccessibilityPreferences,
   saveAccessibilityPreferences,
 } from "utils/accessibility";
@@ -33,7 +33,7 @@ const Accessibility: FC<ComponentProcessProps> = () => {
         <label><input checked={preferences.largeInterface} onChange={() => togglePreference("largeInterface")} type="checkbox" />Aumentar a interface</label>
         <label><input checked={preferences.reduceMotion} onChange={() => togglePreference("reduceMotion")} type="checkbox" />Reduzir animações</label>
       </section>
-      <section className="shortcuts" aria-labelledby="doors-shortcuts-title">
+      <section aria-labelledby="doors-shortcuts-title" className="shortcuts">
         <h2 id="doors-shortcuts-title">Navegação por teclado</h2>
         <ul>
           <li><kbd>Shift</kbd> + <kbd>Esc</kbd>: abrir o Menu Iniciar</li>

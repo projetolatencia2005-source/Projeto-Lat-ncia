@@ -58,9 +58,9 @@ const Menu: FC<MenuProps> = ({ subMenu }) => {
   const { setMenu } = useMenuActions();
   const baseMenu = useMenu();
   const {
+    isFileExplorerMenu = false,
     items,
     label,
-    isFileExplorerMenu = false,
     staticX = 0,
     staticY = 0,
     x = 0,
@@ -329,15 +329,15 @@ const Menu: FC<MenuProps> = ({ subMenu }) => {
             // eslint-disable-next-line react/no-array-index-key
             key={`${item.label || "item"}-${index}`}
             closeMenu={closeMenu}
+            isFileExplorerMenu={isFileExplorerMenu}
             isSubMenu={isSubMenu}
             resetMenu={resetMenu}
-            isFileExplorerMenu={isFileExplorerMenu}
             {...item}
           />
         ))}
       </ol>
     </StyledMenu>
-  ) : // eslint-disable-next-line unicorn/no-null
+  ) : // 
   null;
 };
 

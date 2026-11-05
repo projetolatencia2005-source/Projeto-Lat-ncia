@@ -27,7 +27,7 @@ const DOORS_CURSOR_STYLES = `
 export const installDoorsCursorStyles = (document: Document | null): void => {
   if (
     !document?.documentElement ||
-    document.getElementById(DOORS_CURSOR_STYLE_ID)
+    document.querySelector(`#${DOORS_CURSOR_STYLE_ID}`)
   ) {
     return;
   }

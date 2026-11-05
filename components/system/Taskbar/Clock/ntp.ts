@@ -16,7 +16,7 @@ const NtpReqOptions = {
   mode: "cors",
   priority: "high",
   referrerPolicy: "no-referrer",
-  // eslint-disable-next-line unicorn/no-null
+  // 
   window: null,
 } as RequestInit;
 
