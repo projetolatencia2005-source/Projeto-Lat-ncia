@@ -34,7 +34,7 @@ type SessionStatusProps = { startedAt: number };
 
 type StatusPosition = { x: number; y: number };
 
-const STATUS_POSITION_KEY = "doors-session-status-position";
+const STATUS_POSITION_KEY = "doors-session-status-position-v2";
 const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v2";
 const REQUESTED_FILES_TO_REMOVE = [
   ["/Users/Public/Desktop/image.png", "/Users/Public/Desktop"],

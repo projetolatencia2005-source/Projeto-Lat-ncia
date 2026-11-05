@@ -20,6 +20,8 @@ public/robots.txt
 public/rss.xml
 public/sitemap.xml
 public/.index/*
+!public/.index/jspaint/
+!public/.index/jspaint/**
 public/Users/Public/**
 
 !public/Users/**/desktop.ini
@@ -32,10 +34,14 @@ public/Users/Public/**
 !public/Users/Public/Desktop/Post-it.url
 !public/Users/Public/Desktop/Textos.url
 !public/Users/Public/Desktop/Internet.url
+!public/Users/Public/Desktop/Internet Expandida.url
 !public/Users/Public/Desktop/Pasta trancada.url
 !public/Users/Public/Desktop/Abrir porta.url
 !public/Users/Public/Recycle Bin
 !public/Users/Public/Recycle Bin/**
+!public/Users/Public/Lixeira
+!public/Users/Public/Lixeira/**
+!public/Users/Public/Post-it.whtml
 !public/Users/Public/Pasta trancada
 !public/Users/Public/Pasta trancada/**
 !public/Users/Public/Documents

@@ -305,7 +305,7 @@ const GlobalStyle = styled.createGlobalStyle`
     align-self: center;
     flex: 0 0 auto;
     margin-top: clamp(24px, 3vh, 34px);
-    transform: translateY(-10px);
+    transform: translateY(-40px);
     width: min(316px, 90%);
   }
 
@@ -437,7 +437,7 @@ const GlobalStyle = styled.createGlobalStyle`
         1fr
       );
     margin-top: 50px;
-    transform: translateY(-10px);
+    transform: translateY(-40px);
   }
 
   .doors-tutorial-step h2 {
@@ -828,8 +828,9 @@ const GlobalStyle = styled.createGlobalStyle`
     max-width: calc(100vw - 12px);
     padding: 3px 4px 4px;
     position: absolute;
+    bottom: 55px;
     right: 5px;
-    top: 5px;
+    top: auto;
     width: min(432px, max(280px, 22.5vw), calc(100vw - 12px));
     height: min(67px, 6.2vh);
     touch-action: none;
