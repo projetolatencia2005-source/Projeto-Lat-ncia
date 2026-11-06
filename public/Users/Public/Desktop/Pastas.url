@@ -1,6 +1,6 @@
 [InternetShortcut]
 BaseURL=FileExplorer
 Comment=Abra suas pastas e documentos
-IconFile=/System/Doors/figma/icon-documents.png
+IconFile=/System/Doors/figma/pasta.svg
 Type=System
 URL=/Users/Public/Documents
