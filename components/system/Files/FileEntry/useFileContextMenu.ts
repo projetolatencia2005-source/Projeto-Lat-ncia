@@ -453,7 +453,12 @@ const useFileContextMenu = (
 
           const opensInFileExplorer = pid === "FileExplorer";
 
-          if (isSingleSelection && !opensInFileExplorer && !isYouTubeUrl(url)) {
+          if (
+            !isDesktop &&
+            isSingleSelection &&
+            !opensInFileExplorer &&
+            !isYouTubeUrl(url)
+          ) {
             const baseFileName = basename(url);
             const shareData: ShareData = {
               text: `${baseFileName} - ${alias}`,
@@ -470,22 +475,24 @@ const useFileContextMenu = (
             }
           }
 
-          menuItems.unshift(
-            {
-              action: () => archiveFiles(absoluteEntries()),
-              label: "Adicionar ao arquivo compactado...",
-            },
-            ...(EXTRACTABLE_EXTENSIONS.has(urlExtension) ||
-            MOUNTABLE_EXTENSIONS.has(urlExtension)
-              ? [
-                  {
-                    action: () => extractFiles(url),
-                    label: "Extrair aqui",
-                  },
-                  MENU_SEPERATOR,
-                ]
-              : []),
-          );
+          if (!isDesktop) {
+            menuItems.unshift(
+              {
+                action: () => archiveFiles(absoluteEntries()),
+                label: "Adicionar ao arquivo compactado...",
+              },
+              ...(EXTRACTABLE_EXTENSIONS.has(urlExtension) ||
+              MOUNTABLE_EXTENSIONS.has(urlExtension)
+                ? [
+                    {
+                      action: () => extractFiles(url),
+                      label: "Extrair aqui",
+                    },
+                    MENU_SEPERATOR,
+                  ]
+                : []),
+            );
+          }
 
           if (!isShortcut && !opensInFileExplorer) {
             TEXT_EDITORS.forEach((textEditor) => {
@@ -586,7 +593,7 @@ const useFileContextMenu = (
       });
     }
 
-    if (openWithFiltered.length > 0) {
+    if (openWithFiltered.length > 0 && !isDesktop) {
       menuItems.unshift({
         label: "Abrir com",
         menu: [
