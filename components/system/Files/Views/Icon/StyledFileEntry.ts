@@ -100,11 +100,11 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
   }
 
   button.doors-pastas-shortcut figure {
-    gap: 10px;
+    gap: 0;
 
     picture:first-of-type {
-      height: 52px;
-      width: 52px;
+      height: 56px;
+      width: 56px;
     }
   }
 

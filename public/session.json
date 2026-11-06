@@ -6,23 +6,27 @@
     },
     "/Users/Public/Desktop/Rabisco.url": {
       "gridColumnStart": 1,
-      "gridRowStart": 2
+      "gridRowStart": 6
     },
     "/Users/Public/Desktop/Pastas.url": {
       "gridColumnStart": 1,
-      "gridRowStart": 3
+      "gridRowStart": 2
     },
     "/Users/Public/Desktop/Post-it.url": {
       "gridColumnStart": 1,
-      "gridRowStart": 4
+      "gridRowStart": 5
     },
     "/Users/Public/Desktop/Internet Expandida.url": {
       "gridColumnStart": 1,
-      "gridRowStart": 5
+      "gridRowStart": 3
     },
     "/Users/Public/Desktop/Pasta trancada.url": {
       "gridColumnStart": 1,
-      "gridRowStart": 6
+      "gridRowStart": 7
+    },
+    "/Users/Public/Desktop/Textos.url": {
+      "gridColumnStart": 1,
+      "gridRowStart": 4
     }
   }
 }
