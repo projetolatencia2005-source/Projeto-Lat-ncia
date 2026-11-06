@@ -118,7 +118,8 @@ const useFileContextMenu = (
   focusedEntries: string[],
   stats: FileStat,
   fileManagerId?: string,
-  readOnly?: boolean
+  readOnly?: boolean,
+  isDesktop?: boolean
 ): ContextMenuCapture => {
   const { close, minimize, open, url: changeUrl } = useProcessesActions();
   const {

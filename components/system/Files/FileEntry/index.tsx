@@ -200,6 +200,8 @@ const FileEntry: FC<FileEntryProps> = ({
   const isShortcut = extension === SHORTCUT_EXTENSION;
   const isComputerShortcut =
     !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
+  const isPastasShortcut =
+    isDesktop && /^(?:documents|documentos)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -615,7 +617,8 @@ const FileEntry: FC<FileEntryProps> = ({
           focusedEntries,
           stats,
           fileManagerId,
-          readOnly
+          readOnly,
+          isDesktop
         )}
       >
         <StyledFigure

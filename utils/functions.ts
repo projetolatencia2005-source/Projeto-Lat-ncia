@@ -443,6 +443,7 @@ const calcGridDropPosition = (
   if (!gridElement) return Object.create(null) as IconPosition;
 
   const gridComputedStyle = window.getComputedStyle(gridElement);
+  const { left, top } = gridElement.getBoundingClientRect();
   const gridTemplateRows = gridComputedStyle
     .getPropertyValue(GRID_TEMPLATE_ROWS)
     .split(" ");
