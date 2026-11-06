@@ -258,12 +258,12 @@ const wikiTechnologyArticleHeadings = ["O GRANDE COLAPSO DIGITAL: UMA PREVISÃO 
 
 const splitWikiTechnologyColumn = (
   content: string
-): { heading?: string; body: string }[] => {
+): { body: string; heading?: string }[] => {
   const headings = wikiTechnologyArticleHeadings
     .map((heading) => ({ heading, index: content.indexOf(heading) }))
     .filter(({ index }) => index >= 0)
     .sort((first, second) => first.index - second.index);
-  const sections: { heading?: string; body: string }[] = [];
+  const sections: { body: string; heading?: string }[] = [];
   let cursor = 0;
 
   headings.forEach(({ heading, index }, position) => {
@@ -382,13 +382,13 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             <>
               <h1>{article.title}</h1>
               <div className="wiki-essay-columns">
-                {wikiTechnologyArticleColumns.map((column, columnIndex) => (
-                  <div className="wiki-essay-column" key={columnIndex}>
+                {wikiTechnologyArticleColumns.map((column) => (
+                  <div key={column.slice(0, 32)} className="wiki-essay-column">
                     {splitWikiTechnologyColumn(column).map(
-                      ({ body, heading }, sectionIndex) => (
+                      ({ body, heading }) => (
                         <section
+                          key={heading || body.slice(0, 32)}
                           className="wiki-essay-section"
-                          key={heading || `texto-${columnIndex}-${sectionIndex}`}
                         >
                           {heading && <h2>{heading}</h2>}
                           <p>{body}</p>
@@ -400,9 +400,9 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
               </div>
               <section className="wiki-author-card">
                 <h2>Autor do artigo</h2>
-                <p>{"Japodi Almo’sá É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. “ Tenho interesse especial em teorias da conspiração, comportamento digital e no fato de que ninguém parece ler os termos de uso de absolutamente nada” diz autor."}</p>
+                <p>Japodi Almo’sá É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. “ Tenho interesse especial em teorias da conspiração, comportamento digital e no fato de que ninguém parece ler os termos de uso de absolutamente nada” diz autor.</p>
               </section>
-              <p className="wiki-disclaimer">{"Aviso: Este artigo foi elaborado com base em nas opinões do autor. As fontes foram retiradas diretamente da cabeça dele, os dados não foram verificados e as conclusões carecem de qualquer rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita."}</p>
+              <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base em nas opinões do autor. As fontes foram retiradas diretamente da cabeça dele, os dados não foram verificados e as conclusões carecem de qualquer rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
             </>
           ) : (
             <>
@@ -432,7 +432,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 47 regras que você deveria ter lido antes de começar.</li>
                   </ul>
                   <section className="wiki-founder-note">
-                    <p><strong>Jimmy Wales</strong> {"Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet."}</p>
+                    <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
                   </section>
                 </>
               )}
