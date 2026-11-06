@@ -303,7 +303,7 @@ const wikiArticles = [
     title: "História da internet",
   },
   {
-    body: "Lan houses foram espaços de acesso coletivo à internet, jogos e comunidades digitais, muito presentes no cotidiano dos anos 2000.",
+    body: "LAN House ou casa da rede é um estabelecimento comercial onde, à semelhança de um cibercafé, os usuários podem pagar para utilizar um PC com acesso à Internet e a uma rede local, com o principal fim de acesso à informação rápida pela rede e entretenimento através dos jogos em rede ou online.",
     path: "/artigo/lan-house",
     title: "Lan house",
   },
@@ -313,7 +313,7 @@ const wikiArticles = [
     title: "Avanço da tecnologia e teorias de distopia digital",
   },
   {
-    body: "A convivência em lan houses ajudou a formar comunidades digitais nas periferias, unindo jogos, comunicação e acesso compartilhado à internet.",
+    body: "O artigo Sociabilidade nas lan houses das periferias, de Fábio Mariano Borges, procura compreender por que esses espaços atraíam adolescentes e jovens da cidade de São Paulo e qual era sua importância para as relações sociais. As lan houses também eram locais de encontro, lazer, amizade e convivência.",
     path: wikiSociabilityArticlePath,
     title: "Sociabilidade nas lan houses das periferias",
   },
@@ -322,133 +322,163 @@ const wikiArticles = [
 
 const wikiLanHouseSections = [
   {
-    heading: "O espaço de acesso compartilhado",
-    body: "Antes de a conexão doméstica se tornar comum, as lan houses ofereciam computadores ligados à internet por hora. O balcão, as fileiras de máquinas e o relógio da sessão faziam parte da rotina de quem precisava pesquisar, conversar, estudar ou jogar.",
+    "heading": "Surgimento",
+    "body": "O conceito de LAN house é famoso na Coreia do Sul, conhecido por PC bang (coreano: PC방). Esses estabelecimentos se tornaram particularmente populares a partir de 1998, com o lançamento de jogos como StarCraft. No Brasil, o conceito inicial trazido pela Monkey Paulista se baseou no modelo sul-coreano. A primeira LAN house brasileira foi inaugurada em São Paulo em 1998 e encerrou suas atividades em 2010. A Lan House Connection foi fundada em meados de 2002, em São Miguel Paulista."
   },
   {
-    heading: "Uma janela para a rede",
-    body: "Para muita gente, a primeira conta de e-mail, a primeira conversa por mensagem instantânea e o primeiro perfil em uma rede social nasceram em um computador de uso coletivo. O acesso acontecia em um lugar físico, mas as possibilidades atravessavam a cidade.",
+    "heading": "Características",
+    "body": "O estabelecimento é um centro de entretenimento, educação e cultura. LAN significa Local Area Network, ou rede local de computadores. Uma LAN house oferece computadores conectados para acesso à internet e a programas em geral, como jogos eletrônicos e soluções de escritório. Normalmente, é cobrada uma taxa proporcional ao tempo de uso. Mais do que uma casa de jogos, uma LAN house bem estruturada oferece acesso democrático à tecnologia, lazer, oportunidades, educação e cultura a pessoas de todas as idades."
   },
   {
-    heading: "Jogos, amigos e campeonatos",
-    body: "As máquinas também viravam pontos de encontro. Grupos combinavam partidas, compartilhavam dicas e organizavam campeonatos locais. O som dos teclados e das partidas criava uma paisagem reconhecível para quem frequentava esses espaços.",
+    "heading": "Inclusão digital",
+    "body": "As LAN houses também são uma ferramenta no processo de inclusão digital, conforme dados levantados pelo Comitê Gestor da Internet no Brasil. Há uma tendência para que instalações de baixo custo se tornem parceiras da educação, com investimentos públicos que cheguem diretamente às comunidades. O Projeto Lan-Social, do professor Ernesto Neto, alcançou resultados e vem sendo desenvolvido em diferentes variantes pelo país."
   },
   {
-    heading: "Serviços e vida cotidiana",
-    body: "Além da diversão, muitas pessoas usavam a lan house para imprimir trabalhos, preencher formulários, consultar serviços e enviar documentos. O atendente frequentemente ajudava quem ainda estava aprendendo a navegar pela internet.",
+    "heading": "Estatísticas",
+    "body": "De acordo com o CGI.br, em 2007 as LAN houses foram responsáveis por quase 50% dos acessos à internet no país. Nas regiões Norte e Nordeste, o índice chegou a quase 70%. A maioria dos clientes era do sexo masculino, com predominância das classes C, D e E."
   },
   {
-    heading: "Uma memória da internet brasileira",
-    body: "Com a expansão dos celulares e da banda larga, parte das lan houses mudou de função ou encerrou as atividades. Ainda assim, elas permanecem na memória como lugares de aprendizado, convivência e descoberta tecnológica.",
+    "heading": "Acesso e serviços",
+    "body": "Segundo o SINDLANSP, o Brasil tinha mais de 90 mil LAN houses e cybercafés, embora muitas funcionassem sem legalização por falta de legislação adequada. Esses estabelecimentos também eram responsáveis por parte importante do acesso a serviços públicos, bancos e redes sociais. Mesmo quem tinha conexão em casa podia frequentar uma LAN house para usar a impressora ou resolver problemas de conexão."
   },
+  {
+    "heading": "Programas para gerenciar LAN houses",
+    "body": "A maioria das LAN houses utiliza programas gerenciadores para cadastrar clientes, registrar acessos, controlar vendas, administrar o caixa, gerar relatórios e auxiliar na segurança dos computadores. O sistema costuma ser dividido entre servidor e cliente. Como os computadores são usados pelo público em geral, manter registros das conexões ajuda em auditorias quando necessário."
+  },
+  {
+    "heading": "Pontos de acesso Wi-Fi",
+    "body": "O projeto também apresenta pontos de acesso Wi-Fi, encontrados em cafés, restaurantes, hotéis e aeroportos. Como quem controla um hotspot pode acessar o conteúdo dos aparelhos conectados, é importante escolher redes confiáveis. Smartphones também podem compartilhar sua conexão de dados com outros dispositivos."
+  }
 ];
 
 const wikiSociabilitySections = [
   {
-    heading: "A convivência também era digital",
-    body: "A experiência de estar conectado não acontecia apenas diante da tela. Amigos se encontravam no mesmo salão, escolhiam computadores próximos e acompanhavam as partidas e conversas uns dos outros.",
+    "heading": "O surgimento e a importância das lan houses",
+    "body": "Com o avanço da tecnologia e da internet, surgiram novas formas de comunicação, interação e relacionamento. O acesso, porém, depende das condições econômicas e sociais. Nas periferias, muitas famílias não possuem computador ou conexão em casa, então as lan houses oferecem uma alternativa acessível, com internet, jogos, redes sociais, música e serviços de informática. Uma pesquisa em bairros periféricos de São Paulo, realizada entre outubro de 2007 e dezembro de 2008, observou que jovens de 14 a 20 anos frequentavam esses espaços para acessar a internet, encontrar amigos, conversar e fortalecer vínculos sociais."
   },
   {
-    heading: "A periferia conectada",
-    body: "Em bairros onde o computador e a conexão rápida não estavam disponíveis em todas as casas, a lan house funcionava como uma porta de entrada para serviços, informação e comunicação. O espaço compartilhado ampliava o acesso à rede.",
+    "heading": "Moradia, privacidade e liberdade",
+    "body": "Em muitas periferias, casas pequenas e compartilhadas dificultam a privacidade dos adolescentes. As lan houses permitiam que passassem um tempo fora de casa e convivessem com pessoas da mesma faixa etária, sem a observação constante de pais, irmãos e vizinhos."
   },
   {
-    heading: "Aprender junto",
-    body: "Usuários trocavam instruções sobre programas, jogos, e-mail e ferramentas de pesquisa. A ajuda podia vir de um atendente, de um amigo ou de alguém sentado na máquina ao lado.",
+    "heading": "Segurança e convivência",
+    "body": "O autor aborda também a violência urbana e os preconceitos que associam as periferias à pobreza e à criminalidade. Por receio de que os filhos fossem vítimas de violência, alguns pais viam espaços fechados, como as lan houses, como alternativas mais seguras para os encontros. Parte da convivência que acontecia nas ruas passou a ocorrer em estabelecimentos comerciais."
   },
   {
-    heading: "Jogo como ponto de encontro",
-    body: "Partidas em rede criavam vínculos e rivalidades que continuavam fora do jogo. As equipes se organizavam, marcavam horários e celebravam vitórias como parte da vida social do bairro.",
+    "heading": "Rotina e pertencimento",
+    "body": "Os frequentadores costumavam ir em horários específicos para encontrar os mesmos grupos. Pela manhã havia crianças, pré-adolescentes e pessoas mais velhas; à tarde, adolescentes usavam redes sociais, conversavam, jogavam e ouviam música; à noite, predominavam pessoas com mais de 18 anos. Os interesses compartilhados ajudavam a criar identidade e sentimento de pertencimento."
   },
   {
-    heading: "Laços que permanecem",
-    body: "As lan houses mudaram com a popularização da internet doméstica, mas as lembranças desses espaços mostram que acesso digital também depende de encontros, apoio e participação comunitária.",
+    "heading": "Troca de conhecimentos",
+    "body": "Frequentadores experientes ensinavam iniciantes a usar computadores, acessar sites e superar dificuldades nos jogos. Quem aprendia podia compartilhar conhecimentos com outras pessoas, ganhando reconhecimento no grupo. Essa troca também podia ser desigual: alguns jovens não ajudavam pessoas com quem não tinham afinidade, o que causava exclusão."
   },
+  {
+    "heading": "Aprendizagem e trabalho",
+    "body": "Muitos jovens acreditavam que as habilidades digitais adquiridas nas lan houses poderiam ajudar nos estudos e no futuro profissional. Proprietários e atendentes eram vistos como pessoas com conhecimentos especializados, capazes de orientar os frequentadores sobre tecnologia, jogos e informática."
+  },
+  {
+    "heading": "Serviços e economia local",
+    "body": "Além do acesso à internet, estabelecimentos vendiam alimentos e bebidas, faziam manutenção de computadores e ofereciam outros serviços. Essa diversificação ajudava os negócios e fazia das lan houses espaços de lazer e convivência, para além da tecnologia."
+  },
+  {
+    "heading": "Conclusão",
+    "body": "Fábio Mariano Borges mostra que não é possível compreender a sociabilidade nas lan houses olhando apenas para o uso da internet. Moradia, privacidade, violência, desigualdade e pertencimento influenciavam a experiência. Esses locais ofereciam acesso à tecnologia, amizades, troca de conhecimentos e construção de identidade. O mundo virtual não estava separado do cotidiano presencial."
+  }
 ];
 
 type WikiDiscussionComment = {
   author: string;
   avatar: string;
   body: string;
+  time?: string;
   replies?: WikiDiscussionComment[];
 };
 
 const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
   [wikiTechnologyArticlePath]: [
-    {
-      author: "Albert Einstein",
-      avatar: "encicloweb-einstein.jpg",
-      body: "A tecnologia facilita tarefas, mas o texto exagera cada consequência para provocar o leitor. Vale separar a sátira das previsões que realmente podem ser verificadas.",
-      replies: [
-        {
-          author: "Leitor da madrugada",
-          avatar: "encicloweb-owl.jpg",
-          body: "Concordo. A parte do telefone ocupado parece ficção científica para quem só usa celular.",
-        },
-      ],
-    },
-    {
-      author: "Fã de ficção científica",
-      avatar: "encicloweb-supernatural.jpg",
-      body: "A comparação com histórias distópicas ajuda a apresentar o tema. Seria bom acrescentar fontes históricas sobre o crescimento do acesso à internet.",
-    },
-    {
-      author: "Charlie",
-      avatar: "encicloweb-chaplin.jpg",
-      body: "A ideia funciona como humor, desde que o aviso sobre as fontes continue visível para quem chega pela primeira vez.",
-    },
-    {
-      author: "Pesquisadora curiosa",
-      avatar: "encicloweb-twilight-avatar.jpg",
-      body: "Sugiro incluir uma referência sobre a popularização dos computadores no Brasil para equilibrar as opiniões do autor.",
-    },
-  ],
+  {
+    "author": "teamjacob",
+    "avatar": "encicloweb-twilight-avatar.jpg",
+    "time": "18 de outubro de 2005, 21h34min (UTC)",
+    "body": "Li o artigo inteiro e acho q o autor está certo em alguns pontos. A net tá crescendo muito rápido e ninguém sabe oq está acontecendo. Outro dia li que o Guugli consegue achar páginas do mundo inteiro em segundos. Como isso é possível? Tem gente que diz que existe um computador central guarda todas as info da humanidade, provavelmente em algum lugar dos Estados Unidos. N encontrei provas, mas tbm não encontrei provas de que n existe. Sobre a parte dos computadores controlarem nossos pensamentos, não sei se é possível, mas meu Internet Explorer abriu três janelas sozinho ontem e isso me deixou bastante desconfiado.",
+    "replies": [
+      {
+        "author": "Todomundomeodeia",
+        "avatar": "encicloweb-family.jpg",
+        "time": "19 de outubro de 2005, 00h06min (UTC)",
+        "body": "Eu entrei procurando informações pro trabalho da escola e acabei lendo o artigo todo. Algmas coisa são engraçadas, mas outras me fizeram pensar um pouco. Todo mundo q eu conheço está começando a usar a internet com mais frequência, principalmente para conversar pelo MSM, entrar no Bubblee, procurar músicas. Parece muito difícil imaginar q isso possa mudar tanto a maneira como as pessoas vivem. Ao mesmo tempo, já vejo gente q fica desesperada quando não consegue entrar no MSN ou qnd perde a conexão bem na hora da conversa aff.",
+        "replies": [
+          {
+            "author": "lukinhaadoracinema",
+            "avatar": "encicloweb-supernatural.jpg",
+            "time": "20 de novembro de 2005, 12h06min (UTC)",
+            "body": "Quero informar que este artigo é uma fraude. Meu computador tá ligado á 3 dias e n aconteceu absolutamente nada do que está escrito aqui. A internet continua funcionando, o bubble continua travando e meu pai continua reclamando da conta telefônica. Onde está o colapso? Onde está a revolução? Onde está meu prêmio por ser o único cidadão que realmente testou essa teoria? Além disso, o autor afirma que os computadores podem controlar a sociedade, mas ontem meu PC não conseguiu nem abrir um arquivo do Word sem apresentar um erro fatal. Se essa máquina pretende dominar a humanidade, sugiro que comece aprendendo a reconhecer um disquete. P.S.: Maycon, se você estiver lendo isso, saiba que descobri como alterar o texto da Wikipédia. Vou substituir o artigo inteiro por uma receita de miojo. Não tente me impedir.",
+            "replies": [
+              {
+                "author": "jotacoru1234",
+                "avatar": "encicloweb-owl.jpg",
+                "time": "26 de novembro de 2005, 12h06min (UTC)",
+                "body": "ESSE NÃO É O CARA QUE SUBIU NUM POSTE DE TELEFONE PRA TENTAR DESCOBRIR DE ONDE VINHA A INTERNET???? HUAHUAHAUHAUHAUAHUAHUA Meu primo mora perto da casa dele e disse que o sujeito ficou quase uma hora olhando pros fios, com um rádio de pilha na mão, falando que tinha descoberto a conexão principal do Google. Depois tentou convencer o pessoal da rua a desligar os computadores às 23h59 porque, segundo ele, era nesse horário que os americanos atualizavam o sistema de controle mundial. O pior é que ele teria levado um modem de 56k pra testar a teoria. NO POSTE. O MODEM. Não sei se é verdade, mas se for o mesmo loco, agora entendo esse artigo. LOL"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+],
   [wikiLanHouseArticlePath]: [
-    {
-      author: "Frequentador de 2005",
-      avatar: "encicloweb-lan-house-author.jpg",
-      body: "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador.",
-    },
-    {
-      author: "Dona do balcão",
-      avatar: "encicloweb-kelly-key.jpg",
-      body: "O atendente também ensinava a imprimir arquivos, criar e-mail e salvar documentos. Esse apoio fazia diferença para quem estava começando.",
-    },
-    {
-      author: "Jogador de fim de semana",
-      avatar: "encicloweb-anime.jpg",
-      body: "Os campeonatos e as partidas em rede eram o principal motivo para juntar os amigos no mesmo lugar.",
-    },
-  ],
+  {
+    "author": "Frequentador de 2005",
+    "avatar": "encicloweb-lan-house-author.jpg",
+    "time": "18 de outubro de 2005, 21h34min (UTC)",
+    "body": "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador."
+  },
+  {
+    "author": "Dona do balcão",
+    "avatar": "encicloweb-kelly-key.jpg",
+    "time": "19 de outubro de 2005, 00h06min (UTC)",
+    "body": "O atendente também ensinava a imprimir arquivos, criar e-mail e salvar documentos. Esse apoio fazia diferença para quem estava começando."
+  },
+  {
+    "author": "Jogador de fim de semana",
+    "avatar": "encicloweb-anime.jpg",
+    "time": "20 de novembro de 2005, 12h06min (UTC)",
+    "body": "Os campeonatos e as partidas em rede eram o principal motivo para juntar os amigos no mesmo lugar."
+  }
+],
   [wikiSociabilityArticlePath]: [
-    {
-      author: "Fã de jogos em rede",
-      avatar: "encicloweb-anime.jpg",
-      body: "As partidas em grupo eram um motivo importante para combinar de ir até a lan house. A máquina era individual, mas a experiência era coletiva.",
-      replies: [
-        {
-          author: "Pesquisadora curiosa",
-          avatar: "encicloweb-family.jpg",
-          body: "Esse relato combina com as memórias de quem frequentava esses espaços nos anos 2000.",
-        },
-      ],
-    },
-    {
-      author: "Jimmy Wales",
-      avatar: "encicloweb-jimmy-wales.jpg",
-      body: "O artigo pode ganhar mais fontes orais. Depoimentos de frequentadores e atendentes ajudariam a documentar diferenças entre bairros.",
-    },
-    {
-      author: "Kelly",
-      avatar: "encicloweb-kelly-key.jpg",
-      body: "Também lembro da ajuda de outras pessoas para criar e-mail e imprimir trabalhos da escola.",
-    },
-    {
-      author: "Leitor do bairro",
-      avatar: "encicloweb-chris-rock.jpg",
-      body: "Seria interessante registrar como os campeonatos locais ajudavam a aproximar pessoas de idades diferentes.",
-    },
-  ],
+  {
+    "author": "cleidedograu",
+    "avatar": "encicloweb-anime.jpg",
+    "time": "18 de outubro de 2005, 21h34min (UTC)",
+    "body": "Na minha opinião, as lan houses foram muito importantes para os jovens das periferias. Esses lugares permitiam acessar a internet, jogar e conversar com os amigos. Além disso, ajudavam os jovens a conhecer novas pessoas e fazer amizades. Achei interessante perceber que eles frequentavam esses espaços não apenas pela tecnologia. Isso mostra como a convivência social é importante durante a juventude.",
+    "replies": [
+      {
+        "author": "AnnaAmanaruhina",
+        "avatar": "encicloweb-family.jpg",
+        "time": "19 de outubro de 2005, 00h06min (UTC)",
+        "body": "Achei interessante a parte que fala sobre a falta de privacidade nas casas das periferias. Muitas famílias vivem em espaços pequenos e dividem os cômodos com várias pessoas. Por isso, alguns jovens preferiam passar parte do tempo nas lan houses. Nesses lugares, podiam conversar com os amigos e se divertir. Isso mostra como as condições de moradia influenciam a vida dos jovens.",
+        "replies": [
+          {
+            "author": "EuamokellyKey",
+            "avatar": "encicloweb-kelly-key.jpg",
+            "time": "20 de novembro de 2005, 12h06min (UTC)",
+            "body": "Na minha opinião, as lan houses também ajudavam os jovens a aprender coisas novas. Eles desenvolviam conhecimentos sobre computadores, jogos e ferramentas da internet. Além disso, compartilhavam informações e ajudavam uns aos outros. Essas habilidades poderiam ser úteis nos estudos e no futuro profissional. Assim, as lan houses também contribuíam para o aprendizado dos frequentadores.",
+            "replies": [
+              {
+                "author": "samantha",
+                "avatar": "encicloweb-chris-rock.jpg",
+                "time": "26 de novembro de 2005, 12h06min (UTC)",
+                "body": "O que mais me chamou a atenção foi a importância das lan houses para as amizades. Esses espaços permitiam que os jovens conversassem e compartilhassem experiências. Com o tempo, muitos criavam vínculos e formavam grupos de amigos. Porém, também existiam situações de exclusão entre alguns frequentadores. Isso mostra que as relações sociais podem ter aspectos positivos e negativos."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+],
 };
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
@@ -502,26 +532,63 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     </nav>
   );
 
-  const renderAuthor = (author: string, image: string, description: string) => (
-    <section className="wiki-author-card">
-      <img alt="" src={wikiAssets + image} />
-      <div>
-        <small className="wiki-author-label">Autor do artigo</small>
-        <h2>{author}</h2>
-        <p>{description}</p>
-      </div>
-    </section>
-  );
+  const sidebarAuthor = isLanHouseArticle
+    ? {
+        name: "Japodi Almo’sá",
+        image: "encicloweb-lan-house-author.jpg",
+        description: "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
+      }
+    : isSociabilityArticle
+      ? {
+          name: "Fábio Mariano Borges",
+          image: "encicloweb-fabio-mariano.jpg",
+          description: "Sociólogo, pesquisador e professor brasileiro. É mestre e doutor pela PUC-SP e possui formação em Marketing e Comunicação Social. Seus estudos abordam o comportamento do consumidor, a cultura e as relações sociais.",
+        }
+      : isTechnologyArticle
+        ? {
+            name: "Japodi Almo’sá",
+            image: "encicloweb-einstein.jpg",
+            description: "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
+          }
+        : null;
+
+  const wikiNavigationItems = [
+    { label: "Página Principal", path: "" },
+    { label: "Portal Comunitário", path: wikiSociabilityArticlePath },
+    { label: "Eventos atuais", path: wikiLanHouseArticlePath },
+    { label: "Mudanças Recentes", path: wikiTechnologyArticlePath },
+    { label: "Sobre nós", path: "/artigo/historia-da-internet" },
+    { label: "Ajuda", path: "" },
+    { label: "Donativos", path: "" },
+  ];
+
+  const wikiToolItems = [
+    { label: "Artigos Influentes", path: wikiTechnologyArticlePath },
+    { label: "Novidades", path: wikiSociabilityArticlePath },
+    { label: "Páginas especiais", path: wikiLanHouseArticlePath },
+  ];
 
   const renderDiscussion = () => {
     const comments = wikiDiscussions[article.path] || [];
+    const renderComment = (comment: WikiDiscussionComment, depth = 0) => (
+      <section
+        className={depth === 0 ? "wiki-comment" : "wiki-comment wiki-comment-reply"}
+        key={depth + comment.author}
+        style={depth > 0 ? { marginLeft: depth * 16 } : undefined}
+      >
+        <img alt="" src={wikiAssets + comment.avatar} />
+        <div>
+          <strong>{comment.author}</strong>
+          {comment.time && <small className="wiki-comment-time">· {comment.time}</small>}
+          <p>{comment.body}</p>
+          {comment.replies?.map((reply) => renderComment(reply, depth + 1))}
+        </div>
+      </section>
+    );
     return (
       <article className="wiki-article wiki-discussion-page">
         {renderTabs()}
         <h1>Veja a opinião dos usuários</h1>
-        <p className="wiki-discussion-intro">
-          Esta página reúne comentários sobre “{article.title}”. Leia as contribuições e mantenha a conversa respeitosa.
-        </p>
         <form
           className="wiki-comment-form"
           onSubmit={(event) => {
@@ -532,34 +599,17 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             setCommentDraft("");
           }}
         >
-          <label htmlFor="wiki-comment">Adicionar um comentário</label>
+          <label className="wiki-visually-hidden" htmlFor="wiki-comment">Deixe seu comentário</label>
           <textarea
             id="wiki-comment"
             onChange={({ currentTarget }) => setCommentDraft(currentTarget.value)}
-            placeholder="Compartilhe sua opinião..."
+            placeholder="Deixe seu comentário..."
             value={commentDraft}
           />
-          <button disabled={!commentDraft.trim()} type="submit">Publicar comentário</button>
+          <button aria-label="Publicar comentário" disabled={!commentDraft.trim()} type="submit">↵</button>
         </form>
         <div className="wiki-comment-list">
-          {comments.map((comment, index) => (
-            <section className="wiki-comment" key={comment.author + index}>
-              <img alt="" src={wikiAssets + comment.avatar} />
-              <div>
-                <strong>{comment.author}</strong>
-                <p>{comment.body}</p>
-                {comment.replies?.map((reply, replyIndex) => (
-                  <section className="wiki-comment wiki-comment-reply" key={reply.author + replyIndex}>
-                    <img alt="" src={wikiAssets + reply.avatar} />
-                    <div>
-                      <strong>{reply.author}</strong>
-                      <p>{reply.body}</p>
-                    </div>
-                  </section>
-                ))}
-              </div>
-            </section>
-          ))}
+          {comments.map((comment) => renderComment(comment))}
           {submittedComments.map((comment, index) => (
             <section className="wiki-comment" key={"submitted-" + index}>
               <span aria-hidden="true" className="wiki-default-avatar">?</span>
@@ -567,112 +617,17 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             </section>
           ))}
         </div>
-        {isTechnologyArticle &&
-          renderAuthor(
-            "Albert Einstein",
-            "encicloweb-einstein.jpg",
-            "Leitor e colaborador da EncicloWeb. O perfil acompanha as discussões sobre tecnologia e cultura digital."
-          )}
-        {isSociabilityArticle &&
-          renderAuthor(
-            "Fábio Mariano",
-            "encicloweb-fabio-mariano.jpg",
-            "Pesquisador das culturas juvenis e das relações construídas em espaços de acesso compartilhado."
-          )}
       </article>
     );
   };
 
   const renderArticle = () => (
-    <article className="wiki-article">
-      {hasDiscussion && renderTabs()}
-      <div className="wiki-article-heading">
-        <div>
-          <div className="wiki-breadcrumb">EncicloWeb / Artigos / {article.title}</div>
-          <h1>{isHome ? "Bem vindo ao EncicloWeb," : isLanHouseArticle ? "O que são LAN houses e para que veio" : article.title}</h1>
-        </div>
-      </div>
-
-      {isTechnologyArticle ? (
+    <article className={`wiki-article ${isHome ? "wiki-home-page" : "wiki-content-page"}`}>
+      {isHome ? (
         <>
-          <div className="wiki-essay-columns">
-            {wikiTechnologyArticleColumns.map((column, columnIndex) => (
-              <div className="wiki-essay-column" key={columnIndex}>
-                {columnIndex === 0 && (
-                  <figure className="wiki-article-figure">
-                    <img alt="Albert Einstein em uma fotografia em preto e branco" src={wikiAssets + "encicloweb-einstein.jpg"} />
-                    <figcaption>Retrato do colaborador da página</figcaption>
-                  </figure>
-                )}
-                {splitWikiTechnologyColumn(column).map(({ body, heading }) => (
-                  <section className="wiki-essay-section" key={heading || body.slice(0, 32)}>
-                    {heading && <h2>{heading}</h2>}
-                    <p>{body}</p>
-                  </section>
-                ))}
-              </div>
-            ))}
-          </div>
-          {renderAuthor(
-            "Japodi Almo’sá",
-            "encicloweb-einstein.jpg",
-            "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. “ Tenho interesse especial em teorias da conspiração, comportamento digital e no fato de que ninguém parece ler os termos de uso de absolutamente nada” diz autor."
-          )}
-          <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base em nas opinões do autor. As fontes foram retiradas diretamente da cabeça dele, os dados não foram verificados e as conclusões carecem de qualquer rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
-        </>
-      ) : isLanHouseArticle || isSociabilityArticle ? (
-        <>
-          <p className="wiki-article-lead">{article.body}</p>
-          <figure className="wiki-article-figure wiki-feature-figure">
-            <img
-              alt={isLanHouseArticle ? "Computadores organizados em uma antiga lan house" : "Salão de lan house ilustrado em estilo de retícula"}
-              src={wikiAssets + (isLanHouseArticle ? "encicloweb-old-computers.jpg" : "encicloweb-lan-house-halftone.jpg")}
-            />
-            <figcaption>
-              {isLanHouseArticle ? "Computadores em um espaço de acesso compartilhado." : "Uma representação de lan house e seus computadores."}
-            </figcaption>
-          </figure>
-          <div className="wiki-essay-columns">
-            {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).map((section, index) => (
-              <section className="wiki-essay-section" key={section.heading}>
-                <h2>{section.heading}</h2>
-                <p>{section.body}</p>
-                {index === 1 && (
-                  <figure className="wiki-article-figure wiki-inline-figure">
-                    <img
-                      alt={isLanHouseArticle ? "Computadores em uma lan house" : "Atendimento em uma lan house"}
-                      src={wikiAssets + (isLanHouseArticle ? "encicloweb-lan-house-author.jpg" : "encicloweb-lan-house-halftone.jpg")}
-                    />
-                  </figure>
-                )}
-              </section>
-            ))}
-          </div>
-          {isLanHouseArticle
-            ? renderAuthor(
-                "Justin Timberlake",
-                "encicloweb-lan-house-author.jpg",
-                "Colaborador da EncicloWeb e frequentador de lan houses durante a expansão dos jogos em rede."
-              )
-            : renderAuthor(
-                "Fábio Mariano",
-                "encicloweb-fabio-mariano.jpg",
-                "Pesquisador das culturas juvenis e das relações construídas em espaços de acesso compartilhado."
-              )}
-          {isLanHouseArticle && (
-            <section className="wiki-legacy-information">
-              <p>Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.</p>
-              <p>Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.</p>
-              {legacyHowItWorks}
-            </section>
-          )}
-        </>
-      ) : (
-        <>
+          <h1>Bem vindo ao EncicloWeb,</h1>
           <p>
-            {isHome
-              ? "A enciclopédia livre, criada para reunir todo o conhecimento humano em um único lugar, incluindo informações que ninguém pediu, curiosidades que ninguém precisava saber e discussões que já duram mais do que alguns casamentos."
-              : article.body}
+            A enciclopédia livre, criada para reunir todo o conhecimento humano em um único lugar, incluindo informações que ninguém pediu, curiosidades que ninguém precisava saber e discussões que já duram mais do que alguns casamentos.
           </p>
           <p>
             Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.
@@ -681,20 +636,72 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.
           </p>
           {legacyHowItWorks}
-          {isHome && (
+          <ul className="wiki-how-to-list">
+            <li><strong>Leia:</strong> descubra informações sobre assuntos que você nunca pensou em pesquisar.</li>
+            <li><strong>Edite:</strong> compartilhe o que sabe, o que estudou ou o que ouviu de alguém que conhece uma pessoa que trabalha na área.</li>
+            <li><strong>Cite Fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
+            <li><strong>Discuta:</strong> defenda suas alterações até perceber que está há quatro horas debatendo a diferença entre duas palavras.</li>
+            <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 41 regras que você deveria ter lido antes de começar.</li>
+          </ul>
+          <section className="wiki-founder-note">
+            <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
+            <img alt="Jimmy Wales em uma fotografia" src={wikiAssets + "encicloweb-jimmy-wales.jpg"} />
+          </section>
+        </>
+      ) : (
+        <>
+          {hasDiscussion && renderTabs()}
+          <h1>{isLanHouseArticle ? "O que são LAN houses e para que veio" : article.title}</h1>
+          {isTechnologyArticle ? (
             <>
-              <ul className="wiki-how-to-list">
-                <li><strong>Leia:</strong> descubra informações sobre assuntos que você nunca pensou em pesquisar.</li>
-                <li><strong>Edite:</strong> compartilhe o que sabe, o que estudou ou o que ouviu de alguém que conhece uma pessoa que trabalha na área.</li>
-                <li><strong>Cite fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
-                <li><strong>Discuta:</strong> defenda suas alterações até perceber que está há quatro horas debatendo a diferença entre duas palavras.</li>
-                <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 47 regras que você deveria ter lido antes de começar.</li>
-              </ul>
-              <section className="wiki-founder-note">
-                <img alt="" src={wikiAssets + "encicloweb-jimmy-wales.jpg"} />
-                <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
-              </section>
+              <div className="wiki-essay-columns">
+                {wikiTechnologyArticleColumns.map((column, columnIndex) => (
+                  <div className="wiki-essay-column" key={columnIndex}>
+                    {splitWikiTechnologyColumn(column).map(({ body, heading }) => (
+                      <section className="wiki-essay-section" key={heading || body.slice(0, 32)}>
+                        {heading && <h2>{heading}</h2>}
+                        <p>{body}</p>
+                      </section>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base nas opiniões do autor. As fontes foram retiradas diretamente da cabeça dele; os dados não foram verificados e as conclusões carecem de rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
             </>
+          ) : isLanHouseArticle || isSociabilityArticle ? (
+            <>
+              <div className="wiki-essay-columns">
+                <div className="wiki-essay-column">
+                  <p className="wiki-article-lead">{article.body}</p>
+                  {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).slice(0, 2).map((section) => (
+                    <section className="wiki-essay-section" key={section.heading}>
+                      <h2>{section.heading}</h2>
+                      <p>{section.body}</p>
+                    </section>
+                  ))}
+                </div>
+                <div className="wiki-essay-column">
+                  <figure className="wiki-article-figure wiki-feature-figure">
+                    <img
+                      alt={isLanHouseArticle ? "Computadores antigos organizados em uma lan house" : "Lan house representada em retícula"}
+                      src={wikiAssets + (isLanHouseArticle ? "encicloweb-old-computers.jpg" : "encicloweb-lan-house-halftone.jpg")}
+                    />
+                    <figcaption>
+                      {isLanHouseArticle ? "Um ponto de acesso coletivo à internet e aos jogos em rede." : "Computadores e frequentadores em uma lan house de periferia."}
+                    </figcaption>
+                  </figure>
+                  {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).slice(2).map((section) => (
+                    <section className="wiki-essay-section" key={section.heading}>
+                      <h2>{section.heading}</h2>
+                      <p>{section.body}</p>
+                    </section>
+                  ))}
+                </div>
+              </div>
+              <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base nas opiniões do autor. As fontes foram retiradas diretamente da cabeça dele; os dados não foram verificados e as conclusões carecem de rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
+            </>
+          ) : (
+            <p>{article.body}</p>
           )}
         </>
       )}
@@ -702,49 +709,74 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   );
 
   return (
-    <section className="site-encicloweb">
-      <header className="wiki-header">
-        <div className="wiki-brand">
-          <img alt="" src="/System/Doors/sites/encicloweb-mark.svg" />
-          <div>
-            <strong>EncicloWeb</strong>
-            <small>do fato à mentira</small>
+    <section className={`site-encicloweb ${isHome ? "wiki-home" : "wiki-interior"}`}>
+      {isHome && (
+        <header className="wiki-header">
+          <div className="wiki-brand">
+            <img alt="" src="/System/Doors/sites/encicloweb-mark.svg" />
+            <div>
+              <strong>EncicloWeb</strong>
+              <small>do fato à mentira</small>
+            </div>
           </div>
-        </div>
-        <SearchField
-          key={query}
-          initialValue={query}
-          label="Pesquisar na EncicloWeb"
-          onSearch={search}
-        />
-      </header>
+          <SearchField
+            key={query}
+            initialValue={query}
+            label="Pesquisar na EncicloWeb"
+            onSearch={search}
+          />
+        </header>
+      )}
       <div className="wiki-layout">
         <aside className="wiki-sidebar">
-          <h3>Navegação</h3>
-          <nav aria-label="Navegação EncicloWeb">
-            {(query ? matchingArticles : wikiArticles).map((item) => (
+          {!isHome && (
+            <div className="wiki-sidebar-logo">
+              <img alt="EncicloWeb" src="/System/Doors/sites/encicloweb-mark.svg" />
+            </div>
+          )}
+          <section className="wiki-sidebar-panel">
+            <h3>Navegação</h3>
+            <nav aria-label="Navegação EncicloWeb">
+              {wikiNavigationItems.map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => navigate(item.path.replace(/^\//, ""))}
+                  type="button"
+                >
+                  · {item.label}
+                </button>
+              ))}
+            </nav>
+          </section>
+          {!isHome && (
+            <section className="wiki-sidebar-panel wiki-search-panel">
+              <h3>Buscar</h3>
+              <SearchField
+                key={query}
+                initialValue={query}
+                label="Pesquisar na EncicloWeb"
+                onSearch={search}
+              />
+            </section>
+          )}
+          <section className="wiki-sidebar-panel wiki-tools-panel">
+            <h3>Ferramentas</h3>
+            {wikiToolItems.map((item) => (
               <button
-                key={item.path}
+                key={item.label}
                 onClick={() => navigate(item.path.replace(/^\//, ""))}
                 type="button"
               >
-                · {item.title}
+                · {item.label}
               </button>
             ))}
-          </nav>
-          <h3>Ferramentas</h3>
-          <button onClick={() => navigate("")} type="button">· Artigos influentes</button>
-          <button onClick={() => navigate("buscar?q=novidades")} type="button">· Novidades</button>
-          <button onClick={() => navigate("artigo/lan-house")} type="button">· Página aleatória</button>
-          {(isLanHouseArticle || isSociabilityArticle || isTechnologyArticle) && (
-            <section className="wiki-sidebar-author">
-              <h3>Autor</h3>
-              <img
-                alt=""
-                src={wikiAssets + (isLanHouseArticle ? "encicloweb-lan-house-author.jpg" : isSociabilityArticle ? "encicloweb-fabio-mariano.jpg" : "encicloweb-einstein.jpg")}
-              />
-              <p>{isLanHouseArticle ? "Justin Timberlake" : isSociabilityArticle ? "Fábio Mariano" : "Japodi Almo’sá"}</p>
-              <small>Perfil do colaborador</small>
+          </section>
+          {sidebarAuthor && (
+            <section className="wiki-sidebar-panel wiki-sidebar-author">
+              <h3>Autor do artigo</h3>
+              <img alt={sidebarAuthor.name} src={wikiAssets + sidebarAuthor.image} />
+              <p>{sidebarAuthor.name}</p>
+              <small>{sidebarAuthor.description}</small>
             </section>
           )}
         </aside>

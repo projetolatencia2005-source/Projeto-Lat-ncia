@@ -525,7 +525,7 @@ const GlobalStyle = styled.createGlobalStyle`
     flex-direction: column;
     grid-column: 1;
     justify-content: center;
-    transform: translateX(calc(9.3vw - 200px));
+    transform: translateX(calc(9.3vw - 100px));
   }
 
   .doors-login-wordmark {
