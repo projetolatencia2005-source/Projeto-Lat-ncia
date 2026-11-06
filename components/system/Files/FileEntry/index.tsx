@@ -657,7 +657,7 @@ const FileEntry: FC<FileEntryProps> = ({
             }
             {...(isDesktop
               ? {
-                  imgSize: 43,
+                  imgSize: 46,
                 }
               : FileEntryIconSize[view])}
           />
