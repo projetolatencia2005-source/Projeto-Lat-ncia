@@ -592,6 +592,7 @@ const FileEntry: FC<FileEntryProps> = ({
             isDesktop &&
               name.trim().toLocaleLowerCase() === "post-it" &&
               "doors-post-it-shortcut",
+            isPastasShortcut && "doors-pastas-shortcut",
             isComputerShortcut && "doors-computer-shortcut",
           ]
             .filter(Boolean)
@@ -677,7 +678,7 @@ const FileEntry: FC<FileEntryProps> = ({
               className={
                 [
                   isDesktop &&
-                    /^(?:documents|documentos)$/i.test(name) &&
+                    /^(?:documents|documentos|pastas)$/i.test(name) &&
                     "desktop-documents-label",
                   isComputerShortcut && "computer-shortcut-label",
                 ]

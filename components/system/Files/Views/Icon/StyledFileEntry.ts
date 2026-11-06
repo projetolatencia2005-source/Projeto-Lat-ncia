@@ -53,9 +53,9 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         overflow-wrap: anywhere;
         padding: ${({ $desktop }) => ($desktop ? "0" : "2px 0")};
         text-align: ${({ $desktop }) => ($desktop ? "center" : undefined)};
-        text-shadow: ({ $desktop }) => ($desktop ? "none" : undefined);
-        -webkit-text-stroke: ({ $desktop }) =>
-          $desktop ? "1px #F7EDD7" : undefined;
+        text-shadow: ${({ $desktop }) => ($desktop ? "none" : undefined)};
+        -webkit-text-stroke: ${({ $desktop }) =>
+          $desktop ? "1px #F7EDD7" : undefined};
         width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
         &.desktop-documents-label {
