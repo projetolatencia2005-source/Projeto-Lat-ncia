@@ -129,6 +129,24 @@ const createArtworkHandler =
   };
 
 export const wallpaperHandler: Record<string, WallpaperHandler> = {
+  PAISAGEM_02: () => ({
+    fallbackBackground: "",
+    newWallpaperFit: "fill",
+    updateTimeout: MILLISECONDS_IN_DAY,
+    wallpaperUrl: "/System/Doors/figma/paisagem-02.webp",
+  }),
+  PAISAGEM_03: () => ({
+    fallbackBackground: "",
+    newWallpaperFit: "fill",
+    updateTimeout: MILLISECONDS_IN_DAY,
+    wallpaperUrl: "/System/Doors/figma/paisagem-03.webp",
+  }),
+  PAISAGEM_04: () => ({
+    fallbackBackground: "",
+    newWallpaperFit: "fill",
+    updateTimeout: MILLISECONDS_IN_DAY,
+    wallpaperUrl: "/System/Doors/figma/paisagem-04.webp",
+  }),
   APOD: createArtworkHandler(async (signal, isAlt) => {
     const page = isAlt
       ? Math.ceil(

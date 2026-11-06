@@ -190,14 +190,14 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Browser",
                       undefined,
-                      "/System/Doors/figma/icon-internet-expanded.png"
+                      "/System/Doors/figma/internet.svg"
                     )
                   }
                   type="button"
                 >
                   <img
                     alt=""
-                    src="/System/Doors/figma/icon-internet-expanded.png"
+                    src="/System/Doors/figma/internet.svg"
                   />
                   <span>Internet Expandida</span>
                 </button>

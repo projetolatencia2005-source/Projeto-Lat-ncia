@@ -205,6 +205,8 @@ const FileEntry: FC<FileEntryProps> = ({
     isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
   const isRabiscoShortcut =
     isDesktop && name.trim().toLocaleLowerCase() === "rabisco";
+  const isInternetShortcut =
+    isDesktop && /^(?:internet|internet expandida)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -647,7 +649,9 @@ const FileEntry: FC<FileEntryProps> = ({
                 ? path
                 : isPastasShortcut
                   ? FOLDER_ICON
-                  : isRabiscoShortcut
+                  : isInternetShortcut
+                    ? "/System/Doors/figma/internet.svg"
+                    : isRabiscoShortcut
                     ? "/System/Doors/figma/paintnovo.svg"
                     : icon
             }
