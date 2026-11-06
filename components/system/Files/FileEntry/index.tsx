@@ -47,6 +47,7 @@ import Button from "styles/common/Button";
 import Icon from "styles/common/Icon";
 import {
   EXTENSIONS_WITH_ICON,
+  FOLDER_ICON,
   ICON_CACHE,
   ICON_CACHE_EXTENSION,
   ICON_PATH,
@@ -201,7 +202,7 @@ const FileEntry: FC<FileEntryProps> = ({
   const isComputerShortcut =
     !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
   const isPastasShortcut =
-    isDesktop && /^(?:documents|documentos)$/i.test(name.trim());
+    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -231,7 +232,7 @@ const FileEntry: FC<FileEntryProps> = ({
         ]
       );
   const displayName =
-    isDesktop && /^(?:documents|documentos)$/i.test(name)
+    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name)
       ? "Pastas"
       : isComputerShortcut
         ? "Área de Trabalho"
@@ -638,7 +639,13 @@ const FileEntry: FC<FileEntryProps> = ({
             $moving={pasteList[path] === "move"}
             alt=""
             onLoad={onIconLoad}
-            src={isPictureThumbnail ? path : icon}
+            src={
+              isPictureThumbnail
+                ? path
+                : isPastasShortcut
+                  ? FOLDER_ICON
+                  : icon
+            }
             {...(isDesktop
               ? {
                   imgSize: isPastasShortcut ? 80 : 40,
