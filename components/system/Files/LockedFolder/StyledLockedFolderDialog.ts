@@ -82,7 +82,7 @@ const StyledLockedFolderDialog = styled.div`
   }
 
   .doors-locked-folder-prompt {
-    font-size: clamp(13px, 2.1vw, 21px);
+    font-size: calc(clamp(13px, 2.1vw, 21px) - 2pt);
     line-height: 1.55;
     margin: 0 0 21px;
     text-align: center;

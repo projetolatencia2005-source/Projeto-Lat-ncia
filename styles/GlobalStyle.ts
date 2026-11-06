@@ -305,7 +305,7 @@ const GlobalStyle = styled.createGlobalStyle`
     align-self: center;
     flex: 0 0 auto;
     margin-top: clamp(24px, 3vh, 34px);
-    transform: translateY(-10px);
+    transform: translateY(-40px);
     width: min(316px, 90%);
   }
 
@@ -398,10 +398,10 @@ const GlobalStyle = styled.createGlobalStyle`
     gap: clamp(14px, 2vw, 28px);
     grid-template-columns: 164px minmax(0, 1fr);
     margin: 0 auto;
-    min-height: 300px;
-    padding: 80px;
+    min-height: 250px;
+    padding: 55px 80px;
     max-width: 100%;
-    width: 1000px;
+    width: 1200px;
   }
 
   .doors-tutorial-about-icon {
@@ -437,7 +437,7 @@ const GlobalStyle = styled.createGlobalStyle`
         1fr
       );
     margin-top: 50px;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
   }
 
   .doors-tutorial-step h2 {
@@ -520,12 +520,12 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-login-intro {
-    align-items: center;
+    align-items: flex-end;
     display: flex;
     flex-direction: column;
     grid-column: 1;
     justify-content: center;
-    transform: translateX(9.3vw);
+    transform: translateX(calc(9.3vw - 230px));
   }
 
   .doors-login-wordmark {
@@ -537,6 +537,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-login-intro p {
     font-size: clamp(16px, 1.667vw, 32px);
     margin-top: 4.45vh;
+    text-align: right;
     white-space: nowrap;
   }
 
@@ -828,8 +829,9 @@ const GlobalStyle = styled.createGlobalStyle`
     max-width: calc(100vw - 12px);
     padding: 3px 4px 4px;
     position: absolute;
+    bottom: 55px;
     right: 5px;
-    top: 5px;
+    top: auto;
     width: min(432px, max(280px, 22.5vw), calc(100vw - 12px));
     height: min(67px, 6.2vh);
     touch-action: none;

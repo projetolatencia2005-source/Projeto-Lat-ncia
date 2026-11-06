@@ -1,4 +1,4 @@
-import { basename, dirname, join } from "path";
+import { dirname, join } from "path";
 import { WALLPAPER_MENU } from "components/system/Desktop/Wallpapers/constants";
 import { getIconByFileExtension } from "components/system/Files/FileEntry/functions";
 import { type FolderActions } from "components/system/Files/FileManager/useFolder";
@@ -30,7 +30,6 @@ import { CLOSE_EFFECT_NAMES } from "utils/closeEffect";
 import {
   DESKTOP_PATH,
   FOLDER_ICON,
-  INDEX_FILE,
   MENU_SEPERATOR,
   MOUNTABLE_EXTENSIONS,
   PROCESS_DELIMITER,
@@ -50,6 +49,46 @@ import {
 const NEW_FOLDER = "New folder";
 const NEW_TEXT_DOCUMENT = "New Text Document.txt";
 const NEW_RTF_DOCUMENT = "New Rich Text Document.whtml";
+
+const WALLPAPER_MENU_LABELS: Record<string, string> = {
+  "Art Institute of Chicago": "Instituto de Arte de Chicago",
+  "Coastal Landscape": "Paisagem costeira",
+  "Hexells": "Hexells",
+  "Lorem Picsum": "Lorem Picsum",
+  "Matrix (2D)": "Matriz (2D)",
+  "Matrix (3D)": "Matriz (3D)",
+  "Metropolitan Museum of Art": "Museu Metropolitano de Arte",
+  "Milky Way": "Via Láctea",
+  "NASA APOD": "Imagem astronômica do dia (NASA)",
+  "Picture Slideshow": "Apresentação de imagens",
+  "Stable Diffusion (beta)": "Stable Diffusion (beta)",
+  "Vanta Waves": "Ondas Vanta",
+};
+
+const CLOSE_EFFECT_LABELS: Record<string, string> = {
+  "Broken Glass": "Vidro quebrado",
+  Doom: "Doom",
+  "Energize A": "Energizar A",
+  "Energize B": "Energizar B",
+  Fire: "Fogo",
+  Glitch: "Falha visual",
+  Hexagon: "Hexágono",
+  Incinerate: "Incinerar",
+  Matrix: "Matrix",
+  None: "Nenhum",
+  "Paint Brush": "Pincel",
+  Pixelate: "Pixelizar",
+  "Pixel Wipe": "Transição pixelada",
+  Portal: "Portal",
+  Random: "Aleatório",
+  "RGB Warp": "Distorção RGB",
+  Snap: "Estalo",
+  "T-Rex Attack": "Ataque do T-Rex",
+  TeamRocket: "Team Rocket",
+  "TV Effect": "Efeito de TV",
+  Wisps: "Fagulhas",
+};
+
 
 const updateSortBy =
   (value: SortBy, defaultIsAscending: boolean) =>
@@ -164,7 +203,6 @@ const useFolderContextMenu = (
     setForegroundId,
     setIconPositions,
     setWallpaper: setSessionWallpaper,
-    updateRecentFiles,
   } = useSessionActions();
   const closeEffect = useCloseEffect();
   const iconPositions = useIconPositions();
@@ -257,7 +295,7 @@ const useFolderContextMenu = (
               top,
             });
           },
-          label: "Scroll Here",
+          label: "Rolar aqui",
         },
         MENU_SEPERATOR,
         {
@@ -267,7 +305,7 @@ const useFolderContextMenu = (
               top: 0,
             });
           },
-          label: "Top",
+          label: "Início",
         },
         {
           action: () => {
@@ -276,7 +314,7 @@ const useFolderContextMenu = (
               top: targetElement.scrollHeight,
             });
           },
-          label: "Bottom",
+          label: "Fim",
         },
         MENU_SEPERATOR,
         {
@@ -286,7 +324,7 @@ const useFolderContextMenu = (
               top: -targetElement.clientHeight,
             });
           },
-          label: "Page Up",
+          label: "Página acima",
         },
         {
           action: () => {
@@ -295,7 +333,7 @@ const useFolderContextMenu = (
               top: targetElement.clientHeight,
             });
           },
-          label: "Page Down",
+          label: "Página abaixo",
         },
         MENU_SEPERATOR,
         {
@@ -305,7 +343,7 @@ const useFolderContextMenu = (
               top: -SCROLL_ITERATION_HEIGHT,
             });
           },
-          label: "Scroll Up",
+          label: "Rolar para cima",
         },
         {
           action: () => {
@@ -314,7 +352,7 @@ const useFolderContextMenu = (
               top: SCROLL_ITERATION_HEIGHT,
             });
           },
-          label: "Scroll Down",
+          label: "Rolar para baixo",
         },
       ];
     }
@@ -322,7 +360,7 @@ const useFolderContextMenu = (
     const ADD_FILE = {
       action: () =>
         addToFolder().then((files) => updateDesktopIconPositions(files, event)),
-      label: "Add file(s)",
+      label: "Adicionar arquivo(s)",
     };
     const MAP_DIRECTORY = {
       action: () =>
@@ -335,7 +373,7 @@ const useFolderContextMenu = (
           .catch(() => {
             // Ignore failure to map
           }),
-      label: "Map directory",
+      label: "Mapear pasta",
     };
     const FS_COMMANDS = [
       ADD_FILE,
@@ -354,26 +392,26 @@ const useFolderContextMenu = (
 
     return [
       {
-        label: "Sort by",
+        label: "Ordenar por",
         menu: [
           {
             action: () => updateSorting("name", true),
-            label: "Name",
+            label: "Nome",
             toggle: !hasCustomOrder && sortBy === "name",
           },
           {
             action: () => updateSorting("size", false),
-            label: "Size",
+            label: "Tamanho",
             toggle: !hasCustomOrder && sortBy === "size",
           },
           {
             action: () => updateSorting("type", true),
-            label: "Item type",
+            label: "Tipo de item",
             toggle: !hasCustomOrder && sortBy === "type",
           },
           {
             action: () => updateSorting("date", false),
-            label: "Date modified",
+            label: "Data de modificação",
             toggle: !hasCustomOrder && sortBy === "date",
           },
           ...(hasCustomOrder
@@ -382,30 +420,30 @@ const useFolderContextMenu = (
                 MENU_SEPERATOR,
                 {
                   action: () => updateSorting("", true),
-                  label: "Ascending",
+                  label: "Crescente",
                   toggle: isAscending,
                 },
                 {
                   action: () => updateSorting("", false),
-                  label: "Descending",
+                  label: "Decrescente",
                   toggle: !isAscending,
                 },
               ]),
         ],
       },
-      { action: () => updateFolder(url), label: "Refresh" },
+      { action: () => updateFolder(url), label: "Atualizar" },
       ...(isDesktop
         ? [
             MENU_SEPERATOR,
             {
-              label: "Background",
+              label: "Plano de fundo",
               menu: [
                 ...(isMusicVisualizationRunning
                   ? [
                       {
                         action: stopGlobalMusicVisualization,
                         checked: true,
-                        label: "Music Visualization",
+                        label: "Visualização musical",
                       },
                       MENU_SEPERATOR,
                     ]
@@ -427,7 +465,7 @@ const useFolderContextMenu = (
                       }`
                     );
                   },
-                  label: name || id,
+                  label: WALLPAPER_MENU_LABELS[name || id] || name || id,
                   toggle: hasAlt
                     ? wallpaperImage.startsWith(id)
                     : wallpaperImage === id,
@@ -435,10 +473,10 @@ const useFolderContextMenu = (
               ],
             },
             {
-              label: "Window close effect",
+              label: "Efeito ao fechar a janela",
               menu: CLOSE_EFFECT_NAMES.map((effectName) => ({
                 action: () => setCloseEffect(effectName),
-                label: effectName,
+                label: CLOSE_EFFECT_LABELS[effectName] || effectName,
                 toggle: closeEffect === effectName,
               })),
             },
@@ -447,8 +485,8 @@ const useFolderContextMenu = (
                   {
                     action: () => captureScreen({ updateFolder, writeFile }),
                     label: currentMediaStream?.active
-                      ? "Stop screen capture"
-                      : "Capture screen",
+                      ? "Parar captura de tela"
+                      : "Capturar tela",
                   },
                 ]
               : []),
@@ -459,37 +497,33 @@ const useFolderContextMenu = (
         : [
             MENU_SEPERATOR,
             ...FS_COMMANDS,
-            {
-              action: () => open("Terminal", { url }),
-              label: "Open Terminal here",
-            },
             MENU_SEPERATOR,
             {
               action: () => pasteToFolder(event),
               disabled: Object.keys(pasteList).length === 0,
-              label: "Paste",
+              label: "Colar",
             },
             MENU_SEPERATOR,
             {
-              label: "New",
+              label: "Novo",
               menu: [
                 {
                   action: () => newEntry(NEW_FOLDER, undefined, event),
                   icon: FOLDER_ICON,
-                  label: "Folder",
+                  label: "Pasta",
                 },
                 MENU_SEPERATOR,
                 {
                   action: () =>
                     newEntry(NEW_RTF_DOCUMENT, Buffer.from(""), event),
                   icon: getIconByFileExtension(".whtml"),
-                  label: "Rich Text Document",
+                  label: "Documento de texto formatado",
                 },
                 {
                   action: () =>
                     newEntry(NEW_TEXT_DOCUMENT, Buffer.from(""), event),
                   icon: getIconByFileExtension(".txt"),
-                  label: "Text Document",
+                  label: "Documento de texto",
                 },
               ],
             },
@@ -510,35 +544,10 @@ const useFolderContextMenu = (
                         open("Properties", { url });
                       }
                     },
-                    label: "Properties",
+                    label: "Propriedades",
                   },
                 ]),
           ]),
-      ...(isDesktop
-        ? [
-            MENU_SEPERATOR,
-            {
-              action: async () => {
-                if (!(await exists(INDEX_FILE))) {
-                  const response = await fetch(document.location.href);
-                  const buffer = Buffer.from(await response.arrayBuffer());
-
-                  await writeFile(INDEX_FILE, buffer);
-
-                  updateFolder(dirname(INDEX_FILE), basename(INDEX_FILE));
-                }
-
-                open("MonacoEditor", { url: INDEX_FILE });
-                updateRecentFiles(INDEX_FILE, "MonacoEditor");
-              },
-              label: "View page source",
-            },
-            {
-              action: () => open("DevTools", { url: "dom" }),
-              label: "Inspect",
-            },
-          ]
-        : []),
     ];
   });
 };

@@ -666,6 +666,52 @@ const useFileSystemContextState = (): {
         await updateFolder("/Users/Public/Documents");
       }
 
+      const postItPath = "/Users/Public/Post-it.whtml";
+      const legacyWelcomeText =
+        "Bem-vindo ao Post-it! Use este espaço para anotar suas ideias e lembretes durante a navegação.";
+      const initialPostItContent = "<p>Anote alguma coisa aqui...</p>";
+      const seedPostIt = async (): Promise<void> => {
+        await writeFile(postItPath, Buffer.from(initialPostItContent), true);
+        await updateFolder(dirname(postItPath), basename(postItPath));
+      };
+
+      if (await exists(postItPath)) {
+        const currentPostIt = (await readFile(postItPath)).toString();
+        const visibleText = currentPostIt
+          .replace(/<[^>]*>/g, "")
+          .replace(/&nbsp;|&#160;/gi, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        const hasMedia = /<(?:img|audio|video|iframe|object|embed)\b/i.test(
+          currentPostIt
+        );
+
+        if (
+          !hasMedia &&
+          (!visibleText || visibleText === legacyWelcomeText)
+        ) {
+          await seedPostIt();
+        }
+      } else {
+        await seedPostIt();
+      }
+
+      const pastasShortcutPath = "/Users/Public/Desktop/Pastas.url";
+
+      if (!(await exists(pastasShortcutPath))) {
+        await writeFile(
+          pastasShortcutPath,
+          Buffer.from(
+            "[InternetShortcut]\nBaseURL=FileExplorer\nComment=Abra suas pastas e documentos\nIconFile=/System/Doors/figma/icon-documents.png\nType=System\nURL=/Users/Public/Documents"
+          ),
+          true
+        );
+        await updateFolder(
+          dirname(pastasShortcutPath),
+          basename(pastasShortcutPath)
+        );
+      }
+
       const shortcutsToRefresh: [
         path: string,
         iconFile: string,
@@ -676,7 +722,10 @@ const useFileSystemContextState = (): {
           "/System/Doors/lixeira.svg",
           `URL=${newPath}`,
         ],
-        ["/Users/Public/Desktop/Rabisco.url", "/System/Doors/paint.svg"],
+        [
+          "/Users/Public/Desktop/Rabisco.url",
+          "/System/Doors/figma/icon-paint-rabisco.png",
+        ],
         ["/Users/Public/Desktop/Post-it.url", "/System/Doors/postit.svg"],
       ] as const;
 

@@ -152,7 +152,7 @@ const useDraggableEntries = (
       renaming: boolean
     ): React.DragEventHandler =>
     (event) => {
-      if (renaming || "ontouchstart" in window) {
+      if (renaming) {
         haltEvent(event);
         return;
       }

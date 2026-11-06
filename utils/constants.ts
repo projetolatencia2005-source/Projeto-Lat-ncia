@@ -336,7 +336,7 @@ export const FILE_EXPLORER_SEARCH_ICON =
 
 export const PAPER_ICON = "/System/Doors/paper.svg";
 
-export const FOLDER_ICON = "/System/Doors/pasta.svg";
+export const FOLDER_ICON = "/System/Doors/figma/pasta.svg";
 
 export const MY_COMPUTER_ICON = "/System/Doors/meu-computador.svg";
 

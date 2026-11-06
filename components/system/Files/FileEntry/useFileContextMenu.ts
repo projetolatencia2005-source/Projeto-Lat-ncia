@@ -111,7 +111,6 @@ const useFileContextMenu = (
   {
     archiveFiles,
     deleteLocalPath,
-    downloadFiles,
     extractFiles,
     newShortcut,
   }: FileActions,
@@ -119,7 +118,8 @@ const useFileContextMenu = (
   focusedEntries: string[],
   stats: FileStat,
   fileManagerId?: string,
-  readOnly?: boolean
+  readOnly?: boolean,
+  isDesktop?: boolean
 ): ContextMenuCapture => {
   const { close, minimize, open, url: changeUrl } = useProcessesActions();
   const {
@@ -183,8 +183,8 @@ const useFileContextMenu = (
       const defaultProcess = getProcessByFileExtension(urlExtension);
 
       menuItems.push(
-        { action: () => moveEntries(absoluteEntries()), label: "Cut" },
-        { action: () => copyEntries(absoluteEntries()), label: "Copy" },
+        { action: () => moveEntries(absoluteEntries()), label: "Recortar" },
+        { action: () => copyEntries(absoluteEntries()), label: "Copiar" },
         MENU_SEPERATOR
       );
 
@@ -199,7 +199,7 @@ const useFileContextMenu = (
 
               newShortcut(entry, shortcutProcess);
             }),
-          label: "Create shortcut",
+          label: "Criar atalho",
         });
       }
 
@@ -212,9 +212,9 @@ const useFileContextMenu = (
 
             absoluteEntries().forEach((entry) => deleteLocalPath(entry));
           },
-          label: "Delete",
+          label: "Excluir",
         },
-        { action: () => setRenaming(baseName), label: "Rename" },
+        { action: () => setRenaming(baseName), label: "Renomear" },
         MENU_SEPERATOR,
         {
           action: () => {
@@ -232,7 +232,7 @@ const useFileContextMenu = (
               });
             }
           },
-          label: "Properties",
+          label: "Propriedades",
         }
       );
 
@@ -261,7 +261,7 @@ const useFileContextMenu = (
                 ? [
                     {
                       action: () => mapFileSystemDirectory("/"),
-                      label: "Map directory",
+                      label: "Mapear diretório",
                     },
                   ]
                 : []),
@@ -269,7 +269,7 @@ const useFileContextMenu = (
                 ? [
                     {
                       action: () => mapFileSystemDirectory("/OPFS"),
-                      label: "Map OPFS",
+                      label: "Mapear OPFS",
                     },
                   ]
                 : []),
@@ -292,7 +292,7 @@ const useFileContextMenu = (
               : IMAGE_ENCODE_FORMATS;
 
             menuItems.unshift(MENU_SEPERATOR, {
-              label: "Convert to",
+              label: "Converter para",
               menu: ENCODE_FORMATS.filter(
                 (format) => format !== pathExtension
               ).map((format) => {
@@ -372,7 +372,7 @@ const useFileContextMenu = (
 
           if (canDecodeSpreadsheet) {
             menuItems.unshift(MENU_SEPERATOR, {
-              label: "Convert to",
+              label: "Converter para",
               menu: SPREADSHEET_FORMATS.filter(
                 (format) => format !== pathExtension
               ).map((format) => {
@@ -447,13 +447,18 @@ const useFileContextMenu = (
                   );
                 });
               },
-              label: "Convert to M3U",
+              label: "Converter para M3U",
             });
           }
 
           const opensInFileExplorer = pid === "FileExplorer";
 
-          if (isSingleSelection && !opensInFileExplorer && !isYouTubeUrl(url)) {
+          if (
+            !isDesktop &&
+            isSingleSelection &&
+            !opensInFileExplorer &&
+            !isYouTubeUrl(url)
+          ) {
             const baseFileName = basename(url);
             const shareData: ShareData = {
               text: `${baseFileName} - ${alias}`,
@@ -464,32 +469,30 @@ const useFileContextMenu = (
             if (canShareFile(rootFs?.mountList, path, stats, shareData)) {
               menuItems.unshift({
                 action: () => navigator.share(shareData),
-                label: "Share",
+                label: "Compartilhar",
                 SvgIcon: Share,
               });
             }
           }
 
-          menuItems.unshift(
-            {
-              action: () => archiveFiles(absoluteEntries()),
-              label: "Add to archive...",
-            },
-            ...(EXTRACTABLE_EXTENSIONS.has(urlExtension) ||
-            MOUNTABLE_EXTENSIONS.has(urlExtension)
-              ? [
-                  {
-                    action: () => extractFiles(url),
-                    label: "Extract Here",
-                  },
-                  MENU_SEPERATOR,
-                ]
-              : []),
-            {
-              action: () => downloadFiles(absoluteEntries()),
-              label: "Download",
-            }
-          );
+          if (!isDesktop) {
+            menuItems.unshift(
+              {
+                action: () => archiveFiles(absoluteEntries()),
+                label: "Adicionar ao arquivo compactado...",
+              },
+              ...(EXTRACTABLE_EXTENSIONS.has(urlExtension) ||
+              MOUNTABLE_EXTENSIONS.has(urlExtension)
+                ? [
+                    {
+                      action: () => extractFiles(url),
+                      label: "Extrair aqui",
+                    },
+                    MENU_SEPERATOR,
+                  ]
+                : []),
+            );
+          }
 
           if (!isShortcut && !opensInFileExplorer) {
             TEXT_EDITORS.forEach((textEditor) => {
@@ -511,7 +514,7 @@ const useFileContextMenu = (
       menuItems.push(MENU_SEPERATOR, {
         action: () =>
           unMapFs(path, rootFs?.mntMap[path].getName() !== "FileSystemAccess"),
-        label: "Disconnect",
+        label: "Desconectar",
       });
     }
 
@@ -521,14 +524,14 @@ const useFileContextMenu = (
           open("Paint", { url });
           if (url) updateRecentFiles(url, "Paint");
         },
-        label: "Edit",
+        label: "Editar",
       });
     }
 
     if (CURSOR_FILE_EXTENSIONS.has(urlExtension)) {
       menuItems.unshift({
         action: () => setCursor(url),
-        label: "Set as mouse pointer",
+        label: "Definir como ponteiro do mouse",
       });
     }
 
@@ -545,7 +548,7 @@ const useFileContextMenu = (
 
       menuItems.unshift(MENU_SEPERATOR, {
         action: () => aiCommand("Summarize"),
-        label: "Summarize Text (AI)",
+        label: "Resumir texto (IA)",
       });
     }
 
@@ -558,7 +561,7 @@ const useFileContextMenu = (
         urlExtension !== ".svg")
     ) {
       menuItems.unshift({
-        label: "Set as background",
+        label: "Definir como plano de fundo",
         ...(hasBackgroundVideoExtension
           ? {
               action: () => setWallpaper(url),
@@ -567,32 +570,32 @@ const useFileContextMenu = (
               menu: [
                 {
                   action: () => setWallpaper(url, "fill"),
-                  label: "Fill",
+                  label: "Preencher",
                 },
                 {
                   action: () => setWallpaper(url, "fit"),
-                  label: "Fit",
+                  label: "Ajustar",
                 },
                 {
                   action: () => setWallpaper(url, "stretch"),
-                  label: "Stretch",
+                  label: "Esticar",
                 },
                 {
                   action: () => setWallpaper(url, "tile"),
-                  label: "Tile",
+                  label: "Lado a lado",
                 },
                 {
                   action: () => setWallpaper(url, "center"),
-                  label: "Center",
+                  label: "Centralizar",
                 },
               ],
             }),
       });
     }
 
-    if (openWithFiltered.length > 0) {
+    if (openWithFiltered.length > 0 && !isDesktop) {
       menuItems.unshift({
-        label: "Open with",
+        label: "Abrir com",
         menu: [
           ...openWithFiltered.map((id): MenuItem => {
             const { icon, title: label } = processDirectory[id] || {};
@@ -605,7 +608,7 @@ const useFileContextMenu = (
           {
             action: () =>
               openWhenUnlocked(() => open("OpenWith", { url })),
-            label: "Choose another app",
+            label: "Escolher outro aplicativo",
           },
         ],
         primary: !pid,
@@ -617,6 +620,7 @@ const useFileContextMenu = (
 
       if (
         isShortcut &&
+        !isDesktop &&
         url &&
         url !== "/" &&
         !url.startsWith("http:") &&
@@ -627,7 +631,7 @@ const useFileContextMenu = (
 
         menuItems.unshift({
           action: () => open("FileExplorer", { url: dirname(url) }, ""),
-          label: `Open ${isFolder ? "folder" : "file"} location`,
+          label: `Abrir local ${isFolder ? "da pasta" : "do arquivo"}`,
         });
       }
 
@@ -639,7 +643,7 @@ const useFileContextMenu = (
         menuItems.unshift({
           action: () =>
             openWhenUnlocked(() => void openFile(pid, pidIcon)),
-          label: "Open in new window",
+          label: "Abrir em nova janela",
         });
       }
 
@@ -658,7 +662,7 @@ const useFileContextMenu = (
           });
         },
         icon: pidIcon,
-        label: VIDEO_FILE_EXTENSIONS.has(urlExtension) ? "Play" : "Open",
+        label: VIDEO_FILE_EXTENSIONS.has(urlExtension) ? "Reproduzir" : "Abrir",
         primary: true,
       });
     }

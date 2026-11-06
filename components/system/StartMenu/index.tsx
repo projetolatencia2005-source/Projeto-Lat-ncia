@@ -180,7 +180,7 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/icon-documents.png" />
+                  <img alt="" src="/System/Doors/figma/pasta.svg" />
                   <span>Pastas</span>
                 </button>
               </li>
@@ -190,14 +190,14 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Browser",
                       undefined,
-                      "/System/Doors/figma/icon-internet-expanded.png"
+                      "/System/Doors/figma/internet.svg"
                     )
                   }
                   type="button"
                 >
                   <img
                     alt=""
-                    src="/System/Doors/figma/icon-internet-expanded.png"
+                    src="/System/Doors/figma/internet.svg"
                   />
                   <span>Internet Expandida</span>
                 </button>
@@ -205,11 +205,15 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
               <li>
                 <button
                   onClick={() =>
-                    openFavorite("Paint", undefined, "/System/Doors/paint.svg")
+                    openFavorite(
+                      "Paint",
+                      undefined,
+                      "/System/Doors/figma/paintnovo.svg"
+                    )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/paint.svg" />
+                  <img alt="" src="/System/Doors/figma/paintnovo.svg" />
                   <span>Rabisco</span>
                 </button>
               </li>
@@ -249,12 +253,12 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Chess",
                       undefined,
-                      "/System/Doors/cavalo_preto.svg"
+                      "/System/Doors/figma/xadrez-prancheta.svg"
                     )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/cavalo_preto.svg" />
+                  <img alt="" src="/System/Doors/figma/xadrez-prancheta.svg" />
                   <span>Xadrez</span>
                 </button>
               </li>

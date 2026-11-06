@@ -71,6 +71,9 @@ export const WALLPAPER_WORKER_NAMES = Object.keys(WALLPAPER_WORKERS);
 export const REDUCED_MOTION_PERCENT = 0.1;
 
 export const WALLPAPER_MENU: WallpaperMenuItem[] = [
+  { id: "PAISAGEM_02", name: "Paisagem 02" },
+  { id: "PAISAGEM_03", name: "Paisagem 03" },
+  { id: "PAISAGEM_04", name: "Paisagem 04" },
   {
     id: "ART_INSTITUTE_OF_CHICAGO",
     name: "Art Institute of Chicago",

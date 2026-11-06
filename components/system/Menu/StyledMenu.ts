@@ -13,16 +13,10 @@ const StyledMenu = styled(motion.nav).attrs<StyledMenuProps>(({ $x, $y }) => ({
     transform: `translate(${$x}px, ${$y}px)`,
   },
 }))<StyledMenuProps>`
-  background-color: ${({ $isFileExplorerMenu }) =>
-    $isFileExplorerMenu ? "#f7edd7" : "rgb(24 71 116)"};
-  border: ${({ $isFileExplorerMenu }) =>
-    $isFileExplorerMenu ? "2px solid #31302c" : "1px solid rgb(160 160 160)"};
-  box-shadow: ${({ $isFileExplorerMenu, theme }) =>
-    $isFileExplorerMenu
-      ? theme.colors.window.shadow
-      : `1px 1px 1px hsl(0 0% 20% / 70%), 2px 2px 2px hsl(0 0% 10% / 70%)`};
-  color: ${({ $isFileExplorerMenu }) =>
-    $isFileExplorerMenu ? "#31302c" : "rgb(255 255 255)"};
+  background-color: #f7edd7;
+  border: 2px solid #31302c;
+  box-shadow: ${({ theme }) => theme.colors.window.shadow};
+  color: #31302c;
   contain: layout;
   font-size: 12px;
   max-height: fit-content;
@@ -52,8 +46,7 @@ const StyledMenu = styled(motion.nav).attrs<StyledMenuProps>(({ $x, $y }) => ({
     }
 
     li > div {
-      color: ${({ $isFileExplorerMenu }) =>
-        $isFileExplorerMenu ? "#31302c" : "inherit"};
+      color: #31302c;
       display: flex;
       padding: 3px 0;
 
@@ -61,8 +54,7 @@ const StyledMenu = styled(motion.nav).attrs<StyledMenuProps>(({ $x, $y }) => ({
       :root:not([data-keyboard]) &:hover,
       &.active,
       :root[data-keyboard] &:focus {
-        background-color: ${({ $isFileExplorerMenu }) =>
-          $isFileExplorerMenu ? "#e8dcc2" : "rgb(45 111 174)"};
+        background-color: #e8dcc2;
 
         /* Like Windows in high contrast, using its own selection colors */
         @media (forced-colors: active) {
@@ -102,8 +94,7 @@ const StyledMenu = styled(motion.nav).attrs<StyledMenuProps>(({ $x, $y }) => ({
       }
 
       svg {
-        fill: ${({ $isFileExplorerMenu }) =>
-          $isFileExplorerMenu ? "#31302c" : "#fff"};
+        fill: #31302c;
         height: 13px;
         margin-top: 1px;
         position: absolute;

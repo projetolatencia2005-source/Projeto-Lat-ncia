@@ -47,6 +47,7 @@ import Button from "styles/common/Button";
 import Icon from "styles/common/Icon";
 import {
   EXTENSIONS_WITH_ICON,
+  FOLDER_ICON,
   ICON_CACHE,
   ICON_CACHE_EXTENSION,
   ICON_PATH,
@@ -200,6 +201,12 @@ const FileEntry: FC<FileEntryProps> = ({
   const isShortcut = extension === SHORTCUT_EXTENSION;
   const isComputerShortcut =
     !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
+  const isPastasShortcut =
+    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
+  const isRabiscoShortcut =
+    isDesktop && name.trim().toLocaleLowerCase() === "rabisco";
+  const isInternetShortcut =
+    isDesktop && /^(?:internet|internet expandida)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -229,7 +236,7 @@ const FileEntry: FC<FileEntryProps> = ({
         ]
       );
   const displayName =
-    isDesktop && /^(?:documents|documentos)$/i.test(name)
+    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name)
       ? "Pastas"
       : isComputerShortcut
         ? "Área de Trabalho"
@@ -589,6 +596,7 @@ const FileEntry: FC<FileEntryProps> = ({
             isDesktop &&
               name.trim().toLocaleLowerCase() === "post-it" &&
               "doors-post-it-shortcut",
+            isPastasShortcut && "doors-pastas-shortcut",
             isComputerShortcut && "doors-computer-shortcut",
           ]
             .filter(Boolean)
@@ -615,7 +623,8 @@ const FileEntry: FC<FileEntryProps> = ({
           focusedEntries,
           stats,
           fileManagerId,
-          readOnly
+          readOnly,
+          isDesktop
         )}
       >
         <StyledFigure
@@ -635,10 +644,20 @@ const FileEntry: FC<FileEntryProps> = ({
             $moving={pasteList[path] === "move"}
             alt=""
             onLoad={onIconLoad}
-            src={isPictureThumbnail ? path : icon}
+            src={
+              isPictureThumbnail
+                ? path
+                : isPastasShortcut
+                  ? FOLDER_ICON
+                  : isInternetShortcut
+                    ? "/System/Doors/figma/internet.svg"
+                    : isRabiscoShortcut
+                      ? "/System/Doors/figma/paintnovo.svg"
+                      : icon
+            }
             {...(isDesktop
               ? {
-                  imgSize: 40,
+                  imgSize: 52,
                 }
               : FileEntryIconSize[view])}
           />
@@ -667,7 +686,7 @@ const FileEntry: FC<FileEntryProps> = ({
               className={
                 [
                   isDesktop &&
-                    /^(?:documents|documentos)$/i.test(name) &&
+                    /^(?:documents|documentos|pastas)$/i.test(name) &&
                     "desktop-documents-label",
                   isComputerShortcut && "computer-shortcut-label",
                 ]

@@ -61,7 +61,7 @@ const directory: Processes = {
       height: 567,
       width: 420,
     },
-    icon: "/System/Doors/cavalo_preto.svg",
+    icon: "/System/Doors/figma/xadrez-prancheta.svg",
     libs: ["/Program Files/Chess/chessboard2.min.css"],
     title: "Xadrez",
     titlebarColor: "#839abc",
@@ -223,8 +223,8 @@ const directory: Processes = {
   Paint: {
     backgroundColor: "#808080",
     Component: dynamic(() => import("components/apps/Paint")),
-    icon: "/System/Doors/paint.svg",
-    libs: ["/Program Files/jspaint/index.html"],
+    icon: "/System/Doors/figma/paintnovo.svg",
+    libs: ["/jspaint/"],
     title: "Paint",
   },
   PDF: {

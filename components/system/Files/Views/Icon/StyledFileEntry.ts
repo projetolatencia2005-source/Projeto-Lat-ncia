@@ -45,7 +45,8 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
       width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
       figcaption {
-        color: ${({ theme }) => theme.colors.fileEntry.text};
+        color: ${({ $desktop, theme }) =>
+          $desktop ? "#31302C" : theme.colors.fileEntry.text};
         font-size: ${({ $desktop, theme }) =>
           $desktop ? "16px" : theme.sizes.fileEntry.fontSize};
         line-height: 1.2;
@@ -53,7 +54,9 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         overflow-wrap: anywhere;
         padding: ${({ $desktop }) => ($desktop ? "0" : "2px 0")};
         text-align: ${({ $desktop }) => ($desktop ? "center" : undefined)};
-        text-shadow: ${({ $desktop }) => ($desktop ? "none" : undefined)};
+        text-shadow: ${({ $desktop }) =>
+          $desktop ? "1px 1px 0 #F7EDD7" : undefined};
+        -webkit-text-stroke: ${({ $desktop }) => ($desktop ? "0" : undefined)};
         width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
         &.desktop-documents-label {
@@ -94,6 +97,15 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
   button.doors-post-it-shortcut figure picture:first-of-type {
     height: 40px;
     width: 40px;
+  }
+
+  button.doors-pastas-shortcut figure {
+    gap: 10px;
+
+    picture:first-of-type {
+      height: 52px;
+      width: 52px;
+    }
   }
 
   button.doors-computer-shortcut {

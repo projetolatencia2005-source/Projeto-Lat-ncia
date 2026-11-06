@@ -125,10 +125,24 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
   const foregroundId = useForegroundId();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loaded, setLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [jsPaintInstance, setJsPaintInstance] = useState<JsPaint>();
   const { prependFileToTitle } = useTitle(id);
   const handlePaintLoad = useCallback((): void => {
     const paintDocument = iframeRef.current?.contentDocument;
+    const jsPaint = iframeRef.current?.contentWindow as
+      | (JsPaint & { systemHooks?: JsPaint["systemHooks"] })
+      | undefined;
+
+    if (
+      !jsPaint ||
+      typeof jsPaint.file_new !== "function" ||
+      typeof jsPaint.systemHooks?.showOpenFileDialog !== "function"
+    ) {
+      setLoadError(true);
+      setLoaded(true);
+      return;
+    }
 
     if (
       paintDocument?.head &&
@@ -142,6 +156,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     }
 
     installDoorsCursorStyles(paintDocument || null);
+    setLoadError(false);
     setLoaded(true);
   }, []);
   const setWallpaperFromCanvas =
@@ -179,8 +194,18 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     const { contentWindow } = iframeRef.current || {};
     let cleanup: (() => void) | undefined;
 
-    if (loaded && contentWindow && !jsPaintInstance) {
-      const jsPaint = contentWindow as unknown as JsPaint;
+    if (loaded && !loadError && contentWindow && !jsPaintInstance) {
+      const candidate = contentWindow as unknown as Partial<JsPaint>;
+
+      if (
+        typeof candidate.file_new !== "function" ||
+        typeof candidate.systemHooks?.showOpenFileDialog !== "function"
+      ) {
+        setLoadError(true);
+        return;
+      }
+
+      const jsPaint = candidate as JsPaint;
       const previousOpenFileDialog = jsPaint.systemHooks.showOpenFileDialog;
       const previousFileNew = jsPaint.file_new;
 
@@ -240,9 +265,11 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     id,
     jsPaintInstance,
     loaded,
+    loadError,
     onDragOver,
     onDrop,
     prependFileToTitle,
+    setLoadError,
     setWallpaperFromCanvas,
     updateFolder,
     writeFile,
@@ -276,6 +303,27 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
   return (
     <StyledPaint $loaded={loaded}>
       {!loaded && <StyledLoading className="loading" />}
+      {loadError && (
+        <p
+          role="alert"
+          style={{
+            background: "#dce5f0",
+            border: "2px solid #31302c",
+            color: "#202b3b",
+            left: "50%",
+            maxWidth: "calc(100% - 24px)",
+            padding: "12px",
+            position: "absolute",
+            textAlign: "center",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1,
+          }}
+        >
+          Não foi possível carregar o Rabisco. Atualize a página e tente
+          novamente.
+        </p>
+      )}
       {paintSrc && (
         <iframe
           ref={iframeRef}
@@ -286,6 +334,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
           id={`jspaint-${id}`}
           onLoad={handlePaintLoad}
           src={paintSrc}
+          style={loadError ? { visibility: "hidden" } : undefined}
           title={windowTitle}
           width="100%"
           {...IFRAME_CONFIG}

@@ -443,6 +443,7 @@ const calcGridDropPosition = (
   if (!gridElement) return Object.create(null) as IconPosition;
 
   const gridComputedStyle = window.getComputedStyle(gridElement);
+  const { left, top } = gridElement.getBoundingClientRect();
   const gridTemplateRows = gridComputedStyle
     .getPropertyValue(GRID_TEMPLATE_ROWS)
     .split(" ");
@@ -458,15 +459,23 @@ const calcGridDropPosition = (
     gridComputedStyle.getPropertyValue("grid-row-gap")
   );
   const paddingTop = pxToNum(gridComputedStyle.getPropertyValue("padding-top"));
+  const relativeX = Math.max(0, x - left);
+  const relativeY = Math.max(0, y - top);
 
   return {
-    gridColumnStart: Math.min(
-      Math.ceil(x / (gridColumnWidth + gridColumnGap)),
-      gridTemplateColumns.length
+    gridColumnStart: Math.max(
+      1,
+      Math.min(
+        Math.floor(relativeX / (gridColumnWidth + gridColumnGap)) + 1,
+        gridTemplateColumns.length
+      )
     ),
-    gridRowStart: Math.min(
-      Math.ceil((y - paddingTop) / (gridRowHeight + gridRowGap)),
-      gridTemplateRows.length
+    gridRowStart: Math.max(
+      1,
+      Math.min(
+        Math.floor((relativeY - paddingTop) / (gridRowHeight + gridRowGap)) + 1,
+        gridTemplateRows.length
+      )
     ),
   };
 };
