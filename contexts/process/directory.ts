@@ -61,7 +61,7 @@ const directory: Processes = {
       height: 567,
       width: 420,
     },
-    icon: "/System/Doors/cavalo_preto.svg",
+    icon: "/System/Doors/figma/xadrez-prancheta.svg",
     libs: ["/Program Files/Chess/chessboard2.min.css"],
     title: "Xadrez",
     titlebarColor: "#839abc",

@@ -612,6 +612,7 @@ const useFileContextMenu = (
 
       if (
         isShortcut &&
+        !isDesktop &&
         url &&
         url !== "/" &&
         !url.startsWith("http:") &&

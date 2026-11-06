@@ -24,11 +24,11 @@ const StyledFileManager = styled.ol<StyledFileManagerProps>`
   pointer-events: ${({ $selecting }) => ($selecting ? "auto" : undefined)};
 
   main > &[aria-label="Desktop"] {
-    grid-auto-flow: row;
+    grid-auto-flow: column;
     grid-auto-rows: 100px;
-    grid-template-columns: 120px;
-    grid-template-rows: none;
     gap: 3px 0;
+    grid-template-columns: repeat(auto-fill, 120px);
+    grid-template-rows: repeat(auto-fill, 100px);
     height: calc(100% - ${TASKBAR_HEIGHT}px);
     overflow: visible;
     padding-bottom: 21px;

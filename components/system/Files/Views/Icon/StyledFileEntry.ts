@@ -96,6 +96,15 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     width: 40px;
   }
 
+  button.doors-pastas-shortcut figure {
+    gap: 0;
+
+    picture:first-of-type {
+      height: 80px;
+      width: 80px;
+    }
+  }
+
   button.doors-computer-shortcut {
     align-items: center;
     box-sizing: border-box;
