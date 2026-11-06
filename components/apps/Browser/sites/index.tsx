@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   getInternalSite,
@@ -322,67 +322,67 @@ const wikiArticles = [
 
 const wikiLanHouseSections = [
   {
-    "heading": "Surgimento",
-    "body": "O conceito de LAN house é famoso na Coreia do Sul, conhecido por PC bang (coreano: PC방). Esses estabelecimentos se tornaram particularmente populares a partir de 1998, com o lançamento de jogos como StarCraft. No Brasil, o conceito inicial trazido pela Monkey Paulista se baseou no modelo sul-coreano. A primeira LAN house brasileira foi inaugurada em São Paulo em 1998 e encerrou suas atividades em 2010. A Lan House Connection foi fundada em meados de 2002, em São Miguel Paulista."
+    "body": "O conceito de LAN house é famoso na Coreia do Sul, conhecido por PC bang (coreano: PC방). Esses estabelecimentos se tornaram particularmente populares a partir de 1998, com o lançamento de jogos como StarCraft. No Brasil, o conceito inicial trazido pela Monkey Paulista se baseou no modelo sul-coreano. A primeira LAN house brasileira foi inaugurada em São Paulo em 1998 e encerrou suas atividades em 2010. A Lan House Connection foi fundada em meados de 2002, em São Miguel Paulista.",
+    "heading": "Surgimento"
   },
   {
-    "heading": "Características",
-    "body": "O estabelecimento é um centro de entretenimento, educação e cultura. LAN significa Local Area Network, ou rede local de computadores. Uma LAN house oferece computadores conectados para acesso à internet e a programas em geral, como jogos eletrônicos e soluções de escritório. Normalmente, é cobrada uma taxa proporcional ao tempo de uso. Mais do que uma casa de jogos, uma LAN house bem estruturada oferece acesso democrático à tecnologia, lazer, oportunidades, educação e cultura a pessoas de todas as idades."
+    "body": "O estabelecimento é um centro de entretenimento, educação e cultura. LAN significa Local Area Network, ou rede local de computadores. Uma LAN house oferece computadores conectados para acesso à internet e a programas em geral, como jogos eletrônicos e soluções de escritório. Normalmente, é cobrada uma taxa proporcional ao tempo de uso. Mais do que uma casa de jogos, uma LAN house bem estruturada oferece acesso democrático à tecnologia, lazer, oportunidades, educação e cultura a pessoas de todas as idades.",
+    "heading": "Características"
   },
   {
-    "heading": "Inclusão digital",
-    "body": "As LAN houses também são uma ferramenta no processo de inclusão digital, conforme dados levantados pelo Comitê Gestor da Internet no Brasil. Há uma tendência para que instalações de baixo custo se tornem parceiras da educação, com investimentos públicos que cheguem diretamente às comunidades. O Projeto Lan-Social, do professor Ernesto Neto, alcançou resultados e vem sendo desenvolvido em diferentes variantes pelo país."
+    "body": "As LAN houses também são uma ferramenta no processo de inclusão digital, conforme dados levantados pelo Comitê Gestor da Internet no Brasil. Há uma tendência para que instalações de baixo custo se tornem parceiras da educação, com investimentos públicos que cheguem diretamente às comunidades. O Projeto Lan-Social, do professor Ernesto Neto, alcançou resultados e vem sendo desenvolvido em diferentes variantes pelo país.",
+    "heading": "Inclusão digital"
   },
   {
-    "heading": "Estatísticas",
-    "body": "De acordo com o CGI.br, em 2007 as LAN houses foram responsáveis por quase 50% dos acessos à internet no país. Nas regiões Norte e Nordeste, o índice chegou a quase 70%. A maioria dos clientes era do sexo masculino, com predominância das classes C, D e E."
+    "body": "De acordo com o CGI.br, em 2007 as LAN houses foram responsáveis por quase 50% dos acessos à internet no país. Nas regiões Norte e Nordeste, o índice chegou a quase 70%. A maioria dos clientes era do sexo masculino, com predominância das classes C, D e E.",
+    "heading": "Estatísticas"
   },
   {
-    "heading": "Acesso e serviços",
-    "body": "Segundo o SINDLANSP, o Brasil tinha mais de 90 mil LAN houses e cybercafés, embora muitas funcionassem sem legalização por falta de legislação adequada. Esses estabelecimentos também eram responsáveis por parte importante do acesso a serviços públicos, bancos e redes sociais. Mesmo quem tinha conexão em casa podia frequentar uma LAN house para usar a impressora ou resolver problemas de conexão."
+    "body": "Segundo o SINDLANSP, o Brasil tinha mais de 90 mil LAN houses e cybercafés, embora muitas funcionassem sem legalização por falta de legislação adequada. Esses estabelecimentos também eram responsáveis por parte importante do acesso a serviços públicos, bancos e redes sociais. Mesmo quem tinha conexão em casa podia frequentar uma LAN house para usar a impressora ou resolver problemas de conexão.",
+    "heading": "Acesso e serviços"
   },
   {
-    "heading": "Programas para gerenciar LAN houses",
-    "body": "A maioria das LAN houses utiliza programas gerenciadores para cadastrar clientes, registrar acessos, controlar vendas, administrar o caixa, gerar relatórios e auxiliar na segurança dos computadores. O sistema costuma ser dividido entre servidor e cliente. Como os computadores são usados pelo público em geral, manter registros das conexões ajuda em auditorias quando necessário."
+    "body": "A maioria das LAN houses utiliza programas gerenciadores para cadastrar clientes, registrar acessos, controlar vendas, administrar o caixa, gerar relatórios e auxiliar na segurança dos computadores. O sistema costuma ser dividido entre servidor e cliente. Como os computadores são usados pelo público em geral, manter registros das conexões ajuda em auditorias quando necessário.",
+    "heading": "Programas para gerenciar LAN houses"
   },
   {
-    "heading": "Pontos de acesso Wi-Fi",
-    "body": "O projeto também apresenta pontos de acesso Wi-Fi, encontrados em cafés, restaurantes, hotéis e aeroportos. Como quem controla um hotspot pode acessar o conteúdo dos aparelhos conectados, é importante escolher redes confiáveis. Smartphones também podem compartilhar sua conexão de dados com outros dispositivos."
+    "body": "O projeto também apresenta pontos de acesso Wi-Fi, encontrados em cafés, restaurantes, hotéis e aeroportos. Como quem controla um hotspot pode acessar o conteúdo dos aparelhos conectados, é importante escolher redes confiáveis. Smartphones também podem compartilhar sua conexão de dados com outros dispositivos.",
+    "heading": "Pontos de acesso Wi-Fi"
   }
 ];
 
 const wikiSociabilitySections = [
   {
-    "heading": "O surgimento e a importância das lan houses",
-    "body": "Com o avanço da tecnologia e da internet, surgiram novas formas de comunicação, interação e relacionamento. O acesso, porém, depende das condições econômicas e sociais. Nas periferias, muitas famílias não possuem computador ou conexão em casa, então as lan houses oferecem uma alternativa acessível, com internet, jogos, redes sociais, música e serviços de informática. Uma pesquisa em bairros periféricos de São Paulo, realizada entre outubro de 2007 e dezembro de 2008, observou que jovens de 14 a 20 anos frequentavam esses espaços para acessar a internet, encontrar amigos, conversar e fortalecer vínculos sociais."
+    "body": "Com o avanço da tecnologia e da internet, surgiram novas formas de comunicação, interação e relacionamento. O acesso, porém, depende das condições econômicas e sociais. Nas periferias, muitas famílias não possuem computador ou conexão em casa, então as lan houses oferecem uma alternativa acessível, com internet, jogos, redes sociais, música e serviços de informática. Uma pesquisa em bairros periféricos de São Paulo, realizada entre outubro de 2007 e dezembro de 2008, observou que jovens de 14 a 20 anos frequentavam esses espaços para acessar a internet, encontrar amigos, conversar e fortalecer vínculos sociais.",
+    "heading": "O surgimento e a importância das lan houses"
   },
   {
-    "heading": "Moradia, privacidade e liberdade",
-    "body": "Em muitas periferias, casas pequenas e compartilhadas dificultam a privacidade dos adolescentes. As lan houses permitiam que passassem um tempo fora de casa e convivessem com pessoas da mesma faixa etária, sem a observação constante de pais, irmãos e vizinhos."
+    "body": "Em muitas periferias, casas pequenas e compartilhadas dificultam a privacidade dos adolescentes. As lan houses permitiam que passassem um tempo fora de casa e convivessem com pessoas da mesma faixa etária, sem a observação constante de pais, irmãos e vizinhos.",
+    "heading": "Moradia, privacidade e liberdade"
   },
   {
-    "heading": "Segurança e convivência",
-    "body": "O autor aborda também a violência urbana e os preconceitos que associam as periferias à pobreza e à criminalidade. Por receio de que os filhos fossem vítimas de violência, alguns pais viam espaços fechados, como as lan houses, como alternativas mais seguras para os encontros. Parte da convivência que acontecia nas ruas passou a ocorrer em estabelecimentos comerciais."
+    "body": "O autor aborda também a violência urbana e os preconceitos que associam as periferias à pobreza e à criminalidade. Por receio de que os filhos fossem vítimas de violência, alguns pais viam espaços fechados, como as lan houses, como alternativas mais seguras para os encontros. Parte da convivência que acontecia nas ruas passou a ocorrer em estabelecimentos comerciais.",
+    "heading": "Segurança e convivência"
   },
   {
-    "heading": "Rotina e pertencimento",
-    "body": "Os frequentadores costumavam ir em horários específicos para encontrar os mesmos grupos. Pela manhã havia crianças, pré-adolescentes e pessoas mais velhas; à tarde, adolescentes usavam redes sociais, conversavam, jogavam e ouviam música; à noite, predominavam pessoas com mais de 18 anos. Os interesses compartilhados ajudavam a criar identidade e sentimento de pertencimento."
+    "body": "Os frequentadores costumavam ir em horários específicos para encontrar os mesmos grupos. Pela manhã havia crianças, pré-adolescentes e pessoas mais velhas; à tarde, adolescentes usavam redes sociais, conversavam, jogavam e ouviam música; à noite, predominavam pessoas com mais de 18 anos. Os interesses compartilhados ajudavam a criar identidade e sentimento de pertencimento.",
+    "heading": "Rotina e pertencimento"
   },
   {
-    "heading": "Troca de conhecimentos",
-    "body": "Frequentadores experientes ensinavam iniciantes a usar computadores, acessar sites e superar dificuldades nos jogos. Quem aprendia podia compartilhar conhecimentos com outras pessoas, ganhando reconhecimento no grupo. Essa troca também podia ser desigual: alguns jovens não ajudavam pessoas com quem não tinham afinidade, o que causava exclusão."
+    "body": "Frequentadores experientes ensinavam iniciantes a usar computadores, acessar sites e superar dificuldades nos jogos. Quem aprendia podia compartilhar conhecimentos com outras pessoas, ganhando reconhecimento no grupo. Essa troca também podia ser desigual: alguns jovens não ajudavam pessoas com quem não tinham afinidade, o que causava exclusão.",
+    "heading": "Troca de conhecimentos"
   },
   {
-    "heading": "Aprendizagem e trabalho",
-    "body": "Muitos jovens acreditavam que as habilidades digitais adquiridas nas lan houses poderiam ajudar nos estudos e no futuro profissional. Proprietários e atendentes eram vistos como pessoas com conhecimentos especializados, capazes de orientar os frequentadores sobre tecnologia, jogos e informática."
+    "body": "Muitos jovens acreditavam que as habilidades digitais adquiridas nas lan houses poderiam ajudar nos estudos e no futuro profissional. Proprietários e atendentes eram vistos como pessoas com conhecimentos especializados, capazes de orientar os frequentadores sobre tecnologia, jogos e informática.",
+    "heading": "Aprendizagem e trabalho"
   },
   {
-    "heading": "Serviços e economia local",
-    "body": "Além do acesso à internet, estabelecimentos vendiam alimentos e bebidas, faziam manutenção de computadores e ofereciam outros serviços. Essa diversificação ajudava os negócios e fazia das lan houses espaços de lazer e convivência, para além da tecnologia."
+    "body": "Além do acesso à internet, estabelecimentos vendiam alimentos e bebidas, faziam manutenção de computadores e ofereciam outros serviços. Essa diversificação ajudava os negócios e fazia das lan houses espaços de lazer e convivência, para além da tecnologia.",
+    "heading": "Serviços e economia local"
   },
   {
-    "heading": "Conclusão",
-    "body": "Fábio Mariano Borges mostra que não é possível compreender a sociabilidade nas lan houses olhando apenas para o uso da internet. Moradia, privacidade, violência, desigualdade e pertencimento influenciavam a experiência. Esses locais ofereciam acesso à tecnologia, amizades, troca de conhecimentos e construção de identidade. O mundo virtual não estava separado do cotidiano presencial."
+    "body": "Fábio Mariano Borges mostra que não é possível compreender a sociabilidade nas lan houses olhando apenas para o uso da internet. Moradia, privacidade, violência, desigualdade e pertencimento influenciavam a experiência. Esses locais ofereciam acesso à tecnologia, amizades, troca de conhecimentos e construção de identidade. O mundo virtual não estava separado do cotidiano presencial.",
+    "heading": "Conclusão"
   }
 ];
 
@@ -390,96 +390,117 @@ type WikiDiscussionComment = {
   author: string;
   avatar: string;
   body: string;
-  time?: string;
   replies?: WikiDiscussionComment[];
+  time?: string;
+};
+
+type SubmittedWikiComment = {
+  body: string;
+  id: string;
 };
 
 const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
-  [wikiTechnologyArticlePath]: [
-  {
-    "author": "teamjacob",
-    "avatar": "encicloweb-twilight-avatar.jpg",
-    "time": "18 de outubro de 2005, 21h34min (UTC)",
-    "body": "Li o artigo inteiro e acho q o autor está certo em alguns pontos. A net tá crescendo muito rápido e ninguém sabe oq está acontecendo. Outro dia li que o Guugli consegue achar páginas do mundo inteiro em segundos. Como isso é possível? Tem gente que diz que existe um computador central guarda todas as info da humanidade, provavelmente em algum lugar dos Estados Unidos. N encontrei provas, mas tbm não encontrei provas de que n existe. Sobre a parte dos computadores controlarem nossos pensamentos, não sei se é possível, mas meu Internet Explorer abriu três janelas sozinho ontem e isso me deixou bastante desconfiado.",
-    "replies": [
-      {
-        "author": "Todomundomeodeia",
-        "avatar": "encicloweb-family.jpg",
-        "time": "19 de outubro de 2005, 00h06min (UTC)",
-        "body": "Eu entrei procurando informações pro trabalho da escola e acabei lendo o artigo todo. Algmas coisa são engraçadas, mas outras me fizeram pensar um pouco. Todo mundo q eu conheço está começando a usar a internet com mais frequência, principalmente para conversar pelo MSM, entrar no Bubblee, procurar músicas. Parece muito difícil imaginar q isso possa mudar tanto a maneira como as pessoas vivem. Ao mesmo tempo, já vejo gente q fica desesperada quando não consegue entrar no MSN ou qnd perde a conexão bem na hora da conversa aff.",
-        "replies": [
-          {
-            "author": "lukinhaadoracinema",
-            "avatar": "encicloweb-supernatural.jpg",
-            "time": "20 de novembro de 2005, 12h06min (UTC)",
-            "body": "Quero informar que este artigo é uma fraude. Meu computador tá ligado á 3 dias e n aconteceu absolutamente nada do que está escrito aqui. A internet continua funcionando, o bubble continua travando e meu pai continua reclamando da conta telefônica. Onde está o colapso? Onde está a revolução? Onde está meu prêmio por ser o único cidadão que realmente testou essa teoria? Além disso, o autor afirma que os computadores podem controlar a sociedade, mas ontem meu PC não conseguiu nem abrir um arquivo do Word sem apresentar um erro fatal. Se essa máquina pretende dominar a humanidade, sugiro que comece aprendendo a reconhecer um disquete. P.S.: Maycon, se você estiver lendo isso, saiba que descobri como alterar o texto da Wikipédia. Vou substituir o artigo inteiro por uma receita de miojo. Não tente me impedir.",
-            "replies": [
-              {
-                "author": "jotacoru1234",
-                "avatar": "encicloweb-owl.jpg",
-                "time": "26 de novembro de 2005, 12h06min (UTC)",
-                "body": "ESSE NÃO É O CARA QUE SUBIU NUM POSTE DE TELEFONE PRA TENTAR DESCOBRIR DE ONDE VINHA A INTERNET???? HUAHUAHAUHAUHAUAHUAHUA Meu primo mora perto da casa dele e disse que o sujeito ficou quase uma hora olhando pros fios, com um rádio de pilha na mão, falando que tinha descoberto a conexão principal do Google. Depois tentou convencer o pessoal da rua a desligar os computadores às 23h59 porque, segundo ele, era nesse horário que os americanos atualizavam o sistema de controle mundial. O pior é que ele teria levado um modem de 56k pra testar a teoria. NO POSTE. O MODEM. Não sei se é verdade, mas se for o mesmo loco, agora entendo esse artigo. LOL"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-],
   [wikiLanHouseArticlePath]: [
-  {
-    "author": "Frequentador de 2005",
-    "avatar": "encicloweb-lan-house-author.jpg",
-    "time": "18 de outubro de 2005, 21h34min (UTC)",
-    "body": "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador."
-  },
-  {
-    "author": "Dona do balcão",
-    "avatar": "encicloweb-kelly-key.jpg",
-    "time": "19 de outubro de 2005, 00h06min (UTC)",
-    "body": "O atendente também ensinava a imprimir arquivos, criar e-mail e salvar documentos. Esse apoio fazia diferença para quem estava começando."
-  },
-  {
-    "author": "Jogador de fim de semana",
-    "avatar": "encicloweb-anime.jpg",
-    "time": "20 de novembro de 2005, 12h06min (UTC)",
-    "body": "Os campeonatos e as partidas em rede eram o principal motivo para juntar os amigos no mesmo lugar."
-  }
-],
+    {
+      "author": "Frequentador de 2005",
+      "avatar": "encicloweb-lan-house-author.jpg",
+      "body": "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador.",
+      "time": "18 de outubro de 2005, 21h34min (UTC)"
+    },
+    {
+      "author": "Dona do balcão",
+      "avatar": "encicloweb-kelly-key.jpg",
+      "body": "O atendente também ensinava a imprimir arquivos, criar e-mail e salvar documentos. Esse apoio fazia diferença para quem estava começando.",
+      "time": "19 de outubro de 2005, 00h06min (UTC)"
+    },
+    {
+      "author": "Jogador de fim de semana",
+      "avatar": "encicloweb-anime.jpg",
+      "body": "Os campeonatos e as partidas em rede eram o principal motivo para juntar os amigos no mesmo lugar.",
+      "time": "20 de novembro de 2005, 12h06min (UTC)"
+    }
+  ],
   [wikiSociabilityArticlePath]: [
-  {
-    "author": "cleidedograu",
-    "avatar": "encicloweb-anime.jpg",
-    "time": "18 de outubro de 2005, 21h34min (UTC)",
-    "body": "Na minha opinião, as lan houses foram muito importantes para os jovens das periferias. Esses lugares permitiam acessar a internet, jogar e conversar com os amigos. Além disso, ajudavam os jovens a conhecer novas pessoas e fazer amizades. Achei interessante perceber que eles frequentavam esses espaços não apenas pela tecnologia. Isso mostra como a convivência social é importante durante a juventude.",
-    "replies": [
-      {
-        "author": "AnnaAmanaruhina",
-        "avatar": "encicloweb-family.jpg",
-        "time": "19 de outubro de 2005, 00h06min (UTC)",
-        "body": "Achei interessante a parte que fala sobre a falta de privacidade nas casas das periferias. Muitas famílias vivem em espaços pequenos e dividem os cômodos com várias pessoas. Por isso, alguns jovens preferiam passar parte do tempo nas lan houses. Nesses lugares, podiam conversar com os amigos e se divertir. Isso mostra como as condições de moradia influenciam a vida dos jovens.",
-        "replies": [
-          {
-            "author": "EuamokellyKey",
-            "avatar": "encicloweb-kelly-key.jpg",
-            "time": "20 de novembro de 2005, 12h06min (UTC)",
-            "body": "Na minha opinião, as lan houses também ajudavam os jovens a aprender coisas novas. Eles desenvolviam conhecimentos sobre computadores, jogos e ferramentas da internet. Além disso, compartilhavam informações e ajudavam uns aos outros. Essas habilidades poderiam ser úteis nos estudos e no futuro profissional. Assim, as lan houses também contribuíam para o aprendizado dos frequentadores.",
-            "replies": [
-              {
-                "author": "samantha",
-                "avatar": "encicloweb-chris-rock.jpg",
-                "time": "26 de novembro de 2005, 12h06min (UTC)",
-                "body": "O que mais me chamou a atenção foi a importância das lan houses para as amizades. Esses espaços permitiam que os jovens conversassem e compartilhassem experiências. Com o tempo, muitos criavam vínculos e formavam grupos de amigos. Porém, também existiam situações de exclusão entre alguns frequentadores. Isso mostra que as relações sociais podem ter aspectos positivos e negativos."
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-],
+    {
+      "author": "cleidedograu",
+      "avatar": "encicloweb-anime.jpg",
+      "body": "Na minha opinião, as lan houses foram muito importantes para os jovens das periferias. Esses lugares permitiam acessar a internet, jogar e conversar com os amigos. Além disso, ajudavam os jovens a conhecer novas pessoas e fazer amizades. Achei interessante perceber que eles frequentavam esses espaços não apenas pela tecnologia. Isso mostra como a convivência social é importante durante a juventude.",
+      "replies": [
+        {
+          "author": "AnnaAmanaruhina",
+          "avatar": "encicloweb-family.jpg",
+          "body": "Achei interessante a parte que fala sobre a falta de privacidade nas casas das periferias. Muitas famílias vivem em espaços pequenos e dividem os cômodos com várias pessoas. Por isso, alguns jovens preferiam passar parte do tempo nas lan houses. Nesses lugares, podiam conversar com os amigos e se divertir. Isso mostra como as condições de moradia influenciam a vida dos jovens.",
+          "replies": [
+            {
+              "author": "EuamokellyKey",
+              "avatar": "encicloweb-kelly-key.jpg",
+              "body": "Na minha opinião, as lan houses também ajudavam os jovens a aprender coisas novas. Eles desenvolviam conhecimentos sobre computadores, jogos e ferramentas da internet. Além disso, compartilhavam informações e ajudavam uns aos outros. Essas habilidades poderiam ser úteis nos estudos e no futuro profissional. Assim, as lan houses também contribuíam para o aprendizado dos frequentadores.",
+              "replies": [
+                {
+                  "author": "samantha",
+                  "avatar": "encicloweb-chris-rock.jpg",
+                  "body": "O que mais me chamou a atenção foi a importância das lan houses para as amizades. Esses espaços permitiam que os jovens conversassem e compartilhassem experiências. Com o tempo, muitos criavam vínculos e formavam grupos de amigos. Porém, também existiam situações de exclusão entre alguns frequentadores. Isso mostra que as relações sociais podem ter aspectos positivos e negativos.",
+                  "time": "26 de novembro de 2005, 12h06min (UTC)"
+                }
+              ],
+              "time": "20 de novembro de 2005, 12h06min (UTC)"
+            }
+          ],
+          "time": "19 de outubro de 2005, 00h06min (UTC)"
+        }
+      ],
+      "time": "18 de outubro de 2005, 21h34min (UTC)"
+    }
+  ],
+  [wikiTechnologyArticlePath]: [
+    {
+      "author": "teamjacob",
+      "avatar": "encicloweb-twilight-avatar.jpg",
+      "body": "Li o artigo inteiro e acho q o autor está certo em alguns pontos. A net tá crescendo muito rápido e ninguém sabe oq está acontecendo. Outro dia li que o Guugli consegue achar páginas do mundo inteiro em segundos. Como isso é possível? Tem gente que diz que existe um computador central guarda todas as info da humanidade, provavelmente em algum lugar dos Estados Unidos. N encontrei provas, mas tbm não encontrei provas de que n existe. Sobre a parte dos computadores controlarem nossos pensamentos, não sei se é possível, mas meu Internet Explorer abriu três janelas sozinho ontem e isso me deixou bastante desconfiado.",
+      "replies": [
+        {
+          "author": "Todomundomeodeia",
+          "avatar": "encicloweb-family.jpg",
+          "body": "Eu entrei procurando informações pro trabalho da escola e acabei lendo o artigo todo. Algmas coisa são engraçadas, mas outras me fizeram pensar um pouco. Todo mundo q eu conheço está começando a usar a internet com mais frequência, principalmente para conversar pelo MSM, entrar no Bubblee, procurar músicas. Parece muito difícil imaginar q isso possa mudar tanto a maneira como as pessoas vivem. Ao mesmo tempo, já vejo gente q fica desesperada quando não consegue entrar no MSN ou qnd perde a conexão bem na hora da conversa aff.",
+          "replies": [
+            {
+              "author": "lukinhaadoracinema",
+              "avatar": "encicloweb-supernatural.jpg",
+              "body": "Quero informar que este artigo é uma fraude. Meu computador tá ligado á 3 dias e n aconteceu absolutamente nada do que está escrito aqui. A internet continua funcionando, o bubble continua travando e meu pai continua reclamando da conta telefônica. Onde está o colapso? Onde está a revolução? Onde está meu prêmio por ser o único cidadão que realmente testou essa teoria? Além disso, o autor afirma que os computadores podem controlar a sociedade, mas ontem meu PC não conseguiu nem abrir um arquivo do Word sem apresentar um erro fatal. Se essa máquina pretende dominar a humanidade, sugiro que comece aprendendo a reconhecer um disquete. P.S.: Maycon, se você estiver lendo isso, saiba que descobri como alterar o texto da Wikipédia. Vou substituir o artigo inteiro por uma receita de miojo. Não tente me impedir.",
+              "replies": [
+                {
+                  "author": "jotacoru1234",
+                  "avatar": "encicloweb-owl.jpg",
+                  "body": "ESSE NÃO É O CARA QUE SUBIU NUM POSTE DE TELEFONE PRA TENTAR DESCOBRIR DE ONDE VINHA A INTERNET???? HUAHUAHAUHAUHAUAHUAHUA Meu primo mora perto da casa dele e disse que o sujeito ficou quase uma hora olhando pros fios, com um rádio de pilha na mão, falando que tinha descoberto a conexão principal do Google. Depois tentou convencer o pessoal da rua a desligar os computadores às 23h59 porque, segundo ele, era nesse horário que os americanos atualizavam o sistema de controle mundial. O pior é que ele teria levado um modem de 56k pra testar a teoria. NO POSTE. O MODEM. Não sei se é verdade, mas se for o mesmo loco, agora entendo esse artigo. LOL",
+                  "time": "26 de novembro de 2005, 12h06min (UTC)"
+                }
+              ],
+              "time": "20 de novembro de 2005, 12h06min (UTC)"
+            }
+          ],
+          "time": "19 de outubro de 2005, 00h06min (UTC)"
+        }
+      ],
+      "time": "18 de outubro de 2005, 21h34min (UTC)"
+    }
+  ]
 };
+
+const renderWikiComment = (comment: WikiDiscussionComment, depth = 0): ReactNode => (
+  <section
+    key={`${comment.author}-${comment.time ?? comment.body.slice(0, 32)}`}
+    className={depth === 0 ? "wiki-comment" : "wiki-comment wiki-comment-reply"}
+    style={depth > 0 ? { marginLeft: depth * 16 } : undefined}
+  >
+    <img alt="" src={wikiAssets + comment.avatar} />
+    <div>
+      <strong>{comment.author}</strong>
+      {comment.time && <small className="wiki-comment-time">· {comment.time}</small>}
+      <p>{comment.body}</p>
+      {comment.replies?.map((reply) => renderWikiComment(reply, depth + 1))}
+    </div>
+  </section>
+);
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
@@ -497,12 +518,12 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const isTechnologyArticle = article.path === wikiTechnologyArticlePath;
   const hasDiscussion = isLanHouseArticle || isSociabilityArticle || isTechnologyArticle;
   const matchingArticles = wikiArticles.filter(({ body, title }) =>
-    (title + " " + body).toLocaleLowerCase().includes(query.toLocaleLowerCase())
+    `${title} ${body}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())
   );
   const [commentDraft, setCommentDraft] = useState("");
-  const [submittedComments, setSubmittedComments] = useState<string[]>([]);
+  const [submittedComments, setSubmittedComments] = useState<SubmittedWikiComment[]>([]);
   const search = (value: string): void =>
-    browserTabs?.navigate(searchUrl(SITE_URLS.encicloweb + "buscar", value));
+    browserTabs?.navigate(searchUrl(`${SITE_URLS.encicloweb}buscar`, value));
   const navigate = (path: string): void => browserTabs?.navigate(SITE_URLS.encicloweb + path);
   const legacyHowItWorks = (
     <section className="wiki-legacy-information">
@@ -513,10 +534,10 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     </section>
   );
 
-  const renderTabs = () => (
+  const renderTabs = (): ReactNode => (
     <nav aria-label="Página da EncicloWeb" className="wiki-page-tabs">
       <button
-        aria-current={!isDiscussion ? "page" : undefined}
+        aria-current={isDiscussion ? undefined : "page"}
         onClick={() => navigate(article.path.replace(/^\//, ""))}
         type="button"
       >
@@ -524,7 +545,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
       </button>
       <button
         aria-current={isDiscussion ? "page" : undefined}
-        onClick={() => navigate(article.path.replace(/^\//, "") + "/discussao")}
+        onClick={() => navigate(`${article.path.replace(/^\//, "")}/discussao`)}
         type="button"
       >
         Discussão
@@ -534,21 +555,21 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
 
   const sidebarAuthor = isLanHouseArticle
     ? {
-        name: "Japodi Almo’sá",
-        image: "encicloweb-lan-house-author.jpg",
         description: "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
+        image: "encicloweb-lan-house-author.jpg",
+        name: "Japodi Almo’sá",
       }
     : isSociabilityArticle
       ? {
-          name: "Fábio Mariano Borges",
-          image: "encicloweb-fabio-mariano.jpg",
           description: "Sociólogo, pesquisador e professor brasileiro. É mestre e doutor pela PUC-SP e possui formação em Marketing e Comunicação Social. Seus estudos abordam o comportamento do consumidor, a cultura e as relações sociais.",
+          image: "encicloweb-fabio-mariano.jpg",
+          name: "Fábio Mariano Borges",
         }
       : isTechnologyArticle
         ? {
-            name: "Japodi Almo’sá",
-            image: "encicloweb-einstein.jpg",
             description: "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
+            image: "encicloweb-einstein.jpg",
+            name: "Japodi Almo’sá",
           }
         : null;
 
@@ -568,23 +589,9 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     { label: "Páginas especiais", path: wikiLanHouseArticlePath },
   ];
 
-  const renderDiscussion = () => {
+  const renderDiscussion = (): ReactNode => {
     const comments = wikiDiscussions[article.path] || [];
-    const renderComment = (comment: WikiDiscussionComment, depth = 0) => (
-      <section
-        className={depth === 0 ? "wiki-comment" : "wiki-comment wiki-comment-reply"}
-        key={depth + comment.author}
-        style={depth > 0 ? { marginLeft: depth * 16 } : undefined}
-      >
-        <img alt="" src={wikiAssets + comment.avatar} />
-        <div>
-          <strong>{comment.author}</strong>
-          {comment.time && <small className="wiki-comment-time">· {comment.time}</small>}
-          <p>{comment.body}</p>
-          {comment.replies?.map((reply) => renderComment(reply, depth + 1))}
-        </div>
-      </section>
-    );
+
     return (
       <article className="wiki-article wiki-discussion-page">
         {renderTabs()}
@@ -595,7 +602,11 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             event.preventDefault();
             const message = commentDraft.trim();
             if (!message) return;
-            setSubmittedComments((current) => [...current, message]);
+            const submittedComment = {
+              body: message,
+              id: window.crypto.randomUUID(),
+            };
+            setSubmittedComments((current) => [...current, submittedComment]);
             setCommentDraft("");
           }}
         >
@@ -609,11 +620,11 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           <button aria-label="Publicar comentário" disabled={!commentDraft.trim()} type="submit">↵</button>
         </form>
         <div className="wiki-comment-list">
-          {comments.map((comment) => renderComment(comment))}
-          {submittedComments.map((comment, index) => (
-            <section className="wiki-comment" key={"submitted-" + index}>
+          {comments.map((comment) => renderWikiComment(comment))}
+          {submittedComments.map(({ body, id }) => (
+            <section key={id} className="wiki-comment">
               <span aria-hidden="true" className="wiki-default-avatar">?</span>
-              <div><strong>Você</strong><p>{comment}</p></div>
+              <div><strong>Você</strong><p>{body}</p></div>
             </section>
           ))}
         </div>
@@ -621,7 +632,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     );
   };
 
-  const renderArticle = () => (
+  const renderArticle = (): ReactNode => (
     <article className={`wiki-article ${isHome ? "wiki-home-page" : "wiki-content-page"}`}>
       {isHome ? (
         <>
@@ -645,7 +656,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           </ul>
           <section className="wiki-founder-note">
             <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
-            <img alt="Jimmy Wales em uma fotografia" src={wikiAssets + "encicloweb-jimmy-wales.jpg"} />
+            <img alt="Jimmy Wales em uma fotografia" src={`${wikiAssets}encicloweb-jimmy-wales.jpg`} />
           </section>
         </>
       ) : (
@@ -655,10 +666,10 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           {isTechnologyArticle ? (
             <>
               <div className="wiki-essay-columns">
-                {wikiTechnologyArticleColumns.map((column, columnIndex) => (
-                  <div className="wiki-essay-column" key={columnIndex}>
+                {wikiTechnologyArticleColumns.map((column) => (
+                  <div key={column.slice(0, 64)} className="wiki-essay-column">
                     {splitWikiTechnologyColumn(column).map(({ body, heading }) => (
-                      <section className="wiki-essay-section" key={heading || body.slice(0, 32)}>
+                      <section key={heading || body.slice(0, 32)} className="wiki-essay-section">
                         {heading && <h2>{heading}</h2>}
                         <p>{body}</p>
                       </section>
@@ -674,7 +685,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                 <div className="wiki-essay-column">
                   <p className="wiki-article-lead">{article.body}</p>
                   {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).slice(0, 2).map((section) => (
-                    <section className="wiki-essay-section" key={section.heading}>
+                    <section key={section.heading} className="wiki-essay-section">
                       <h2>{section.heading}</h2>
                       <p>{section.body}</p>
                     </section>
@@ -691,7 +702,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     </figcaption>
                   </figure>
                   {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).slice(2).map((section) => (
-                    <section className="wiki-essay-section" key={section.heading}>
+                    <section key={section.heading} className="wiki-essay-section">
                       <h2>{section.heading}</h2>
                       <p>{section.body}</p>
                     </section>
@@ -931,3 +942,5 @@ const InternalSites: FC<InternalSitesProps> = ({ url }) => {
 };
 
 export default InternalSites;
+
+
