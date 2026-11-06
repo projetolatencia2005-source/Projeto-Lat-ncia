@@ -653,7 +653,7 @@ const FileEntry: FC<FileEntryProps> = ({
             }
             {...(isDesktop
               ? {
-                  imgSize: isPastasShortcut ? 80 : 40,
+                  imgSize: isPastasShortcut ? 25 : 40,
                 }
               : FileEntryIconSize[view])}
           />

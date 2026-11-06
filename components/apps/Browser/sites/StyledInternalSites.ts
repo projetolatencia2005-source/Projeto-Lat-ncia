@@ -432,6 +432,78 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
+    .wiki-article {
+      .wiki-how-to-list {
+        margin: 14px 0 24px;
+        padding-left: 24px;
+
+        li {
+          margin: 5px 0;
+        }
+      }
+
+      .wiki-founder-note,
+      .wiki-author-card {
+        background: #dedede;
+        border: 1px solid #aaa;
+        margin: 20px 0 0;
+        padding: 14px;
+
+        p {
+          margin: 0;
+        }
+      }
+
+      .wiki-essay-columns {
+        display: grid;
+        gap: clamp(14px, 2vw, 26px);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .wiki-essay-column {
+        min-width: 0;
+      }
+
+      .wiki-essay-section {
+        margin: 0 0 12px;
+
+        h2 {
+          border: 0;
+          font-size: 14px;
+          line-height: 1.25;
+          margin: 0 0 5px;
+        }
+
+        p {
+          font-size: 13px;
+          line-height: 1.35;
+          margin: 0 0 8px;
+        }
+      }
+
+      .wiki-author-card {
+        h2 {
+          border: 0;
+          font-size: 16px;
+          margin: 0 0 6px;
+        }
+      }
+
+      .wiki-disclaimer {
+        border: 1px solid #aaa;
+        font-size: 12px;
+        margin: 10px 0 0;
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .wiki-essay-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
   .site-youspace {
     background: #fff;
     min-height: 100%;

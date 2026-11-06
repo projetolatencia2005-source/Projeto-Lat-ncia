@@ -437,7 +437,7 @@ const GlobalStyle = styled.createGlobalStyle`
         1fr
       );
     margin-top: 50px;
-    transform: translateY(-40px);
+    transform: translateY(-20px);
   }
 
   .doors-tutorial-step h2 {
@@ -525,7 +525,7 @@ const GlobalStyle = styled.createGlobalStyle`
     flex-direction: column;
     grid-column: 1;
     justify-content: center;
-    transform: translateX(calc(9.3vw - 400px));
+    transform: translateX(calc(9.3vw - 300px));
   }
 
   .doors-login-wordmark {
