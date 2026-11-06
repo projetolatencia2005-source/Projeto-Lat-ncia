@@ -253,12 +253,12 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Chess",
                       undefined,
-                      "/System/Doors/cavalo_preto.svg"
+                      "/System/Doors/figma/xadrez-prancheta.svg"
                     )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/cavalo_preto.svg" />
+                  <img alt="" src="/System/Doors/figma/xadrez-prancheta.svg" />
                   <span>Xadrez</span>
                 </button>
               </li>

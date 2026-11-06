@@ -203,6 +203,8 @@ const FileEntry: FC<FileEntryProps> = ({
     !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
   const isPastasShortcut =
     isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
+  const isRabiscoShortcut =
+    isDesktop && name.trim().toLocaleLowerCase() === "rabisco";
   const directory = isShortcut ? url : path;
   const fileDrop = useFileDrop({
     callback: async (fileDropName, data) => {
@@ -645,7 +647,9 @@ const FileEntry: FC<FileEntryProps> = ({
                 ? path
                 : isPastasShortcut
                   ? FOLDER_ICON
-                  : icon
+                  : isRabiscoShortcut
+                    ? "/System/Doors/figma/paintnovo.svg"
+                    : icon
             }
             {...(isDesktop
               ? {
