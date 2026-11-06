@@ -103,8 +103,8 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     gap: 0;
 
     picture:first-of-type {
-      height: 25px;
-      width: 25px;
+      height: 35px;
+      width: 35px;
     }
   }
 

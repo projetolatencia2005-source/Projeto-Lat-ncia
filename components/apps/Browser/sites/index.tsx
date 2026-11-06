@@ -287,6 +287,10 @@ const splitWikiTechnologyColumn = (
   return sections.filter(({ body }) => body);
 };
 
+const wikiLanHouseArticlePath = "/artigo/lan-house";
+const wikiSociabilityArticlePath = "/artigo/sociabilidade-nas-lan-houses-das-periferias";
+const wikiAssets = "/System/Doors/sites/encicloweb/";
+
 const wikiArticles = [
   {
     body: "A EncicloWeb é uma enciclopédia livre, criada para reunir conhecimento, curiosidades e histórias em um só lugar.",
@@ -308,18 +312,394 @@ const wikiArticles = [
     path: wikiTechnologyArticlePath,
     title: "Avanço da tecnologia e teorias de distopia digital",
   },
+  {
+    body: "A convivência em lan houses ajudou a formar comunidades digitais nas periferias, unindo jogos, comunicação e acesso compartilhado à internet.",
+    path: wikiSociabilityArticlePath,
+    title: "Sociabilidade nas lan houses das periferias",
+  },
 ];
+
+
+const wikiLanHouseSections = [
+  {
+    heading: "O espaço de acesso compartilhado",
+    body: "Antes de a conexão doméstica se tornar comum, as lan houses ofereciam computadores ligados à internet por hora. O balcão, as fileiras de máquinas e o relógio da sessão faziam parte da rotina de quem precisava pesquisar, conversar, estudar ou jogar.",
+  },
+  {
+    heading: "Uma janela para a rede",
+    body: "Para muita gente, a primeira conta de e-mail, a primeira conversa por mensagem instantânea e o primeiro perfil em uma rede social nasceram em um computador de uso coletivo. O acesso acontecia em um lugar físico, mas as possibilidades atravessavam a cidade.",
+  },
+  {
+    heading: "Jogos, amigos e campeonatos",
+    body: "As máquinas também viravam pontos de encontro. Grupos combinavam partidas, compartilhavam dicas e organizavam campeonatos locais. O som dos teclados e das partidas criava uma paisagem reconhecível para quem frequentava esses espaços.",
+  },
+  {
+    heading: "Serviços e vida cotidiana",
+    body: "Além da diversão, muitas pessoas usavam a lan house para imprimir trabalhos, preencher formulários, consultar serviços e enviar documentos. O atendente frequentemente ajudava quem ainda estava aprendendo a navegar pela internet.",
+  },
+  {
+    heading: "Uma memória da internet brasileira",
+    body: "Com a expansão dos celulares e da banda larga, parte das lan houses mudou de função ou encerrou as atividades. Ainda assim, elas permanecem na memória como lugares de aprendizado, convivência e descoberta tecnológica.",
+  },
+];
+
+const wikiSociabilitySections = [
+  {
+    heading: "A convivência também era digital",
+    body: "A experiência de estar conectado não acontecia apenas diante da tela. Amigos se encontravam no mesmo salão, escolhiam computadores próximos e acompanhavam as partidas e conversas uns dos outros.",
+  },
+  {
+    heading: "A periferia conectada",
+    body: "Em bairros onde o computador e a conexão rápida não estavam disponíveis em todas as casas, a lan house funcionava como uma porta de entrada para serviços, informação e comunicação. O espaço compartilhado ampliava o acesso à rede.",
+  },
+  {
+    heading: "Aprender junto",
+    body: "Usuários trocavam instruções sobre programas, jogos, e-mail e ferramentas de pesquisa. A ajuda podia vir de um atendente, de um amigo ou de alguém sentado na máquina ao lado.",
+  },
+  {
+    heading: "Jogo como ponto de encontro",
+    body: "Partidas em rede criavam vínculos e rivalidades que continuavam fora do jogo. As equipes se organizavam, marcavam horários e celebravam vitórias como parte da vida social do bairro.",
+  },
+  {
+    heading: "Laços que permanecem",
+    body: "As lan houses mudaram com a popularização da internet doméstica, mas as lembranças desses espaços mostram que acesso digital também depende de encontros, apoio e participação comunitária.",
+  },
+];
+
+type WikiDiscussionComment = {
+  author: string;
+  avatar: string;
+  body: string;
+  replies?: WikiDiscussionComment[];
+};
+
+const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
+  [wikiTechnologyArticlePath]: [
+    {
+      author: "Albert Einstein",
+      avatar: "encicloweb-einstein.jpg",
+      body: "A tecnologia facilita tarefas, mas o texto exagera cada consequência para provocar o leitor. Vale separar a sátira das previsões que realmente podem ser verificadas.",
+      replies: [
+        {
+          author: "Leitor da madrugada",
+          avatar: "encicloweb-owl.jpg",
+          body: "Concordo. A parte do telefone ocupado parece ficção científica para quem só usa celular.",
+        },
+      ],
+    },
+    {
+      author: "Fã de ficção científica",
+      avatar: "encicloweb-supernatural.jpg",
+      body: "A comparação com histórias distópicas ajuda a apresentar o tema. Seria bom acrescentar fontes históricas sobre o crescimento do acesso à internet.",
+    },
+    {
+      author: "Charlie",
+      avatar: "encicloweb-chaplin.jpg",
+      body: "A ideia funciona como humor, desde que o aviso sobre as fontes continue visível para quem chega pela primeira vez.",
+    },
+    {
+      author: "Pesquisadora curiosa",
+      avatar: "encicloweb-twilight-avatar.jpg",
+      body: "Sugiro incluir uma referência sobre a popularização dos computadores no Brasil para equilibrar as opiniões do autor.",
+    },
+  ],
+  [wikiLanHouseArticlePath]: [
+    {
+      author: "Frequentador de 2005",
+      avatar: "encicloweb-lan-house-author.jpg",
+      body: "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador.",
+    },
+    {
+      author: "Dona do balcão",
+      avatar: "encicloweb-kelly-key.jpg",
+      body: "O atendente também ensinava a imprimir arquivos, criar e-mail e salvar documentos. Esse apoio fazia diferença para quem estava começando.",
+    },
+    {
+      author: "Jogador de fim de semana",
+      avatar: "encicloweb-anime.jpg",
+      body: "Os campeonatos e as partidas em rede eram o principal motivo para juntar os amigos no mesmo lugar.",
+    },
+  ],
+  [wikiSociabilityArticlePath]: [
+    {
+      author: "Fã de jogos em rede",
+      avatar: "encicloweb-anime.jpg",
+      body: "As partidas em grupo eram um motivo importante para combinar de ir até a lan house. A máquina era individual, mas a experiência era coletiva.",
+      replies: [
+        {
+          author: "Pesquisadora curiosa",
+          avatar: "encicloweb-family.jpg",
+          body: "Esse relato combina com as memórias de quem frequentava esses espaços nos anos 2000.",
+        },
+      ],
+    },
+    {
+      author: "Jimmy Wales",
+      avatar: "encicloweb-jimmy-wales.jpg",
+      body: "O artigo pode ganhar mais fontes orais. Depoimentos de frequentadores e atendentes ajudariam a documentar diferenças entre bairros.",
+    },
+    {
+      author: "Kelly",
+      avatar: "encicloweb-kelly-key.jpg",
+      body: "Também lembro da ajuda de outras pessoas para criar e-mail e imprimir trabalhos da escola.",
+    },
+    {
+      author: "Leitor do bairro",
+      avatar: "encicloweb-chris-rock.jpg",
+      body: "Seria interessante registrar como os campeonatos locais ajudavam a aproximar pessoas de idades diferentes.",
+    },
+  ],
+};
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const query = new URL(url).searchParams.get("q") || "";
-  const slug = new URL(url).pathname;
-  const article = wikiArticles.find(({ path }) => path === slug) || wikiArticles[0];
+  const pageUrl = new URL(url);
+  const query = pageUrl.searchParams.get("q") || "";
+  const requestedPath = pageUrl.pathname.replace(/\/+$/, "") || "/";
+  const isDiscussion = requestedPath.endsWith("/discussao");
+  const articlePath = isDiscussion
+    ? requestedPath.replace(/\/discussao$/, "")
+    : requestedPath;
+  const article = wikiArticles.find(({ path }) => path === articlePath) || wikiArticles[0];
+  const isHome = article.path === "/";
+  const isLanHouseArticle = article.path === wikiLanHouseArticlePath;
+  const isSociabilityArticle = article.path === wikiSociabilityArticlePath;
+  const isTechnologyArticle = article.path === wikiTechnologyArticlePath;
+  const hasDiscussion = isLanHouseArticle || isSociabilityArticle || isTechnologyArticle;
   const matchingArticles = wikiArticles.filter(({ body, title }) =>
-    `${title} ${body}`.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+    (title + " " + body).toLocaleLowerCase().includes(query.toLocaleLowerCase())
   );
+  const [commentDraft, setCommentDraft] = useState("");
+  const [submittedComments, setSubmittedComments] = useState<string[]>([]);
   const search = (value: string): void =>
-    browserTabs?.navigate(searchUrl(`${SITE_URLS.encicloweb}buscar`, value));
+    browserTabs?.navigate(searchUrl(SITE_URLS.encicloweb + "buscar", value));
+  const navigate = (path: string): void => browserTabs?.navigate(SITE_URLS.encicloweb + path);
+  const legacyHowItWorks = (
+    <section className="wiki-legacy-information">
+      <h2>Como funciona?</h2>
+      <p>
+        Leia para descobrir assuntos novos, cite fontes para ajudar outras pessoas e participe das páginas comunitárias. Todo o conteúdo desta demonstração permanece dentro do navegador interno.
+      </p>
+    </section>
+  );
+
+  const renderTabs = () => (
+    <nav aria-label="Página da EncicloWeb" className="wiki-page-tabs">
+      <button
+        aria-current={!isDiscussion ? "page" : undefined}
+        onClick={() => navigate(article.path.replace(/^\//, ""))}
+        type="button"
+      >
+        Artigo
+      </button>
+      <button
+        aria-current={isDiscussion ? "page" : undefined}
+        onClick={() => navigate(article.path.replace(/^\//, "") + "/discussao")}
+        type="button"
+      >
+        Discussão
+      </button>
+    </nav>
+  );
+
+  const renderAuthor = (author: string, image: string, description: string) => (
+    <section className="wiki-author-card">
+      <img alt="" src={wikiAssets + image} />
+      <div>
+        <small className="wiki-author-label">Autor do artigo</small>
+        <h2>{author}</h2>
+        <p>{description}</p>
+      </div>
+    </section>
+  );
+
+  const renderDiscussion = () => {
+    const comments = wikiDiscussions[article.path] || [];
+    return (
+      <article className="wiki-article wiki-discussion-page">
+        {renderTabs()}
+        <h1>Veja a opinião dos usuários</h1>
+        <p className="wiki-discussion-intro">
+          Esta página reúne comentários sobre “{article.title}”. Leia as contribuições e mantenha a conversa respeitosa.
+        </p>
+        <form
+          className="wiki-comment-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const message = commentDraft.trim();
+            if (!message) return;
+            setSubmittedComments((current) => [...current, message]);
+            setCommentDraft("");
+          }}
+        >
+          <label htmlFor="wiki-comment">Adicionar um comentário</label>
+          <textarea
+            id="wiki-comment"
+            onChange={({ currentTarget }) => setCommentDraft(currentTarget.value)}
+            placeholder="Compartilhe sua opinião..."
+            value={commentDraft}
+          />
+          <button disabled={!commentDraft.trim()} type="submit">Publicar comentário</button>
+        </form>
+        <div className="wiki-comment-list">
+          {comments.map((comment, index) => (
+            <section className="wiki-comment" key={comment.author + index}>
+              <img alt="" src={wikiAssets + comment.avatar} />
+              <div>
+                <strong>{comment.author}</strong>
+                <p>{comment.body}</p>
+                {comment.replies?.map((reply, replyIndex) => (
+                  <section className="wiki-comment wiki-comment-reply" key={reply.author + replyIndex}>
+                    <img alt="" src={wikiAssets + reply.avatar} />
+                    <div>
+                      <strong>{reply.author}</strong>
+                      <p>{reply.body}</p>
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </section>
+          ))}
+          {submittedComments.map((comment, index) => (
+            <section className="wiki-comment" key={"submitted-" + index}>
+              <span aria-hidden="true" className="wiki-default-avatar">?</span>
+              <div><strong>Você</strong><p>{comment}</p></div>
+            </section>
+          ))}
+        </div>
+        {isTechnologyArticle &&
+          renderAuthor(
+            "Albert Einstein",
+            "encicloweb-einstein.jpg",
+            "Leitor e colaborador da EncicloWeb. O perfil acompanha as discussões sobre tecnologia e cultura digital."
+          )}
+        {isSociabilityArticle &&
+          renderAuthor(
+            "Fábio Mariano",
+            "encicloweb-fabio-mariano.jpg",
+            "Pesquisador das culturas juvenis e das relações construídas em espaços de acesso compartilhado."
+          )}
+      </article>
+    );
+  };
+
+  const renderArticle = () => (
+    <article className="wiki-article">
+      {hasDiscussion && renderTabs()}
+      <div className="wiki-article-heading">
+        <div>
+          <div className="wiki-breadcrumb">EncicloWeb / Artigos / {article.title}</div>
+          <h1>{isHome ? "Bem vindo ao EncicloWeb," : isLanHouseArticle ? "O que são LAN houses e para que veio" : article.title}</h1>
+        </div>
+      </div>
+
+      {isTechnologyArticle ? (
+        <>
+          <div className="wiki-essay-columns">
+            {wikiTechnologyArticleColumns.map((column, columnIndex) => (
+              <div className="wiki-essay-column" key={columnIndex}>
+                {columnIndex === 0 && (
+                  <figure className="wiki-article-figure">
+                    <img alt="Albert Einstein em uma fotografia em preto e branco" src={wikiAssets + "encicloweb-einstein.jpg"} />
+                    <figcaption>Retrato do colaborador da página</figcaption>
+                  </figure>
+                )}
+                {splitWikiTechnologyColumn(column).map(({ body, heading }) => (
+                  <section className="wiki-essay-section" key={heading || body.slice(0, 32)}>
+                    {heading && <h2>{heading}</h2>}
+                    <p>{body}</p>
+                  </section>
+                ))}
+              </div>
+            ))}
+          </div>
+          {renderAuthor(
+            "Japodi Almo’sá",
+            "encicloweb-einstein.jpg",
+            "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. “ Tenho interesse especial em teorias da conspiração, comportamento digital e no fato de que ninguém parece ler os termos de uso de absolutamente nada” diz autor."
+          )}
+          <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base em nas opinões do autor. As fontes foram retiradas diretamente da cabeça dele, os dados não foram verificados e as conclusões carecem de qualquer rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
+        </>
+      ) : isLanHouseArticle || isSociabilityArticle ? (
+        <>
+          <p className="wiki-article-lead">{article.body}</p>
+          <figure className="wiki-article-figure wiki-feature-figure">
+            <img
+              alt={isLanHouseArticle ? "Computadores organizados em uma antiga lan house" : "Salão de lan house ilustrado em estilo de retícula"}
+              src={wikiAssets + (isLanHouseArticle ? "encicloweb-old-computers.jpg" : "encicloweb-lan-house-halftone.jpg")}
+            />
+            <figcaption>
+              {isLanHouseArticle ? "Computadores em um espaço de acesso compartilhado." : "Uma representação de lan house e seus computadores."}
+            </figcaption>
+          </figure>
+          <div className="wiki-essay-columns">
+            {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).map((section, index) => (
+              <section className="wiki-essay-section" key={section.heading}>
+                <h2>{section.heading}</h2>
+                <p>{section.body}</p>
+                {index === 1 && (
+                  <figure className="wiki-article-figure wiki-inline-figure">
+                    <img
+                      alt={isLanHouseArticle ? "Computadores em uma lan house" : "Atendimento em uma lan house"}
+                      src={wikiAssets + (isLanHouseArticle ? "encicloweb-lan-house-author.jpg" : "encicloweb-lan-house-halftone.jpg")}
+                    />
+                  </figure>
+                )}
+              </section>
+            ))}
+          </div>
+          {isLanHouseArticle
+            ? renderAuthor(
+                "Justin Timberlake",
+                "encicloweb-lan-house-author.jpg",
+                "Colaborador da EncicloWeb e frequentador de lan houses durante a expansão dos jogos em rede."
+              )
+            : renderAuthor(
+                "Fábio Mariano",
+                "encicloweb-fabio-mariano.jpg",
+                "Pesquisador das culturas juvenis e das relações construídas em espaços de acesso compartilhado."
+              )}
+          {isLanHouseArticle && (
+            <section className="wiki-legacy-information">
+              <p>Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.</p>
+              <p>Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.</p>
+              {legacyHowItWorks}
+            </section>
+          )}
+        </>
+      ) : (
+        <>
+          <p>
+            {isHome
+              ? "A enciclopédia livre, criada para reunir todo o conhecimento humano em um único lugar, incluindo informações que ninguém pediu, curiosidades que ninguém precisava saber e discussões que já duram mais do que alguns casamentos."
+              : article.body}
+          </p>
+          <p>
+            Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.
+          </p>
+          <p>
+            Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.
+          </p>
+          {legacyHowItWorks}
+          {isHome && (
+            <>
+              <ul className="wiki-how-to-list">
+                <li><strong>Leia:</strong> descubra informações sobre assuntos que você nunca pensou em pesquisar.</li>
+                <li><strong>Edite:</strong> compartilhe o que sabe, o que estudou ou o que ouviu de alguém que conhece uma pessoa que trabalha na área.</li>
+                <li><strong>Cite fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
+                <li><strong>Discuta:</strong> defenda suas alterações até perceber que está há quatro horas debatendo a diferença entre duas palavras.</li>
+                <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 47 regras que você deveria ter lido antes de começar.</li>
+              </ul>
+              <section className="wiki-founder-note">
+                <img alt="" src={wikiAssets + "encicloweb-jimmy-wales.jpg"} />
+                <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
+              </section>
+            </>
+          )}
+        </>
+      )}
+    </article>
+  );
 
   return (
     <section className="site-encicloweb">
@@ -341,104 +721,47 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
       <div className="wiki-layout">
         <aside className="wiki-sidebar">
           <h3>Navegação</h3>
-          {(query ? matchingArticles : wikiArticles).map((item) => (
-            <button
-              key={item.path}
-              onClick={() => browserTabs?.navigate(`${SITE_URLS.encicloweb}${item.path.replace(/^\//, "")}`)}
-              type="button"
-            >
-              · {item.title}
-            </button>
-          ))}
+          <nav aria-label="Navegação EncicloWeb">
+            {(query ? matchingArticles : wikiArticles).map((item) => (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path.replace(/^\//, ""))}
+                type="button"
+              >
+                · {item.title}
+              </button>
+            ))}
+          </nav>
           <h3>Ferramentas</h3>
-          <button onClick={() => browserTabs?.navigate(SITE_URLS.encicloweb)} type="button">
-            · Artigos influentes
-          </button>
-          <button onClick={() => browserTabs?.navigate(`${SITE_URLS.encicloweb}buscar?q=novidades`)} type="button">
-            · Novidades
-          </button>
-          <button onClick={() => browserTabs?.navigate(`${SITE_URLS.encicloweb}artigo/lan-house`)} type="button">
-            · Página aleatória
-          </button>
-        </aside>
-        <article className="wiki-article">
-          {query ? (
-            <>
-              <h1>Resultados para “{query}”</h1>
-              {(matchingArticles.length > 0 ? matchingArticles : wikiArticles).map((item) => (
-                <p key={item.path}>
-                  <button
-                    onClick={() => browserTabs?.navigate(`${SITE_URLS.encicloweb}${item.path.replace(/^\//, "")}`)}
-                    type="button"
-                  >
-                    {item.title}
-                  </button>
-                  <br />
-                  {item.body}
-                </p>
-              ))}
-            </>
-          ) : article.path === wikiTechnologyArticlePath ? (
-            <>
-              <h1>{article.title}</h1>
-              <div className="wiki-essay-columns">
-                {wikiTechnologyArticleColumns.map((column) => (
-                  <div key={column.slice(0, 32)} className="wiki-essay-column">
-                    {splitWikiTechnologyColumn(column).map(
-                      ({ body, heading }) => (
-                        <section
-                          key={heading || body.slice(0, 32)}
-                          className="wiki-essay-section"
-                        >
-                          {heading && <h2>{heading}</h2>}
-                          <p>{body}</p>
-                        </section>
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
-              <section className="wiki-author-card">
-                <h2>Autor do artigo</h2>
-                <p>Japodi Almo’sá É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. “ Tenho interesse especial em teorias da conspiração, comportamento digital e no fato de que ninguém parece ler os termos de uso de absolutamente nada” diz autor.</p>
-              </section>
-              <p className="wiki-disclaimer">Aviso: Este artigo foi elaborado com base em nas opinões do autor. As fontes foram retiradas diretamente da cabeça dele, os dados não foram verificados e as conclusões carecem de qualquer rigor científico. Consulte um profissional antes de acreditar em qualquer coisa aqui escrita.</p>
-            </>
-          ) : (
-            <>
-              <h1>{article.path === "/" ? "Bem vindo ao EncicloWeb," : article.title}</h1>
-              <p>
-                {article.path === "/"
-                  ? "A enciclopédia livre, criada para reunir todo o conhecimento humano em um único lugar, incluindo informações que ninguém pediu, curiosidades que ninguém precisava saber e discussões que já duram mais do que alguns casamentos."
-                  : article.body}
-              </p>
-              <p>
-                Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.
-              </p>
-              <p>
-                Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.
-              </p>
-              <h2>Como funciona?</h2>
-              <p>
-                Leia para descobrir assuntos novos, cite fontes para ajudar outras pessoas e participe das páginas comunitárias. Todo o conteúdo desta demonstração permanece dentro do navegador interno.
-              </p>
-              {article.path === "/" && (
-                <>
-                  <ul className="wiki-how-to-list">
-                    <li><strong>Leia:</strong> descubra informações sobre assuntos que você nunca pensou em pesquisar.</li>
-                    <li><strong>Edite:</strong> compartilhe o que sabe, o que estudou ou o que ouviu de alguém que conhece uma pessoa que trabalha na área.</li>
-                    <li><strong>Cite fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
-                    <li><strong>Discuta:</strong> defenda suas alterações até perceber que está há quatro horas debatendo a diferença entre duas palavras.</li>
-                    <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 47 regras que você deveria ter lido antes de começar.</li>
-                  </ul>
-                  <section className="wiki-founder-note">
-                    <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
-                  </section>
-                </>
-              )}
-            </>
+          <button onClick={() => navigate("")} type="button">· Artigos influentes</button>
+          <button onClick={() => navigate("buscar?q=novidades")} type="button">· Novidades</button>
+          <button onClick={() => navigate("artigo/lan-house")} type="button">· Página aleatória</button>
+          {(isLanHouseArticle || isSociabilityArticle || isTechnologyArticle) && (
+            <section className="wiki-sidebar-author">
+              <h3>Autor</h3>
+              <img
+                alt=""
+                src={wikiAssets + (isLanHouseArticle ? "encicloweb-lan-house-author.jpg" : isSociabilityArticle ? "encicloweb-fabio-mariano.jpg" : "encicloweb-einstein.jpg")}
+              />
+              <p>{isLanHouseArticle ? "Justin Timberlake" : isSociabilityArticle ? "Fábio Mariano" : "Japodi Almo’sá"}</p>
+              <small>Perfil do colaborador</small>
+            </section>
           )}
-        </article>
+        </aside>
+        {query ? (
+          <article className="wiki-article wiki-search-results">
+            <h1>Resultados para “{query}”</h1>
+            {(matchingArticles.length > 0 ? matchingArticles : wikiArticles).map((item) => (
+              <p key={item.path}>
+                <button onClick={() => navigate(item.path.replace(/^\//, ""))} type="button">
+                  {item.title}
+                </button>
+                <br />
+                {item.body}
+              </p>
+            ))}
+          </article>
+        ) : isDiscussion && hasDiscussion ? renderDiscussion() : renderArticle()}
       </div>
     </section>
   );
