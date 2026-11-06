@@ -53,7 +53,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         overflow-wrap: anywhere;
         padding: ${({ $desktop }) => ($desktop ? "0" : "2px 0")};
         text-align: ${({ $desktop }) => ($desktop ? "center" : undefined)};
-        text-shadow: ${({ $desktop }) => ($desktop ? "none" : undefined)};
+        text-shadow: ${({ $desktop }) => ($desktop ? "0 0 2px #F7EDD7, 0 0 5px #F7EDD7" : undefined)};
         width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
         &.desktop-documents-label {

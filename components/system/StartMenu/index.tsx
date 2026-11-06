@@ -180,7 +180,7 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/icon-documents.png" />
+                  <img alt="" src="/System/Doors/figma/pasta.svg" />
                   <span>Pastas</span>
                 </button>
               </li>
@@ -208,12 +208,12 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Paint",
                       undefined,
-                      "/System/Doors/figma/icon-paint-rabisco.png"
+                      "/System/Doors/figma/paintnovo.svg"
                     )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/icon-paint-rabisco.png" />
+                  <img alt="" src="/System/Doors/figma/paintnovo.svg" />
                   <span>Rabisco</span>
                 </button>
               </li>
