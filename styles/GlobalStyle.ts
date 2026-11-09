@@ -473,7 +473,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
     > span {
       align-items: center;
-      color: #31302c;
+      color: #f7edd7;
       display: flex;
       font-size: 0.78em;
       font-weight: 700;
