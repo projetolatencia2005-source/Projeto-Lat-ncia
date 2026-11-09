@@ -2562,7 +2562,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         padding: 12px;
       }
     }
-  }
 
     .wiki-article {
       .wiki-how-to-list {
