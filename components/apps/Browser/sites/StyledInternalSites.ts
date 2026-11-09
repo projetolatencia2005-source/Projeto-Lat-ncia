@@ -638,92 +638,203 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       text-align: right;
     }
 
-    .bubble-auth-layout {
-      display: grid;
-      gap: clamp(18px, 2vw, 38px);
-      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.85fr);
-      margin: 0 auto;
-      max-width: 1500px;
-      padding: clamp(26px, 4vw, 76px);
+    &.is-login {
+      background: #f37319;
+      box-sizing: border-box;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: clamp(42px, 16.2vh, 175px) clamp(12px, 1.25vw, 24px)
+        clamp(18px, 4.5vh, 50px);
     }
 
-    .bubble-auth-promo,
-    .bubble-login {
+    .bubble-auth-notice {
+      background: #fff;
       border: 2px solid #31302c;
-      box-shadow: 4px 5px 0 #31302c;
-      min-height: clamp(300px, 28vw, 540px);
-      padding: clamp(18px, 2.5vw, 48px);
+      box-sizing: border-box;
+      color: #31302c;
+      font-size: clamp(12px, 1.25vw, 24px);
+      line-height: 1.1;
+      padding: clamp(8px, 1vw, 18px) clamp(10px, 1.05vw, 20px);
+    }
+
+    .bubble-auth-notice strong,
+    .bubble-auth-promo p strong {
+      color: #f37319;
+    }
+
+    .bubble-auth-layout {
+      display: grid;
+      gap: clamp(8px, 1.05vw, 20px);
+      grid-template-columns: minmax(0, 2.02fr) minmax(255px, 1fr);
+      height: clamp(290px, 57vh, 616px);
+      margin-top: clamp(10px, 2.2vh, 24px);
     }
 
     .bubble-auth-promo {
-      background: #f37319;
-      color: #fff;
-    }
-
-    .bubble-auth-promo h1 {
-      font-size: clamp(22px, 2vw, 38px);
-      font-weight: 400;
-      line-height: 1.25;
-      margin: clamp(26px, 4vw, 76px) 0 16px;
-      max-width: 620px;
-    }
-
-    .bubble-auth-promo p {
-      font-size: clamp(16px, 1.25vw, 24px);
-      line-height: 1.5;
-      max-width: 620px;
-    }
-
-    .bubble-login {
+      align-items: center;
       background: #fff;
-    }
-
-    .bubble-login h2 {
-      background: #f37319;
-      color: #fff;
-      font-size: clamp(20px, 1.67vw, 32px);
-      font-weight: 400;
-      margin: calc(clamp(18px, 2.5vw, 48px) * -1);
-      margin-bottom: clamp(18px, 2vw, 38px);
-      padding: clamp(11px, 0.9vw, 18px);
+      border: 2px solid #31302c;
+      box-shadow: none;
+      box-sizing: border-box;
+      color: #31302c;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+      padding: clamp(16px, 2vw, 38px);
       text-align: center;
     }
 
-    .bubble-login label {
+    .bubble-auth-promo .bubble-logo-window {
+      aspect-ratio: 564 / 152;
+      flex: 0 0 auto;
+      margin: 0 0 clamp(16px, 1.7vw, 32px);
+      overflow: hidden;
+      position: relative;
+      width: min(29.4vw, 564px);
+    }
+
+    .bubble-auth-promo .bubble-logo-window img {
+      display: block;
+      height: 478.57%;
+      left: -14.07%;
+      max-width: none;
+      position: absolute;
+      top: -189.29%;
+      width: 128.14%;
+    }
+
+    .bubble-auth-promo p {
+      font-size: clamp(12px, 1.25vw, 24px);
+      line-height: 1.25;
+      margin: 0.25em 0;
+      max-width: 100%;
+    }
+
+    .bubble-login {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      box-sizing: border-box;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: clamp(8px, 1vw, 20px) clamp(6px, 1.2vw, 23px);
+    }
+
+    .bubble-login h2 {
+      font-size: clamp(14px, 1.25vw, 24px);
+      font-weight: 400;
+      line-height: 1.25;
+      margin: 0 auto clamp(10px, 1.5vh, 18px);
+      max-width: 420px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .bubble-login .bubble-login-field {
       align-items: center;
       display: grid;
-      font-size: clamp(14px, 0.9vw, 17px);
-      gap: 9px;
-      grid-template-columns: 56px minmax(0, 1fr);
-      margin-bottom: 12px;
+      font-size: clamp(12px, 1.25vw, 24px);
+      gap: clamp(8px, 1vw, 19px);
+      grid-template-columns: clamp(48px, 5.05vw, 97px) minmax(0, 1fr);
+      margin: 0 auto clamp(5px, 0.65vw, 12px);
+      max-width: 420px;
+      width: 100%;
     }
 
     .bubble-login input:not([type="checkbox"]) {
-      border: 1px solid #aaa;
+      background: #fff;
+      border: 2px solid rgb(49 48 44 / 25%);
+      box-sizing: border-box;
+      height: clamp(22px, 2.3vw, 44px);
+      justify-self: start;
       min-width: 0;
-      padding: 8px;
-      width: 100%;
+      padding: 3px 7px;
+      width: min(100%, clamp(140px, 14.9vw, 286px));
     }
 
     .bubble-login .bubble-save {
       align-items: start;
-      display: flex;
-      gap: 8px;
-      line-height: 1.4;
-      margin: 18px 0;
+      display: grid;
+      font-size: clamp(12px, 1.25vw, 24px);
+      gap: clamp(8px, 1vw, 19px);
+      grid-template-columns: clamp(14px, 1.4vw, 27px) minmax(0, 1fr);
+      line-height: 1.25;
+      margin: clamp(8px, 1.4vw, 27px) auto clamp(8px, 1.2vw, 23px);
+      max-width: 420px;
+      width: 100%;
     }
 
     .bubble-login input[type="checkbox"] {
-      margin: 3px 0 0;
+      height: clamp(14px, 1.4vw, 27px);
+      margin: 0;
+      padding: 0;
+      width: clamp(14px, 1.4vw, 27px);
+    }
+
+    .bubble-public-warning {
+      font-size: clamp(12px, 1.25vw, 24px);
+      line-height: 1.25;
+      margin: 0 auto clamp(10px, 2vw, 38px);
+      max-width: 420px;
+      text-align: center;
+      width: 100%;
     }
 
     .bubble-login .login-submit {
       background: #fff;
       border: 2px solid #31302c;
-      box-shadow: 2px 3px 0 #31302c;
+      box-shadow: 2px 2px 0 #31302c;
       display: block;
-      margin: 18px auto 0;
-      padding: 8px 22px;
+      height: clamp(25px, 2.3vw, 44px);
+      margin: 0 auto clamp(18px, 3.1vw, 60px);
+      min-width: clamp(48px, 4.6vw, 88px);
+      padding: 0 8px;
+    }
+
+    .bubble-login .bubble-help {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      color: #fff;
+      display: block;
+      font-size: clamp(12px, 1.25vw, 24px);
+      margin: 0 auto clamp(18px, 3vw, 58px);
+      padding: 3px;
+      text-decoration: underline;
+    }
+
+    .bubble-register {
+      font-size: clamp(12px, 1.25vw, 24px);
+      line-height: 1.3;
+      margin: 0;
+      text-align: center;
+    }
+
+    .bubble-login .bubble-register-link {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      color: #fff;
+      display: block;
+      font-size: 1.25em;
+      font-weight: 700;
+      margin: 2px auto 0;
+      padding: 2px;
+      text-decoration: underline;
+    }
+
+    .bubble-login-footer {
+      color: #fff;
+      font-size: clamp(12px, 1.25vw, 24px);
+      line-height: 1.3;
+      margin: clamp(18px, 4vh, 43px) 0 0;
+      text-align: center;
     }
 
     @media (max-width: 980px) {
@@ -749,6 +860,23 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     @media (max-width: 720px) {
       .bubble-content-grid {
         grid-template-columns: minmax(0, 1fr);
+      }
+
+      &.is-login {
+        padding: 24px 12px;
+      }
+
+      &.is-login .bubble-auth-layout {
+        height: auto;
+      }
+
+      &.is-login .bubble-auth-promo {
+        min-height: 275px;
+      }
+
+      &.is-login .bubble-login {
+        min-height: 390px;
+        padding: 18px;
       }
 
       .bubble-sidebar {

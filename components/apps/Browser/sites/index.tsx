@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   getInternalSite,
@@ -173,11 +173,20 @@ const initialBubblePosts: BubblePost[] = [
   },
 ];
 
+const BUBBLE_SESSION_KEY = "doors-bubble-session";
+
 const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const [loggedIn, setLoggedIn] = useState(
-    !new URL(url).pathname.startsWith("/entrar")
-  );
+  const [loggedIn, setLoggedIn] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const isFeedPage = new URL(url).pathname.startsWith("/inicio");
+    const hasSession =
+      window.sessionStorage.getItem(BUBBLE_SESSION_KEY) === "signed-in";
+
+    setLoggedIn(isFeedPage && hasSession);
+  }, [url]);
   const [postText, setPostText] = useState("");
   const [postPhoto, setPostPhoto] = useState<
     { name: string; src: string } | undefined
@@ -185,17 +194,20 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const [posts, setPosts] = useState<BubblePost[]>(initialBubblePosts);
 
   const startSession = (): void => {
+    window.sessionStorage.setItem(BUBBLE_SESSION_KEY, "signed-in");
     setLoggedIn(true);
     browserTabs?.navigate(SITE_URLS.bubble + "inicio");
   };
   const endSession = (): void => {
+    window.sessionStorage.removeItem(BUBBLE_SESSION_KEY);
     setLoggedIn(false);
-    browserTabs?.navigate(SITE_URLS.bubble + "entrar");
+    browserTabs?.navigate(SITE_URLS.bubble);
   };
 
   return (
-    <section className="site-bubble">
-      <header className="bubble-header">
+    <section className={loggedIn ? "site-bubble" : "site-bubble is-login"}>
+      {loggedIn && (
+        <header className="bubble-header">
         <strong className="bubble-wordmark">bubble</strong>
         {loggedIn ? (
           <nav aria-label="Navegação do Bubble">
@@ -239,7 +251,8 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
         >
           {loggedIn ? "Sair" : "Entrar"}
         </button>
-      </header>
+        </header>
+      )}
 
       {loggedIn ? (
         <>
@@ -434,13 +447,25 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
         </>
       ) : (
         <>
+          <div className="bubble-auth-notice">
+            <strong>Aviso:</strong> o bubble.br não tem vínculo com o Gluugli.
+          </div>
           <div className="bubble-auth-layout">
             <section className="bubble-auth-promo">
-              <strong>bubble</strong>
-              <h1>Seu espaço para compartilhar histórias e encontrar amigos.</h1>
+              <div className="bubble-logo-window">
+                <img alt="Bubble" src="/System/Doors/sites/bubble-mark.png" />
+              </div>
               <p>
-                Recados, comunidades, fotos e conversas da Lan House Latência
-                reunidos em um só lugar.
+                <strong>Conecte-se</strong> aos seus amigos e familiares usando
+                recados e mensagens instantâneas.
+              </p>
+              <p>
+                <strong>Conheça</strong> novas pessoas através de amigos de seus
+                amigos e comunidades.
+              </p>
+              <p>
+                <strong>Compartilhe</strong> seus vídeos, fotos e paixões em um
+                só lugar.
               </p>
             </section>
             <form
@@ -450,33 +475,54 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
                 startSession();
               }}
             >
-              <h2>Acesse sua conta</h2>
-              <label>
+              <h2>Acesse o orkut.br com a sua conta</h2>
+              <label className="bubble-login-field">
                 e-mail:
-                <input autoComplete="off" type="email" />
+                <input
+                  autoComplete="off"
+                  id="bubble-email"
+                  ref={emailInputRef}
+                  required
+                  type="email"
+                />
               </label>
-              <label>
+              <label className="bubble-login-field">
                 senha:
-                <input autoComplete="off" type="password" />
+                <input autoComplete="off" required type="password" />
               </label>
               <label className="bubble-save">
                 <input type="checkbox" />
-                Salvar minhas informações neste computador.
+                <span>Salvar as minhas informações neste computador.</span>
               </label>
+              <p className="bubble-public-warning">
+                Não use em computadores públicos
+              </p>
               <button className="login-submit" type="submit">
                 Login
               </button>
+              <button
+                className="bubble-help"
+                onClick={() => emailInputRef.current?.focus()}
+                type="button"
+              >
+                Não consegue acessar a sua conta?
+              </button>
+              <p className="bubble-register">
+                Ainda não é membro?
+                <button
+                  className="bubble-register-link"
+                  onClick={() => emailInputRef.current?.focus()}
+                  type="button"
+                >
+                  ENTRAR JÁ
+                </button>
+              </p>
             </form>
           </div>
-          <footer className="bubble-footer">
-            <strong>bubble</strong>
-            <nav aria-label="Links do Bubble">
-              <span>sobre</span>
-              <span>segurança</span>
-              <span>privacidade</span>
-              <span>ajuda</span>
-            </nav>
-            <small>© Bubble, 2005. Todos os direitos reservados</small>
+          <footer className="bubble-login-footer">
+            2005 Orkut.br - <u>Sobre o bubble.br</u> - <u>Centro de segurança</u> -
+            <u>Privacidade</u> - <u>Termos</u> - <u>Contato</u> - Desenvolvido por
+            <u> Latência</u>
           </footer>
         </>
       )}
