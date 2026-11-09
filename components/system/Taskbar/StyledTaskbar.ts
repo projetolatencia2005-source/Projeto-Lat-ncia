@@ -37,6 +37,7 @@ const StyledTaskbar = styled.nav`
 
   &::after {
     background: #31302c;
+    border-radius: 0;
     content: "";
     display: block;
     height: 100%;

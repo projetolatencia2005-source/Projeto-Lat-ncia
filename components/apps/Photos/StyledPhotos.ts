@@ -44,19 +44,19 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
 
   .doors-photo-nav {
     align-items: center;
-    background: #f7edd7;
-    border: 2px solid #31302c;
-    box-shadow: 2px 2px 0 #31302c;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
     color: #31302c;
     cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     display: flex;
-    height: 44px;
+    height: 25px;
     justify-content: center;
     padding: 0;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 38px;
+    width: 25px;
     z-index: 2;
 
     img {
@@ -67,7 +67,7 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
     }
 
     &:hover {
-      background: #e9dfcb;
+      opacity: 0.9;
     }
   }
 

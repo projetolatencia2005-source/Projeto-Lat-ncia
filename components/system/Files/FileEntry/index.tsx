@@ -660,7 +660,9 @@ const FileEntry: FC<FileEntryProps> = ({
               ? {
                   imgSize: isPastasShortcut ? 46 : 40,
                 }
-              : FileEntryIconSize[view])}
+              : isPictureThumbnail
+                ? { imgSize: 100, displaySize: 100 }
+                : FileEntryIconSize[view])}
           />
           <SubIcons
             alt=""

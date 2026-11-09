@@ -457,6 +457,7 @@ const GlobalStyle = styled.createGlobalStyle`
     display: inline-flex;
     flex: 0 0 clamp(30px, 2.5vw, 48px);
     height: clamp(30px, 2.5vw, 48px);
+    isolation: isolate;
     justify-content: center;
     position: relative;
 
@@ -475,11 +476,13 @@ const GlobalStyle = styled.createGlobalStyle`
       color: #31302c;
       display: flex;
       font-size: 0.78em;
+      font-weight: 700;
       inset: 0;
       justify-content: center;
       line-height: 1;
+      pointer-events: none;
       position: absolute;
-      z-index: 2;
+      z-index: 3 !important;
     }
   }
 
@@ -1059,6 +1062,16 @@ const GlobalStyle = styled.createGlobalStyle`
     margin: 0 !important;
     padding: 0 !important;
     text-align: center;
+  }
+
+  .doors-system-tray > img,
+  .doors-system-tray > button:not(:disabled) {
+    transition: opacity 120ms ease;
+  }
+
+  .doors-system-tray > img:hover,
+  .doors-system-tray > button:hover:not(:disabled) {
+    opacity: 0.9 !important;
   }
 
   .doors-system-tray {

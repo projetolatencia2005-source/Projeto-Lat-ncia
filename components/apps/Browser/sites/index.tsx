@@ -100,149 +100,386 @@ const GluugliPage: FC<{ url: string }> = ({ url }) => {
   );
 };
 
+type BubblePost = {
+  author: string;
+  avatar: string;
+  comments: number;
+  handle: string;
+  id: string;
+  image?: string;
+  imageAlt?: string;
+  likes: number;
+  message: string;
+  time: string;
+};
+
+const bubbleAvatar = (name: string): string =>
+  "/System/Doors/sites/bubble/avatar-" + name + ".png";
+
+const initialBubblePosts: BubblePost[] = [
+  {
+    author: "Ana Paula ^0^",
+    avatar: bubbleAvatar("ana"),
+    comments: 0,
+    handle: "@anaa_paula93",
+    id: "post-ana-paula",
+    likes: 0,
+    message: "",
+    time: "há 6min",
+  },
+  {
+    author: "Jorge Roberto",
+    avatar: bubbleAvatar("jorge"),
+    comments: 3,
+    handle: "@jorgeberto",
+    id: "post-jorge-roberto",
+    image: "/System/Doors/sites/bubble/post-cooking.png",
+    imageAlt: "Uma pessoa cozinhando em casa",
+    likes: 9,
+    message: "",
+    time: "há 23min",
+  },
+  {
+    author: "Gabriela Rosa",
+    avatar: bubbleAvatar("gabriela"),
+    comments: 0,
+    handle: "@rosagabi",
+    id: "post-gabriela-rosa",
+    likes: 0,
+    message: "",
+    time: "há 49min",
+  },
+  {
+    author: "Gustavo Ribeiro",
+    avatar: bubbleAvatar("gustavo"),
+    comments: 0,
+    handle: "@guguribe",
+    id: "post-gustavo-ribeiro",
+    likes: 0,
+    message: "",
+    time: "há 1h",
+  },
+  {
+    author: "Paulo Barbosa",
+    avatar: bubbleAvatar("paulo"),
+    comments: 3,
+    handle: "@paulinho88",
+    id: "post-paulo-barbosa",
+    image: "/System/Doors/sites/bubble/post-group.png",
+    imageAlt: "Grupo de amigos reunidos em uma festa",
+    likes: 20,
+    message: "",
+    time: "há 2h",
+  },
+];
+
 const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const [loggedIn, setLoggedIn] = useState(new URL(url).pathname.startsWith("/inicio"));
+  const [loggedIn, setLoggedIn] = useState(
+    !new URL(url).pathname.startsWith("/entrar")
+  );
   const [postText, setPostText] = useState("");
-  const [posts, setPosts] = useState([
-    {
-      author: "Marina Costa",
-      id: "post-marina-costa",
-      message: "Alguém lembra das comunidades que a gente passava horas lendo? 💗",
-      time: "há 12 minutos",
-    },
-    {
-      author: "Rafael Lima",
-      id: "post-rafael-lima",
-      message: "Compartilhei algumas fotos da lan house. Que saudade de 2005!",
-      time: "há 1 hora",
-    },
-  ]);
+  const [postPhoto, setPostPhoto] = useState<
+    { name: string; src: string } | undefined
+  >();
+  const [posts, setPosts] = useState<BubblePost[]>(initialBubblePosts);
 
-  if (loggedIn) {
-    return (
-      <section className="site-bubble">
-        <header className="bubble-header">
-          <strong>Bubble</strong>
+  const startSession = (): void => {
+    setLoggedIn(true);
+    browserTabs?.navigate(SITE_URLS.bubble + "inicio");
+  };
+  const endSession = (): void => {
+    setLoggedIn(false);
+    browserTabs?.navigate(SITE_URLS.bubble + "entrar");
+  };
+
+  return (
+    <section className="site-bubble">
+      <header className="bubble-header">
+        <strong className="bubble-wordmark">bubble</strong>
+        {loggedIn ? (
           <nav aria-label="Navegação do Bubble">
-            {["Início", "Amigos", "Comunidades", "Recados"].map((item) => (
-              <button key={item} type="button" disabled>
-                {item}
-              </button>
-            ))}
+            {["Início", "Perfil", "Amigos", "Comunidades", "Mensagens"].map(
+              (item) => (
+                <button
+                  aria-current={item === "Início" ? "page" : undefined}
+                  className={item === "Início" ? "is-active" : undefined}
+                  key={item}
+                  type="button"
+                >
+                  {item}
+                </button>
+              )
+            )}
           </nav>
-          <button onClick={() => setLoggedIn(false)} type="button">
-            Sair
+        ) : (
+          <span className="bubble-header-note">
+            Uma rede para manter seus amigos por perto
+          </span>
+        )}
+        <form
+          aria-label="Buscar pessoas e comunidades"
+          className="bubble-top-search"
+          onSubmit={(event) => event.preventDefault()}
+          role="search"
+        >
+          <input
+            aria-label="Buscar pessoas, comunidades..."
+            placeholder="Buscar pessoas, comunidades..."
+            type="search"
+          />
+          <button aria-label="Pesquisar" type="submit">
+            <img alt="" aria-hidden="true" src="/System/Doors/search.svg" />
           </button>
-        </header>
-        <div className="bubble-feed-layout">
-          <aside className="bubble-profile">
-            <div className="bubble-logo-window">
-              <img alt="Bubble" src="/System/Doors/sites/bubble-mark.png" />
-            </div>
-            <h3>Olá, visitante!</h3>
-            <p>Seu perfil local</p>
-            <button className="bubble-action" type="button" disabled>
-              Editar perfil
-            </button>
-            <p>Amigos: 24</p>
-            <p>Comunidades: 8</p>
-          </aside>
-          <section aria-label="Atualizações dos amigos">
-            <div className="bubble-post">
-              <h3>O que você está pensando?</h3>
+        </form>
+        <button
+          className="bubble-session-button"
+          onClick={loggedIn ? endSession : startSession}
+          type="button"
+        >
+          {loggedIn ? "Sair" : "Entrar"}
+        </button>
+      </header>
+
+      {loggedIn ? (
+        <>
+          <div className="bubble-content-grid">
+            <main aria-label="Mural do Bubble" className="bubble-feed">
               <form
+                className="bubble-composer"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  if (!postText.trim()) return;
+                  if (!postText.trim() && !postPhoto) return;
                   setPosts((current) => [
                     {
                       author: "Você",
-                      id: `post-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+                      avatar: bubbleAvatar("ana"),
+                      comments: 0,
+                      handle: "@voce",
+                      id:
+                        "post-" +
+                        Date.now().toString() +
+                        "-" +
+                        Math.random().toString(36).slice(2),
+                      image: postPhoto?.src,
+                      imageAlt: postPhoto?.name,
+                      likes: 0,
                       message: postText.trim(),
                       time: "agora",
                     },
                     ...current,
                   ]);
                   setPostText("");
+                  setPostPhoto(undefined);
                 }}
               >
-                <input
-                  aria-label="Escreva um recado"
-                  onChange={({ currentTarget }) => setPostText(currentTarget.value)}
-                  placeholder="Escreva um recado para seus amigos"
+                <h2 className="bubble-composer-title">
+                  E aí! O que tá rolando?
+                  <span aria-hidden="true">▤</span>
+                </h2>
+                <textarea
+                  aria-label="Escreva uma publicação"
+                  maxLength={240}
+                  onChange={({ currentTarget }) =>
+                    setPostText(currentTarget.value)
+                  }
+                  placeholder="Escreve aí..."
                   value={postText}
                 />
-                <button className="bubble-action" type="submit">
-                  Publicar recado
-                </button>
+                <div className="bubble-composer-controls">
+                  <label className="bubble-attach-photo">
+                    <input
+                      accept="image/*"
+                      aria-label="Anexar foto"
+                      onChange={({ currentTarget }) => {
+                        const file = currentTarget.files?.[0];
+                        if (file) {
+                          setPostPhoto({
+                            name: file.name,
+                            src: URL.createObjectURL(file),
+                          });
+                        }
+                        currentTarget.value = "";
+                      }}
+                      type="file"
+                    />
+                    <span>▧ Anexar foto</span>
+                  </label>
+                  {postPhoto && (
+                    <span className="bubble-photo-name">{postPhoto.name}</span>
+                  )}
+                  <span aria-live="polite" className="bubble-character-count">
+                    {postText.length}/240
+                  </span>
+                  <button className="bubble-publish" type="submit">
+                    Publicar
+                  </button>
+                </div>
               </form>
-            </div>
-            {posts.map((post) => (
-              <article key={post.id} className="bubble-post">
-                <h3>{post.author}</h3>
-                <p>{post.message}</p>
-                <small>{post.time}</small>
-              </article>
-            ))}
-          </section>
-        </div>
-      </section>
-    );
-  }
 
-  return (
-    <section className="site-bubble">
-      <div className="bubble-notice">
-        <strong>Aviso:</strong> o Bubble é uma rede social interna da Lan House Latência.
-      </div>
-      <div className="bubble-login-layout">
-        <section className="bubble-welcome">
-          <div className="bubble-logo-window">
-            <img alt="Bubble" src="/System/Doors/sites/bubble-mark.png" />
+              <div className="bubble-post-list">
+                {posts.map((post) => (
+                  <article className="bubble-post-card" key={post.id}>
+                    <header className="bubble-post-header">
+                      <img alt="" className="bubble-avatar" src={post.avatar} />
+                      <div>
+                        <strong>{post.author}</strong>
+                        <small>
+                          {post.handle} · {post.time}
+                        </small>
+                      </div>
+                      <button
+                        aria-label={"Mais opções para " + post.author}
+                        className="bubble-post-menu"
+                        type="button"
+                      >
+                        ⋮
+                      </button>
+                    </header>
+                    <div
+                      className={
+                        "bubble-post-content" + (post.image ? " has-image" : "")
+                      }
+                    >
+                      {post.message && <p>{post.message}</p>}
+                      {post.image && (
+                        <img
+                          alt={post.imageAlt || ""}
+                          className="bubble-post-image"
+                          src={post.image}
+                        />
+                      )}
+                      <div className="bubble-post-actions">
+                        <button type="button">♡ gostei · {post.likes}</button>
+                        <button type="button">
+                          ▱ comentar · {post.comments}
+                        </button>
+                        <span>visível para amigos</span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </main>
+
+            <aside aria-label="Informações do perfil" className="bubble-sidebar">
+              <section className="bubble-profile-card">
+                <img
+                  alt=""
+                  className="bubble-profile-avatar"
+                  src={bubbleAvatar("ana")}
+                />
+                <div className="bubble-profile-name">
+                  <strong>Ana Paula</strong>
+                  <small>@anaa_paula93</small>
+                </div>
+                <button type="button">Ver perfil completo →</button>
+              </section>
+
+              <section className="bubble-side-panel">
+                <h2>Aniversariantes</h2>
+                <div className="bubble-side-panel-body">
+                  <p>Hoje é um bom dia para mandar um recado.</p>
+                </div>
+              </section>
+
+              <section className="bubble-side-panel bubble-friend-panel">
+                <h2>Sugestões de Amigos</h2>
+                <div className="bubble-side-panel-body">
+                  {[
+                    ["jorge", "João Pedro"],
+                    ["gabriela", "Lari :-)"],
+                    ["gustavo", "Marcão Skt"],
+                    ["paulo", "Bruninho_08"],
+                    ["ana", "Carlinha_XD"],
+                  ].map(([avatar, name]) => (
+                    <div className="bubble-friend" key={name}>
+                      <img alt="" src={bubbleAvatar(avatar)} />
+                      <strong>{name}</strong>
+                      <button type="button">+ Add</button>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="bubble-side-panel bubble-community-panel">
+                <h2>Comunidades</h2>
+                <div className="bubble-side-panel-body">
+                  {[
+                    "Eu odeio acordar cedo",
+                    "Counter-Strike 1.6",
+                    "Charlie Brown Jr",
+                    "MSN Messenger",
+                    "Eu matava aula pra ir na lan",
+                  ].map((community) => (
+                    <button className="bubble-community" key={community} type="button">
+                      {community}
+                    </button>
+                  ))}
+                </div>
+              </section>
+            </aside>
           </div>
-          <p>
-            <strong>Conecte-se</strong> aos seus amigos e familiares usando recados e mensagens.
-          </p>
-          <p>
-            <strong>Conheça</strong> novas pessoas através das comunidades.
-          </p>
-          <p>
-            <strong>Compartilhe</strong> vídeos, fotos e paixões em um só lugar.
-          </p>
-        </section>
-        <form
-          className="bubble-login"
-          onSubmit={(event) => {
-            event.preventDefault();
-            setLoggedIn(true);
-            browserTabs?.navigate(`${SITE_URLS.bubble}inicio`);
-          }}
-        >
-          <h2>Acesse sua conta</h2>
-          <label>
-            e-mail:
-            <input autoComplete="off" type="email" />
-          </label>
-          <label>
-            senha:
-            <input autoComplete="off" type="password" />
-          </label>
-          <label className="bubble-save">
-            <input type="checkbox" />
-            Salvar minhas informações neste computador.
-          </label>
-          <button className="login-submit" type="submit">
-            Login
-          </button>
-          <button className="pink-link" onClick={() => setLoggedIn(true)} type="button">
-            Entrar já
-          </button>
-        </form>
-      </div>
-      <footer className="bubble-footer">
-        2005 Bubble.br · Sobre · Segurança · Privacidade · Termos · Contato
-      </footer>
+
+          <footer className="bubble-footer">
+            <strong>bubble</strong>
+            <nav aria-label="Links do Bubble">
+              <span>sobre</span>
+              <span>segurança</span>
+              <span>privacidade</span>
+              <span>ajuda</span>
+            </nav>
+            <small>© Bubble, 2005. Todos os direitos reservados</small>
+          </footer>
+        </>
+      ) : (
+        <>
+          <div className="bubble-auth-layout">
+            <section className="bubble-auth-promo">
+              <strong>bubble</strong>
+              <h1>Seu espaço para compartilhar histórias e encontrar amigos.</h1>
+              <p>
+                Recados, comunidades, fotos e conversas da Lan House Latência
+                reunidos em um só lugar.
+              </p>
+            </section>
+            <form
+              className="bubble-login"
+              onSubmit={(event) => {
+                event.preventDefault();
+                startSession();
+              }}
+            >
+              <h2>Acesse sua conta</h2>
+              <label>
+                e-mail:
+                <input autoComplete="off" type="email" />
+              </label>
+              <label>
+                senha:
+                <input autoComplete="off" type="password" />
+              </label>
+              <label className="bubble-save">
+                <input type="checkbox" />
+                Salvar minhas informações neste computador.
+              </label>
+              <button className="login-submit" type="submit">
+                Login
+              </button>
+            </form>
+          </div>
+          <footer className="bubble-footer">
+            <strong>bubble</strong>
+            <nav aria-label="Links do Bubble">
+              <span>sobre</span>
+              <span>segurança</span>
+              <span>privacidade</span>
+              <span>ajuda</span>
+            </nav>
+            <small>© Bubble, 2005. Todos os direitos reservados</small>
+          </footer>
+        </>
+      )}
     </section>
   );
 };

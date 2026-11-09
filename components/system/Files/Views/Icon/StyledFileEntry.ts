@@ -112,17 +112,18 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     display: block;
     flex: 0 0 100px;
     height: 100px;
+    overflow: hidden;
     width: 100px;
 
     > img {
       aspect-ratio: 1;
-      height: 100px;
-      max-height: 100px;
-      max-width: 100px;
-      min-height: 100px;
-      min-width: 100px;
+      height: 100px !important;
+      max-height: 100px !important;
+      max-width: 100px !important;
+      min-height: 100px !important;
+      min-width: 100px !important;
       object-fit: cover;
-      width: 100px;
+      width: 100px !important;
     }
   }
 

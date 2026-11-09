@@ -7,7 +7,7 @@ type StyledInternalSitesProps = {
 
 const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   background: ${({ $site }) =>
-    $site === "gluugli" ? "#89c1ff" : $site === "bubble" ? "#ebf2fb" : "#fff"};
+    $site === "gluugli" ? "#89c1ff" : "#fff"};
   box-sizing: border-box;
   color: #31302c;
   cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
@@ -23,17 +23,20 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   &::-webkit-scrollbar {
     background: #f7edd7;
+    border-radius: 0;
     width: 16px;
   }
 
   &::-webkit-scrollbar-track {
     background: #d7e4f7;
     border-left: 2px solid #31302c;
+    border-radius: 0;
   }
 
   &::-webkit-scrollbar-thumb {
     background: #7d94b8;
     border: 2px solid #31302c;
+    border-radius: 0;
   }
 
   &::-webkit-scrollbar-thumb:hover {
@@ -185,163 +188,638 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-bubble {
+    background: #fff;
+    color: #31302c;
     min-height: 100%;
-    padding: clamp(15px, 3vw, 34px);
+    padding: 0;
 
-    .bubble-notice {
-      background: #fff;
-      border: 2px solid #31302c;
-      margin: 0 0 18px;
-      padding: 10px 13px;
+    .bubble-header {
+      align-items: center;
+      background: #f37319;
+      color: #fff;
+      display: flex;
+      gap: clamp(14px, 2.1vw, 40px);
+      min-height: clamp(52px, 3.385vw, 65px);
+      padding: 0 clamp(16px, 2.03vw, 39px);
 
-      strong {
-        color: #ee439c;
+      .bubble-wordmark {
+        flex: 0 0 auto;
+        font-size: clamp(30px, 2.92vw, 56px);
+        font-weight: 700;
+        letter-spacing: -0.035em;
+        line-height: 1;
+      }
+
+      nav {
+        align-items: stretch;
+        display: flex;
+        flex: 1 1 auto;
+        gap: clamp(7px, 1.2vw, 24px);
+        justify-content: space-around;
+        min-width: 0;
+      }
+
+      nav button,
+      .bubble-session-button {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        font-size: clamp(15px, 1.12vw, 22px);
+        padding: 8px 3px;
+        white-space: nowrap;
+      }
+
+      nav button.is-active {
+        font-weight: 700;
+      }
+
+      .bubble-header-note {
+        flex: 1;
+        font-size: clamp(15px, 1.12vw, 22px);
+      }
+
+      .bubble-top-search {
+        border: 2px solid #31302c;
+        display: flex;
+        flex: 0 1 515px;
+        height: clamp(34px, 2.03vw, 39px);
+        min-width: 130px;
+      }
+
+      .bubble-top-search input {
+        background: #fff;
+        border: 0;
+        color: #31302c;
+        flex: 1;
+        font-size: clamp(13px, 0.83vw, 16px);
+        min-width: 0;
+        padding: 0 10px;
+      }
+
+      .bubble-top-search button {
+        align-items: center;
+        background: #fff;
+        border-left: 2px solid #31302c;
+        display: flex;
+        flex: 0 0 clamp(32px, 2.03vw, 39px);
+        justify-content: center;
+      }
+
+      .bubble-top-search img {
+        height: 20px;
+        object-fit: contain;
+        width: 20px;
+      }
+
+      .bubble-session-button {
+        border-left: 1px solid rgb(255 255 255 / 50%);
+        flex: 0 0 auto;
+        padding-left: clamp(12px, 1.25vw, 24px);
       }
     }
 
-    .bubble-login-layout {
+    .bubble-content-grid {
+      align-items: start;
       display: grid;
-      gap: 18px;
-      grid-template-columns: minmax(0, 1fr) minmax(235px, 0.42fr);
+      gap: clamp(18px, 1.78vw, 34px);
+      grid-template-columns: minmax(0, 3.38fr) minmax(240px, 1fr);
+      margin: clamp(20px, 1.56vw, 30px) clamp(16px, 2.03vw, 39px) 0;
     }
 
-    .bubble-welcome,
-    .bubble-login {
+    .bubble-feed,
+    .bubble-sidebar {
+      min-width: 0;
+    }
+
+    .bubble-composer {
+      background: #f37319;
+      border: 2px solid #31302c;
+      box-shadow: 4px 5px 0 #31302c;
+      margin-bottom: clamp(18px, 1.56vw, 30px);
+      padding-bottom: clamp(8px, 0.73vw, 14px);
+    }
+
+    .bubble-composer-title {
+      align-items: center;
+      color: #fff;
+      display: flex;
+      font-size: clamp(19px, 1.56vw, 30px);
+      font-weight: 400;
+      gap: 9px;
+      line-height: 1.2;
+      padding: clamp(9px, 0.73vw, 14px) clamp(12px, 1.56vw, 30px);
+    }
+
+    .bubble-composer textarea {
       background: #fff;
       border: 2px solid #31302c;
-      min-height: 275px;
-      padding: clamp(16px, 3vw, 35px);
+      display: block;
+      font-size: clamp(16px, 1.25vw, 24px);
+      min-height: clamp(60px, 4.85vw, 93px);
+      padding: 8px 10px;
+      resize: vertical;
+      width: calc(100% - clamp(24px, 3.12vw, 60px));
     }
 
-    .bubble-welcome {
+    .bubble-composer textarea::placeholder {
+      color: rgb(49 48 44 / 55%);
+    }
+
+    .bubble-composer-controls {
       align-items: center;
       display: flex;
+      gap: clamp(8px, 1vw, 18px);
+      padding: clamp(8px, 0.73vw, 14px) clamp(12px, 1.56vw, 30px) 0;
+    }
+
+    .bubble-attach-photo,
+    .bubble-publish,
+    .bubble-friend button {
+      background: #fff;
+      border: 2px solid #31302c;
+      box-shadow: 2px 3px 0 #31302c;
+      color: #31302c;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      font-size: clamp(13px, 0.83vw, 16px);
+      padding: 5px 9px;
+    }
+
+    .bubble-attach-photo {
+      align-items: center;
+      display: inline-flex;
+      position: relative;
+    }
+
+    .bubble-attach-photo input {
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      height: 100%;
+      inset: 0;
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    .bubble-photo-name {
+      max-width: 35%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bubble-character-count {
+      color: #fff;
+      font-size: clamp(12px, 0.83vw, 16px);
+      margin-left: auto;
+    }
+
+    .bubble-publish {
+      flex: 0 0 auto;
+    }
+
+    .bubble-post-card {
+      background: #fff;
+      border: 2px solid #31302c;
+      box-shadow: 4px 5px 0 #31302c;
+      margin-bottom: clamp(14px, 1.38vw, 27px);
+      min-width: 0;
+    }
+
+    .bubble-post-header {
+      align-items: center;
+      background: #f37319;
+      color: #fff;
+      display: flex;
+      gap: clamp(8px, 0.73vw, 14px);
+      min-height: clamp(48px, 3vw, 58px);
+      padding: 5px clamp(8px, 0.73vw, 14px);
+    }
+
+    .bubble-avatar {
+      border: 1px solid #31302c;
+      flex: 0 0 clamp(34px, 2.19vw, 42px);
+      height: clamp(34px, 2.19vw, 42px);
+      object-fit: cover;
+      width: clamp(34px, 2.19vw, 42px);
+    }
+
+    .bubble-post-header > div {
+      display: flex;
+      flex: 1;
       flex-direction: column;
-      justify-content: flex-start;
-      text-align: center;
+      min-width: 0;
+    }
 
-      .bubble-logo-window {
-        height: 88px;
-        margin: 8px 0 24px;
-        overflow: hidden;
-        width: min(290px, 100%);
-      }
+    .bubble-post-header strong {
+      font-size: clamp(16px, 1.25vw, 24px);
+      font-weight: 400;
+      line-height: 1.1;
+    }
 
-      .bubble-logo-window img {
-        display: block;
-        height: auto;
-        transform: translateY(-31%);
-        width: 100%;
-      }
+    .bubble-post-header small {
+      font-size: clamp(11px, 0.83vw, 16px);
+      line-height: 1.1;
+      opacity: 0.92;
+    }
 
-      p {
-        margin: 5px 0;
-      }
+    .bubble-post-menu {
+      background: transparent;
+      border: 0;
+      color: #fff;
+      font-size: 24px;
+      line-height: 1;
+      padding: 0 4px;
+    }
 
-      strong {
-        color: #ee439c;
-      }
+    .bubble-post-content {
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: clamp(112px, 8.75vw, 168px);
+      padding: clamp(10px, 1.04vw, 20px);
+    }
+
+    .bubble-post-content > p {
+      font-size: clamp(15px, 1.04vw, 20px);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .bubble-post-content.has-image {
+      min-height: clamp(300px, 28.23vw, 542px);
+    }
+
+    .bubble-post-image {
+      aspect-ratio: 581 / 411;
+      display: block;
+      height: auto;
+      margin: clamp(22px, 3.44vw, 66px) 0 clamp(12px, 1.25vw, 24px);
+      max-width: 100%;
+      object-fit: cover;
+      width: min(100%, 30.3vw, 581px);
+    }
+
+    .bubble-post-actions {
+      align-items: center;
+      border-top: 1px solid #b9b9b9;
+      color: rgb(49 48 44 / 68%);
+      display: flex;
+      font-size: clamp(11px, 0.83vw, 16px);
+      gap: clamp(12px, 1.5vw, 28px);
+      margin-top: auto;
+      min-height: 28px;
+      padding-top: 5px;
+    }
+
+    .bubble-post-actions button {
+      background: transparent;
+      border: 0;
+      color: inherit;
+      white-space: nowrap;
+    }
+
+    .bubble-post-actions > span {
+      margin-left: auto;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .bubble-profile-card,
+    .bubble-side-panel {
+      border: 2px solid #31302c;
+      box-shadow: 4px 5px 0 #31302c;
+      margin-bottom: clamp(18px, 1.56vw, 30px);
+      min-width: 0;
+    }
+
+    .bubble-profile-card {
+      align-items: start;
+      background: #f37319;
+      color: #fff;
+      display: grid;
+      grid-template-columns: clamp(44px, 2.7vw, 52px) minmax(0, 1fr);
+      min-height: clamp(170px, 11.93vw, 229px);
+      padding: clamp(12px, 0.9vw, 18px);
+      position: relative;
+    }
+
+    .bubble-profile-avatar {
+      border: 1px solid #31302c;
+      height: clamp(42px, 2.7vw, 52px);
+      object-fit: cover;
+      width: clamp(42px, 2.7vw, 52px);
+    }
+
+    .bubble-profile-name {
+      display: flex;
+      flex-direction: column;
+      font-size: clamp(17px, 1.25vw, 24px);
+      line-height: 1.1;
+      min-width: 0;
+    }
+
+    .bubble-profile-name small {
+      font-size: clamp(11px, 0.83vw, 16px);
+    }
+
+    .bubble-profile-card > button {
+      align-self: end;
+      background: transparent;
+      border: 0;
+      color: #fff;
+      font-size: clamp(11px, 0.73vw, 14px);
+      grid-column: 2;
+      justify-self: start;
+      padding: 0;
+      text-align: left;
+      text-decoration: underline;
+    }
+
+    .bubble-side-panel h2 {
+      background: #f37319;
+      color: #fff;
+      font-size: clamp(18px, 1.67vw, 32px);
+      font-weight: 400;
+      min-height: clamp(44px, 3vw, 58px);
+      padding: clamp(7px, 0.73vw, 14px) clamp(10px, 0.9vw, 18px);
+    }
+
+    .bubble-side-panel-body {
+      background: #fff;
+      border-top: 2px solid #31302c;
+      min-height: clamp(110px, 13.3vw, 256px);
+      padding: clamp(10px, 0.9vw, 18px);
+    }
+
+    .bubble-friend-panel .bubble-side-panel-body {
+      min-height: clamp(220px, 24.8vw, 476px);
+    }
+
+    .bubble-community-panel .bubble-side-panel-body {
+      min-height: clamp(220px, 24.1vw, 463px);
+    }
+
+    .bubble-side-panel-body > p {
+      color: #777;
+      font-size: clamp(13px, 0.9vw, 17px);
+    }
+
+    .bubble-friend {
+      align-items: center;
+      display: grid;
+      gap: 8px;
+      grid-template-columns: clamp(32px, 2.19vw, 42px) minmax(0, 1fr) auto;
+      margin: 0 0 clamp(10px, 1vw, 18px);
+      min-width: 0;
+    }
+
+    .bubble-friend img {
+      border: 1px solid #31302c;
+      height: clamp(32px, 2.19vw, 42px);
+      object-fit: cover;
+      width: clamp(32px, 2.19vw, 42px);
+    }
+
+    .bubble-friend strong {
+      font-size: clamp(13px, 0.9vw, 17px);
+      font-weight: 400;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .bubble-friend button {
+      padding: 3px 6px;
+    }
+
+    .bubble-community {
+      background: transparent;
+      border: 0;
+      color: #31302c;
+      display: block;
+      font-size: clamp(14px, 1.04vw, 20px);
+      line-height: 1.35;
+      margin-bottom: clamp(7px, 0.73vw, 14px);
+      padding: 0;
+      text-align: left;
+      width: 100%;
+    }
+
+    .bubble-footer {
+      align-items: center;
+      background: #f37319;
+      color: #fff;
+      display: flex;
+      gap: clamp(20px, 2.5vw, 48px);
+      margin-top: clamp(24px, 2.6vw, 50px);
+      min-height: clamp(96px, 8.65vw, 166px);
+      padding: clamp(18px, 2.03vw, 39px);
+    }
+
+    .bubble-footer > strong,
+    .bubble-auth-promo > strong {
+      font-size: clamp(30px, 2.92vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+
+    .bubble-footer nav {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+      gap: clamp(9px, 0.9vw, 18px);
+    }
+
+    .bubble-footer nav span {
+      font-size: clamp(14px, 0.83vw, 16px);
+    }
+
+    .bubble-footer small {
+      font-size: clamp(12px, 0.83vw, 16px);
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .bubble-auth-layout {
+      display: grid;
+      gap: clamp(18px, 2vw, 38px);
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.85fr);
+      margin: 0 auto;
+      max-width: 1500px;
+      padding: clamp(26px, 4vw, 76px);
+    }
+
+    .bubble-auth-promo,
+    .bubble-login {
+      border: 2px solid #31302c;
+      box-shadow: 4px 5px 0 #31302c;
+      min-height: clamp(300px, 28vw, 540px);
+      padding: clamp(18px, 2.5vw, 48px);
+    }
+
+    .bubble-auth-promo {
+      background: #f37319;
+      color: #fff;
+    }
+
+    .bubble-auth-promo h1 {
+      font-size: clamp(22px, 2vw, 38px);
+      font-weight: 400;
+      line-height: 1.25;
+      margin: clamp(26px, 4vw, 76px) 0 16px;
+      max-width: 620px;
+    }
+
+    .bubble-auth-promo p {
+      font-size: clamp(16px, 1.25vw, 24px);
+      line-height: 1.5;
+      max-width: 620px;
+    }
+
+    .bubble-login {
+      background: #fff;
     }
 
     .bubble-login h2 {
-      font-size: 17px;
-      margin: 0 0 18px;
+      background: #f37319;
+      color: #fff;
+      font-size: clamp(20px, 1.67vw, 32px);
+      font-weight: 400;
+      margin: calc(clamp(18px, 2.5vw, 48px) * -1);
+      margin-bottom: clamp(18px, 2vw, 38px);
+      padding: clamp(11px, 0.9vw, 18px);
       text-align: center;
     }
 
     .bubble-login label {
       align-items: center;
       display: grid;
+      font-size: clamp(14px, 0.9vw, 17px);
       gap: 9px;
-      grid-template-columns: 54px minmax(0, 1fr);
-      margin-bottom: 10px;
+      grid-template-columns: 56px minmax(0, 1fr);
+      margin-bottom: 12px;
     }
 
-    .bubble-login input {
+    .bubble-login input:not([type="checkbox"]) {
       border: 1px solid #aaa;
       min-width: 0;
       padding: 8px;
       width: 100%;
     }
 
-    .bubble-save {
-      align-items: flex-start;
+    .bubble-login .bubble-save {
+      align-items: start;
       display: flex;
       gap: 8px;
-      margin: 15px 0;
-
-      input {
-        margin: 3px 0 0;
-        width: auto;
-      }
+      line-height: 1.4;
+      margin: 18px 0;
     }
 
-    .bubble-login button,
-    .bubble-action {
-      background: #f7edd7;
-      border: 1px solid #31302c;
-      box-shadow: 2px 2px 0 #31302c;
-      padding: 7px 13px;
+    .bubble-login input[type="checkbox"] {
+      margin: 3px 0 0;
     }
 
     .bubble-login .login-submit {
+      background: #fff;
+      border: 2px solid #31302c;
+      box-shadow: 2px 3px 0 #31302c;
       display: block;
-      margin: 14px auto 0;
+      margin: 18px auto 0;
+      padding: 8px 22px;
     }
 
-    .bubble-login .pink-link {
-      background: none;
-      border: 0;
-      box-shadow: none;
-      color: #ee439c;
-      display: block;
-      margin: 14px auto 0;
-      padding: 3px;
-      text-decoration: underline;
-    }
+    @media (max-width: 980px) {
+      .bubble-header {
+        flex-wrap: wrap;
+        gap: 10px 18px;
+        padding-bottom: 8px;
+        padding-top: 8px;
+      }
 
-    .bubble-footer {
-      color: #454545;
-      margin: 22px 0 0;
-      text-align: center;
-    }
+      .bubble-header nav {
+        flex: 1 0 100%;
+        justify-content: flex-start;
+        order: 3;
+        overflow-x: auto;
+      }
 
-    .bubble-header {
-      align-items: center;
-      background: #ee439c;
-      color: #fff;
-      display: flex;
-      gap: 14px;
-      justify-content: space-between;
-      margin: -15px -15px 16px;
-      padding: 12px 16px;
-
-      button {
-        background: transparent;
-        border: 0;
-        color: inherit;
-        padding: 4px;
+      .bubble-content-grid {
+        grid-template-columns: minmax(0, 2.2fr) minmax(210px, 1fr);
       }
     }
 
-    .bubble-feed-layout {
-      display: grid;
-      gap: 16px;
-      grid-template-columns: minmax(140px, 0.3fr) minmax(0, 1fr);
+    @media (max-width: 720px) {
+      .bubble-content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .bubble-sidebar {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .bubble-profile-card {
+        grid-column: 1 / -1;
+      }
+
+      .bubble-side-panel {
+        margin-bottom: 8px;
+      }
+
+      .bubble-footer {
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .bubble-footer small {
+        margin-left: 0;
+        text-align: left;
+        width: 100%;
+      }
+
+      .bubble-auth-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
-    .bubble-profile,
-    .bubble-post {
-      background: #fff;
-      border: 2px solid #31302c;
-      margin-bottom: 12px;
-      padding: 15px;
-    }
+    @media (max-width: 480px) {
+      .bubble-header {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
 
-    .bubble-profile h3,
-    .bubble-post h3 {
-      color: #ee439c;
-      margin-top: 0;
+      .bubble-header-note {
+        display: none;
+      }
+
+      .bubble-top-search {
+        order: 4;
+        flex-basis: 100%;
+      }
+
+      .bubble-content-grid {
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+
+      .bubble-sidebar {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .bubble-profile-card {
+        grid-column: auto;
+      }
+
+      .bubble-post-actions {
+        flex-wrap: wrap;
+      }
+
+      .bubble-post-actions > span {
+        margin-left: 0;
+      }
+
+      .bubble-footer {
+        gap: 12px;
+      }
     }
   }
 
