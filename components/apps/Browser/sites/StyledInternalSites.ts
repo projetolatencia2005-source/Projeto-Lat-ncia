@@ -693,7 +693,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       margin: 0 0 clamp(16px, 1.7vw, 32px);
       overflow: hidden;
       position: relative;
-      width: min(29.4vw, 564px);
+      max-width: 100%;
+      width: min(14vw, 270px);
     }
 
     .bubble-auth-promo .bubble-logo-window img {
