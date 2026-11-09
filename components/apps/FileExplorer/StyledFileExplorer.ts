@@ -145,8 +145,8 @@ const StyledFileExplorer = styled.div`
   .file-explorer-main.photos-folder > ol {
     display: grid;
     gap: 22px 45px;
-    grid-auto-rows: 309px;
-    grid-template-columns: repeat(6, 167px);
+    grid-auto-rows: 140px;
+    grid-template-columns: repeat(6, 130px);
     grid-template-rows: none;
     overflow: auto;
     padding: 20px 38px;
@@ -154,10 +154,10 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder > ol > li {
     box-sizing: border-box;
-    height: 309px;
+    height: 140px;
     margin: 0;
     padding: 0;
-    width: 167px;
+    width: 130px;
   }
 
   .file-explorer-main.photos-folder > ol > li > button {
@@ -197,9 +197,9 @@ const StyledFileExplorer = styled.div`
       border: 2px solid #31302c;
       box-shadow: 5px 5px 0 #31302c;
       box-sizing: border-box;
-      flex: 0 0 269px;
-      height: 269px;
-      width: 162px;
+      flex: 0 0 104px;
+      height: 104px;
+      width: 104px;
 
       img {
         height: 100%;
@@ -231,7 +231,7 @@ const StyledFileExplorer = styled.div`
   @media (max-width: 1400px) {
     .file-explorer-main.photos-folder > ol {
       gap: 22px 28px;
-      grid-template-columns: repeat(4, 167px);
+      grid-template-columns: repeat(4, 130px);
       padding-left: 24px;
     }
   }
@@ -239,7 +239,7 @@ const StyledFileExplorer = styled.div`
   @media (max-width: 1000px) {
     .file-explorer-main.photos-folder > ol {
       gap: 22px 18px;
-      grid-template-columns: repeat(3, 167px);
+      grid-template-columns: repeat(3, 130px);
       padding-left: 16px;
     }
   }
@@ -247,7 +247,7 @@ const StyledFileExplorer = styled.div`
   @media (max-width: 700px) {
     .file-explorer-main.photos-folder > ol {
       gap: 18px 12px;
-      grid-template-columns: repeat(2, 167px);
+      grid-template-columns: repeat(2, 130px);
       padding-left: 12px;
     }
   }
