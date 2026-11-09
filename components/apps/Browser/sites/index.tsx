@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   getInternalSite,
@@ -173,357 +173,455 @@ const initialBubblePosts: BubblePost[] = [
   },
 ];
 
+type BubblePageKey = "inicio" | "perfil" | "amigos" | "comunidades" | "mensagens";
+
+type BubbleFriend = {
+  id: string;
+  name: string;
+  handle: string;
+  avatar: string;
+  mutuals: number;
+  online: boolean;
+};
+
+type BubbleConversation = {
+  id: string;
+  name: string;
+  avatar: string;
+  online: boolean;
+  preview: string;
+  stamp: string;
+  unread?: number;
+  messages: { text: string; mine: boolean; time: string }[];
+};
+
+const bubbleNavigation: { id: BubblePageKey; label: string; path: string }[] = [
+  { id: "inicio", label: "⌂ Início", path: "inicio" },
+  { id: "perfil", label: "Perfil", path: "perfil" },
+  { id: "amigos", label: "Amigos", path: "amigos" },
+  { id: "comunidades", label: "Comunidades", path: "comunidades" },
+  { id: "mensagens", label: "Mensagens", path: "mensagens" },
+];
+
+const bubbleFriends: BubbleFriend[] = [
+  { id: "jorge", name: "Jorge Roberto", handle: "@jorgeberto", avatar: bubbleAvatar("jorge"), mutuals: 13, online: true },
+  { id: "gustavo", name: "Gustavo Ribeiro", handle: "@guguribeiro", avatar: bubbleAvatar("gustavo"), mutuals: 8, online: true },
+  { id: "barbara", name: "Bárbara Guedes", handle: "@babigu", avatar: bubbleAvatar("ana"), mutuals: 2, online: false },
+  { id: "malu", name: "Malu Souza", handle: "@maluzinhaaaa...", avatar: bubbleAvatar("gabriela"), mutuals: 9, online: false },
+  { id: "gabriela", name: "Gabriela Rosa", handle: "@rosagabi", avatar: bubbleAvatar("gabriela"), mutuals: 16, online: true },
+  { id: "rui", name: "Rui Mendonça", handle: "@rui.mendonca", avatar: bubbleAvatar("paulo"), mutuals: 12, online: false },
+  { id: "paulo", name: "Paulo Barbosa", handle: "@paulinho89", avatar: bubbleAvatar("paulo"), mutuals: 6, online: false },
+  { id: "larissa", name: "Larissa Oda", handle: "@odalorissa", avatar: bubbleAvatar("ana"), mutuals: 11, online: true },
+];
+
+const bubbleCommunityList = [
+  { id: "acordar", title: "Eu Odeio Acordar Cedo", category: "Relacionamentos & amizades", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", members: "2.842" },
+  { id: "deus-me-disse", title: "Deus me disse: desce e arrasa!", category: "Cotidiano", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", members: "684" },
+  { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988" },
+  { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842" },
+  { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344" },
+  { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816" },
+];
+
+const bubbleRequestsInitial: BubbleFriend[] = [
+  { id: "cris", name: "Cris Francisco", handle: "@crisf", avatar: bubbleAvatar("ana"), mutuals: 14, online: false },
+  { id: "jamal", name: "Jamal Neves", handle: "@jamaln", avatar: bubbleAvatar("gustavo"), mutuals: 4, online: true },
+  { id: "elias", name: "Elias Martins", handle: "@eliasm", avatar: bubbleAvatar("jorge"), mutuals: 7, online: false },
+];
+
+const bubbleProfileUpdates: BubblePost[] = [
+  { author: "Ana Paula ^0^", avatar: bubbleAvatar("ana"), comments: 3, handle: "@anaa_paula93", id: "profile-bim", likes: 18, message: "ba da bim, ba da bum", time: "há 6min" },
+  { author: "Ana Paula ^0^", avatar: bubbleAvatar("ana"), comments: 10, handle: "@anaa_paula93", id: "profile-domingo", likes: 9, message: "que domingo cansativo né gente nossa", time: "ontem" },
+  { author: "Ana Paula ^0^", avatar: bubbleAvatar("ana"), comments: 4, handle: "@anaa_paula93", id: "profile-futuro", likes: 6, message: "será que no futuro nós vamos ter carros voadores?", time: "há 3 dias" },
+  { author: "Ana Paula ^0^", avatar: bubbleAvatar("ana"), comments: 1, handle: "@anaa_paula93", id: "profile-sono", likes: 4, message: "{U.U}...zzz", time: "quinta-feira" },
+];
+
+const bubbleInitialConversations: BubbleConversation[] = [
+  {
+    id: "malu", name: "Malu Souza", avatar: bubbleAvatar("gabriela"), online: true, preview: "Feliz aniversário!!!", stamp: "11:39",
+    messages: [
+      { text: "boa noiteee!!", mine: false, time: "19:08" },
+      { text: "você ainda vai naquele encontro de sábado?", mine: false, time: "14:08" },
+      { text: "vou sim! só tava esperando confirmarem o horário", mine: true, time: "14:29" },
+      { text: "pode crer, posso levar aquela câmera pequena também!", mine: true, time: "14:38" },
+      { text: "Feliz aniversário!!!", mine: true, time: "11:39" },
+    ],
+  },
+  { id: "larissa", name: "Larissa Oda", avatar: bubbleAvatar("ana"), online: true, preview: "NÃO ACREDITO AMGGGG", stamp: "10:34", messages: [{ text: "NÃO ACREDITO AMGGGG", mine: false, time: "10:34" }] },
+  { id: "jorge", name: "Jorge Roberto", avatar: bubbleAvatar("jorge"), online: true, preview: "tchaaaaau", stamp: "ontem", messages: [{ text: "tchaaaaau", mine: false, time: "ontem" }] },
+  { id: "barbara", name: "Bárbara Guedes", avatar: bubbleAvatar("ana"), online: false, preview: "não mos isso foi muito...", stamp: "ontem", messages: [{ text: "não mos isso foi muito...", mine: false, time: "ontem" }] },
+  { id: "rui", name: "Rui Mendonça", avatar: bubbleAvatar("paulo"), online: true, preview: "eai gatinha. O_-", stamp: "sexta-feira", unread: 8, messages: [{ text: "eai gatinha. O_-", mine: false, time: "sexta-feira" }] },
+];
+
 const BUBBLE_SESSION_KEY = "doors-bubble-session";
 
 const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
+  const path = new URL(url).pathname.toLowerCase();
+  const routePart = path.split("/").filter(Boolean)[0] || "";
+  const isLoginRoute = routePart === "";
+  const validPages: BubblePageKey[] = ["inicio", "perfil", "amigos", "comunidades", "mensagens"];
+  const page: BubblePageKey = validPages.includes(routePart as BubblePageKey)
+    ? (routePart as BubblePageKey)
+    : "inicio";
   const [loggedIn, setLoggedIn] = useState(false);
   const emailInputRef = useRef<HTMLInputElement>(null);
+  const [postText, setPostText] = useState("");
+  const [postPhoto, setPostPhoto] = useState<{ name: string; src: string } | undefined>();
+  const [posts, setPosts] = useState<BubblePost[]>(initialBubblePosts);
+  const [profilePosts, setProfilePosts] = useState<BubblePost[]>(bubbleProfileUpdates);
+  const [profileDraft, setProfileDraft] = useState("");
+  const [profileName, setProfileName] = useState("Ana Paula");
+  const [profileAbout, setProfileAbout] = useState("“Por aí, com uma câmera na bolsa e uma música na cabeça”");
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [globalSearch, setGlobalSearch] = useState("");
+  const [friendSearch, setFriendSearch] = useState("");
+  const [friendsTab, setFriendsTab] = useState<"Todos" | "Online" | "Solicitações">("Todos");
+  const [requests, setRequests] = useState<BubbleFriend[]>(bubbleRequestsInitial);
+  const [friendLists, setFriendLists] = useState([{ name: "Melhores amigos", count: 12 }, { name: "Escola", count: 38 }, { name: "Trabalho", count: 4 }]);
+  const [friendListDraft, setFriendListDraft] = useState("");
+  const [creatingFriendList, setCreatingFriendList] = useState(false);
+  const [addedFriends, setAddedFriends] = useState<string[]>([]);
+  const [joinedCommunities, setJoinedCommunities] = useState<string[]>(["clube-noturnos", "internet-lenta"]);
+  const [communityCategory, setCommunityCategory] = useState("Todas");
+  const [communityDraft, setCommunityDraft] = useState("");
+  const [creatingCommunity, setCreatingCommunity] = useState(false);
+  const [createdCommunities, setCreatedCommunities] = useState<string[]>([]);
+  const [conversations, setConversations] = useState<BubbleConversation[]>(bubbleInitialConversations);
+  const [activeConversation, setActiveConversation] = useState("malu");
+  const [messageSearch, setMessageSearch] = useState("");
+  const [messageDraft, setMessageDraft] = useState("");
+  const [likedPosts, setLikedPosts] = useState<string[]>([]);
+  const [commentingPost, setCommentingPost] = useState<string | null>(null);
+  const [commentDraft, setCommentDraft] = useState("");
+  const [postComments, setPostComments] = useState<Record<string, string[]>>({});
 
   useEffect(() => {
-    const isFeedPage = new URL(url).pathname.startsWith("/inicio");
-    const hasSession =
-      window.sessionStorage.getItem(BUBBLE_SESSION_KEY) === "signed-in";
+    const hasSession = window.sessionStorage.getItem(BUBBLE_SESSION_KEY) === "signed-in";
+    setLoggedIn(hasSession && !isLoginRoute);
+  }, [url, isLoginRoute]);
 
-    setLoggedIn(isFeedPage && hasSession);
-  }, [url]);
-  const [postText, setPostText] = useState("");
-  const [postPhoto, setPostPhoto] = useState<
-    { name: string; src: string } | undefined
-  >();
-  const [posts, setPosts] = useState<BubblePost[]>(initialBubblePosts);
+  const navigate = (destination: BubblePageKey): void => {
+    browserTabs?.navigate(SITE_URLS.bubble + destination);
+  };
 
   const startSession = (): void => {
     window.sessionStorage.setItem(BUBBLE_SESSION_KEY, "signed-in");
     setLoggedIn(true);
-    browserTabs?.navigate(SITE_URLS.bubble + "inicio");
+    navigate("inicio");
   };
+
   const endSession = (): void => {
     window.sessionStorage.removeItem(BUBBLE_SESSION_KEY);
     setLoggedIn(false);
     browserTabs?.navigate(SITE_URLS.bubble);
   };
 
+  const publishPost = (message: string, image?: { name: string; src: string }, profile = false): void => {
+    if (!message.trim() && !image) return;
+    const item: BubblePost = {
+      author: "Ana Paula ^0^",
+      avatar: bubbleAvatar("ana"),
+      comments: 0,
+      handle: "@anaa_paula93",
+      id: "post-" + Date.now().toString() + "-" + Math.random().toString(36).slice(2),
+      image: image?.src,
+      imageAlt: image?.name,
+      likes: 0,
+      message: message.trim(),
+      time: "agora",
+    };
+    if (profile) setProfilePosts((current) => [item, ...current]);
+    else setPosts((current) => [item, ...current]);
+    setPostText("");
+    setPostPhoto(undefined);
+    setProfileDraft("");
+  };
+
+  const renderPost = (post: BubblePost) => {
+    const isLiked = likedPosts.includes(post.id);
+    const comments = postComments[post.id] || [];
+    return (
+      <article className="bubble-post-card" key={post.id}>
+        <header className="bubble-post-header">
+          <img alt="" className="bubble-avatar" src={post.avatar} />
+          <div><strong>{post.author}</strong><small>{post.handle} · {post.time}</small></div>
+          <button aria-label={"Mais opções para " + post.author} className="bubble-post-menu" onClick={() => {
+            if (post.author.startsWith("Ana Paula")) {
+              setPosts((current) => current.filter((item) => item.id !== post.id));
+              setProfilePosts((current) => current.filter((item) => item.id !== post.id));
+            }
+          }} type="button">⋮</button>
+        </header>
+        <div className={"bubble-post-content" + (post.image ? " has-image" : "")}>
+          {post.message && <p>{post.message}</p>}
+          {post.image && <img alt={post.imageAlt || ""} className="bubble-post-image" src={post.image} />}
+          <div className="bubble-post-actions">
+            <button aria-pressed={isLiked} onClick={() => setLikedPosts((current) => isLiked ? current.filter((id) => id !== post.id) : [...current, post.id])} type="button">
+              {isLiked ? "♥ gostei" : "♡ gostei"} · {post.likes + Number(isLiked)}
+            </button>
+            <button aria-expanded={commentingPost === post.id} onClick={() => {
+              setCommentingPost((current) => current === post.id ? null : post.id);
+              setCommentDraft("");
+            }} type="button">▱ comentar · {post.comments + comments.length}</button>
+            <span>visível para amigos</span>
+          </div>
+          {commentingPost === post.id && (
+            <form className="bubble-comment-form" onSubmit={(event) => {
+              event.preventDefault();
+              if (!commentDraft.trim()) return;
+              setPostComments((current) => ({ ...current, [post.id]: [...(current[post.id] || []), commentDraft.trim()] }));
+              setCommentDraft("");
+            }}>
+              <input aria-label="Escreva um comentário" onChange={({ currentTarget }) => setCommentDraft(currentTarget.value)} placeholder="Escreva um comentário..." value={commentDraft} />
+              <button type="submit">Comentar</button>
+            </form>
+          )}
+          {comments.map((comment, index) => <p className="bubble-comment" key={post.id + "-comment-" + index}><strong>Você:</strong> {comment}</p>)}
+        </div>
+      </article>
+    );
+  };
+
+  const filteredDirectory = bubbleFriends.filter((friend) => {
+    const needle = friendSearch.trim().toLowerCase() || globalSearch.trim().toLowerCase();
+    const matchesSearch = !needle || (friend.name + " " + friend.handle).toLowerCase().includes(needle);
+    return matchesSearch && (friendsTab !== "Online" || friend.online);
+  });
+
+  const renderComposer = (profile = false) => (
+    <form className="bubble-composer" onSubmit={(event) => {
+      event.preventDefault();
+      publishPost(profile ? profileDraft : postText, profile ? undefined : postPhoto, profile);
+    }}>
+      <h2 className="bubble-composer-title">{profile ? "Escrever no seu mural" : "E aí! O que tá rolando?"}<span aria-hidden="true">▤</span></h2>
+      <textarea aria-label={profile ? "Escreva no seu mural" : "Escreva uma publicação"} maxLength={240}
+        onChange={({ currentTarget }) => profile ? setProfileDraft(currentTarget.value) : setPostText(currentTarget.value)}
+        placeholder="Escreve aí..." value={profile ? profileDraft : postText} />
+      <div className="bubble-composer-controls">
+        {!profile && <label className="bubble-attach-photo"><input accept="image/*" aria-label="Anexar foto" onChange={({ currentTarget }) => {
+          const file = currentTarget.files?.[0];
+          if (file) setPostPhoto({ name: file.name, src: URL.createObjectURL(file) });
+          currentTarget.value = "";
+        }} type="file" /><span>▧ Anexar foto</span></label>}
+        {!profile && postPhoto && <span className="bubble-photo-name">{postPhoto.name}</span>}
+        <span aria-live="polite" className="bubble-character-count">{(profile ? profileDraft : postText).length}/240</span>
+        <button className="bubble-publish" type="submit">Publicar</button>
+      </div>
+    </form>
+  );
+
+  const renderHome = () => (
+    <div className="bubble-content-grid">
+      <main aria-label="Mural do Bubble" className="bubble-feed">
+        {renderComposer()}
+        <div className="bubble-post-list">{posts.map(renderPost)}</div>
+      </main>
+      <aside aria-label="Informações do perfil" className="bubble-sidebar">
+        <section className="bubble-profile-card">
+          <img alt="" className="bubble-profile-avatar" src={bubbleAvatar("ana")} />
+          <div className="bubble-profile-name"><strong>{profileName}</strong><small>@anaa_paula93</small></div>
+          <button onClick={() => navigate("perfil")} type="button">Ver perfil completo →</button>
+        </section>
+        <section className="bubble-side-panel"><h2>Aniversariantes</h2><div className="bubble-side-panel-body"><p><strong>Ana Paula</strong> faz aniversário hoje!</p><p>Mande uma mensagem antes que seja tarde!</p><button className="bubble-text-link" onClick={() => navigate("mensagens")} type="button">Enviar mensagem</button></div></section>
+        <section className="bubble-side-panel bubble-friend-panel"><h2>Sugestões de Amigos</h2><div className="bubble-side-panel-body">
+          {bubbleFriends.slice(0, 4).map((friend) => <div className="bubble-friend" key={friend.id}>
+            <img alt="" src={friend.avatar} /><strong>{friend.name}</strong>
+            <button onClick={() => setAddedFriends((current) => current.includes(friend.id) ? current : [...current, friend.id])} type="button">{addedFriends.includes(friend.id) ? "Enviado" : "+ Add"}</button>
+          </div>)}
+        </div></section>
+        <section className="bubble-side-panel bubble-community-panel"><h2>Comunidades</h2><div className="bubble-side-panel-body">
+          {bubbleCommunityList.slice(0, 5).map((community) => <button className="bubble-community" key={community.id} onClick={() => navigate("comunidades")} type="button">{community.title}</button>)}
+        </div></section>
+      </aside>
+    </div>
+  );
+
+  const renderProfile = () => (
+    <div className="bubble-page-content bubble-profile-page">
+      <header className="bubble-page-banner"><h1>Perfil</h1><p>Seu canto no Bubble: atualizações, fotos e tudo que seus amigos estão acompanhando.</p></header>
+      <section className="bubble-profile-cover">
+        <div className="bubble-cover-cloud bubble-cover-cloud-one" /><div className="bubble-cover-cloud bubble-cover-cloud-two" />
+        <div className="bubble-profile-summary">
+          <img alt="Foto de perfil de Ana Paula" src="/System/Doors/sites/bubble/avatar-ana.png" />
+          <div className="bubble-profile-copy">
+            <h2>{profileName}</h2><p>@anaa_paula93 · São Paulo, SP</p>
+            {editingProfile ? (
+              <form className="bubble-edit-profile" onSubmit={(event) => { event.preventDefault(); setEditingProfile(false); }}>
+                <label>Seu recado<input maxLength={120} onChange={({ currentTarget }) => setProfileAbout(currentTarget.value)} value={profileAbout} /></label>
+                <div><button type="submit">Salvar perfil</button><button onClick={() => setEditingProfile(false)} type="button">Cancelar</button></div>
+              </form>
+            ) : <p className="bubble-profile-about">{profileAbout}</p>}
+          </div>
+          {!editingProfile && <button className="bubble-primary-button" onClick={() => setEditingProfile(true)} type="button">Editar perfil</button>}
+        </div>
+      </section>
+      <div className="bubble-profile-columns">
+        <main className="bubble-profile-timeline">{renderComposer(true)}<div className="bubble-post-list">{profilePosts.map(renderPost)}</div></main>
+        <aside className="bubble-profile-details">
+          <section className="bubble-side-panel"><h2>Sobre mim</h2><div className="bubble-side-panel-body"><p><strong>mora em</strong><br />São Paulo, SP</p><p><strong>aniversário</strong><br />12 de maio</p><p><strong>no Bubble desde</strong><br />março de 2007</p></div></section>
+          <section className="bubble-side-panel"><h2>Amigos</h2><div className="bubble-side-panel-body bubble-profile-friends">{bubbleFriends.slice(0, 6).map((friend) => <button key={friend.id} onClick={() => navigate("amigos")} type="button"><img alt="" src={friend.avatar} /><span>{friend.name}</span></button>)}<button className="bubble-text-link" onClick={() => navigate("amigos")} type="button">ver todos →</button></div></section>
+          <section className="bubble-side-panel"><h2>Comunidades</h2><div className="bubble-side-panel-body">{bubbleCommunityList.slice(0, 3).map((community) => <button className="bubble-community" key={community.id} onClick={() => navigate("comunidades")} type="button">{community.title}</button>)}<button className="bubble-text-link" onClick={() => navigate("comunidades")} type="button">ver todas →</button></div></section>
+        </aside>
+      </div>
+    </div>
+  );
+
+  const renderFriends = () => {
+    const visiblePeople = friendsTab === "Solicitações"
+      ? requests.filter((friend) => {
+          const needle = friendSearch.trim().toLowerCase() || globalSearch.trim().toLowerCase();
+          return !needle || (friend.name + " " + friend.handle).toLowerCase().includes(needle);
+        })
+      : filteredDirectory;
+    return (
+      <div className="bubble-page-content">
+        <header className="bubble-page-banner"><h1>Amigos</h1><p>Gente que você conhece, gente que você quase conhece e gente que conhece as mesmas pessoas.</p></header>
+        <div className="bubble-friends-layout">
+          <main className="bubble-friends-main">
+            <div className="bubble-friend-toolbar">
+              <div className="bubble-friend-tabs">{(["Todos", "Online", "Solicitações"] as const).map((tab) => <button aria-pressed={friendsTab === tab} className={friendsTab === tab ? "is-active" : undefined} key={tab} onClick={() => setFriendsTab(tab)} type="button">{tab} ({tab === "Todos" ? 126 : tab === "Online" ? 4 : requests.length})</button>)}</div>
+              <label className="bubble-list-search"><span className="bubble-visually-hidden">Buscar na sua lista</span><input onChange={({ currentTarget }) => setFriendSearch(currentTarget.value)} placeholder="Procure na sua lista..." value={friendSearch} /><span aria-hidden="true">⌕</span></label>
+            </div>
+            {visiblePeople.length ? <div className="bubble-friend-grid">{visiblePeople.map((friend) => {
+              const requested = addedFriends.includes(friend.id);
+              const isRequest = friendsTab === "Solicitações";
+              return <article className="bubble-friend-card" key={friend.id}>
+                <img alt="" className="bubble-friend-photo" src={friend.avatar} />
+                <div className="bubble-friend-info"><h2>{friend.name}{friend.online && <i aria-label="Online" className="bubble-online-dot" />}</h2><p>{friend.handle}</p><small>{friend.mutuals} amigos em comum</small></div>
+                <button aria-label={"Mais opções para " + friend.name} className="bubble-card-menu" onClick={() => setAddedFriends((current) => current.includes(friend.id) ? current.filter((id) => id !== friend.id) : [...current, friend.id])} type="button">⋮</button>
+                {isRequest ? <div className="bubble-request-actions"><button className="bubble-primary-button" onClick={() => {
+                  setRequests((current) => current.filter((item) => item.id !== friend.id));
+                  setAddedFriends((current) => current.includes(friend.id) ? current : [...current, friend.id]);
+                }} type="button">Aceitar</button><button onClick={() => setRequests((current) => current.filter((item) => item.id !== friend.id))} type="button">Recusar</button></div>
+                : <span className="bubble-friend-status">{requested ? "Solicitação enviada" : friend.online ? "Online" : "Amigo"}</span>}
+              </article>;
+            })}</div> : <div className="bubble-empty-state"><h2>Ninguém por aqui</h2><p>Tente outro nome ou escolha uma aba diferente.</p></div>}
+          </main>
+          <aside className="bubble-friends-aside">
+            <section className="bubble-side-panel"><h2>Resumo</h2><div className="bubble-side-panel-body bubble-summary-stats"><p><span>Todos os amigos</span><strong>126</strong></p><p><span>Online agora</span><strong>4</strong></p><p><span>Novos este mês</span><strong>9</strong></p></div></section>
+            <section className="bubble-side-panel"><h2>Talvez você conheça</h2><div className="bubble-side-panel-body">{bubbleRequestsInitial.map((friend) => <div className="bubble-suggested-person" key={friend.id}><img alt="" src={friend.avatar} /><div><strong>{friend.name}</strong><small>{friend.mutuals} amigos em comum</small><button className="bubble-primary-button" onClick={() => setAddedFriends((current) => current.includes(friend.id) ? current : [...current, friend.id])} type="button">{addedFriends.includes(friend.id) ? "Enviado" : "+ Amigo"}</button></div></div>)}</div></section>
+            <section className="bubble-side-panel"><h2>Listas</h2><div className="bubble-side-panel-body bubble-summary-stats">{friendLists.map((list) => <p key={list.name}><span>{list.name}</span><strong>{list.count}</strong></p>)}{creatingFriendList ? <form className="bubble-inline-create" onSubmit={(event) => { event.preventDefault(); if (!friendListDraft.trim()) return; setFriendLists((current) => [...current, { name: friendListDraft.trim(), count: 0 }]); setFriendListDraft(""); setCreatingFriendList(false); }}><input aria-label="Nome da nova lista" onChange={({ currentTarget }) => setFriendListDraft(currentTarget.value)} placeholder="Nome da lista" value={friendListDraft} /><button className="bubble-primary-button" type="submit">Criar</button></form> : <button className="bubble-primary-button" onClick={() => setCreatingFriendList(true)} type="button">+ Nova lista</button>}</div></section>
+          </aside>
+        </div>
+      </div>
+    );
+  };
+
+  const visibleCommunities = bubbleCommunityList.filter((community) => {
+    const query = globalSearch.trim().toLowerCase();
+    return (communityCategory === "Todas" || community.category === communityCategory)
+      && (!query || (community.title + " " + community.description + " " + community.category).toLowerCase().includes(query));
+  });
+  const renderCommunities = () => (
+    <div className="bubble-page-content">
+      <header className="bubble-page-banner"><h1>Comunidades</h1><p>Entre em grupos, descubra assuntos novos e encontre pessoas que também não sabem a hora de sair da internet.</p></header>
+      <section className="bubble-community-feature">
+        <div className="bubble-community-feature-art" aria-hidden="true"><span>🐶</span><small>comunidade da semana</small></div>
+        <div className="bubble-community-feature-copy"><small>COMUNIDADE DA SEMANA</small><h2>Quero reclamar sobre a vida</h2><p>Uma comunidade feita com o propósito de dissertar sobre a raiva da sua semana e entreter a rapaziada!</p><div><span>2.848 pessoas</span><span>138 tópicos ativos</span></div><button className="bubble-light-button" onClick={() => setJoinedCommunities((current) => current.includes("semana") ? current : [...current, "semana"])} type="button">{joinedCommunities.includes("semana") ? "Você já participa" : "Entrar na comunidade"}</button></div>
+      </section>
+      <div className="bubble-community-layout">
+        <main className="bubble-community-main">
+          <div className="bubble-community-toolbar"><strong>Descobrir comunidades</strong><label>Categoria: <select onChange={({ currentTarget }) => setCommunityCategory(currentTarget.value)} value={communityCategory}><option>Todas</option>{[...new Set(bubbleCommunityList.map((item) => item.category))].map((category) => <option key={category}>{category}</option>)}</select></label></div>
+          {creatingCommunity && <form className="bubble-create-community" onSubmit={(event) => {
+            event.preventDefault();
+            if (!communityDraft.trim()) return;
+            setCreatedCommunities((current) => [communityDraft.trim(), ...current]);
+            setJoinedCommunities((current) => [communityDraft.trim(), ...current]);
+            setCommunityDraft("");
+            setCreatingCommunity(false);
+          }}><label>Nome da comunidade<input onChange={({ currentTarget }) => setCommunityDraft(currentTarget.value)} placeholder="Ex.: Música na garagem" value={communityDraft} /></label><button className="bubble-primary-button" type="submit">Criar comunidade</button><button onClick={() => setCreatingCommunity(false)} type="button">Cancelar</button></form>}
+          <div className="bubble-community-list">
+            {createdCommunities.map((title) => <article className="bubble-community-card" key={title}><span className="bubble-community-art">✦</span><div><small>Nova comunidade</small><h2>{title}</h2><p>Seu espaço para conversar com pessoas que gostam do mesmo assunto.</p><button className="bubble-primary-button" onClick={() => setJoinedCommunities((current) => [...current, title])} type="button">Entrar na comunidade</button></div></article>)}
+            {visibleCommunities.map((community, index) => <article className="bubble-community-card" key={community.id}><span aria-hidden="true" className={"bubble-community-art art-" + index}>{["☕", "✦", "☻", "♥", "⌁", "♫"][index % 6]}</span><div><small>{community.category}</small><h2>{community.title}</h2><p>{community.description}</p><span className="bubble-member-count">{community.members} pessoas</span><button className="bubble-primary-button" onClick={() => setJoinedCommunities((current) => current.includes(community.id) ? current.filter((id) => id !== community.id) : [...current, community.id])} type="button">{joinedCommunities.includes(community.id) ? "Participando · Sair" : "Entrar na comunidade"}</button></div></article>)}
+            {!visibleCommunities.length && <div className="bubble-empty-state"><h2>Nenhum grupo encontrado</h2><p>Experimente outra categoria ou busca.</p></div>}
+          </div>
+        </main>
+        <aside className="bubble-community-aside">
+          <section className="bubble-side-panel"><h2>Minhas comunidades</h2><div className="bubble-side-panel-body">{bubbleCommunityList.filter((community) => joinedCommunities.includes(community.id)).map((community) => <div className="bubble-my-community" key={community.id}><span aria-hidden="true">✦</span><div><strong>{community.title}</strong><small>{community.members} pessoas</small></div></div>)}{createdCommunities.map((title) => <div className="bubble-my-community" key={title}><span>✦</span><div><strong>{title}</strong><small>1 pessoa</small></div></div>)}</div></section>
+          <section className="bubble-side-panel"><h2>Categorias</h2><div className="bubble-category-grid">{["Música", "Arte", "Filmes", "Culinária", "Jogos", "Tecnologia", "Amizades", "Cotidiano"].map((category, index) => <button key={category} onClick={() => setCommunityCategory(category === "Música" || category === "Arte" || category === "Filmes" || category === "Jogos" ? "Todas" : category === "Culinária" ? "Culinária, Bebidas e Vinhos" : category)} type="button">{category}<span>{[488, 308, 114, 692, 308, 18, 93, 216][index]}</span></button>)}</div></section>
+          <section className="bubble-create-invite"><h2>Não achou sua turma?</h2><p>Crie um espaço novo e convide gente que entende do assunto.</p><button className="bubble-light-button" onClick={() => setCreatingCommunity(true)} type="button">Começar agora</button></section>
+        </aside>
+      </div>
+    </div>
+  );
+
+  const activeChat = conversations.find((conversation) => conversation.id === activeConversation) || conversations[0];
+  const visibleConversations = conversations.filter((conversation) => !messageSearch.trim() || conversation.name.toLowerCase().includes(messageSearch.trim().toLowerCase()));
+  const sendMessage = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    if (!messageDraft.trim() || !activeChat) return;
+    const text = messageDraft.trim();
+    setConversations((current) => current.map((conversation) => conversation.id === activeChat.id
+      ? { ...conversation, preview: text, stamp: "agora", messages: [...conversation.messages, { text, mine: true, time: "agora" }] }
+      : conversation));
+    setMessageDraft("");
+  };
+
+  const renderMessages = () => (
+    <div className="bubble-page-content">
+      <header className="bubble-page-banner"><h1>Mensagens</h1><p>Conversas privadas, planos de última hora e links que você vai abrir só depois.</p></header>
+      <section className="bubble-messenger">
+        <aside className="bubble-inbox">
+          <h2>Caixa de entrada</h2>
+          <label className="bubble-inbox-search"><span className="bubble-visually-hidden">Buscar conversas</span><input onChange={({ currentTarget }) => setMessageSearch(currentTarget.value)} placeholder="Buscar conversas" value={messageSearch} /><span aria-hidden="true">⌕</span></label>
+          <div className="bubble-conversation-list">{visibleConversations.map((conversation) => <button aria-current={activeChat?.id === conversation.id ? "true" : undefined} className={"bubble-conversation" + (activeChat?.id === conversation.id ? " is-active" : "")} key={conversation.id} onClick={() => setActiveConversation(conversation.id)} type="button">
+            <img alt="" src={conversation.avatar} /><span className="bubble-conversation-copy"><strong>{conversation.name}{conversation.online && <i aria-label="Online" className="bubble-online-dot" />}</strong><small>{conversation.preview}</small></span><span className="bubble-conversation-stamp">{conversation.unread ? <b>{conversation.unread}</b> : null}{conversation.stamp}</span>
+          </button>)}</div>
+        </aside>
+        <main className="bubble-chat">
+          {activeChat ? <>
+            <header className="bubble-chat-header"><img alt="" src={activeChat.avatar} /><div><strong>{activeChat.name}</strong><small>{activeChat.online ? "online agora" : "visto recentemente"}</small></div><button className="bubble-light-button" onClick={() => navigate("perfil")} type="button">Ver perfil</button></header>
+            <div aria-live="polite" aria-label={"Conversa com " + activeChat.name} className="bubble-chat-history">{activeChat.messages.map((message, index) => <div className={"bubble-chat-message " + (message.mine ? "is-mine" : "is-theirs")} key={activeChat.id + "-" + index}><p>{message.text}</p><small>{message.time}</small></div>)}</div>
+            <form className="bubble-chat-composer" onSubmit={sendMessage}><input aria-label="Escreva sua mensagem" onChange={({ currentTarget }) => setMessageDraft(currentTarget.value)} placeholder="Escreva sua mensagem..." value={messageDraft} /><button className="bubble-primary-button" disabled={!messageDraft.trim()} type="submit">Enviar</button></form>
+          </> : <div className="bubble-empty-state"><h2>Escolha uma conversa</h2></div>}
+        </main>
+      </section>
+    </div>
+  );
+
   return (
     <section className={loggedIn ? "site-bubble" : "site-bubble is-login"}>
-      {loggedIn && (
-        <header className="bubble-header">
-        <strong className="bubble-wordmark">bubble</strong>
-        {loggedIn ? (
-          <nav aria-label="Navegação do Bubble">
-            {["Início", "Perfil", "Amigos", "Comunidades", "Mensagens"].map(
-              (item) => (
-                <button
-                  aria-current={item === "Início" ? "page" : undefined}
-                  className={item === "Início" ? "is-active" : undefined}
-                  key={item}
-                  type="button"
-                >
-                  {item}
-                </button>
-              )
-            )}
-          </nav>
-        ) : (
-          <span className="bubble-header-note">
-            Uma rede para manter seus amigos por perto
-          </span>
-        )}
-        <form
-          aria-label="Buscar pessoas e comunidades"
-          className="bubble-top-search"
-          onSubmit={(event) => event.preventDefault()}
-          role="search"
-        >
-          <input
-            aria-label="Buscar pessoas, comunidades..."
-            placeholder="Buscar pessoas, comunidades..."
-            type="search"
-          />
-          <button aria-label="Pesquisar" type="submit">
-            <img alt="" aria-hidden="true" src="/System/Doors/search.svg" />
-          </button>
-        </form>
-        <button
-          className="bubble-session-button"
-          onClick={loggedIn ? endSession : startSession}
-          type="button"
-        >
-          {loggedIn ? "Sair" : "Entrar"}
-        </button>
-        </header>
-      )}
-
-      {loggedIn ? (
+      {!loggedIn ? (
         <>
-          <div className="bubble-content-grid">
-            <main aria-label="Mural do Bubble" className="bubble-feed">
-              <form
-                className="bubble-composer"
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  if (!postText.trim() && !postPhoto) return;
-                  setPosts((current) => [
-                    {
-                      author: "Você",
-                      avatar: bubbleAvatar("ana"),
-                      comments: 0,
-                      handle: "@voce",
-                      id:
-                        "post-" +
-                        Date.now().toString() +
-                        "-" +
-                        Math.random().toString(36).slice(2),
-                      image: postPhoto?.src,
-                      imageAlt: postPhoto?.name,
-                      likes: 0,
-                      message: postText.trim(),
-                      time: "agora",
-                    },
-                    ...current,
-                  ]);
-                  setPostText("");
-                  setPostPhoto(undefined);
-                }}
-              >
-                <h2 className="bubble-composer-title">
-                  E aí! O que tá rolando?
-                  <span aria-hidden="true">▤</span>
-                </h2>
-                <textarea
-                  aria-label="Escreva uma publicação"
-                  maxLength={240}
-                  onChange={({ currentTarget }) =>
-                    setPostText(currentTarget.value)
-                  }
-                  placeholder="Escreve aí..."
-                  value={postText}
-                />
-                <div className="bubble-composer-controls">
-                  <label className="bubble-attach-photo">
-                    <input
-                      accept="image/*"
-                      aria-label="Anexar foto"
-                      onChange={({ currentTarget }) => {
-                        const file = currentTarget.files?.[0];
-                        if (file) {
-                          setPostPhoto({
-                            name: file.name,
-                            src: URL.createObjectURL(file),
-                          });
-                        }
-                        currentTarget.value = "";
-                      }}
-                      type="file"
-                    />
-                    <span>▧ Anexar foto</span>
-                  </label>
-                  {postPhoto && (
-                    <span className="bubble-photo-name">{postPhoto.name}</span>
-                  )}
-                  <span aria-live="polite" className="bubble-character-count">
-                    {postText.length}/240
-                  </span>
-                  <button className="bubble-publish" type="submit">
-                    Publicar
-                  </button>
-                </div>
-              </form>
-
-              <div className="bubble-post-list">
-                {posts.map((post) => (
-                  <article className="bubble-post-card" key={post.id}>
-                    <header className="bubble-post-header">
-                      <img alt="" className="bubble-avatar" src={post.avatar} />
-                      <div>
-                        <strong>{post.author}</strong>
-                        <small>
-                          {post.handle} · {post.time}
-                        </small>
-                      </div>
-                      <button
-                        aria-label={"Mais opções para " + post.author}
-                        className="bubble-post-menu"
-                        type="button"
-                      >
-                        ⋮
-                      </button>
-                    </header>
-                    <div
-                      className={
-                        "bubble-post-content" + (post.image ? " has-image" : "")
-                      }
-                    >
-                      {post.message && <p>{post.message}</p>}
-                      {post.image && (
-                        <img
-                          alt={post.imageAlt || ""}
-                          className="bubble-post-image"
-                          src={post.image}
-                        />
-                      )}
-                      <div className="bubble-post-actions">
-                        <button type="button">♡ gostei · {post.likes}</button>
-                        <button type="button">
-                          ▱ comentar · {post.comments}
-                        </button>
-                        <span>visível para amigos</span>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </main>
-
-            <aside aria-label="Informações do perfil" className="bubble-sidebar">
-              <section className="bubble-profile-card">
-                <img
-                  alt=""
-                  className="bubble-profile-avatar"
-                  src={bubbleAvatar("ana")}
-                />
-                <div className="bubble-profile-name">
-                  <strong>Ana Paula</strong>
-                  <small>@anaa_paula93</small>
-                </div>
-                <button type="button">Ver perfil completo →</button>
-              </section>
-
-              <section className="bubble-side-panel">
-                <h2>Aniversariantes</h2>
-                <div className="bubble-side-panel-body">
-                  <p>Hoje é um bom dia para mandar um recado.</p>
-                </div>
-              </section>
-
-              <section className="bubble-side-panel bubble-friend-panel">
-                <h2>Sugestões de Amigos</h2>
-                <div className="bubble-side-panel-body">
-                  {[
-                    ["jorge", "João Pedro"],
-                    ["gabriela", "Lari :-)"],
-                    ["gustavo", "Marcão Skt"],
-                    ["paulo", "Bruninho_08"],
-                    ["ana", "Carlinha_XD"],
-                  ].map(([avatar, name]) => (
-                    <div className="bubble-friend" key={name}>
-                      <img alt="" src={bubbleAvatar(avatar)} />
-                      <strong>{name}</strong>
-                      <button type="button">+ Add</button>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="bubble-side-panel bubble-community-panel">
-                <h2>Comunidades</h2>
-                <div className="bubble-side-panel-body">
-                  {[
-                    "Eu odeio acordar cedo",
-                    "Counter-Strike 1.6",
-                    "Charlie Brown Jr",
-                    "MSN Messenger",
-                    "Eu matava aula pra ir na lan",
-                  ].map((community) => (
-                    <button className="bubble-community" key={community} type="button">
-                      {community}
-                    </button>
-                  ))}
-                </div>
-              </section>
-            </aside>
+          <div className="bubble-auth-notice"><strong>Aviso:</strong> o bubble.br não tem vínculo com o Gluugli.</div>
+          <div className="bubble-auth-layout">
+            <section className="bubble-auth-promo">
+              <div className="bubble-logo-window"><img alt="Bubble" src="/System/Doors/sites/bubble-mark.png" /></div>
+              <p><strong>Conecte-se</strong> aos seus amigos e familiares usando recados e mensagens instantâneas.</p>
+              <p><strong>Conheça</strong> novas pessoas através de amigos de seus amigos e comunidades.</p>
+              <p><strong>Compartilhe</strong> seus vídeos, fotos e paixões em um só lugar.</p>
+            </section>
+            <form className="bubble-login" onSubmit={(event) => { event.preventDefault(); startSession(); }}>
+              <h2>Acesse o orkut.br com a sua conta</h2>
+              <label className="bubble-login-field">e-mail:<input autoComplete="off" id="bubble-email" ref={emailInputRef} required type="email" /></label>
+              <label className="bubble-login-field">senha:<input autoComplete="off" required type="password" /></label>
+              <label className="bubble-save"><input type="checkbox" /><span>Salvar as minhas informações neste computador.</span></label>
+              <p className="bubble-public-warning">Não use em computadores públicos</p>
+              <button className="login-submit" type="submit">Login</button>
+              <button className="bubble-help" onClick={() => emailInputRef.current?.focus()} type="button">Não consegue acessar a sua conta?</button>
+              <p className="bubble-register">Ainda não é membro? <button className="bubble-register-link" onClick={() => emailInputRef.current?.focus()} type="button">ENTRAR JÁ</button></p>
+            </form>
           </div>
-
-          <footer className="bubble-footer">
-            <strong>bubble</strong>
-            <nav aria-label="Links do Bubble">
-              <span>sobre</span>
-              <span>segurança</span>
-              <span>privacidade</span>
-              <span>ajuda</span>
-            </nav>
-            <small>© Bubble, 2005. Todos os direitos reservados</small>
-          </footer>
+          <footer className="bubble-login-footer">2005 Orkut.br - <u>Sobre o bubble.br</u> - <u>Centro de segurança</u> - <u>Privacidade</u> - <u>Termos</u> - <u>Contato</u> - Desenvolvido por <u>Latência</u></footer>
         </>
       ) : (
         <>
-          <div className="bubble-auth-notice">
-            <strong>Aviso:</strong> o bubble.br não tem vínculo com o Gluugli.
-          </div>
-          <div className="bubble-auth-layout">
-            <section className="bubble-auth-promo">
-              <div className="bubble-logo-window">
-                <img alt="Bubble" src="/System/Doors/sites/bubble-mark.png" />
-              </div>
-              <p>
-                <strong>Conecte-se</strong> aos seus amigos e familiares usando
-                recados e mensagens instantâneas.
-              </p>
-              <p>
-                <strong>Conheça</strong> novas pessoas através de amigos de seus
-                amigos e comunidades.
-              </p>
-              <p>
-                <strong>Compartilhe</strong> seus vídeos, fotos e paixões em um
-                só lugar.
-              </p>
-            </section>
-            <form
-              className="bubble-login"
-              onSubmit={(event) => {
-                event.preventDefault();
-                startSession();
-              }}
-            >
-              <h2>Acesse o orkut.br com a sua conta</h2>
-              <label className="bubble-login-field">
-                e-mail:
-                <input
-                  autoComplete="off"
-                  id="bubble-email"
-                  ref={emailInputRef}
-                  required
-                  type="email"
-                />
-              </label>
-              <label className="bubble-login-field">
-                senha:
-                <input autoComplete="off" required type="password" />
-              </label>
-              <label className="bubble-save">
-                <input type="checkbox" />
-                <span>Salvar as minhas informações neste computador.</span>
-              </label>
-              <p className="bubble-public-warning">
-                Não use em computadores públicos
-              </p>
-              <button className="login-submit" type="submit">
-                Login
-              </button>
-              <button
-                className="bubble-help"
-                onClick={() => emailInputRef.current?.focus()}
-                type="button"
-              >
-                Não consegue acessar a sua conta?
-              </button>
-              <p className="bubble-register">
-                Ainda não é membro?
-                <button
-                  className="bubble-register-link"
-                  onClick={() => emailInputRef.current?.focus()}
-                  type="button"
-                >
-                  ENTRAR JÁ
-                </button>
-              </p>
+          <header className="bubble-header">
+            <button aria-label="Ir para o início do Bubble" className="bubble-wordmark" onClick={() => navigate("inicio")} type="button">bubble</button>
+            <nav aria-label="Navegação do Bubble">{bubbleNavigation.map((item) => <button aria-current={page === item.id ? "page" : undefined} className={page === item.id ? "is-active" : undefined} key={item.id} onClick={() => navigate(item.id)} type="button">{item.label}</button>)}</nav>
+            <form aria-label="Buscar pessoas e comunidades" className="bubble-top-search" onSubmit={(event) => event.preventDefault()} role="search">
+              <input aria-label="Buscar pessoas, comunidades..." onChange={({ currentTarget }) => setGlobalSearch(currentTarget.value)} placeholder="Buscar pessoas, comunidades..." type="search" value={globalSearch} />
+              <button aria-label="Pesquisar" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/search.svg" /></button>
             </form>
-          </div>
-          <footer className="bubble-login-footer">
-            2005 Orkut.br - <u>Sobre o bubble.br</u> - <u>Centro de segurança</u> -
-            <u>Privacidade</u> - <u>Termos</u> - <u>Contato</u> - Desenvolvido por
-            <u> Latência</u>
-          </footer>
+            <button className="bubble-session-button" onClick={endSession} type="button">Sair</button>
+          </header>
+          {page === "inicio" && renderHome()}
+          {page === "perfil" && renderProfile()}
+          {page === "amigos" && renderFriends()}
+          {page === "comunidades" && renderCommunities()}
+          {page === "mensagens" && renderMessages()}
+          <footer className="bubble-footer"><strong>bubble</strong><nav aria-label="Links do Bubble"><button onClick={() => navigate("perfil")} type="button">sobre</button><button onClick={() => navigate("comunidades")} type="button">segurança</button><button onClick={() => navigate("perfil")} type="button">privacidade</button><button onClick={() => navigate("mensagens")} type="button">ajuda</button></nav><small>© Bubble, 2005. Todos os direitos reservados</small></footer>
         </>
       )}
     </section>
