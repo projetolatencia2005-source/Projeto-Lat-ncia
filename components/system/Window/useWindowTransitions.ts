@@ -41,7 +41,7 @@ const baseMinimize = {
 const instant = { transition: { duration: 0 } };
 
 const getMaxDimensions = (): Variant => ({
-  height: Math.max(0, viewHeight() - TASKBAR_HEIGHT - 10),
+  height: Math.max(0, viewHeight() - TASKBAR_HEIGHT),
   width: viewWidth(),
 });
 
