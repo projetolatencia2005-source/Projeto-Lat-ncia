@@ -197,7 +197,12 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
             onClick={() => void movePhoto(-1)}
             type="button"
           >
-            ‹
+            <img
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              src="/System/Doors/Esquerda.svg"
+            />
           </button>
           <button
             aria-label="Próxima imagem"
@@ -205,7 +210,12 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
             onClick={() => void movePhoto(1)}
             type="button"
           >
-            ›
+            <img
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              src="/System/Doors/Direita.svg"
+            />
           </button>
         </>
       )}

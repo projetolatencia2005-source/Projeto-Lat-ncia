@@ -10,7 +10,7 @@ import {
 } from "utils/accessibility";
 import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
 
-const SESSION_DURATION_SECONDS = 5 * 60;
+const SESSION_DURATION_SECONDS = 10 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",

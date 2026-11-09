@@ -50,17 +50,21 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
     color: #31302c;
     cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     display: flex;
-    font-family: "Pixelify Sans", monospace;
-    font-size: 34px;
     height: 44px;
     justify-content: center;
-    line-height: 1;
-    padding: 0 0 5px;
+    padding: 0;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 38px;
     z-index: 2;
+
+    img {
+      display: block;
+      height: 25px;
+      image-rendering: pixelated;
+      width: 25px;
+    }
 
     &:hover {
       background: #e9dfcb;

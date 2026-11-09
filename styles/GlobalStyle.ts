@@ -467,13 +467,19 @@ const GlobalStyle = styled.createGlobalStyle`
       object-fit: contain;
       position: absolute;
       width: 100%;
+      z-index: 1;
     }
 
     > span {
+      align-items: center;
       color: #31302c;
+      display: flex;
       font-size: 0.78em;
-      position: relative;
-      z-index: 1;
+      inset: 0;
+      justify-content: center;
+      line-height: 1;
+      position: absolute;
+      z-index: 2;
     }
   }
 
@@ -1094,6 +1100,29 @@ const GlobalStyle = styled.createGlobalStyle`
     justify-content: center;
     padding: 0;
     width: 20px;
+  }
+
+  .doors-system-tray > img {
+    transition:
+      filter 120ms ease,
+      transform 120ms ease;
+  }
+
+  .doors-system-tray > img:hover {
+    filter: drop-shadow(1px 1px 0 #31302c);
+    transform: translateY(-1px);
+  }
+
+  .doors-system-tray > button {
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .doors-system-tray > button:hover:not(:disabled) {
+    background: #d7e4f7;
+    box-shadow: 1px 1px 0 #31302c;
+    opacity: 1 !important;
   }
 
   .doors-volume-control {

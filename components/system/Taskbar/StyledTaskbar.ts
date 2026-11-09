@@ -22,8 +22,8 @@ const StyledTaskbar = styled.nav`
 
   background: linear-gradient(
     90deg,
-    #7d94b8 0 calc(100% - 250px),
-    #d7e4f7 calc(100% - 250px) 100%
+    #7d94b8 0 calc(100% - 275px),
+    #d7e4f7 calc(100% - 275px) 100%
   );
   border-top: 2px solid #31302c;
   bottom: 0;
@@ -40,7 +40,7 @@ const StyledTaskbar = styled.nav`
     content: "";
     display: block;
     height: 100%;
-    left: calc(100% - 250px);
+    left: calc(100% - 275px);
     pointer-events: none;
     position: absolute;
     top: 0;

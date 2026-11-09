@@ -9,6 +9,7 @@ import { UNKNOWN_SIZE } from "contexts/fileSystem/core";
 import useResizeObserver from "hooks/useResizeObserver";
 import Button from "styles/common/Button";
 import Icon from "styles/common/Icon";
+import { PICTURES_FOLDER } from "utils/constants";
 import { getFormattedSize, haltEvent, label } from "utils/functions";
 
 type StatusBarProps = {
@@ -106,38 +107,40 @@ const StatusBar: FC<StatusBarProps> = ({
             : ""}
         </div>
       )}
-      <nav className="views" role="presentation">
-        <Button
-          aria-pressed={view === "details"}
-          className={view === "details" ? "active" : undefined}
-          onClick={() => setView("details")}
-          {...label(
-            "Displays information about each item\nin the window.  (Ctrl+Shift+6)",
-            "Details view"
-          )}
-        >
-          <Icon
-            displaySize={16}
-            imgSize={16}
-            src="/System/Icons/details_view.webp"
-          />
-        </Button>
-        <Button
-          aria-pressed={view === "icon"}
-          className={view === "icon" ? "active" : undefined}
-          onClick={() => setView("icon")}
-          {...label(
-            "Display items by using medium\nthumbnails.  (Ctrl+Shift+3)",
-            "Medium icons view"
-          )}
-        >
-          <Icon
-            displaySize={16}
-            imgSize={16}
-            src="/System/Icons/icon_view.webp"
-          />
-        </Button>
-      </nav>
+      {directory !== PICTURES_FOLDER && (
+        <nav className="views" role="presentation">
+          <Button
+            aria-pressed={view === "details"}
+            className={view === "details" ? "active" : undefined}
+            onClick={() => setView("details")}
+            {...label(
+              "Displays information about each item\nin the window.  (Ctrl+Shift+6)",
+              "Details view"
+            )}
+          >
+            <Icon
+              displaySize={16}
+              imgSize={16}
+              src="/System/Icons/details_view.webp"
+            />
+          </Button>
+          <Button
+            aria-pressed={view === "icon"}
+            className={view === "icon" ? "active" : undefined}
+            onClick={() => setView("icon")}
+            {...label(
+              "Display items by using medium\nthumbnails.  (Ctrl+Shift+3)",
+              "Medium icons view"
+            )}
+          >
+            <Icon
+              displaySize={16}
+              imgSize={16}
+              src="/System/Icons/icon_view.webp"
+            />
+          </Button>
+        </nav>
+      )}
     </StyledStatusBar>
   );
 };

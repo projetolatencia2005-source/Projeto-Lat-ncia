@@ -108,14 +108,21 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     }
   }
 
-  button.doors-picture-thumbnail figure picture:first-of-type {
+  button.doors-picture-thumbnail figure > picture:first-of-type {
+    display: block;
+    flex: 0 0 100px;
     height: 100px;
     width: 100px;
 
-    img {
-      height: 100%;
+    > img {
+      aspect-ratio: 1;
+      height: 100px;
+      max-height: 100px;
+      max-width: 100px;
+      min-height: 100px;
+      min-width: 100px;
       object-fit: cover;
-      width: 100%;
+      width: 100px;
     }
   }
 

@@ -84,13 +84,15 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
   .browser-tabs {
     align-items: flex-end;
     display: flex;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     gap: 2px;
     height: 100%;
     margin-left: 5px;
+    max-width: calc(100% - 40px);
     min-width: 0;
     overflow-x: clip;
     overflow-y: visible;
+    width: max-content;
   }
 
   .browser-tab-add {
