@@ -3553,6 +3553,22 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
+  && {
+    padding: 0;
+  }
+
+  && .site-bubble {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    width: 100%;
+  }
+
+  && .site-bubble > .bubble-footer {
+    box-sizing: border-box;
+    margin-top: auto;
+    width: 100%;
+  }
 `;
 
 export default StyledInternalSites;
