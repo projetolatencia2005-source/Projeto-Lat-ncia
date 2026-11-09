@@ -645,7 +645,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       display: flex;
       flex-direction: column;
       min-height: 100%;
-      padding: clamp(42px, 16.2vh, 175px) clamp(12px, 1.25vw, 24px)
+      padding: clamp(24px, 5.3vh, 70px) clamp(12px, 1.25vw, 24px)
         clamp(18px, 4.5vh, 50px);
     }
 
@@ -654,9 +654,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-sizing: border-box;
       color: #31302c;
-      font-size: clamp(12px, 1.25vw, 24px);
+      font-size: clamp(12px, 1vw, 16px);
       line-height: 1.1;
-      padding: clamp(8px, 1vw, 18px) clamp(10px, 1.05vw, 20px);
+      padding: clamp(8px, 0.8vw, 12px) clamp(10px, 1.05vw, 20px);
     }
 
     .bubble-auth-notice strong,
@@ -666,10 +666,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .bubble-auth-layout {
       display: grid;
-      gap: clamp(8px, 1.05vw, 20px);
+      gap: clamp(8px, 1vw, 16px);
       grid-template-columns: minmax(0, 2.02fr) minmax(255px, 1fr);
-      height: clamp(290px, 57vh, 616px);
-      margin-top: clamp(10px, 2.2vh, 24px);
+      height: clamp(240px, 37vh, 400px);
+      margin-top: clamp(10px, 2vh, 18px);
     }
 
     .bubble-auth-promo {
@@ -708,7 +708,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-auth-promo p {
-      font-size: clamp(12px, 1.25vw, 24px);
+      font-size: clamp(12px, 1vw, 16px);
       line-height: 1.25;
       margin: 0.25em 0;
       max-width: 100%;
@@ -728,10 +728,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-login h2 {
-      font-size: clamp(14px, 1.25vw, 24px);
+      font-size: clamp(12px, 1.05vw, 18px);
       font-weight: 400;
       line-height: 1.25;
-      margin: 0 auto clamp(10px, 1.5vh, 18px);
+      margin: 0 auto clamp(6px, 1.1vh, 12px);
       max-width: 420px;
       text-align: center;
       width: 100%;
@@ -740,10 +740,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     .bubble-login .bubble-login-field {
       align-items: center;
       display: grid;
-      font-size: clamp(12px, 1.25vw, 24px);
-      gap: clamp(8px, 1vw, 19px);
+      font-size: clamp(12px, 1vw, 16px);
+      gap: clamp(5px, 0.7vw, 10px);
       grid-template-columns: clamp(48px, 5.05vw, 97px) minmax(0, 1fr);
-      margin: 0 auto clamp(5px, 0.65vw, 12px);
+      margin: 0 auto clamp(4px, 0.45vw, 7px);
       max-width: 420px;
       width: 100%;
     }
@@ -752,36 +752,36 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       background: #fff;
       border: 2px solid rgb(49 48 44 / 25%);
       box-sizing: border-box;
-      height: clamp(22px, 2.3vw, 44px);
+      height: clamp(22px, 2.3vw, 32px);
       justify-self: start;
       min-width: 0;
       padding: 3px 7px;
-      width: min(100%, clamp(140px, 14.9vw, 286px));
+      width: min(100%, clamp(140px, 18vw, 286px));
     }
 
     .bubble-login .bubble-save {
       align-items: start;
       display: grid;
-      font-size: clamp(12px, 1.25vw, 24px);
-      gap: clamp(8px, 1vw, 19px);
-      grid-template-columns: clamp(14px, 1.4vw, 27px) minmax(0, 1fr);
+      font-size: clamp(12px, 1vw, 16px);
+      gap: clamp(5px, 0.7vw, 10px);
+      grid-template-columns: clamp(14px, 1.1vw, 18px) minmax(0, 1fr);
       line-height: 1.25;
-      margin: clamp(8px, 1.4vw, 27px) auto clamp(8px, 1.2vw, 23px);
+      margin: clamp(5px, 0.5vw, 8px) auto clamp(6px, 0.6vw, 9px);
       max-width: 420px;
       width: 100%;
     }
 
     .bubble-login input[type="checkbox"] {
-      height: clamp(14px, 1.4vw, 27px);
+      height: clamp(14px, 1.1vw, 18px);
       margin: 0;
       padding: 0;
-      width: clamp(14px, 1.4vw, 27px);
+      width: clamp(14px, 1.1vw, 18px);
     }
 
     .bubble-public-warning {
-      font-size: clamp(12px, 1.25vw, 24px);
+      font-size: clamp(12px, 1vw, 16px);
       line-height: 1.25;
-      margin: 0 auto clamp(10px, 2vw, 38px);
+      margin: 0 auto clamp(6px, 0.7vw, 10px);
       max-width: 420px;
       text-align: center;
       width: 100%;
@@ -792,8 +792,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 2px 2px 0 #31302c;
       display: block;
-      height: clamp(25px, 2.3vw, 44px);
-      margin: 0 auto clamp(18px, 3.1vw, 60px);
+      height: clamp(24px, 2.2vw, 32px);
+      margin: 0 auto clamp(8px, 0.9vw, 12px);
       min-width: clamp(48px, 4.6vw, 88px);
       padding: 0 8px;
     }
@@ -804,14 +804,14 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       box-shadow: none;
       color: #fff;
       display: block;
-      font-size: clamp(12px, 1.25vw, 24px);
-      margin: 0 auto clamp(18px, 3vw, 58px);
+      font-size: clamp(12px, 1vw, 16px);
+      margin: 0 auto clamp(8px, 0.9vw, 12px);
       padding: 3px;
       text-decoration: underline;
     }
 
     .bubble-register {
-      font-size: clamp(12px, 1.25vw, 24px);
+      font-size: clamp(12px, 1vw, 16px);
       line-height: 1.3;
       margin: 0;
       text-align: center;
@@ -832,9 +832,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .bubble-login-footer {
       color: #fff;
-      font-size: clamp(12px, 1.25vw, 24px);
+      font-size: clamp(12px, 1vw, 16px);
       line-height: 1.3;
-      margin: clamp(18px, 4vh, 43px) 0 0;
+      margin: clamp(12px, 2vh, 24px) 0 0;
       text-align: center;
     }
 
