@@ -81,6 +81,25 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
     });
     prependFileToTitle(basename(url));
   };
+  const movePhoto = async (direction: -1 | 1): Promise<void> => {
+    const directory = await readdir(dirname(url));
+    const currentIndex = directory.indexOf(basename(url));
+
+    if (currentIndex === -1) return;
+
+    for (
+      let nextIndex = currentIndex + direction;
+      nextIndex >= 0 && nextIndex < directory.length;
+      nextIndex += direction
+    ) {
+      const nextUrl = directory[nextIndex];
+
+      if (IMAGE_FILE_EXTENSIONS.has(getExtension(nextUrl))) {
+        setUrl(id, join(dirname(url), nextUrl));
+        return;
+      }
+    }
+  };
   const onKeyDown = async (event: KeyboardEvent): Promise<void> => {
     const { altKey, ctrlKey, key, metaKey } = event;
     const panStep = PAN_STEPS[key];
@@ -111,34 +130,8 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
       return;
     }
 
-    // eslint-disable-next-line default-case
-    switch (key) {
-      case "ArrowRight":
-      case "ArrowLeft": {
-        const directory = await readdir(dirname(url));
-        const currentIndex = directory.indexOf(basename(url));
-        const nextPhoto = (index: number, next: boolean): void => {
-          if (index === -1) return;
-
-          const nextIndex = index + (next ? 1 : -1);
-
-          if (nextIndex === -1 || nextIndex === directory.length) {
-            return;
-          }
-
-          const nextUrl = directory[nextIndex];
-
-          if (IMAGE_FILE_EXTENSIONS.has(getExtension(nextUrl))) {
-            setUrl(id, join(dirname(url), nextUrl));
-          } else {
-            nextPhoto(nextIndex, next);
-          }
-        };
-
-        nextPhoto(currentIndex, key === "ArrowRight");
-
-        break;
-      }
+    if (key === "ArrowRight" || key === "ArrowLeft") {
+      await movePhoto(key === "ArrowRight" ? 1 : -1);
     }
   };
   const onImageLoad = ({
@@ -196,6 +189,26 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
           </div>
         )}
       </figure>
+      {url && !brokenImage && src[url] && (
+        <>
+          <button
+            aria-label="Imagem anterior"
+            className="doors-photo-nav doors-photo-nav-previous"
+            onClick={() => void movePhoto(-1)}
+            type="button"
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Próxima imagem"
+            className="doors-photo-nav doors-photo-nav-next"
+            onClick={() => void movePhoto(1)}
+            type="button"
+          >
+            ›
+          </button>
+        </>
+      )}
     </StyledPhotos>
   );
 };

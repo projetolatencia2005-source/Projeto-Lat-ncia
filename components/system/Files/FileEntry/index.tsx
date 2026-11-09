@@ -597,6 +597,7 @@ const FileEntry: FC<FileEntryProps> = ({
               name.trim().toLocaleLowerCase() === "post-it" &&
               "doors-post-it-shortcut",
             isPastasShortcut && "doors-pastas-shortcut",
+            isPictureThumbnail && "doors-picture-thumbnail",
             isComputerShortcut && "doors-computer-shortcut",
           ]
             .filter(Boolean)
@@ -657,7 +658,7 @@ const FileEntry: FC<FileEntryProps> = ({
             }
             {...(isDesktop
               ? {
-                  imgSize: isPastasShortcut ? 56 : 40,
+                  imgSize: isPastasShortcut ? 46 : 40,
                 }
               : FileEntryIconSize[view])}
           />

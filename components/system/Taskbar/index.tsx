@@ -2,6 +2,7 @@ import { AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import Clock from "components/system/Taskbar/Clock";
+import { useProcessesActions } from "contexts/process";
 import {
   importAIButton,
   importAIChat,
@@ -42,6 +43,7 @@ const onSystemMediaPlay = (event: Event): void => {
 };
 
 const SystemTray: FC = () => {
+  const { open } = useProcessesActions();
   const [volume, setVolume] = useState(() =>
     Math.round(getSystemVolume() * 100)
   );
@@ -198,6 +200,14 @@ const SystemTray: FC = () => {
 
   return (
     <div ref={trayRef} className="doors-system-tray">
+      <button
+        aria-label="Acessibilidade"
+        className="doors-accessibility-toggle"
+        onClick={() => open("Accessibility")}
+        type="button"
+      >
+        <img alt="" aria-hidden="true" src="/System/Icons/accessibility.svg" />
+      </button>
       <img
         alt=""
         aria-hidden="true"

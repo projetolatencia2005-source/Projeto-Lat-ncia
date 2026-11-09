@@ -525,15 +525,6 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const search = (value: string): void =>
     browserTabs?.navigate(searchUrl(`${SITE_URLS.encicloweb}buscar`, value));
   const navigate = (path: string): void => browserTabs?.navigate(SITE_URLS.encicloweb + path);
-  const legacyHowItWorks = (
-    <section className="wiki-legacy-information">
-      <h2>Como funciona?</h2>
-      <p>
-        Leia para descobrir assuntos novos, cite fontes para ajudar outras pessoas e participe das páginas comunitárias. Todo o conteúdo desta demonstração permanece dentro do navegador interno.
-      </p>
-    </section>
-  );
-
   const renderTabs = (): ReactNode => (
     <nav aria-label="Página da EncicloWeb" className="wiki-page-tabs">
       <button
@@ -584,9 +575,9 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   ];
 
   const wikiToolItems = [
-    { label: "Artigos Influentes", path: wikiTechnologyArticlePath },
-    { label: "Novidades", path: wikiSociabilityArticlePath },
-    { label: "Páginas especiais", path: wikiLanHouseArticlePath },
+    { label: "Avanço da tecnologia e teorias de distopia digital", path: wikiTechnologyArticlePath },
+    { label: "O que são LAN houses e para que veio", path: wikiLanHouseArticlePath },
+    { label: "Sociabilidade nas lan houses das periferias", path: wikiSociabilityArticlePath },
   ];
 
   const renderDiscussion = (): ReactNode => {
@@ -641,21 +632,21 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             A enciclopédia livre, criada para reunir todo o conhecimento humano em um único lugar, incluindo informações que ninguém pediu, curiosidades que ninguém precisava saber e discussões que já duram mais do que alguns casamentos.
           </p>
           <p>
-            Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso ao navegador contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta pesquisar, ler e compartilhar o que aprendeu.
+            Fundada em 2001, a EncicloWeb permite que qualquer pessoa com acesso à internet contribua para a construção do conhecimento coletivo. Não é necessário diploma, experiência profissional ou sequer saber exatamente do que está falando. Basta ter um navegador, uma conexão razoável e confiança suficiente para corrigir o trabalho de um desconhecido.
           </p>
           <p>
-            Aqui, todos podem adicionar informações e corrigir erros. Recomendamos cautela: sua contribuição pode ser revertida por alguém que continua vigiando a página sobre pombos.
+            Aqui, todos podem editar artigos, adicionar informações e corrigir erros. Entretanto, recomendamos cautela: sua contribuição pode ser revertida por um usuário chamado MestreDosEditores93, que não aparece há três anos, mas continua vigiando a página sobre pombos.
           </p>
-          {legacyHowItWorks}
+          <h2>Como funciona?</h2>
           <ul className="wiki-how-to-list">
             <li><strong>Leia:</strong> descubra informações sobre assuntos que você nunca pensou em pesquisar.</li>
             <li><strong>Edite:</strong> compartilhe o que sabe, o que estudou ou o que ouviu de alguém que conhece uma pessoa que trabalha na área.</li>
-            <li><strong>Cite Fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
+            <li><strong>Cite fontes:</strong> porque escrever “meu tio me contou” ainda não é considerado uma referência bibliográfica.</li>
             <li><strong>Discuta:</strong> defenda suas alterações até perceber que está há quatro horas debatendo a diferença entre duas palavras.</li>
-            <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 41 regras que você deveria ter lido antes de começar.</li>
+            <li><strong>Seja livre:</strong> desde que respeite as regras, as fontes, os administradores e as outras 47 regras que você deveria ter lido antes de começar.</li>
           </ul>
           <section className="wiki-founder-note">
-            <p><strong>Jimmy Wales</strong> Jimmy Wales é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
+            <p><strong>Jimmy Wales</strong> é um empresário de maceio e cofundador da EncicloWeb, criada em 2001 com a proposta de reunir todo o conhecimento humano em um único lugar. Desde então, sua criação permite que especialistas compartilhem descobertas, estudantes façam pesquisas de última hora e desconhecidos discutam durante horas sobre assuntos que mal compreendem. Wales acredita no conhecimento livre, embora provavelmente não imaginasse que isso também significaria confiar a história da humanidade a pessoas com acesso à internet.</p>
             <img alt="Jimmy Wales em uma fotografia" src={`${wikiAssets}encicloweb-jimmy-wales.jpg`} />
           </section>
         </>
@@ -771,7 +762,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             </section>
           )}
           <section className="wiki-sidebar-panel wiki-tools-panel">
-            <h3>Ferramentas</h3>
+            <h3>{isHome ? "Artigos" : "Ferramentas"}</h3>
             {wikiToolItems.map((item) => (
               <button
                 key={item.label}

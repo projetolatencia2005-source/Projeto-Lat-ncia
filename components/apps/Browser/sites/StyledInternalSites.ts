@@ -1159,13 +1159,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .wiki-home-page h1 { font-weight: 700; margin-bottom: 14px; }
-    .wiki-home-page .wiki-legacy-information {
-      background: transparent; border: 0; margin: 21px 0 7px; padding: 0;
-      h2 {
-        border-bottom: 1px solid #aaa; font-size: 19px; margin: 0 0 8px; padding-bottom: 4px;
-      }
-      p { margin: 0 0 8px; }
-    }
     .wiki-how-to-list {
       margin: 6px 0 24px; padding-left: 27px;
       li { font-size: 13px; line-height: 1.4; margin: 5px 0; }
@@ -1253,6 +1246,178 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       .wiki-founder-note img { max-height: 240px; }
       .wiki-comment { width: 100%; }
       .wiki-comment-reply { width: calc(100% - 18px); }
+    }
+  }
+
+  .site-encicloweb.wiki-home {
+    background: #e9edf3;
+    color: #31302c;
+    font-family: "Pixelify Sans", monospace;
+    padding: 12px 14px 18px;
+
+    .wiki-header {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+      margin: 0 0 12px;
+      min-height: 48px;
+      padding: 0;
+
+      .wiki-brand {
+        gap: 8px;
+
+        img {
+          height: 48px;
+          width: 48px;
+        }
+
+        strong { font-size: 21px; }
+        small { font-size: 10px; }
+      }
+
+      .site-search {
+        box-shadow: 2px 2px 0 #31302c;
+        flex: 0 1 430px;
+        margin: 0 0 0 auto;
+        max-width: 430px;
+        width: 100%;
+      }
+    }
+
+    .wiki-layout {
+      align-items: start;
+      gap: 12px;
+      grid-template-columns: minmax(185px, 0.22fr) minmax(0, 1fr);
+    }
+
+    .wiki-sidebar {
+      align-self: start;
+      background: #f8faff;
+      border: 2px solid #31302c;
+      box-shadow: 3px 3px 0 #31302c;
+      display: block;
+      padding: 12px 10px;
+    }
+
+    .wiki-sidebar-panel {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+
+      h3 {
+        border-bottom: 1px solid #b8bfca;
+        font-size: 14px;
+        margin: 0 0 6px;
+        padding: 0 0 4px;
+      }
+
+      button {
+        font-size: 12px;
+        line-height: 1.35;
+        padding: 3px 0;
+      }
+
+      & + .wiki-sidebar-panel {
+        margin-top: 15px;
+      }
+    }
+
+    .wiki-article {
+      background: #f8faff;
+      border: 2px solid #31302c;
+      box-shadow: 3px 3px 0 #31302c;
+      line-height: 1.4;
+      min-width: 0;
+      padding: clamp(14px, 1.55vw, 22px);
+    }
+
+    .wiki-home-page {
+      h1 {
+        border-bottom: 1px solid #aaa;
+        font-size: clamp(20px, 1.75vw, 28px);
+        font-weight: 600;
+        line-height: 1.2;
+        margin: 0 0 10px;
+        padding-bottom: 5px;
+      }
+
+      h2 {
+        border-bottom: 1px solid #aaa;
+        font-size: clamp(15px, 1.25vw, 19px);
+        line-height: 1.2;
+        margin: 16px 0 6px;
+        padding-bottom: 4px;
+      }
+
+      p {
+        font-size: clamp(12px, 0.92vw, 14px);
+        line-height: 1.42;
+        margin: 7px 0 9px;
+      }
+    }
+
+    .wiki-how-to-list {
+      margin: 6px 0 19px;
+      padding-left: 24px;
+
+      li {
+        font-size: clamp(12px, 0.9vw, 14px);
+        line-height: 1.4;
+        margin: 4px 0;
+      }
+    }
+
+    .wiki-founder-note {
+      align-items: center;
+      background: #d9d9d9;
+      border: 0;
+      display: grid;
+      gap: 16px;
+      grid-template-columns: minmax(0, 1fr) minmax(160px, 31%);
+      margin: 18px 0 0;
+      padding: 14px;
+
+      p {
+        font-size: clamp(12px, 0.9vw, 14px);
+        margin: 0;
+      }
+
+      p strong {
+        display: block;
+        font-size: clamp(17px, 1.45vw, 22px);
+        margin-bottom: 3px;
+      }
+
+      img {
+        border: 0;
+        display: block;
+        height: 100%;
+        max-height: 240px;
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 720px) {
+      padding: 10px;
+
+      .wiki-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+
+        .site-search { margin: 0; max-width: 100%; }
+      }
+
+      .wiki-layout { grid-template-columns: 1fr; }
+      .wiki-sidebar { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+      .wiki-article { padding: 14px; }
+      .wiki-founder-note { grid-template-columns: 1fr; }
+      .wiki-founder-note img { max-height: 220px; }
     }
   }
 

@@ -72,6 +72,15 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     }
   }
 
+  .browser-tab-strip {
+    align-items: flex-end;
+    display: flex;
+    flex: 1 1 auto;
+    gap: 6px;
+    height: 100%;
+    min-width: 0;
+  }
+
   .browser-tabs {
     align-items: flex-end;
     display: flex;
@@ -82,6 +91,28 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     min-width: 0;
     overflow-x: clip;
     overflow-y: visible;
+  }
+
+  .browser-tab-add {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: #31302c;
+    display: flex;
+    flex: 0 0 34px;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 25px;
+    height: 30px;
+    justify-content: center;
+    line-height: 1;
+    margin-bottom: 2px;
+    padding: 0;
+    width: 34px;
+
+    &:hover {
+      background: rgb(255 255 255 / 45%);
+    }
   }
 
   .browser-tab {

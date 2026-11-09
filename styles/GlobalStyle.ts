@@ -454,12 +454,27 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-tutorial-number {
     align-items: center;
-    border: 2px solid #f7edd7;
-    border-radius: 50%;
     display: inline-flex;
     flex: 0 0 clamp(30px, 2.5vw, 48px);
     height: clamp(30px, 2.5vw, 48px);
     justify-content: center;
+    position: relative;
+
+    > img {
+      height: 100%;
+      image-rendering: pixelated;
+      inset: 0;
+      object-fit: contain;
+      position: absolute;
+      width: 100%;
+    }
+
+    > span {
+      color: #31302c;
+      font-size: 0.78em;
+      position: relative;
+      z-index: 1;
+    }
   }
 
   .doors-tutorial-step p {
@@ -1051,6 +1066,21 @@ const GlobalStyle = styled.createGlobalStyle`
     top: 0;
   }
 
+  .doors-accessibility-toggle {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: inherit;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    display: flex;
+    flex: 0 0 20px;
+    height: 30px;
+    justify-content: center;
+    padding: 0;
+    width: 20px;
+  }
+
   .doors-system-volume-toggle {
     align-items: center;
     background: transparent;
@@ -1164,7 +1194,8 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-system-tray > img,
-  .doors-system-volume-toggle img {
+  .doors-system-volume-toggle img,
+  .doors-accessibility-toggle img {
     height: 20px;
     image-rendering: pixelated;
     object-fit: contain;

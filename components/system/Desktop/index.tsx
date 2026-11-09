@@ -502,7 +502,7 @@ const Desktop: FC = ({ children }) => {
                       ?
                     </span>
                     <div>
-                      <h2>o que é este site?</h2>
+                      <h2>O QUE É ESTE SITE?</h2>
                       <p>
                         Esta experiência simula como era os Lan House, espaços
                         que, entre o fim dos anos 1990 e o início dos anos 2010,
@@ -515,7 +515,7 @@ const Desktop: FC = ({ children }) => {
                   <div className="doors-tutorial-steps">
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">1</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>1</span></span>
                         <span>Navegue pelos sites</span>
                       </h2>
                       <p>
@@ -528,7 +528,7 @@ const Desktop: FC = ({ children }) => {
                     </span>
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">2</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>2</span></span>
                         <span>Palavras-chaves</span>
                       </h2>
                       <p>
@@ -542,7 +542,7 @@ const Desktop: FC = ({ children }) => {
                     </span>
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">3</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>3</span></span>
                         <span>Pegue as 5 chaves</span>
                       </h2>
                       <p>

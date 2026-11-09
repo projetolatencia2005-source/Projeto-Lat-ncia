@@ -4,6 +4,22 @@ import { TASKBAR_HEIGHT } from "utils/constants";
 const TASKBAR_Z_INDEX = 100000;
 
 const StyledTaskbar = styled.nav`
+  &, * {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  }
+
+  button:not(:disabled),
+  a[href],
+  [role="button"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  label,
+  select,
+  summary {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+  }
+
   background: linear-gradient(
     90deg,
     #7d94b8 0 calc(100% - 250px),

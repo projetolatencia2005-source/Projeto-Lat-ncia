@@ -103,8 +103,19 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     gap: 0;
 
     picture:first-of-type {
-      height: 56px;
-      width: 56px;
+      height: 46px;
+      width: 46px;
+    }
+  }
+
+  button.doors-picture-thumbnail figure picture:first-of-type {
+    height: 100px;
+    width: 100px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
     }
   }
 
