@@ -188,6 +188,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-bubble {
+    container-name: bubble-site;
+    container-type: inline-size;
     background: #fff;
     color: #31302c;
     min-height: 100%;
@@ -2214,6 +2216,243 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         padding-left: 8px;
         padding-right: 8px;
       }
+    }
+  }
+
+  @container bubble-site (max-width: 980px) {
+    .site-bubble .bubble-header {
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      padding-bottom: 8px;
+      padding-top: 8px;
+    }
+
+    .site-bubble .bubble-header nav {
+      flex: 1 0 100%;
+      justify-content: flex-start;
+      order: 3;
+      overflow-x: auto;
+    }
+
+    .site-bubble .bubble-header .bubble-top-search {
+      flex: 1 1 210px;
+      min-width: 100px;
+    }
+
+    .site-bubble .bubble-content-grid {
+      grid-template-columns: minmax(0, 2fr) minmax(180px, 1fr);
+    }
+
+    .site-bubble .bubble-profile-columns,
+    .site-bubble .bubble-friends-layout,
+    .site-bubble .bubble-community-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-friends-aside,
+    .site-bubble .bubble-community-aside {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .site-bubble .bubble-community-aside .bubble-create-invite {
+      grid-column: 1 / -1;
+    }
+
+    .site-bubble .bubble-messenger {
+      grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.4fr);
+    }
+
+    .site-bubble .bubble-conversation {
+      grid-template-columns: 54px minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-conversation-stamp {
+      display: none;
+    }
+  }
+
+  @container bubble-site (max-width: 720px) {
+    .site-bubble .bubble-content-grid,
+    .site-bubble .bubble-profile-columns,
+    .site-bubble .bubble-friends-layout,
+    .site-bubble .bubble-community-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-content-grid {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+
+    .site-bubble .bubble-page-content {
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+
+    .site-bubble .bubble-sidebar {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .site-bubble .bubble-profile-card {
+      grid-column: 1 / -1;
+    }
+
+    .site-bubble .bubble-friend-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-friend-toolbar,
+    .site-bubble .bubble-community-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .site-bubble .bubble-list-search {
+      flex-basis: 36px;
+      width: 100%;
+    }
+
+    .site-bubble .bubble-community-feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-community-feature-art {
+      border-bottom: 2px solid #181818;
+      border-right: 0;
+      min-height: 200px;
+    }
+
+    .site-bubble .bubble-community-feature-art span {
+      font-size: 120px;
+    }
+
+    .site-bubble .bubble-community-toolbar {
+      align-items: flex-start;
+    }
+
+    .site-bubble .bubble-messenger {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-inbox {
+      border-bottom: 2px solid #181818;
+      border-right: 0;
+    }
+
+    .site-bubble .bubble-conversation-list {
+      display: flex;
+      max-height: 180px;
+      overflow-x: auto;
+    }
+
+    .site-bubble .bubble-conversation {
+      flex: 0 0 210px;
+      grid-template-columns: 48px minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-conversation > img {
+      height: 48px;
+      width: 48px;
+    }
+
+    .site-bubble .bubble-chat-history {
+      min-height: 340px;
+    }
+
+    .site-bubble .bubble-friends-aside,
+    .site-bubble .bubble-community-aside {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-community-aside .bubble-create-invite {
+      grid-column: auto;
+    }
+
+    .site-bubble .bubble-profile-cover {
+      min-height: 310px;
+    }
+
+    .site-bubble .bubble-profile-summary {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      padding: 12px;
+    }
+
+    .site-bubble .bubble-profile-summary > img {
+      flex-basis: 74px;
+      height: 74px;
+      transform: none;
+      width: 74px;
+    }
+
+    .site-bubble .bubble-profile-copy {
+      flex: 1 1 calc(100% - 100px);
+    }
+
+    .site-bubble .bubble-profile-summary > .bubble-primary-button {
+      margin-left: 86px;
+    }
+
+    .site-bubble .bubble-community-card {
+      grid-template-columns: 82px minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-friend-card {
+      grid-template-columns: 90px minmax(0, 1fr) 20px;
+    }
+
+    .site-bubble .bubble-friend-photo {
+      min-height: 112px;
+    }
+
+    .site-bubble .bubble-profile-friends {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .site-bubble .bubble-profile-summary > .bubble-primary-button {
+      margin-left: 0;
+    }
+
+    .site-bubble .bubble-community-feature-copy {
+      padding: 16px;
+    }
+  }
+
+  @container bubble-site (max-width: 480px) {
+    .site-bubble .bubble-header {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .site-bubble .bubble-profile-card {
+      grid-column: auto;
+    }
+
+    .site-bubble .bubble-community-card {
+      grid-template-columns: 72px minmax(0, 1fr);
+    }
+
+    .site-bubble .bubble-community-card h2 {
+      font-size: 16px;
+    }
+
+    .site-bubble .bubble-chat-header .bubble-light-button {
+      font-size: 12px;
+      padding: 4px 7px;
+    }
+
+    .site-bubble .bubble-chat-composer {
+      padding: 8px;
+    }
+
+    .site-bubble .bubble-chat-composer .bubble-primary-button {
+      padding-left: 8px;
+      padding-right: 8px;
     }
   }
 
