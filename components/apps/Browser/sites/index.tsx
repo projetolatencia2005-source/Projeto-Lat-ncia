@@ -271,7 +271,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const [posts, setPosts] = useState<BubblePost[]>(initialBubblePosts);
   const [profilePosts, setProfilePosts] = useState<BubblePost[]>(bubbleProfileUpdates);
   const [profileDraft, setProfileDraft] = useState("");
-  const [profileName, setProfileName] = useState("Ana Paula");
+  const [profileName] = useState("Ana Paula");
   const [profileAbout, setProfileAbout] = useState("“Por aí, com uma câmera na bolsa e uma música na cabeça”");
   const [editingProfile, setEditingProfile] = useState(false);
   const [globalSearch, setGlobalSearch] = useState("");
