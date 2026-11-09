@@ -724,14 +724,14 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       display: flex;
       flex-direction: column;
       min-height: 0;
-      padding: clamp(8px, 1vw, 20px) clamp(6px, 1.2vw, 23px);
+      padding: clamp(4px, 0.5vw, 8px) clamp(6px, 1.2vw, 23px);
     }
 
     .bubble-login h2 {
       font-size: clamp(12px, 1.05vw, 18px);
       font-weight: 400;
       line-height: 1.25;
-      margin: 0 auto clamp(6px, 1.1vh, 12px);
+      margin: 0 auto clamp(4px, 0.6vh, 7px);
       max-width: 420px;
       text-align: center;
       width: 100%;
@@ -743,7 +743,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       font-size: clamp(12px, 1vw, 16px);
       gap: clamp(5px, 0.7vw, 10px);
       grid-template-columns: clamp(48px, 5.05vw, 97px) minmax(0, 1fr);
-      margin: 0 auto clamp(4px, 0.45vw, 7px);
+      margin: 0 auto clamp(3px, 0.35vw, 5px);
       max-width: 420px;
       width: 100%;
     }
@@ -752,7 +752,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       background: #fff;
       border: 2px solid rgb(49 48 44 / 25%);
       box-sizing: border-box;
-      height: clamp(22px, 2.3vw, 32px);
+      height: clamp(22px, 2vw, 28px);
       justify-self: start;
       min-width: 0;
       padding: 3px 7px;
@@ -762,11 +762,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     .bubble-login .bubble-save {
       align-items: start;
       display: grid;
-      font-size: clamp(12px, 1vw, 16px);
+      font-size: clamp(12px, 0.9vw, 14px);
       gap: clamp(5px, 0.7vw, 10px);
       grid-template-columns: clamp(14px, 1.1vw, 18px) minmax(0, 1fr);
-      line-height: 1.25;
-      margin: clamp(5px, 0.5vw, 8px) auto clamp(6px, 0.6vw, 9px);
+      line-height: 1.2;
+      margin: clamp(4px, 0.4vw, 6px) auto clamp(4px, 0.4vw, 6px);
       max-width: 420px;
       width: 100%;
     }
@@ -779,9 +779,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-public-warning {
-      font-size: clamp(12px, 1vw, 16px);
-      line-height: 1.25;
-      margin: 0 auto clamp(6px, 0.7vw, 10px);
+      font-size: clamp(12px, 0.9vw, 14px);
+      line-height: 1.2;
+      margin: 0 auto clamp(4px, 0.5vw, 6px);
       max-width: 420px;
       text-align: center;
       width: 100%;
@@ -792,8 +792,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 2px 2px 0 #31302c;
       display: block;
-      height: clamp(24px, 2.2vw, 32px);
-      margin: 0 auto clamp(8px, 0.9vw, 12px);
+      color: #31302c;
+      font-size: clamp(12px, 0.9vw, 14px);
+      height: clamp(24px, 2.1vw, 28px);
+      margin: 0 auto clamp(4px, 0.5vw, 6px);
       min-width: clamp(48px, 4.6vw, 88px);
       padding: 0 8px;
     }
@@ -804,15 +806,15 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       box-shadow: none;
       color: #fff;
       display: block;
-      font-size: clamp(12px, 1vw, 16px);
-      margin: 0 auto clamp(8px, 0.9vw, 12px);
+      font-size: clamp(12px, 0.9vw, 14px);
+      margin: 0 auto clamp(4px, 0.5vw, 6px);
       padding: 3px;
       text-decoration: underline;
     }
 
     .bubble-register {
-      font-size: clamp(12px, 1vw, 16px);
-      line-height: 1.3;
+      font-size: clamp(12px, 0.9vw, 14px);
+      line-height: 1.2;
       margin: 0;
       text-align: center;
     }
@@ -822,19 +824,19 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 0;
       box-shadow: none;
       color: #fff;
-      display: block;
-      font-size: 1.25em;
+      display: inline;
+      font-size: 1em;
       font-weight: 700;
-      margin: 2px auto 0;
-      padding: 2px;
+      margin: 0;
+      padding: 0 2px;
       text-decoration: underline;
     }
 
     .bubble-login-footer {
       color: #fff;
-      font-size: clamp(12px, 1vw, 16px);
-      line-height: 1.3;
-      margin: clamp(12px, 2vh, 24px) 0 0;
+      font-size: clamp(11px, 0.85vw, 13px);
+      line-height: 1.25;
+      margin: clamp(10px, 1.2vh, 12px) 0 0;
       text-align: center;
     }
 
