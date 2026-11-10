@@ -1115,29 +1115,6 @@ const GlobalStyle = styled.createGlobalStyle`
     width: 20px;
   }
 
-  .doors-system-tray > img {
-    transition:
-      filter 120ms ease,
-      transform 120ms ease;
-  }
-
-  .doors-system-tray > img:hover {
-    filter: drop-shadow(1px 1px 0 #31302c);
-    transform: translateY(-1px);
-  }
-
-  .doors-system-tray > button {
-    transition:
-      background-color 120ms ease,
-      box-shadow 120ms ease;
-  }
-
-  .doors-system-tray > button:hover:not(:disabled) {
-    background: #d7e4f7;
-    box-shadow: 1px 1px 0 #31302c;
-    opacity: 1 !important;
-  }
-
   .doors-volume-control {
     align-items: center;
     background: #f7edd7;
