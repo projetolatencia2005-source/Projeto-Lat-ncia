@@ -145,7 +145,7 @@ const StyledFileExplorer = styled.div`
   .file-explorer-main.photos-folder > ol {
     display: grid;
     gap: 25px;
-    grid-auto-rows: 140px;
+    grid-auto-rows: 170px;
     grid-template-columns: repeat(6, 104px);
     grid-template-rows: none;
     overflow: auto;
@@ -154,7 +154,7 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder > ol > li {
     box-sizing: border-box;
-    height: 140px;
+    height: 170px;
     margin: 0;
     padding: 0;
     width: 104px;
@@ -278,7 +278,7 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder > ${StyledIconFileManager} {
     gap: 25px;
-    grid-auto-rows: 140px;
+    grid-auto-rows: 170px;
     grid-template-columns: repeat(6, 104px);
     grid-template-rows: none;
     padding: 20px 38px;
