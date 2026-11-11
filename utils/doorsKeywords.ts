@@ -13,17 +13,21 @@ const readCollectedKeywords = (): string[] => {
   }
 };
 
-export const isDoorsKeywordCollected = (keyword: string): boolean =>
-  readCollectedKeywords().includes(normalizeKeyword(keyword));
+export const getDoorsCollectedKeywords = (): string[] => readCollectedKeywords();
+
+export const isDoorsKeywordCollected = (keyword: string): boolean => {
+  const normalized = normalizeKeyword(keyword);
+  return readCollectedKeywords().some((item) => normalizeKeyword(item) === normalized);
+};
 
 export const recordDoorsKeyword = (keyword: string): boolean => {
   if (typeof window === "undefined") return false;
   const label = keyword.trim();
   const normalized = normalizeKeyword(label);
   const collected = readCollectedKeywords();
-  if (!label || collected.includes(normalized)) return false;
+  if (!label || collected.some((item) => normalizeKeyword(item) === normalized)) return false;
   try {
-    window.localStorage.setItem(KEYWORD_STORAGE_KEY, JSON.stringify([...collected, normalized]));
+    window.localStorage.setItem(KEYWORD_STORAGE_KEY, JSON.stringify([...collected, label]));
   } catch {
     return false;
   }

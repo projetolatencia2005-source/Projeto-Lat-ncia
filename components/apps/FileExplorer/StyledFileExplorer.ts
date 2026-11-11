@@ -238,6 +238,12 @@ const StyledFileExplorer = styled.div`
     }
   }
 
+  @media (min-width: 1780px) {
+    .file-explorer-main.photos-folder > ol {
+      grid-template-columns: repeat(11, 104px);
+    }
+  }
+
   @media (max-width: 1400px) {
     .file-explorer-main.photos-folder > ol {
       gap: 25px;

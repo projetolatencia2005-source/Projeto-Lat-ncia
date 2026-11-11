@@ -3729,6 +3729,349 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     width: 28px;
   }
 
+
+  && .site-bubble.is-login {
+    padding: clamp(56px, 12vh, 112px) clamp(15px, 1.25vw, 24px) 32px;
+  }
+
+  && .site-bubble.is-login .bubble-auth-notice {
+    font-size: clamp(16px, 1.3vw, 20px);
+    padding: clamp(12px, 1vw, 16px) clamp(14px, 1.3vw, 24px);
+  }
+
+  && .site-bubble.is-login .bubble-auth-layout {
+    gap: clamp(12px, 1.25vw, 20px);
+    grid-template-columns: minmax(0, 2.05fr) minmax(300px, 1fr);
+    height: clamp(340px, 52vh, 460px);
+    margin-top: clamp(12px, 1.8vh, 18px);
+  }
+
+  && .site-bubble.is-login .bubble-auth-promo {
+    padding: clamp(20px, 2.5vw, 42px);
+  }
+
+  && .site-bubble.is-login .bubble-auth-promo .bubble-logo-window {
+    margin-bottom: clamp(20px, 2.2vw, 34px);
+    width: min(30vw, 430px);
+  }
+
+  && .site-bubble.is-login .bubble-auth-promo p {
+    font-size: clamp(16px, 1.35vw, 21px);
+    line-height: 1.35;
+  }
+
+  && .site-bubble.is-login .bubble-login {
+    padding: clamp(10px, 1.2vw, 22px) clamp(12px, 1.6vw, 30px);
+  }
+
+  && .site-bubble.is-login .bubble-login h2 {
+    font-size: clamp(17px, 1.4vw, 22px);
+    margin-bottom: clamp(10px, 1.1vh, 14px);
+  }
+
+  && .site-bubble.is-login .bubble-login .bubble-login-field {
+    font-size: clamp(15px, 1.1vw, 18px);
+    gap: clamp(8px, 0.8vw, 12px);
+    grid-template-columns: clamp(58px, 5.1vw, 96px) minmax(0, 1fr);
+    margin-bottom: clamp(6px, 0.5vw, 9px);
+  }
+
+  && .site-bubble.is-login .bubble-login input:not([type="checkbox"]) {
+    height: clamp(30px, 2.5vw, 38px);
+    width: min(100%, clamp(180px, 15vw, 286px));
+  }
+
+  && .site-bubble.is-login .bubble-login .bubble-save,
+  && .site-bubble.is-login .bubble-public-warning,
+  && .site-bubble.is-login .bubble-login .bubble-help,
+  && .site-bubble.is-login .bubble-register {
+    font-size: clamp(14px, 1vw, 17px);
+  }
+
+  && .site-bubble.is-login .bubble-login input[type="checkbox"] {
+    height: 18px;
+    width: 18px;
+  }
+
+  && .site-bubble.is-login .bubble-login .login-submit {
+    font-size: clamp(14px, 1vw, 17px);
+    height: clamp(30px, 2.4vw, 38px);
+    min-width: clamp(58px, 4.8vw, 90px);
+  }
+
+  && .site-bubble.is-login .bubble-login-footer {
+    font-size: clamp(13px, 0.95vw, 16px);
+    margin-top: clamp(18px, 2.4vh, 28px);
+  }
+
+  && .site-bubble .bubble-profile-card,
+  && .site-bubble .bubble-side-panel {
+    margin-bottom: clamp(18px, 1.35vw, 26px);
+  }
+
+  && .site-bubble .bubble-profile-card {
+    align-items: stretch;
+    grid-template-columns: minmax(110px, 1fr) minmax(0, 1.05fr);
+    grid-template-rows: 1fr auto;
+    min-height: clamp(160px, 11.2vw, 215px);
+    padding: 0;
+  }
+
+  && .site-bubble .bubble-profile-avatar {
+    border: 0;
+    grid-column: 1;
+    grid-row: 1 / 3;
+    height: 100%;
+    min-height: 160px;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-profile-name {
+    align-self: start;
+    grid-column: 2;
+    grid-row: 1;
+    overflow-wrap: anywhere;
+    padding: clamp(12px, 1vw, 18px) clamp(10px, 1vw, 18px) 0;
+  }
+
+  && .site-bubble .bubble-profile-card > button {
+    align-self: end;
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0 clamp(10px, 1vw, 18px) clamp(14px, 1vw, 20px);
+  }
+
+  && .site-bubble .bubble-birthday-content {
+    align-items: center;
+    display: grid;
+    gap: clamp(12px, 1.1vw, 20px);
+    grid-template-columns: clamp(72px, 5.2vw, 100px) minmax(0, 1fr);
+    min-height: clamp(150px, 10vw, 190px);
+  }
+
+  && .site-bubble .bubble-birthday-date {
+    align-items: center;
+    background: #fff;
+    border: 2px solid #181818;
+    box-shadow: 3px 4px 0 #181818;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: clamp(76px, 5.2vw, 100px);
+    text-align: center;
+  }
+
+  && .site-bubble .bubble-birthday-date small {
+    background: #f37319;
+    color: #fff;
+    font-size: clamp(13px, 0.9vw, 17px);
+    padding: 4px;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-birthday-date strong {
+    font-size: clamp(34px, 2.5vw, 48px);
+    line-height: 1.05;
+  }
+
+  && .site-bubble .bubble-birthday-copy {
+    min-width: 0;
+  }
+
+  && .site-bubble .bubble-birthday-copy > strong {
+    font-size: clamp(18px, 1.25vw, 24px);
+  }
+
+  && .site-bubble .bubble-birthday-copy p {
+    font-size: clamp(13px, 0.9vw, 17px);
+    line-height: 1.3;
+    margin: 5px 0;
+  }
+
+  && .site-bubble .bubble-birthday-copy .bubble-primary-button {
+    margin-top: 7px;
+    padding: 5px 10px;
+  }
+
+  && .site-bubble .bubble-friend-panel .bubble-side-panel-body {
+    min-height: 0;
+    padding: 8px clamp(12px, 1vw, 18px);
+  }
+
+  && .site-bubble .bubble-friend-panel .bubble-friend {
+    align-items: start;
+    border-bottom: 1px solid #b9b9b9;
+    gap: clamp(10px, 1vw, 18px);
+    grid-template-columns: clamp(58px, 4.4vw, 82px) minmax(0, 1fr);
+    margin: 0;
+    padding: clamp(10px, 0.9vw, 16px) 0;
+  }
+
+  && .site-bubble .bubble-friend-panel .bubble-friend:last-child {
+    border-bottom: 0;
+  }
+
+  && .site-bubble .bubble-friend-panel .bubble-friend img {
+    height: clamp(58px, 4.4vw, 82px);
+    width: clamp(58px, 4.4vw, 82px);
+  }
+
+  && .site-bubble .bubble-friend-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  && .site-bubble .bubble-friend-copy strong {
+    font-size: clamp(17px, 1.2vw, 23px);
+    line-height: 1.15;
+  }
+
+  && .site-bubble .bubble-friend-copy small {
+    color: #777;
+    font-size: clamp(12px, 0.78vw, 15px);
+  }
+
+  && .site-bubble .bubble-friend-copy button {
+    align-self: flex-start;
+    background: #f37319;
+    border: 2px solid #181818;
+    box-shadow: 2px 2px 0 #181818;
+    color: #fff;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    font-size: clamp(12px, 0.75vw, 14px);
+    margin-top: 4px;
+    padding: 4px 10px;
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-side-panel-body {
+    min-height: 0;
+    padding: 7px clamp(12px, 1vw, 18px);
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-community {
+    align-items: center;
+    border-bottom: 1px solid #b9b9b9;
+    display: grid;
+    gap: clamp(10px, 1vw, 18px);
+    grid-template-columns: clamp(58px, 4.4vw, 82px) minmax(0, 1fr);
+    margin: 0;
+    padding: clamp(10px, 0.9vw, 16px) 0;
+    text-decoration: none;
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-community:last-child {
+    border-bottom: 0;
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-community > img {
+    border: 2px solid #181818;
+    height: clamp(58px, 4.4vw, 82px);
+    object-fit: cover;
+    width: clamp(58px, 4.4vw, 82px);
+  }
+
+  && .site-bubble .bubble-community-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-community-title {
+    background: transparent;
+    border: 0;
+    color: #181818;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    font-size: clamp(17px, 1.2vw, 23px);
+    line-height: 1.12;
+    padding: 0;
+    text-align: left;
+  }
+
+  && .site-bubble .bubble-community-copy small {
+    color: #777;
+    font-size: clamp(12px, 0.78vw, 15px);
+  }
+
+  && .site-bubble .bubble-community-panel .bubble-community-join {
+    align-self: flex-start;
+    background: #f37319;
+    border: 2px solid #181818;
+    box-shadow: 2px 2px 0 #181818;
+    color: #fff;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    font-size: clamp(12px, 0.75vw, 14px);
+    margin-top: 4px;
+    padding: 4px 10px;
+  }
+
+  && .site-bubble .bubble-community-feature-art > small {
+    display: none;
+  }
+
+  && .site-bubble .bubble-category-panel-body {
+    min-height: 0;
+  }
+
+  && .site-bubble .bubble-category-grid {
+    border: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  && .site-bubble .bubble-category-grid button {
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(14px, 0.85vw, 17px);
+    line-height: 1.25;
+    padding: clamp(9px, 0.7vw, 13px) 5px;
+  }
+
+  && .site-bubble .bubble-footer {
+    margin-top: clamp(42px, 3vw, 58px);
+  }
+
+  && .site-bubble .bubble-profile-cover {
+    background-position: center 42%;
+    min-height: clamp(250px, 21vw, 420px);
+  }
+
+  && .site-encicloweb .wiki-sidebar-panel button {
+    padding-left: 6px;
+  }
+
+  && .site-encicloweb .wiki-essay-section h2 {
+    font-size: 24px;
+  }
+
+  @media (max-width: 720px) {
+    && .site-bubble.is-login {
+      padding: 36px 12px 24px;
+    }
+
+    && .site-bubble.is-login .bubble-auth-layout {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+
+    && .site-bubble.is-login .bubble-auth-promo {
+      min-height: 250px;
+    }
+
+    && .site-bubble.is-login .bubble-auth-promo .bubble-logo-window {
+      width: min(56vw, 330px);
+    }
+
+    && .site-bubble.is-login .bubble-login {
+      min-height: 400px;
+    }
+  }
+
+
   @media (max-width: 900px) {
     && .site-bubble .bubble-friends-layout,
     && .site-bubble .bubble-community-layout,

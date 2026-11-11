@@ -118,6 +118,7 @@ type BubblePost = {
 
 const bubbleAvatar = (name: string): string =>
   "/System/Doors/sites/bubble/avatar-" + name + ".png";
+const bubbleProfileAvatar = bubbleAvatar("malu");
 
 const initialBubblePosts: BubblePost[] = [
   {
@@ -127,7 +128,7 @@ const initialBubblePosts: BubblePost[] = [
     handle: "@anaa_paula93",
     id: "post-ana-paula",
     likes: 0,
-    message: "",
+    message: "ba da bim, ba da bum",
     time: "há 6min",
   },
   {
@@ -139,7 +140,7 @@ const initialBubblePosts: BubblePost[] = [
     image: "/System/Doors/sites/bubble/post-cooking.png",
     imageAlt: "Uma pessoa cozinhando em casa",
     likes: 9,
-    message: "",
+    message: "Aniversário da Dona Odete hoje! Te amo mãe ♡♡♡",
     time: "há 23min",
   },
   {
@@ -149,7 +150,7 @@ const initialBubblePosts: BubblePost[] = [
     handle: "@rosagabi",
     id: "post-gabriela-rosa",
     likes: 0,
-    message: "",
+    message: "descobri uma banda nova e agora esse é o único assunto que eu tenho!!!",
     time: "há 49min",
   },
   {
@@ -159,7 +160,7 @@ const initialBubblePosts: BubblePost[] = [
     handle: "@guguribe",
     id: "post-gustavo-ribeiro",
     likes: 0,
-    message: "",
+    message: "lançaaaaa, lança perfume ♪♪♪",
     time: "há 1h",
   },
   {
@@ -171,7 +172,7 @@ const initialBubblePosts: BubblePost[] = [
     image: "/System/Doors/sites/bubble/post-group.png",
     imageAlt: "Grupo de amigos reunidos em uma festa",
     likes: 20,
-    message: "",
+    message: "nóisss na aula do Josi ontem >:D",
     time: "há 2h",
   },
 ];
@@ -222,8 +223,9 @@ const bubbleCommunityList = [
   { id: "deus-me-disse", title: "Deus me disse: desce e arrasa!", category: "Cotidiano", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", members: "684", image: undefined },
   { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988", image: "/System/Doors/sites/bubble/community-cat.jpg" },
   { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842", image: "/System/Doors/sites/bubble/community-chocolate.jpg" },
-  { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344", image: undefined },
-  { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816", image: undefined },
+  { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344", image: "/System/Doors/sites/bubble/community-cat.jpg" },
+  { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816", image: "/System/Doors/sites/bubble/community-garfield.jpg" },
+  { id: "bandas-garagem", title: "Bandas de garagem", category: "Música", description: "Música alta, ensaio apertado e muita vontade de tocar.", members: "521", image: "/System/Doors/sites/bubble/community-dog.jpg" },
 ];
 
 const bubbleRequestsInitial: BubbleFriend[] = [
@@ -423,19 +425,41 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
       </main>
       <aside aria-label="Informações do perfil" className="bubble-sidebar">
         <section className="bubble-profile-card">
-          <img alt="" className="bubble-profile-avatar" src={bubbleAvatar("ana")} />
+          <img alt="" className="bubble-profile-avatar" src={bubbleProfileAvatar} />
           <div className="bubble-profile-name"><strong>{profileName}</strong><small>@anaa_paula93</small></div>
           <button onClick={() => navigate("perfil")} type="button">Ver perfil completo →</button>
         </section>
-        <section className="bubble-side-panel"><h2>Aniversariantes</h2><div className="bubble-side-panel-body"><p><strong>Ana Paula</strong> faz aniversário hoje!</p><p>Mande uma mensagem antes que seja tarde!</p><button className="bubble-text-link" onClick={() => navigate("mensagens")} type="button">Enviar mensagem</button></div></section>
+        <section className="bubble-side-panel bubble-birthday-panel">
+          <h2>Aniversariantes</h2>
+          <div className="bubble-side-panel-body bubble-birthday-content">
+            <div aria-label="24 de novembro" className="bubble-birthday-date"><small>NOV</small><strong>24</strong></div>
+            <div className="bubble-birthday-copy">
+              <strong>Malu Souza</strong>
+              <p>Faz aniversário hoje!</p>
+              <p>Mande uma mensagem antes que seja tarde.</p>
+              <button className="bubble-primary-button" onClick={() => navigate("mensagens")} type="button">Enviar mensagem</button>
+            </div>
+          </div>
+        </section>
         <section className="bubble-side-panel bubble-friend-panel"><h2>Sugestões de Amigos</h2><div className="bubble-side-panel-body">
-          {bubbleFriends.slice(0, 4).map((friend) => <div className="bubble-friend" key={friend.id}>
-            <img alt="" src={friend.avatar} /><strong>{friend.name}</strong>
-            <button onClick={() => setAddedFriends((current) => current.includes(friend.id) ? current : [...current, friend.id])} type="button">{addedFriends.includes(friend.id) ? "Enviado" : "+ Add"}</button>
+          {bubbleRequestsInitial.map((friend) => <div className="bubble-friend" key={friend.id}>
+            <img alt="" src={friend.avatar} />
+            <div className="bubble-friend-copy">
+              <strong>{friend.name}</strong>
+              <small>{friend.mutuals} amigos em comum</small>
+              <button onClick={() => setAddedFriends((current) => current.includes(friend.id) ? current : [...current, friend.id])} type="button">{addedFriends.includes(friend.id) ? "Enviado" : "+ Amigo"}</button>
+            </div>
           </div>)}
         </div></section>
         <section className="bubble-side-panel bubble-community-panel"><h2>Comunidades</h2><div className="bubble-side-panel-body">
-          {bubbleCommunityList.slice(0, 5).map((community) => <button className="bubble-community" key={community.id} onClick={() => navigate("comunidades")} type="button">{community.title}</button>)}
+          {bubbleCommunityList.slice(-3).map((community) => <article className="bubble-community" key={community.id}>
+            <img alt="" src={community.image || "/System/Doors/sites/bubble/community-dog.jpg"} />
+            <div className="bubble-community-copy">
+              <button className="bubble-community-title" onClick={() => navigate("comunidades")} type="button">{community.title}</button>
+              <small>{community.members} membros</small>
+              <button className="bubble-community-join" onClick={() => setJoinedCommunities((current) => current.includes(community.id) ? current.filter((id) => id !== community.id) : [...current, community.id])} type="button">{joinedCommunities.includes(community.id) ? "Participando" : "+ Entrar"}</button>
+            </div>
+          </article>)}
         </div></section>
       </aside>
     </div>
@@ -446,7 +470,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
       <header className="bubble-page-banner"><h1>Perfil</h1><p>Seu canto no Bubble: atualizações, fotos e tudo que seus amigos estão acompanhando.</p></header>
       <section className="bubble-profile-cover">
         <div className="bubble-profile-summary">
-          <img alt="Foto de perfil de Ana Paula" src="/System/Doors/sites/bubble/avatar-ana.png" />
+          <img alt="Foto de perfil de Ana Paula" src={bubbleProfileAvatar} />
           <div className="bubble-profile-copy">
             <h2>{profileName}</h2><p>@anaa_paula93 · São Paulo, SP</p>
             {editingProfile ? (
@@ -520,7 +544,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
     <div className="bubble-page-content">
       <header className="bubble-page-banner"><h1>Comunidades</h1><p>Entre em grupos, descubra assuntos novos e encontre pessoas que também não sabem a hora de sair da internet.</p></header>
       <section className="bubble-community-feature">
-        <div className="bubble-community-feature-art"><img alt="" src="/System/Doors/sites/bubble/community-dog.jpg" /><small>comunidade da semana</small></div>
+        <div className="bubble-community-feature-art"><img alt="" src="/System/Doors/sites/bubble/community-dog.jpg" /></div>
         <div className="bubble-community-feature-copy"><small>COMUNIDADE DA SEMANA</small><h2>Quero reclamar sobre a vida</h2><p>Uma comunidade feita com o propósito de dissertar sobre a raiva da sua semana e entreter a rapaziada!</p><div><span>2.848 pessoas</span><span>138 tópicos ativos</span></div><button className="bubble-light-button" onClick={() => setJoinedCommunities((current) => current.includes("semana") ? current : [...current, "semana"])} type="button">{joinedCommunities.includes("semana") ? "Você já participa" : "Entrar na comunidade"}</button></div>
       </section>
       <div className="bubble-community-layout">
@@ -542,7 +566,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
         </main>
         <aside className="bubble-community-aside">
           <section className="bubble-side-panel"><h2>Minhas comunidades</h2><div className="bubble-side-panel-body">{bubbleCommunityList.filter((community) => joinedCommunities.includes(community.id)).map((community) => <div className="bubble-my-community" key={community.id}><span aria-hidden="true">✦</span><div><strong>{community.title}</strong><small>{community.members} pessoas</small></div></div>)}{createdCommunities.map((title) => <div className="bubble-my-community" key={title}><span>✦</span><div><strong>{title}</strong><small>1 pessoa</small></div></div>)}</div></section>
-          <section className="bubble-side-panel"><h2>Categorias</h2><div className="bubble-category-grid">{["Música", "Arte", "Filmes", "Culinária", "Jogos", "Tecnologia", "Amizades", "Cotidiano"].map((category, index) => <button key={category} onClick={() => setCommunityCategory(category === "Música" || category === "Arte" || category === "Filmes" || category === "Jogos" ? "Todas" : category === "Culinária" ? "Culinária, Bebidas e Vinhos" : category)} type="button">{category}<span>{[488, 308, 114, 692, 308, 18, 93, 216][index]}</span></button>)}</div></section>
+          <section className="bubble-side-panel"><h2>Categorias</h2><div className="bubble-side-panel-body bubble-category-panel-body"><div className="bubble-category-grid">{["Música", "Arte", "Filmes", "Culinária", "Jogos", "Tecnologia", "Amizades", "Cotidiano"].map((category, index) => <button key={category} onClick={() => setCommunityCategory(category === "Música" || category === "Arte" || category === "Filmes" || category === "Jogos" ? "Todas" : category === "Culinária" ? "Culinária, Bebidas e Vinhos" : category)} type="button">{category}<span>{[488, 308, 114, 692, 308, 18, 93, 216][index]}</span></button>)}</div></div></section>
           <section className="bubble-create-invite"><h2>Não achou sua turma?</h2><p>Crie um espaço novo e convide gente que entende do assunto.</p><button className="bubble-light-button" onClick={() => setCreatingCommunity(true)} type="button">Começar agora</button></section>
         </aside>
       </div>

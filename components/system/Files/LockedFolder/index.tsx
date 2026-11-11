@@ -12,6 +12,7 @@ import {
   LOCKED_FOLDER_WORDS,
 } from "components/system/Files/LockedFolder/constants";
 import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
+import { getDoorsCollectedKeywords } from "utils/doorsKeywords";
 
 type RequestAccess = (onUnlocked: () => void) => void;
 
@@ -34,6 +35,26 @@ const normalizeWord = (word: string): string =>
     .trim()
     .replace(/\s+/g, " ")
     .toLocaleLowerCase("pt-BR");
+
+const inputIndexForKeyword = (keyword: string): number => {
+  const normalized = normalizeWord(keyword);
+  const wordIndex = LOCKED_FOLDER_WORDS.findIndex(
+    (word) => normalizeWord(word) === normalized
+  );
+  if (wordIndex >= 0) return wordIndex;
+  return LOCKED_FOLDER_QUIZ_KEYWORDS.some(
+    (word) => normalizeWord(word) === normalized
+  ) ? 0 : -1;
+};
+
+const canonicalKeyword = (keyword: string): string => {
+  const normalized = normalizeWord(keyword);
+  return (
+    [...LOCKED_FOLDER_WORDS, ...LOCKED_FOLDER_QUIZ_KEYWORDS].find(
+      (word) => normalizeWord(word) === normalized
+    ) || keyword
+  );
+};
 
 const LockedFolderProvider: FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +80,30 @@ const LockedFolderProvider: FC = ({ children }) => {
     setOnUnlocked(() => callback);
     setIsOpen(true);
   }, [isUnlocked]);
+
+  useEffect(() => {
+    const applyKeyword = (keyword: string): void => {
+      const index = inputIndexForKeyword(keyword);
+      if (index < 0) return;
+      const value = canonicalKeyword(keyword);
+      setWords((current) =>
+        current.map((word, wordIndex) => wordIndex === index ? value : word)
+      );
+      setError("");
+    };
+    const syncStoredKeywords = (): void => {
+      getDoorsCollectedKeywords().forEach(applyKeyword);
+    };
+    const onKeywordCollected = (event: Event): void => {
+      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword;
+      if (keyword) applyKeyword(keyword);
+      else syncStoredKeywords();
+    };
+
+    syncStoredKeywords();
+    window.addEventListener("doors-keyword-collected", onKeywordCollected);
+    return () => window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+  }, []);
 
   useEffect(() => {
     if (isOpen) firstInputRef.current?.focus();

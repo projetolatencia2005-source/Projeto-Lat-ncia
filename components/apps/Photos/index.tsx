@@ -1,6 +1,7 @@
 import { basename, dirname, extname, join } from "path";
-import { type SyntheticEvent, useEffect, useState } from "react";
+import { type MouseEvent as ReactMouseEvent, type SyntheticEvent, useEffect, useState } from "react";
 import StyledPhotos from "components/apps/Photos/StyledPhotos";
+import { Buffer } from "buffer";
 import usePanZoom, { panZoomConfig } from "components/apps/Photos/usePanZoom";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import useFileDrop from "components/system/Files/FileManager/useFileDrop";
@@ -21,6 +22,7 @@ import {
   haltEvent,
 } from "utils/functions";
 import { loadImageDecoder } from "utils/loaders";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const { minScale, step } = panZoomConfig;
 
@@ -40,7 +42,7 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
   const [src, setSrc] = useState<Record<string, string>>({});
   const [brokenImage, setBrokenImage] = useState(false);
   const { prependFileToTitle } = useTitle(id);
-  const { readdir, readFile } = useFileSystemActions();
+  const { createPath, exists, mkdirRecursive, readdir, readFile, updateFolder } = useFileSystemActions();
   const [container, setContainer] = useState<HTMLDivElement | null>();
   const [image, setImage] = useState<HTMLImageElement | null>();
   const [imageContainer, setImageContainer] = useState<HTMLElement | null>();
@@ -134,11 +136,52 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
       await movePhoto(key === "ArrowRight" ? 1 : -1);
     }
   };
+  const isKeyImage = basename(url).toLocaleLowerCase("pt-BR") === "ta chave essa.jpeg";
+  const isSpecialKeyAt = (event: ReactMouseEvent<HTMLImageElement>): boolean => {
+    if (!isKeyImage) return false;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const naturalWidth = event.currentTarget.naturalWidth;
+    const naturalHeight = event.currentTarget.naturalHeight;
+    if (!rect.width || !rect.height || !naturalWidth || !naturalHeight) return false;
+    const scale = Math.min(rect.width / naturalWidth, rect.height / naturalHeight);
+    const shownWidth = naturalWidth * scale;
+    const shownHeight = naturalHeight * scale;
+    const left = rect.left + (rect.width - shownWidth) / 2;
+    const top = rect.top + (rect.height - shownHeight) / 2;
+    const x = (event.clientX - left) / shownWidth;
+    const y = (event.clientY - top) / shownHeight;
+    return x >= 0.25 && x <= 0.37 && y >= 0.20 && y <= 0.32;
+  };
+  const onPhotoPointerMove = (event: ReactMouseEvent<HTMLImageElement>): void => {
+    event.currentTarget.style.cursor = isSpecialKeyAt(event)
+      ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
+      : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+  };
+  const collectSpecialKey = (event: ReactMouseEvent<HTMLImageElement>): void => {
+    if (!isSpecialKeyAt(event)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const directory = "/Users/Public/Pasta trancada";
+    const fileName = "Chave - Ta chave essa.txt";
+    const filePath = `${directory}/${fileName}`;
+    void (async () => {
+      try {
+        await mkdirRecursive(directory);
+        if (!(await exists(filePath))) {
+          await createPath(fileName, directory, Buffer.from("Ta chave essa"));
+        }
+        await updateFolder(directory, fileName);
+        recordDoorsKeyword("Ta chave essa");
+      } catch {
+        // Leave the image usable if the locked-folder filesystem is unavailable.
+      }
+    })();
+  };
   const onImageLoad = ({
     currentTarget,
   }: SyntheticEvent<HTMLImageElement>): void => {
     setBrokenImage(false);
-    updateWindowSize(currentTarget.naturalHeight, currentTarget.naturalWidth);
+    updateWindowSize(currentTarget.naturalHeight * 0.5, currentTarget.naturalWidth * 0.5);
   };
 
   useEffect(() => {
@@ -177,6 +220,9 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
           loading="eager"
           onError={() => setBrokenImage(true)}
           onLoad={onImageLoad}
+          onMouseLeave={(event) => { event.currentTarget.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default'; }}
+          onMouseMove={onPhotoPointerMove}
+          onClick={collectSpecialKey}
           src={src[url]}
           {...HIGH_PRIORITY_ELEMENT}
         />
