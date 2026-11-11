@@ -41,7 +41,7 @@ const inputIndexForKeyword = (keyword: string): number => {
   const wordIndex = LOCKED_FOLDER_WORDS.findIndex(
     (word) => normalizeWord(word) === normalized
   );
-  if (wordIndex >= 0) return wordIndex;
+  if (wordIndex !== -1) return wordIndex;
   return LOCKED_FOLDER_QUIZ_KEYWORDS.some(
     (word) => normalizeWord(word) === normalized
   ) ? 0 : -1;
