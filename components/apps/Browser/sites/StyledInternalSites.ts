@@ -3557,16 +3557,185 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   && .site-bubble {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    padding: 0;
     width: 100%;
+  }
+
+  && .site-bubble > .bubble-header {
+    flex: 0 0 auto;
+    margin: 0;
+    width: 100%;
+  }
+
+  && .site-bubble > .bubble-content-grid,
+  && .site-bubble > .bubble-page-content {
+    flex: 1 0 auto;
   }
 
   && .site-bubble > .bubble-footer {
     box-sizing: border-box;
     margin-top: auto;
     width: 100%;
+  }
+
+  && .site-bubble .bubble-composer textarea {
+    box-sizing: border-box;
+    font-family: inherit;
+    margin-inline: clamp(12px, 1.56vw, 30px);
+    width: calc(100% - clamp(24px, 3.12vw, 60px));
+  }
+
+  && .site-bubble .bubble-composer-title img {
+    height: clamp(18px, 1.35vw, 26px);
+    image-rendering: pixelated;
+    object-fit: contain;
+    width: clamp(18px, 1.35vw, 26px);
+  }
+
+  && .site-bubble .bubble-header nav button {
+    align-items: center;
+    display: inline-flex;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  && .site-bubble .bubble-header nav button img {
+    height: clamp(16px, 1.35vw, 26px);
+    image-rendering: pixelated;
+    object-fit: contain;
+    width: clamp(16px, 1.35vw, 26px);
+  }
+
+  && .site-bubble .bubble-attach-photo > span {
+    align-items: center;
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  && .site-bubble .bubble-attach-photo img {
+    height: 16px;
+    width: 16px;
+  }
+
+  && .site-bubble .bubble-post-actions button {
+    align-items: center;
+    display: inline-flex;
+    gap: 4px;
+    text-decoration: underline;
+  }
+
+  && .site-bubble .bubble-post-actions button img {
+    height: 15px;
+    image-rendering: pixelated;
+    width: 15px;
+  }
+
+  && .site-bubble .bubble-footer nav button {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  && .site-bubble .bubble-community,
+  && .site-bubble .bubble-text-link,
+  && .site-bubble .bubble-profile-card > button {
+    text-decoration: underline;
+  }
+
+  && .site-bubble .bubble-community-feature-art {
+    background: #31302c;
+  }
+
+  && .site-bubble .bubble-community-feature-art > img {
+    height: 100%;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-community-feature-art > small {
+    position: relative;
+    z-index: 1;
+  }
+
+  && .site-bubble .bubble-profile-cover {
+    background: #9ed4f4 url("/System/Doors/sites/bubble/profile-cover.jpg") center / cover no-repeat;
+  }
+
+  && .site-bubble .bubble-community-art img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  && .site-encicloweb .wiki-sidebar-panel h3 {
+    font-size: calc(15px + 4pt);
+  }
+
+  && .site-encicloweb .wiki-sidebar-panel button,
+  && .site-encicloweb .wiki-sidebar-author p,
+  && .site-encicloweb .wiki-article p {
+    font-size: calc(13px + 4pt);
+  }
+
+  && .site-encicloweb .wiki-sidebar-author small {
+    font-size: calc(11px + 4pt);
+  }
+
+  && .site-encicloweb .wiki-how-to-list li {
+    font-size: calc(clamp(12px, 0.9vw, 14px) + 4pt);
+  }
+
+  && .site-encicloweb .wiki-home-page p {
+    font-size: calc(clamp(12px, 0.92vw, 14px) + 4pt);
+  }
+
+  && .site-encicloweb .wiki-founder-note p {
+    font-size: calc(clamp(12px, 0.9vw, 14px) + 4pt);
+  }
+
+  && .site-encicloweb .wiki-keyword {
+    background: transparent;
+    border: 0;
+    color: #7d94b8;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  && .site-encicloweb .wiki-key-icon {
+    background: transparent;
+    border: 0;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    display: inline-flex;
+    margin-left: 5px;
+    padding: 0;
+    vertical-align: middle;
+  }
+
+  && .site-encicloweb .wiki-key-icon svg {
+    height: 22px;
+    width: 28px;
+  }
+
+  @media (max-width: 900px) {
+    && .site-bubble .bubble-friends-layout,
+    && .site-bubble .bubble-community-layout,
+    && .site-bubble .bubble-profile-columns,
+    && .site-bubble .bubble-messenger {
+      grid-template-columns: 1fr;
+    }
   }
 `;
 

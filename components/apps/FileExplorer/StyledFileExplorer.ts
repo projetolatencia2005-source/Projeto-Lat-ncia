@@ -145,16 +145,23 @@ const StyledFileExplorer = styled.div`
   .file-explorer-main.photos-folder > ol {
     display: grid;
     gap: 25px;
-    grid-auto-rows: 170px;
+    grid-auto-rows: 150px;
     grid-template-columns: repeat(6, 104px);
     grid-template-rows: none;
     overflow: auto;
-    padding: 20px 38px;
+    padding: 8px 38px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      height: 0;
+      width: 0;
+    }
   }
 
   .file-explorer-main.photos-folder > ol > li {
     box-sizing: border-box;
-    height: 170px;
+    height: 150px;
     margin: 0;
     padding: 0;
     width: 104px;
@@ -166,10 +173,12 @@ const StyledFileExplorer = styled.div`
     border: 1px solid transparent;
     box-sizing: border-box;
     display: flex;
-    height: 100%;
+    height: 104px;
     justify-content: center;
+    overflow: visible;
     padding: 0;
-    width: 100%;
+    position: relative;
+    width: 104px;
 
     &:hover,
     &:focus-visible {
@@ -187,9 +196,10 @@ const StyledFileExplorer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    height: 100%;
+    height: auto;
     justify-content: flex-start;
     margin: 0;
+    overflow: visible;
     width: 100%;
 
     picture:first-of-type {

@@ -7,6 +7,9 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
+import { useFileSystemActions } from "contexts/fileSystem";
+import { Buffer } from "buffer";
+import { isDoorsKeywordCollected, recordDoorsKeyword } from "utils/doorsKeywords";
 
 type InternalSitesProps = {
   url: string;
@@ -195,32 +198,32 @@ type BubbleConversation = {
   messages: { text: string; mine: boolean; time: string }[];
 };
 
-const bubbleNavigation: { id: BubblePageKey; label: string; path: string }[] = [
-  { id: "inicio", label: "⌂ Início", path: "inicio" },
-  { id: "perfil", label: "Perfil", path: "perfil" },
-  { id: "amigos", label: "Amigos", path: "amigos" },
-  { id: "comunidades", label: "Comunidades", path: "comunidades" },
-  { id: "mensagens", label: "Mensagens", path: "mensagens" },
+const bubbleNavigation: { id: BubblePageKey; label: string; path: string; icon: string }[] = [
+  { id: "inicio", label: "Início", path: "inicio", icon: "inicio.png" },
+  { id: "perfil", label: "Perfil", path: "perfil", icon: "perfil.png" },
+  { id: "amigos", label: "Amigos", path: "amigos", icon: "amigos.png" },
+  { id: "comunidades", label: "Comunidades", path: "comunidades", icon: "comunidades.png" },
+  { id: "mensagens", label: "Mensagens", path: "mensagens", icon: "mensagens.png" },
 ];
 
 const bubbleFriends: BubbleFriend[] = [
   { id: "jorge", name: "Jorge Roberto", handle: "@jorgeberto", avatar: bubbleAvatar("jorge"), mutuals: 13, online: true },
   { id: "gustavo", name: "Gustavo Ribeiro", handle: "@guguribeiro", avatar: bubbleAvatar("gustavo"), mutuals: 8, online: true },
-  { id: "barbara", name: "Bárbara Guedes", handle: "@babigu", avatar: bubbleAvatar("ana"), mutuals: 2, online: false },
-  { id: "malu", name: "Malu Souza", handle: "@maluzinhaaaa...", avatar: bubbleAvatar("gabriela"), mutuals: 9, online: false },
+  { id: "barbara", name: "Bárbara Guedes", handle: "@babigu", avatar: bubbleAvatar("barbara"), mutuals: 2, online: false }
+  { id: "malu", name: "Malu Souza", handle: "@maluzinhaaaa...", avatar: bubbleAvatar("malu"), mutuals: 9, online: false }
   { id: "gabriela", name: "Gabriela Rosa", handle: "@rosagabi", avatar: bubbleAvatar("gabriela"), mutuals: 16, online: true },
-  { id: "rui", name: "Rui Mendonça", handle: "@rui.mendonca", avatar: bubbleAvatar("paulo"), mutuals: 12, online: false },
+  { id: "rui", name: "Rui Mendonça", handle: "@rui.mendonca", avatar: bubbleAvatar("rui"), mutuals: 12, online: false }
   { id: "paulo", name: "Paulo Barbosa", handle: "@paulinho89", avatar: bubbleAvatar("paulo"), mutuals: 6, online: false },
-  { id: "larissa", name: "Larissa Oda", handle: "@odalorissa", avatar: bubbleAvatar("ana"), mutuals: 11, online: true },
+  { id: "larissa", name: "Larissa Oda", handle: "@odalorissa", avatar: bubbleAvatar("larissa"), mutuals: 11, online: true }
 ];
 
 const bubbleCommunityList = [
-  { id: "acordar", title: "Eu Odeio Acordar Cedo", category: "Relacionamentos & amizades", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", members: "2.842" },
-  { id: "deus-me-disse", title: "Deus me disse: desce e arrasa!", category: "Cotidiano", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", members: "684" },
-  { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988" },
-  { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842" },
-  { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344" },
-  { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816" },
+  { id: "acordar", title: "Eu Odeio Acordar Cedo", category: "Relacionamentos & amizades", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", members: "2.842", image: "/System/Doors/sites/bubble/community-garfield.jpg" }
+  { id: "deus-me-disse", title: "Deus me disse: desce e arrasa!", category: "Cotidiano", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", members: "684", image: undefined },
+  { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988", image: "/System/Doors/sites/bubble/community-cat.jpg" }
+  { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842", image: "/System/Doors/sites/bubble/community-chocolate.jpg" }
+  { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344", image: undefined },
+  { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816", image: undefined },
 ];
 
 const bubbleRequestsInitial: BubbleFriend[] = [
@@ -238,7 +241,7 @@ const bubbleProfileUpdates: BubblePost[] = [
 
 const bubbleInitialConversations: BubbleConversation[] = [
   {
-    id: "malu", name: "Malu Souza", avatar: bubbleAvatar("gabriela"), online: true, preview: "Feliz aniversário!!!", stamp: "11:39",
+    id: "malu", name: "Malu Souza", avatar: bubbleAvatar("malu"), online: true, preview: "Feliz aniversário!!!", stamp: "11:39",
     messages: [
       { text: "boa noiteee!!", mine: false, time: "19:08" },
       { text: "você ainda vai naquele encontro de sábado?", mine: false, time: "14:08" },
@@ -247,16 +250,17 @@ const bubbleInitialConversations: BubbleConversation[] = [
       { text: "Feliz aniversário!!!", mine: true, time: "11:39" },
     ],
   },
-  { id: "larissa", name: "Larissa Oda", avatar: bubbleAvatar("ana"), online: true, preview: "NÃO ACREDITO AMGGGG", stamp: "10:34", messages: [{ text: "NÃO ACREDITO AMGGGG", mine: false, time: "10:34" }] },
+  { id: "larissa", name: "Larissa Oda", avatar: bubbleAvatar("larissa"), online: true, preview: "NÃO ACREDITO AMGGGG", stamp: "10:34", messages: [{ text: "NÃO ACREDITO AMGGGG", mine: false, time: "10:34" }] },
   { id: "jorge", name: "Jorge Roberto", avatar: bubbleAvatar("jorge"), online: true, preview: "tchaaaaau", stamp: "ontem", messages: [{ text: "tchaaaaau", mine: false, time: "ontem" }] },
-  { id: "barbara", name: "Bárbara Guedes", avatar: bubbleAvatar("ana"), online: false, preview: "não mos isso foi muito...", stamp: "ontem", messages: [{ text: "não mos isso foi muito...", mine: false, time: "ontem" }] },
-  { id: "rui", name: "Rui Mendonça", avatar: bubbleAvatar("paulo"), online: true, preview: "eai gatinha. O_-", stamp: "sexta-feira", unread: 8, messages: [{ text: "eai gatinha. O_-", mine: false, time: "sexta-feira" }] },
+  { id: "barbara", name: "Bárbara Guedes", avatar: bubbleAvatar("barbara"), online: false, preview: "não mos isso foi muito...", stamp: "ontem", messages: [{ text: "não mos isso foi muito...", mine: false, time: "ontem" }] },
+  { id: "rui", name: "Rui Mendonça", avatar: bubbleAvatar("rui"), online: true, preview: "eai gatinha. O_-", stamp: "sexta-feira", unread: 8, messages: [{ text: "eai gatinha. O_-", mine: false, time: "sexta-feira" }] },
 ];
 
 const BUBBLE_SESSION_KEY = "doors-bubble-session";
 
 const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
+  const { createPath, exists, mkdirRecursive, updateFolder } = useFileSystemActions();
   const path = new URL(url).pathname.toLowerCase();
   const routePart = path.split("/").filter(Boolean)[0] || "";
   const isLoginRoute = routePart === "";
@@ -358,12 +362,12 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
           {post.image && <img alt={post.imageAlt || ""} className="bubble-post-image" src={post.image} />}
           <div className="bubble-post-actions">
             <button aria-pressed={isLiked} onClick={() => setLikedPosts((current) => isLiked ? current.filter((id) => id !== post.id) : [...current, post.id])} type="button">
-              {isLiked ? "♥ gostei" : "♡ gostei"} · {post.likes + Number(isLiked)}
+              <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /> gostei · {post.likes + Number(isLiked)}
             </button>
             <button aria-expanded={commentingPost === post.id} onClick={() => {
               setCommentingPost((current) => current === post.id ? null : post.id);
               setCommentDraft("");
-            }} type="button">▱ comentar · {post.comments + comments.length}</button>
+            }} type="button"><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/comments.svg" /> comentar · {post.comments + comments.length}</button>
             <span>visível para amigos</span>
           </div>
           {commentingPost === post.id && (
@@ -394,7 +398,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
       event.preventDefault();
       publishPost(profile ? profileDraft : postText, profile ? undefined : postPhoto, profile);
     }}>
-      <h2 className="bubble-composer-title">{profile ? "Escrever no seu mural" : "E aí! O que tá rolando?"}<span aria-hidden="true">▤</span></h2>
+      <h2 className="bubble-composer-title">{profile ? "Escrever no seu mural" : "E aí! O que tá rolando?"}<img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/o-que-ta-rolando.png" /></h2>
       <textarea aria-label={profile ? "Escreva no seu mural" : "Escreva uma publicação"} maxLength={240}
         onChange={({ currentTarget }) => profile ? setProfileDraft(currentTarget.value) : setPostText(currentTarget.value)}
         placeholder="Escreve aí..." value={profile ? profileDraft : postText} />
@@ -403,7 +407,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
           const file = currentTarget.files?.[0];
           if (file) setPostPhoto({ name: file.name, src: URL.createObjectURL(file) });
           currentTarget.value = "";
-        }} type="file" /><span>▧ Anexar foto</span></label>}
+        }} type="file" /><span><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/link.svg" /> Anexar foto</span></label>}
         {!profile && postPhoto && <span className="bubble-photo-name">{postPhoto.name}</span>}
         <span aria-live="polite" className="bubble-character-count">{(profile ? profileDraft : postText).length}/240</span>
         <button className="bubble-publish" type="submit">Publicar</button>
@@ -441,7 +445,6 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
     <div className="bubble-page-content bubble-profile-page">
       <header className="bubble-page-banner"><h1>Perfil</h1><p>Seu canto no Bubble: atualizações, fotos e tudo que seus amigos estão acompanhando.</p></header>
       <section className="bubble-profile-cover">
-        <div className="bubble-cover-cloud bubble-cover-cloud-one" /><div className="bubble-cover-cloud bubble-cover-cloud-two" />
         <div className="bubble-profile-summary">
           <img alt="Foto de perfil de Ana Paula" src="/System/Doors/sites/bubble/avatar-ana.png" />
           <div className="bubble-profile-copy">
@@ -517,7 +520,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
     <div className="bubble-page-content">
       <header className="bubble-page-banner"><h1>Comunidades</h1><p>Entre em grupos, descubra assuntos novos e encontre pessoas que também não sabem a hora de sair da internet.</p></header>
       <section className="bubble-community-feature">
-        <div className="bubble-community-feature-art" aria-hidden="true"><span>🐶</span><small>comunidade da semana</small></div>
+        <div className="bubble-community-feature-art"><img alt="" src="/System/Doors/sites/bubble/community-dog.jpg" /><small>comunidade da semana</small></div>
         <div className="bubble-community-feature-copy"><small>COMUNIDADE DA SEMANA</small><h2>Quero reclamar sobre a vida</h2><p>Uma comunidade feita com o propósito de dissertar sobre a raiva da sua semana e entreter a rapaziada!</p><div><span>2.848 pessoas</span><span>138 tópicos ativos</span></div><button className="bubble-light-button" onClick={() => setJoinedCommunities((current) => current.includes("semana") ? current : [...current, "semana"])} type="button">{joinedCommunities.includes("semana") ? "Você já participa" : "Entrar na comunidade"}</button></div>
       </section>
       <div className="bubble-community-layout">
@@ -533,7 +536,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
           }}><label>Nome da comunidade<input onChange={({ currentTarget }) => setCommunityDraft(currentTarget.value)} placeholder="Ex.: Música na garagem" value={communityDraft} /></label><button className="bubble-primary-button" type="submit">Criar comunidade</button><button onClick={() => setCreatingCommunity(false)} type="button">Cancelar</button></form>}
           <div className="bubble-community-list">
             {createdCommunities.map((title) => <article className="bubble-community-card" key={title}><span className="bubble-community-art">✦</span><div><small>Nova comunidade</small><h2>{title}</h2><p>Seu espaço para conversar com pessoas que gostam do mesmo assunto.</p><button className="bubble-primary-button" onClick={() => setJoinedCommunities((current) => [...current, title])} type="button">Entrar na comunidade</button></div></article>)}
-            {visibleCommunities.map((community, index) => <article className="bubble-community-card" key={community.id}><span aria-hidden="true" className={"bubble-community-art art-" + index}>{["☕", "✦", "☻", "♥", "⌁", "♫"][index % 6]}</span><div><small>{community.category}</small><h2>{community.title}</h2><p>{community.description}</p><span className="bubble-member-count">{community.members} pessoas</span><button className="bubble-primary-button" onClick={() => setJoinedCommunities((current) => current.includes(community.id) ? current.filter((id) => id !== community.id) : [...current, community.id])} type="button">{joinedCommunities.includes(community.id) ? "Participando · Sair" : "Entrar na comunidade"}</button></div></article>)}
+            {visibleCommunities.map((community, index) => <article className="bubble-community-card" key={community.id}><span aria-hidden="true" className={"bubble-community-art art-" + index}>{community.image ? <img alt="" src={community.image} /> : ["☕", "✦", "☻", "♥", "⌁", "♫"][index % 6]}</span><div><small>{community.category}</small><h2>{community.title}</h2><p>{community.description}</p><span className="bubble-member-count">{community.members} pessoas</span><button className="bubble-primary-button" onClick={() => setJoinedCommunities((current) => current.includes(community.id) ? current.filter((id) => id !== community.id) : [...current, community.id])} type="button">{joinedCommunities.includes(community.id) ? "Participando · Sair" : "Entrar na comunidade"}</button></div></article>)}
             {!visibleCommunities.length && <div className="bubble-empty-state"><h2>Nenhum grupo encontrado</h2><p>Experimente outra categoria ou busca.</p></div>}
           </div>
         </main>
@@ -593,7 +596,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               <p><strong>Compartilhe</strong> seus vídeos, fotos e paixões em um só lugar.</p>
             </section>
             <form className="bubble-login" onSubmit={(event) => { event.preventDefault(); startSession(); }}>
-              <h2>Acesse o orkut.br com a sua conta</h2>
+              <h2>Acesse sua conta Bubble</h2>
               <label className="bubble-login-field">e-mail:<input autoComplete="off" id="bubble-email" ref={emailInputRef} required type="email" /></label>
               <label className="bubble-login-field">senha:<input autoComplete="off" required type="password" /></label>
               <label className="bubble-save"><input type="checkbox" /><span>Salvar as minhas informações neste computador.</span></label>
@@ -603,16 +606,16 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               <p className="bubble-register">Ainda não é membro? <button className="bubble-register-link" onClick={() => emailInputRef.current?.focus()} type="button">ENTRAR JÁ</button></p>
             </form>
           </div>
-          <footer className="bubble-login-footer">2005 Orkut.br - <u>Sobre o bubble.br</u> - <u>Centro de segurança</u> - <u>Privacidade</u> - <u>Termos</u> - <u>Contato</u> - Desenvolvido por <u>Latência</u></footer>
+          <footer className="bubble-login-footer">2005 Bubble.br - <u>Sobre o bubble.br</u> - <u>Centro de segurança</u> - <u>Privacidade</u> - <u>Termos</u> - <u>Contato</u> - Desenvolvido por <u>Latência</u></footer>
         </>
       ) : (
         <>
           <header className="bubble-header">
             <button aria-label="Ir para o início do Bubble" className="bubble-wordmark" onClick={() => navigate("inicio")} type="button">bubble</button>
-            <nav aria-label="Navegação do Bubble">{bubbleNavigation.map((item) => <button aria-current={page === item.id ? "page" : undefined} className={page === item.id ? "is-active" : undefined} key={item.id} onClick={() => navigate(item.id)} type="button">{item.label}</button>)}</nav>
+            <nav aria-label="Navegação do Bubble">{bubbleNavigation.map((item) => <button aria-current={page === item.id ? "page" : undefined} className={page === item.id ? "is-active" : undefined} key={item.id} onClick={() => navigate(item.id)} type="button"><img alt="" aria-hidden="true" src={"/System/Doors/sites/bubble/icons/" + item.icon} /><span>{item.label}</span></button>)}</nav>
             <form aria-label="Buscar pessoas e comunidades" className="bubble-top-search" onSubmit={(event) => event.preventDefault()} role="search">
               <input aria-label="Buscar pessoas, comunidades..." onChange={({ currentTarget }) => setGlobalSearch(currentTarget.value)} placeholder="Buscar pessoas, comunidades..." type="search" value={globalSearch} />
-              <button aria-label="Pesquisar" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/search.svg" /></button>
+              <button aria-label="Pesquisar" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/search.svg" /></button>
             </form>
             <button className="bubble-session-button" onClick={endSession} type="button">Sair</button>
           </header>
@@ -867,6 +870,22 @@ const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
   ]
 };
 
+const BUBBLE_KEYWORD_FOLDER = "/Users/Public/Pasta trancada";
+
+const saveBubbleKeyword = async (
+  keyword: string,
+  actions: ReturnType<typeof useFileSystemActions>
+): Promise<boolean> => {
+  const fileName = `Chave - ${keyword}.txt`;
+  const filePath = `${BUBBLE_KEYWORD_FOLDER}/${fileName}`;
+  await actions.mkdirRecursive(BUBBLE_KEYWORD_FOLDER);
+  if (!(await actions.exists(filePath))) {
+    await actions.createPath(fileName, BUBBLE_KEYWORD_FOLDER, Buffer.from(keyword));
+  }
+  await actions.updateFolder(BUBBLE_KEYWORD_FOLDER, fileName);
+  return recordDoorsKeyword(keyword);
+};
+
 const renderWikiComment = (comment: WikiDiscussionComment, depth = 0): ReactNode => (
   <section
     key={`${comment.author}-${comment.time ?? comment.body.slice(0, 32)}`}
@@ -885,6 +904,7 @@ const renderWikiComment = (comment: WikiDiscussionComment, depth = 0): ReactNode
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
+  const fileActions = useFileSystemActions();
   const pageUrl = new URL(url);
   const query = pageUrl.searchParams.get("q") || "";
   const requestedPath = pageUrl.pathname.replace(/\/+$/, "") || "/";
@@ -903,6 +923,28 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   );
   const [commentDraft, setCommentDraft] = useState("");
   const [submittedComments, setSubmittedComments] = useState<SubmittedWikiComment[]>([]);
+  const [informationCollected, setInformationCollected] = useState(() => isDoorsKeywordCollected("Informação"));
+  const collectInformation = async (): Promise<void> => {
+    try {
+      await saveBubbleKeyword("Informação", fileActions);
+      setInformationCollected(true);
+    } catch {
+      // Keep the keyword available if the locked folder could not be updated.
+    }
+  };
+  const renderArticleBody = (): ReactNode => {
+    if (!isLanHouseArticle) return article.body;
+    return article.body.split(/(informação)/i).map((part, index) =>
+      part.toLocaleLowerCase("pt-BR") === "informação" ? (
+        <span className="wiki-keyword-group" key={`information-${index}`}>
+          {informationCollected ? part : <button className="wiki-keyword" onClick={() => void collectInformation()} type="button">{part}</button>}
+          {!informationCollected && <button aria-label="Coletar a chave Informação" className="wiki-key-icon" onClick={() => void collectInformation()} type="button">
+            <svg aria-hidden="true" viewBox="0 0 32 32"><circle cx="10" cy="12" r="7" fill="#f6c344" stroke="#31302c" strokeWidth="2"/><circle cx="10" cy="12" r="2.4" fill="#fff4d0" stroke="#31302c" strokeWidth="1.5"/><path d="M16 12h14v4h-4v4h-4v-4h-6z" fill="#f6c344" stroke="#31302c" strokeWidth="2" strokeLinejoin="round"/></svg>
+          </button>}
+        </span>
+      ) : part
+    );
+  };
   const search = (value: string): void =>
     browserTabs?.navigate(searchUrl(`${SITE_URLS.encicloweb}buscar`, value));
   const navigate = (path: string): void => browserTabs?.navigate(SITE_URLS.encicloweb + path);
@@ -1055,7 +1097,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             <>
               <div className="wiki-essay-columns">
                 <div className="wiki-essay-column">
-                  <p className="wiki-article-lead">{article.body}</p>
+                  <p className="wiki-article-lead">{renderArticleBody()}</p>
                   {(isLanHouseArticle ? wikiLanHouseSections : wikiSociabilitySections).slice(0, 2).map((section) => (
                     <section key={section.heading} className="wiki-essay-section">
                       <h2>{section.heading}</h2>

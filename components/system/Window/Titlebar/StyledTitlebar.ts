@@ -127,7 +127,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     display: flex;
     flex: 0 1 190px;
     height: 29px;
-    min-width: 86px;
+    min-width: 112px;
     overflow: hidden;
     padding: 0 3px 0 0;
 

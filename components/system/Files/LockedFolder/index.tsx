@@ -8,7 +8,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import {
-  LOCKED_FOLDER_QUIZ_KEYWORD,
+  LOCKED_FOLDER_QUIZ_KEYWORDS,
   LOCKED_FOLDER_WORDS,
 } from "components/system/Files/LockedFolder/constants";
 import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
@@ -75,8 +75,9 @@ const LockedFolderProvider: FC = ({ children }) => {
     const enteredWords = words.filter((word) => word.trim());
     const matchesQuizKeyword =
       enteredWords.length === 1 &&
-      normalizeWord(enteredWords[0] || "") ===
-        normalizeWord(LOCKED_FOLDER_QUIZ_KEYWORD);
+      LOCKED_FOLDER_QUIZ_KEYWORDS.some(
+        (keyword) => normalizeWord(enteredWords[0] || "") === normalizeWord(keyword)
+      );
     const matchesAllWords = words.every(
       (word, index) =>
         normalizeWord(word) ===

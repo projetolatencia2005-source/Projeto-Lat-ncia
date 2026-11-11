@@ -63,18 +63,8 @@ const StyledTaskbarButton = styled(Button)<StyledTaskbarButtonProps>`
     }
   }
 
-  &&[title="Abrir porta"]:hover {
-    background: #e7ddc1;
-  }
-
   &:hover {
-    background-color: ${({ $active, theme }) =>
-      $active ? theme.colors.taskbar.foreground : theme.colors.taskbar.hover};
-
-    svg {
-      fill: ${({ $highlight, theme }) =>
-        $highlight ? theme.colors.highlight : undefined};
-    }
+    opacity: 0.9;
   }
 
   &:active {

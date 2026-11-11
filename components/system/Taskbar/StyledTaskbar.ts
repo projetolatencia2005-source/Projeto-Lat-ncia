@@ -8,6 +8,10 @@ const StyledTaskbar = styled.nav`
     cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
   }
 
+  .doors-system-tray button:hover {
+    opacity: 0.9;
+  }
+
   button:not(:disabled),
   a[href],
   [role="button"],
