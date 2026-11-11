@@ -7,10 +7,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import {
-  LOCKED_FOLDER_QUIZ_KEYWORDS,
-  LOCKED_FOLDER_WORDS,
-} from "components/system/Files/LockedFolder/constants";
+import { LOCKED_FOLDER_WORDS } from "components/system/Files/LockedFolder/constants";
 import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
 import { getDoorsCollectedKeywords } from "utils/doorsKeywords";
 
@@ -41,19 +38,14 @@ const inputIndexForKeyword = (keyword: string): number => {
   const wordIndex = LOCKED_FOLDER_WORDS.findIndex(
     (word) => normalizeWord(word) === normalized
   );
-  if (wordIndex !== -1) return wordIndex;
-  return LOCKED_FOLDER_QUIZ_KEYWORDS.some(
-    (word) => normalizeWord(word) === normalized
-  ) ? 0 : -1;
+  return wordIndex;
 };
 
 const canonicalKeyword = (keyword: string): string => {
   const normalized = normalizeWord(keyword);
-  return (
-    [...LOCKED_FOLDER_WORDS, ...LOCKED_FOLDER_QUIZ_KEYWORDS].find(
-      (word) => normalizeWord(word) === normalized
-    ) || keyword
-  );
+  return LOCKED_FOLDER_WORDS.find(
+    (word) => normalizeWord(word) === normalized
+  ) || keyword;
 };
 
 const LockedFolderProvider: FC = ({ children }) => {
@@ -117,20 +109,14 @@ const LockedFolderProvider: FC = ({ children }) => {
   const submit: React.SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
-    const enteredWords = words.filter((word) => word.trim());
-    const matchesQuizKeyword =
-      enteredWords.length === 1 &&
-      LOCKED_FOLDER_QUIZ_KEYWORDS.some(
-        (keyword) => normalizeWord(enteredWords[0] || "") === normalizeWord(keyword)
-      );
     const matchesAllWords = words.every(
       (word, index) =>
         normalizeWord(word) ===
         normalizeWord(LOCKED_FOLDER_WORDS[index] || "")
     );
 
-    if (!matchesQuizKeyword && !matchesAllWords) {
-      setError("A palavra-chave ou as cinco palavras não correspondem. Tente novamente.");
+    if (!matchesAllWords) {
+      setError("Preencha as cinco palavras-chave corretas para desbloquear.");
       return;
     }
 
@@ -252,7 +238,7 @@ const LockedFolderProvider: FC = ({ children }) => {
               </header>
               <form className="doors-locked-folder-form" onSubmit={submit}>
                 <p className="doors-locked-folder-prompt">
-                  Digite a palavra-chave liberada pela prova ou as cinco palavras encontradas no jogo.
+                  Digite as cinco palavras-chave encontradas no jogo. Todas são necessárias para desbloquear.
                 </p>
                 <div className="doors-locked-folder-words">
                   {words.map((word, index) => (
@@ -278,7 +264,7 @@ const LockedFolderProvider: FC = ({ children }) => {
                 <div className="doors-locked-folder-actions">
                   <button
                     className="doors-locked-folder-submit"
-                    disabled={words.every((word) => !word.trim())}
+                    disabled={words.some((word) => !word.trim())}
                     type="submit"
                   >
                     Desbloquear

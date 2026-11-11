@@ -1604,25 +1604,11 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
         event.stopPropagation();
         if (keywordElement.dataset.collecting === "true" || keywordElement.dataset.collected === "true") return;
         keywordElement.dataset.collecting = "true";
-        const keyword = keywordElement.textContent?.trim().split(" · ")[0] || "Alfabetização";
-        void (async () => {
-          const directory = "/Users/Public/Pasta trancada";
-          const fileName = `Chave - ${keyword}.txt`;
-          const filePath = `${directory}/${fileName}`;
-          try {
-            await mkdirRecursive(directory);
-            if (!(await exists(filePath))) {
-              await createPath(fileName, directory, Buffer.from(keyword));
-            }
-            await updateFolder(directory, fileName);
-            recordDoorsKeyword(keyword);
-            keywordElement.dataset.collected = "true";
-            keywordElement.textContent = `${keyword} · enviada para a pasta trancada`;
-            keywordElement.setAttribute("aria-label", `${keyword} enviada para a pasta trancada`);
-          } catch {
-            delete keywordElement.dataset.collecting;
-          }
-        })();
+        const keyword =
+          keywordElement.textContent?.trim().split(" · ")[0] || "Alfabetização";
+        recordDoorsKeyword(keyword);
+        keywordElement.dataset.collected = "true";
+        delete keywordElement.dataset.collecting;
         return;
       }
 

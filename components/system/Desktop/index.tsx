@@ -4,6 +4,7 @@ import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
 import FileManager from "components/system/Files/FileManager";
 import LockedFolderProvider from "components/system/Files/LockedFolder";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
+import { resetStorage } from "contexts/fileSystem/functions";
 import {
   applyAccessibilityPreferences,
   readAccessibilityPreferences,
@@ -35,7 +36,8 @@ type SessionStatusProps = { bonusSeconds: number; startedAt: number };
 type StatusPosition = { x: number; y: number };
 
 const STATUS_POSITION_KEY = "doors-session-status-position-v2";
-const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v2";
+const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
+const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v3";
 const REQUESTED_FILES_TO_REMOVE = [
   ["/Users/Public/Desktop/image.png", "/Users/Public/Desktop"],
   ["/Users/Public/Documents/Post-it.whtml", "/Users/Public/Documents"],
@@ -49,6 +51,9 @@ const REQUESTED_FILES_TO_REMOVE = [
     "/Users/Public/Documents/Modelo currículo (1).whtml",
     "/Users/Public/Documents",
   ],
+  ["/Users/Public/Pasta trancada/Chave - Alfabetização.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Informação.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Ta chave essa.txt", "/Users/Public/Pasta trancada"],
 ] as const;
 
 type BootStage = "loading" | "login" | "splash" | "tutorial";
@@ -272,6 +277,56 @@ const Desktop: FC = ({ children }) => {
   const collectedKeywordsRef = useRef(new Set<string>());
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
+  const resetInProgressRef = useRef(false);
+  const [isResetPending, setIsResetPending] = useState(false);
+  const resetAndReload = useCallback((): void => {
+    if (resetInProgressRef.current) return;
+    resetInProgressRef.current = true;
+    void resetStorage(rootFs)
+      .catch(() => undefined)
+      .finally(() => window.location.reload());
+  }, [rootFs]);
+
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true") {
+        setIsResetPending(true);
+        resetAndReload();
+      }
+    } catch {
+      // Keep the session usable when browser storage is unavailable.
+    }
+  }, [resetAndReload]);
+
+  useEffect(() => {
+    const onPageHide = (): void => {
+      if (resetInProgressRef.current) return;
+      const cleanup = resetStorage(rootFs);
+      try {
+        window.localStorage.setItem(RESET_ON_NEXT_LOAD_KEY, "true");
+      } catch {
+        // Reset as much of the session as browser storage permits.
+      }
+      void cleanup.catch(() => undefined);
+    };
+    const onResetStarting = (): void => {
+      resetInProgressRef.current = true;
+    };
+    const onPageShow = (event: PageTransitionEvent): void => {
+      if (!event.persisted || resetInProgressRef.current) return;
+      resetInProgressRef.current = true;
+      window.location.reload();
+    };
+    window.addEventListener("pagehide", onPageHide);
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("doors-session-reset-starting", onResetStarting);
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("doors-session-reset-starting", onResetStarting);
+    };
+  }, [rootFs]);
+
   useEffect(() => {
     const onKeywordCollected = (event: Event): void => {
       const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
@@ -411,7 +466,11 @@ const Desktop: FC = ({ children }) => {
     setStartedAt((current) => current ?? Date.now());
 
   return (
-    <StyledDesktop ref={desktopRef} aria-label="Área de trabalho do Doors">
+    <StyledDesktop
+      ref={desktopRef}
+      aria-label="Área de trabalho do Doors"
+      style={isResetPending ? { visibility: "hidden" } : undefined}
+    >
       <LockedFolderProvider>
         <FileManager
           url={DESKTOP_PATH}
@@ -626,7 +685,7 @@ const Desktop: FC = ({ children }) => {
               <button
                 aria-label="Desligar o computador e voltar à tela de login"
                 className="doors-shutdown"
-                onClick={() => window.location.reload()}
+                onClick={resetAndReload}
                 type="button"
               >
                 <img

@@ -9,7 +9,8 @@ const StyledTaskbar = styled.nav`
   }
 
   .doors-system-tray button:hover {
-    opacity: 0.9;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    opacity: 0.75;
   }
 
   button:not(:disabled),

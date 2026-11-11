@@ -1,13 +1,13 @@
 export const LOCKED_FOLDER_WORDS = [
-  "Conexão",
-  "Eles sabem",
+  "Alfabetização",
+  "Informação",
   "Saber oculto",
   "Fragmentos",
   "Cognição",
 ] as const;
 
-export const LOCKED_FOLDER_QUIZ_KEYWORD = "Alfabetização";
-export const LOCKED_FOLDER_QUIZ_KEYWORDS = ["Alfabetização", "Informação", "Ta chave essa"] as const;
+export const LOCKED_FOLDER_QUIZ_KEYWORD = LOCKED_FOLDER_WORDS[0];
+export const LOCKED_FOLDER_QUIZ_KEYWORDS = LOCKED_FOLDER_WORDS;
 
 export const isLockedFolderEntry = (path: string, url: string): boolean =>
   [path, url].some((candidate) => {
