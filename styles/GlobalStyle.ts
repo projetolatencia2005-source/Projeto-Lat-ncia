@@ -1071,7 +1071,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-system-tray > img:hover,
   .doors-system-tray > button:hover:not(:disabled) {
-    opacity: 0.9 !important;
+    opacity: 0.75 !important;
   }
 
   .doors-system-tray {
