@@ -25,6 +25,7 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
     overflow: hidden;
     place-content: center;
     place-items: center;
+    position: relative;
     width: 100%;
 
     div {
@@ -39,6 +40,23 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
       height: 100%;
       object-fit: contain;
       width: 100%;
+    }
+  }
+
+  .doors-photo-special-key {
+    background: transparent;
+    border: 0;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    height: 100%;
+    inset: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    &:focus-visible {
+      outline: 2px dashed #7d94b8;
+      outline-offset: -2px;
     }
   }
 
