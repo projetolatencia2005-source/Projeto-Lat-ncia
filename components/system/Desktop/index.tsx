@@ -37,7 +37,7 @@ type StatusPosition = { x: number; y: number };
 
 const STATUS_POSITION_KEY = "doors-session-status-position-v2";
 const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
-const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v2";
+const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v3";
 const REQUESTED_FILES_TO_REMOVE = [
   ["/Users/Public/Desktop/image.png", "/Users/Public/Desktop"],
   ["/Users/Public/Documents/Post-it.whtml", "/Users/Public/Documents"],
@@ -51,6 +51,9 @@ const REQUESTED_FILES_TO_REMOVE = [
     "/Users/Public/Documents/Modelo currículo (1).whtml",
     "/Users/Public/Documents",
   ],
+  ["/Users/Public/Pasta trancada/Chave - Alfabetização.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Informação.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Ta chave essa.txt", "/Users/Public/Pasta trancada"],
 ] as const;
 
 type BootStage = "loading" | "login" | "splash" | "tutorial";
