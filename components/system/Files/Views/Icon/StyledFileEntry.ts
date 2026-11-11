@@ -103,8 +103,27 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     gap: 0;
 
     picture:first-of-type {
-      height: 56px;
-      width: 56px;
+      height: 46px;
+      width: 46px;
+    }
+  }
+
+  button.doors-picture-thumbnail figure > picture:first-of-type {
+    display: block;
+    flex: 0 0 100px;
+    height: 100px;
+    overflow: hidden;
+    width: 100px;
+
+    > img {
+      aspect-ratio: 1;
+      height: 100px !important;
+      max-height: 100px !important;
+      max-width: 100px !important;
+      min-height: 100px !important;
+      min-width: 100px !important;
+      object-fit: cover;
+      width: 100px !important;
     }
   }
 

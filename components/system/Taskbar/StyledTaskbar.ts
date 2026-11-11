@@ -4,10 +4,30 @@ import { TASKBAR_HEIGHT } from "utils/constants";
 const TASKBAR_Z_INDEX = 100000;
 
 const StyledTaskbar = styled.nav`
+  &, * {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  }
+
+  .doors-system-tray button:hover {
+    opacity: 0.9;
+  }
+
+  button:not(:disabled),
+  a[href],
+  [role="button"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  label,
+  select,
+  summary {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+  }
+
   background: linear-gradient(
     90deg,
-    #7d94b8 0 calc(100% - 250px),
-    #d7e4f7 calc(100% - 250px) 100%
+    #7d94b8 0 calc(100% - 275px),
+    #d7e4f7 calc(100% - 275px) 100%
   );
   border-top: 2px solid #31302c;
   bottom: 0;
@@ -21,10 +41,11 @@ const StyledTaskbar = styled.nav`
 
   &::after {
     background: #31302c;
+    border-radius: 0;
     content: "";
     display: block;
     height: 100%;
-    left: calc(100% - 250px);
+    left: calc(100% - 275px);
     pointer-events: none;
     position: absolute;
     top: 0;

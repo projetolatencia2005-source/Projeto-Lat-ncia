@@ -1,5 +1,6 @@
+import { Buffer } from "buffer";
 import { basename, dirname, extname, join } from "path";
-import { type SyntheticEvent, useEffect, useState } from "react";
+import { type MouseEvent as ReactMouseEvent, type SyntheticEvent, useEffect, useState } from "react";
 import StyledPhotos from "components/apps/Photos/StyledPhotos";
 import usePanZoom, { panZoomConfig } from "components/apps/Photos/usePanZoom";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
@@ -14,6 +15,7 @@ import {
   IMAGE_FILE_EXTENSIONS,
   NATIVE_IMAGE_FORMATS,
 } from "utils/constants";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 import {
   bufferToUrl,
   getExtension,
@@ -34,13 +36,18 @@ const PAN_STEPS: Record<string, [number, number]> = {
   ArrowUp: [0, 1],
 };
 
+const resetPhotoPointer = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+  const target = event.currentTarget;
+  target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+};
+
 const Photos: FC<ComponentProcessProps> = ({ id }) => {
   const { url: setUrl } = useProcessesActions();
   const { closing = false, componentWindow, url = "" } = useProcess(id);
   const [src, setSrc] = useState<Record<string, string>>({});
   const [brokenImage, setBrokenImage] = useState(false);
   const { prependFileToTitle } = useTitle(id);
-  const { readdir, readFile } = useFileSystemActions();
+  const { createPath, exists, mkdirRecursive, readdir, readFile, updateFolder } = useFileSystemActions();
   const [container, setContainer] = useState<HTMLDivElement | null>();
   const [image, setImage] = useState<HTMLImageElement | null>();
   const [imageContainer, setImageContainer] = useState<HTMLElement | null>();
@@ -81,6 +88,25 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
     });
     prependFileToTitle(basename(url));
   };
+  const movePhoto = async (direction: -1 | 1): Promise<void> => {
+    const directory = await readdir(dirname(url));
+    const currentIndex = directory.indexOf(basename(url));
+
+    if (currentIndex === -1) return;
+
+    for (
+      let nextIndex = currentIndex + direction;
+      nextIndex >= 0 && nextIndex < directory.length;
+      nextIndex += direction
+    ) {
+      const nextUrl = directory[nextIndex];
+
+      if (IMAGE_FILE_EXTENSIONS.has(getExtension(nextUrl))) {
+        setUrl(id, join(dirname(url), nextUrl));
+        return;
+      }
+    }
+  };
   const onKeyDown = async (event: KeyboardEvent): Promise<void> => {
     const { altKey, ctrlKey, key, metaKey } = event;
     const panStep = PAN_STEPS[key];
@@ -111,41 +137,56 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
       return;
     }
 
-    // eslint-disable-next-line default-case
-    switch (key) {
-      case "ArrowRight":
-      case "ArrowLeft": {
-        const directory = await readdir(dirname(url));
-        const currentIndex = directory.indexOf(basename(url));
-        const nextPhoto = (index: number, next: boolean): void => {
-          if (index === -1) return;
-
-          const nextIndex = index + (next ? 1 : -1);
-
-          if (nextIndex === -1 || nextIndex === directory.length) {
-            return;
-          }
-
-          const nextUrl = directory[nextIndex];
-
-          if (IMAGE_FILE_EXTENSIONS.has(getExtension(nextUrl))) {
-            setUrl(id, join(dirname(url), nextUrl));
-          } else {
-            nextPhoto(nextIndex, next);
-          }
-        };
-
-        nextPhoto(currentIndex, key === "ArrowRight");
-
-        break;
-      }
+    if (key === "ArrowRight" || key === "ArrowLeft") {
+      await movePhoto(key === "ArrowRight" ? 1 : -1);
     }
+  };
+  const isKeyImage = basename(url).toLocaleLowerCase("pt-BR") === "ta chave essa.jpeg";
+  const isSpecialKeyAt = (event: ReactMouseEvent<HTMLButtonElement>): boolean => {
+    if (!isKeyImage) return false;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const { naturalHeight = 0, naturalWidth = 0 } = image ?? {};
+    if (!rect.width || !rect.height || !naturalWidth || !naturalHeight) return false;
+    const imageScale = Math.min(rect.width / naturalWidth, rect.height / naturalHeight);
+    const shownWidth = naturalWidth * imageScale;
+    const shownHeight = naturalHeight * imageScale;
+    const left = rect.left + (rect.width - shownWidth) / 2;
+    const top = rect.top + (rect.height - shownHeight) / 2;
+    const x = (event.clientX - left) / shownWidth;
+    const y = (event.clientY - top) / shownHeight;
+    return x >= .25 && x <= .37 && y >= .2 && y <= .32;
+  };
+  const onPhotoPointerMove = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    const target = event.currentTarget;
+    target.style.cursor = isSpecialKeyAt(event)
+      ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
+      : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+  };
+  const collectSpecialKey = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    if (!isSpecialKeyAt(event)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const directory = "/Users/Public/Pasta trancada";
+    const fileName = "Chave - Ta chave essa.txt";
+    const filePath = `${directory}/${fileName}`;
+    void (async () => {
+      try {
+        await mkdirRecursive(directory);
+        if (!(await exists(filePath))) {
+          await createPath(fileName, directory, Buffer.from("Ta chave essa"));
+        }
+        await updateFolder(directory, fileName);
+        recordDoorsKeyword("Ta chave essa");
+      } catch {
+        // Leave the image usable if the locked-folder filesystem is unavailable.
+      }
+    })();
   };
   const onImageLoad = ({
     currentTarget,
   }: SyntheticEvent<HTMLImageElement>): void => {
     setBrokenImage(false);
-    updateWindowSize(currentTarget.naturalHeight, currentTarget.naturalWidth);
+    updateWindowSize(currentTarget.naturalHeight * 0.5, currentTarget.naturalWidth * 0.5);
   };
 
   useEffect(() => {
@@ -187,6 +228,16 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
           src={src[url]}
           {...HIGH_PRIORITY_ELEMENT}
         />
+        {isKeyImage && (
+          <button
+            aria-label="Coletar chave especial"
+            className="doors-photo-special-key"
+            onClick={collectSpecialKey}
+            onMouseLeave={resetPhotoPointer}
+            onMouseMove={onPhotoPointerMove}
+            type="button"
+          />
+        )}
         {brokenImage && (
           <div>
             {basename(url)}
@@ -196,6 +247,36 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
           </div>
         )}
       </figure>
+      {url && !brokenImage && src[url] && (
+        <>
+          <button
+            aria-label="Imagem anterior"
+            className="doors-photo-nav doors-photo-nav-previous"
+            onClick={() => void movePhoto(-1)}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              src="/System/Doors/Esquerda.svg"
+            />
+          </button>
+          <button
+            aria-label="Próxima imagem"
+            className="doors-photo-nav doors-photo-nav-next"
+            onClick={() => void movePhoto(1)}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              src="/System/Doors/Direita.svg"
+            />
+          </button>
+        </>
+      )}
     </StyledPhotos>
   );
 };

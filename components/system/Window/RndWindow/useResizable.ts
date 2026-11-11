@@ -14,7 +14,7 @@ type Resizable = [Size, React.Dispatch<React.SetStateAction<Size>>];
 const useResizable = (id: string, autoSizing = false): Resizable => {
   const defaultSize = useDefaultSize(id);
   const { size: stateSize = defaultSize } = useWindowState(id);
-  const { lockAspectRatio = false } = useProcess(id);
+  const { lockAspectRatio = false, maximized = false } = useProcess(id);
   const {
     sizes: { titleBar },
   } = useTheme();
@@ -24,12 +24,32 @@ const useResizable = (id: string, autoSizing = false): Resizable => {
   const blockAutoSizeRef = useMinMaxRef(id);
 
   useLayoutEffect(() => {
-    if (autoSizing && !blockAutoSizeRef.current) {
+    if (!maximized) return;
+
+    const resizeToViewport = (): void => {
+      setSize(
+        minMaxSize(
+          { height: window.innerHeight, width: window.innerWidth },
+          lockAspectRatio,
+          titleBar.height
+        )
+      );
+    };
+
+    resizeToViewport();
+    window.addEventListener("resize", resizeToViewport);
+
+    return () => window.removeEventListener("resize", resizeToViewport);
+  }, [lockAspectRatio, maximized, titleBar.height]);
+
+  useLayoutEffect(() => {
+    if (!maximized && autoSizing && !blockAutoSizeRef.current) {
       setSize(minMaxSize(stateSize, lockAspectRatio, titleBar.height));
     }
   }, [
     autoSizing,
     blockAutoSizeRef,
+    maximized,
     lockAspectRatio,
     stateSize,
     titleBar.height,

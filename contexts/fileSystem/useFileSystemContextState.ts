@@ -642,6 +642,16 @@ const useFileSystemContextState = (): {
     const migrateSystemIcons = async (): Promise<void> => {
       const oldPath = "/Users/Public/Recycle Bin";
       const newPath = "/Users/Public/Lixeira";
+      const oldPhotoPath = "/Users/Public/Pictures/essa foto esta chave.jpeg";
+      const newPhotoPath = "/Users/Public/Pictures/ta chave essa.jpeg";
+      if (
+        !(await exists(newPhotoPath)) &&
+        (await exists(oldPhotoPath)) &&
+        (await rename(oldPhotoPath, newPhotoPath))
+      ) {
+        await updateFolder("/Users/Public/Pictures", "ta chave essa.jpeg", "essa foto esta chave.jpeg");
+      }
+
 
       if (
         !(await exists(newPath)) &&

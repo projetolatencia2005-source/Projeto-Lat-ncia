@@ -30,7 +30,7 @@ const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
   ...BOOT_LOADING_FRAME_SEQUENCE,
 ]).flat();
 
-type SessionStatusProps = { startedAt: number };
+type SessionStatusProps = { bonusSeconds: number; startedAt: number };
 
 type StatusPosition = { x: number; y: number };
 
@@ -62,8 +62,8 @@ const WindowControls: FC = () => (
   </span>
 );
 
-const SessionStatus: FC<SessionStatusProps> = ({ startedAt }) => {
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, startedAt }) => {
+  const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
   const [position, setPosition] = useState<null | StatusPosition>(null);
   const statusRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<{
@@ -130,14 +130,14 @@ const SessionStatus: FC<SessionStatusProps> = ({ startedAt }) => {
   useEffect(() => {
     const updateTime = (): void => {
       const elapsed = Math.floor((Date.now() - startedAt) / 1000);
-      setElapsedSeconds(Math.min(SESSION_DURATION_SECONDS, elapsed));
+      setRemainingSeconds(Math.max(0, SESSION_DURATION_SECONDS + bonusSeconds - elapsed));
     };
     updateTime();
     const timer = window.setInterval(updateTime, 1000);
     return () => window.clearInterval(timer);
-  }, [startedAt]);
+  }, [bonusSeconds, startedAt]);
 
-  const time = `${String(Math.floor(elapsedSeconds / 60)).padStart(2, "0")}:${String(elapsedSeconds % 60).padStart(2, "0")}`;
+  const time = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
   const savePosition = (nextPosition: StatusPosition): void => {
     setPosition(nextPosition);
 
@@ -268,8 +268,22 @@ const Desktop: FC = ({ children }) => {
     useState<BootDestination | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [startedAt, setStartedAt] = useState<null | number>(null);
+  const [bonusSeconds, setBonusSeconds] = useState(0);
+  const collectedKeywordsRef = useRef(new Set<string>());
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
+  useEffect(() => {
+    const onKeywordCollected = (event: Event): void => {
+      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
+      if (!keyword) return;
+      const normalized = keyword.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLocaleLowerCase("pt-BR");
+      if (collectedKeywordsRef.current.has(normalized)) return;
+      collectedKeywordsRef.current.add(normalized);
+      setBonusSeconds((current) => current + 2 * 60);
+    };
+    window.addEventListener("doors-keyword-collected", onKeywordCollected);
+    return () => window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+  }, []);
   useWallpaper(desktopRef);
 
   const beginBootLoading = useCallback(
@@ -409,7 +423,7 @@ const Desktop: FC = ({ children }) => {
         />
         {children}
       </LockedFolderProvider>
-      {startedAt !== null && <SessionStatus startedAt={startedAt} />}
+      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} startedAt={startedAt} />}
       {startedAt === null && (
         <>
           {bootStage === "loading" && (
@@ -502,7 +516,7 @@ const Desktop: FC = ({ children }) => {
                       ?
                     </span>
                     <div>
-                      <h2>o que é este site?</h2>
+                      <h2>O QUE É ESTE SITE?</h2>
                       <p>
                         Esta experiência simula como era os Lan House, espaços
                         que, entre o fim dos anos 1990 e o início dos anos 2010,
@@ -515,7 +529,7 @@ const Desktop: FC = ({ children }) => {
                   <div className="doors-tutorial-steps">
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">1</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>1</span></span>
                         <span>Navegue pelos sites</span>
                       </h2>
                       <p>
@@ -528,7 +542,7 @@ const Desktop: FC = ({ children }) => {
                     </span>
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">2</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>2</span></span>
                         <span>Palavras-chaves</span>
                       </h2>
                       <p>
@@ -542,7 +556,7 @@ const Desktop: FC = ({ children }) => {
                     </span>
                     <article className="doors-tutorial-step">
                       <h2>
-                        <span className="doors-tutorial-number">3</span>
+                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>3</span></span>
                         <span>Pegue as 5 chaves</span>
                       </h2>
                       <p>

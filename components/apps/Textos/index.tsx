@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Editor } from "tinymce";
@@ -10,6 +11,7 @@ import { type ComponentProcessProps } from "components/system/Apps/RenderCompone
 import DirectionArrow from "components/system/DirectionArrow";
 import { useFileSystemActions } from "contexts/fileSystem";
 import { useProcess, useProcessesActions } from "contexts/process";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const DOCUMENTS_PATH = "/Users/Public/Documents";
 const INTERNAL_DOCUMENTS_PATH = `${DOCUMENTS_PATH}/.Textos`;
@@ -165,7 +167,7 @@ const CONTENT_STYLE = `
   }
   .doors-quiz-key {
     color: #7d94b8;
-    cursor: pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
     display: inline-block;
     text-decoration: underline;
   }
@@ -304,7 +306,7 @@ const SCHOOL_TEST_TEMPLATE_CONTENT = `
       <h2>Resultado:</h2>
       <p data-quiz-score></p>
       <p data-quiz-grade></p>
-      <p data-quiz-key-row hidden>Palavra chave: <span class="doors-quiz-key" style="cursor: pointer !important;">Alfabetização</span></p>
+      <p data-quiz-key-row hidden>Palavra chave: <span class="doors-quiz-key">Alfabetização</span></p>
       <p data-quiz-blocked hidden>Palavra chave: Bloqueado</p>
       <p class="doors-quiz-feedback" data-quiz-feedback hidden>As respostas corretas estão em verde. Reinicie o teste para tentar novamente.</p>
       <button class="doors-quiz-action" data-quiz-restart hidden type="button">Tentar novamente ←</button>
@@ -1093,6 +1095,7 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
     []
   );
   const editor = useTinyMCE(containerProps, editorOptions);
+  const { createPath, exists, mkdirRecursive, updateFolder } = useFileSystemActions();
   const { url: setProcessUrl } = useProcessesActions();
   const [showReturnPrompt, setShowReturnPrompt] = useState(false);
 
@@ -1595,6 +1598,34 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
 
     const onClick = (event: MouseEvent): void => {
       const target = event.target as Element | null;
+      const keywordElement = target?.closest<HTMLElement>(".doors-quiz-key");
+      if (keywordElement) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (keywordElement.dataset.collecting === "true" || keywordElement.dataset.collected === "true") return;
+        keywordElement.dataset.collecting = "true";
+        const keyword = keywordElement.textContent?.trim().split(" · ")[0] || "Alfabetização";
+        void (async () => {
+          const directory = "/Users/Public/Pasta trancada";
+          const fileName = `Chave - ${keyword}.txt`;
+          const filePath = `${directory}/${fileName}`;
+          try {
+            await mkdirRecursive(directory);
+            if (!(await exists(filePath))) {
+              await createPath(fileName, directory, Buffer.from(keyword));
+            }
+            await updateFolder(directory, fileName);
+            recordDoorsKeyword(keyword);
+            keywordElement.dataset.collected = "true";
+            keywordElement.textContent = `${keyword} · enviada para a pasta trancada`;
+            keywordElement.setAttribute("aria-label", `${keyword} enviada para a pasta trancada`);
+          } catch {
+            delete keywordElement.dataset.collecting;
+          }
+        })();
+        return;
+      }
+
       const button = target?.closest<HTMLButtonElement>(
         "[data-quiz-submit], [data-quiz-restart]"
       );
@@ -1645,7 +1676,7 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
       doc.defaultView?.removeEventListener("click", onClick, true);
       clearKeywordCursorEffect();
     };
-  }, [editor]);
+  }, [createPath, editor, exists, mkdirRecursive, updateFolder]);
 
   const returnToHome = (): void => {
     if (editor?.isDirty()) {

@@ -144,20 +144,27 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder > ol {
     display: grid;
-    gap: 22px 45px;
-    grid-auto-rows: 309px;
-    grid-template-columns: repeat(6, 167px);
+    gap: 25px;
+    grid-auto-rows: 150px;
+    grid-template-columns: repeat(6, 104px);
     grid-template-rows: none;
     overflow: auto;
-    padding: 20px 38px;
+    padding: 8px 38px 2px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      height: 0;
+      width: 0;
+    }
   }
 
   .file-explorer-main.photos-folder > ol > li {
     box-sizing: border-box;
-    height: 309px;
+    height: 150px;
     margin: 0;
     padding: 0;
-    width: 167px;
+    width: 104px;
   }
 
   .file-explorer-main.photos-folder > ol > li > button {
@@ -166,10 +173,12 @@ const StyledFileExplorer = styled.div`
     border: 1px solid transparent;
     box-sizing: border-box;
     display: flex;
-    height: 100%;
+    height: 104px;
     justify-content: center;
+    overflow: visible;
     padding: 0;
-    width: 100%;
+    position: relative;
+    width: 104px;
 
     &:hover,
     &:focus-visible {
@@ -187,9 +196,10 @@ const StyledFileExplorer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    height: 100%;
+    height: auto;
     justify-content: flex-start;
     margin: 0;
+    overflow: visible;
     width: 100%;
 
     picture:first-of-type {
@@ -197,9 +207,9 @@ const StyledFileExplorer = styled.div`
       border: 2px solid #31302c;
       box-shadow: 5px 5px 0 #31302c;
       box-sizing: border-box;
-      flex: 0 0 269px;
-      height: 269px;
-      width: 162px;
+      flex: 0 0 104px;
+      height: 104px;
+      width: 104px;
 
       img {
         height: 100%;
@@ -228,26 +238,32 @@ const StyledFileExplorer = styled.div`
     }
   }
 
+  @media (min-width: 1780px) {
+    .file-explorer-main.photos-folder > ol {
+      grid-template-columns: repeat(11, 104px);
+    }
+  }
+
   @media (max-width: 1400px) {
     .file-explorer-main.photos-folder > ol {
-      gap: 22px 28px;
-      grid-template-columns: repeat(4, 167px);
+      gap: 25px;
+      grid-template-columns: repeat(4, 104px);
       padding-left: 24px;
     }
   }
 
   @media (max-width: 1000px) {
     .file-explorer-main.photos-folder > ol {
-      gap: 22px 18px;
-      grid-template-columns: repeat(3, 167px);
+      gap: 25px;
+      grid-template-columns: repeat(3, 104px);
       padding-left: 16px;
     }
   }
 
   @media (max-width: 700px) {
     .file-explorer-main.photos-folder > ol {
-      gap: 18px 12px;
-      grid-template-columns: repeat(2, 167px);
+      gap: 25px;
+      grid-template-columns: repeat(2, 104px);
       padding-left: 12px;
     }
   }
@@ -263,8 +279,23 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder ${StyledIconFileEntry} {
     align-items: flex-start;
+    background-color: transparent !important;
     display: flex;
     justify-content: center;
+
+    &:hover,
+    &.focus-within {
+      background-color: transparent !important;
+      outline: none !important;
+    }
+  }
+
+  .file-explorer-main.photos-folder
+    > ${StyledIconFileManager}
+    > ${StyledIconFileEntry}.focus-within
+    > button {
+    background: #e7eff9;
+    border-color: #91a3bb;
   }
 
   ${StyledIconFileManager} {
@@ -276,35 +307,13 @@ const StyledFileExplorer = styled.div`
     }
   }
 
+  .file-explorer-main.photos-folder > ol,
   .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-    gap: 22px 45px;
-    grid-auto-rows: 309px;
-    grid-template-columns: repeat(6, 167px);
-    grid-template-rows: none;
-    padding: 20px 38px;
-  }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 
-  @media (max-width: 1400px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 22px 28px;
-      grid-template-columns: repeat(4, 167px);
-      padding-left: 24px;
-    }
-  }
-
-  @media (max-width: 1000px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 22px 18px;
-      grid-template-columns: repeat(3, 167px);
-      padding-left: 16px;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 18px 12px;
-      grid-template-columns: repeat(2, 167px);
-      padding-left: 12px;
+    &::-webkit-scrollbar {
+      display: none;
     }
   }
 

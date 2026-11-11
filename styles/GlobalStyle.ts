@@ -454,12 +454,36 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-tutorial-number {
     align-items: center;
-    border: 2px solid #f7edd7;
-    border-radius: 50%;
     display: inline-flex;
     flex: 0 0 clamp(30px, 2.5vw, 48px);
     height: clamp(30px, 2.5vw, 48px);
+    isolation: isolate;
     justify-content: center;
+    position: relative;
+
+    > img {
+      height: 100%;
+      image-rendering: pixelated;
+      inset: 0;
+      object-fit: contain;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+    }
+
+    > span {
+      align-items: center;
+      color: #f7edd7;
+      display: flex;
+      font-size: 0.78em;
+      font-weight: 700;
+      inset: 0;
+      justify-content: center;
+      line-height: 1;
+      pointer-events: none;
+      position: absolute;
+      z-index: 3 !important;
+    }
   }
 
   .doors-tutorial-step p {
@@ -1040,6 +1064,16 @@ const GlobalStyle = styled.createGlobalStyle`
     text-align: center;
   }
 
+  .doors-system-tray > img,
+  .doors-system-tray > button:not(:disabled) {
+    transition: opacity 120ms ease;
+  }
+
+  .doors-system-tray > img:hover,
+  .doors-system-tray > button:hover:not(:disabled) {
+    opacity: 0.9 !important;
+  }
+
   .doors-system-tray {
     align-items: center;
     color: #302e2a;
@@ -1049,6 +1083,21 @@ const GlobalStyle = styled.createGlobalStyle`
     position: absolute;
     right: 150px;
     top: 0;
+  }
+
+  .doors-accessibility-toggle {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: inherit;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    display: flex;
+    flex: 0 0 20px;
+    height: 30px;
+    justify-content: center;
+    padding: 0;
+    width: 20px;
   }
 
   .doors-system-volume-toggle {
@@ -1164,7 +1213,8 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-system-tray > img,
-  .doors-system-volume-toggle img {
+  .doors-system-volume-toggle img,
+  .doors-accessibility-toggle img {
     height: 20px;
     image-rendering: pixelated;
     object-fit: contain;
