@@ -4080,6 +4080,195 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       grid-template-columns: 1fr;
     }
   }
+  && .site-bubble .bubble-post-content.has-image > p {
+    margin-bottom: 0;
+  }
+
+  && .site-bubble .bubble-post-content.has-image .bubble-post-image {
+    margin-top: clamp(8px, 0.8vw, 14px);
+  }
+
+  && .site-bubble .bubble-profile-cover {
+    background-position: center 42%;
+    min-height: clamp(350px, 19vw, 390px);
+  }
+
+  && .site-bubble .bubble-profile-panel-heading {
+    align-items: center;
+    background: #f37319;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    min-height: clamp(44px, 3vw, 58px);
+    padding: clamp(7px, 0.73vw, 14px) clamp(10px, 0.9vw, 18px);
+  }
+
+  && .site-bubble .bubble-profile-panel-heading > h2 {
+    background: transparent;
+    color: inherit;
+    flex: 1;
+    font-size: clamp(18px, 1.67vw, 32px);
+    font-weight: 400;
+    margin: 0;
+    min-height: 0;
+    padding: 0;
+  }
+
+  && .site-bubble .bubble-profile-panel-heading > .bubble-text-link {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font: inherit;
+    font-size: clamp(12px, 0.8vw, 15px);
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  && .site-bubble .bubble-profile-about-panel .bubble-side-panel-body {
+    min-height: 0;
+    padding: clamp(9px, 0.75vw, 14px) clamp(12px, 1vw, 18px);
+  }
+
+  && .site-bubble .bubble-profile-description {
+    color: #181818;
+    font-size: clamp(13px, 0.9vw, 17px);
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+
+  && .site-bubble .bubble-profile-detail-row {
+    align-items: center;
+    border-top: 1px solid #aaa;
+    color: #181818;
+    display: flex;
+    font-size: clamp(12px, 0.85vw, 16px);
+    gap: 10px;
+    justify-content: space-between;
+    line-height: 1.2;
+    margin: 0;
+    padding: clamp(7px, 0.58vw, 11px) 0;
+  }
+
+  && .site-bubble .bubble-profile-detail-row span {
+    color: #888;
+    flex: 0 0 auto;
+  }
+
+  && .site-bubble .bubble-profile-detail-row strong {
+    font-weight: 400;
+    text-align: right;
+  }
+
+  && .site-bubble .bubble-profile-friends-panel .bubble-side-panel-body {
+    display: grid;
+    gap: clamp(7px, 0.65vw, 12px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    min-height: 0;
+    padding: clamp(10px, 0.9vw, 17px);
+  }
+
+  && .site-bubble .bubble-profile-friends-panel .bubble-profile-friends > button {
+    aspect-ratio: 1;
+    background: #fff;
+    border: 2px solid #181818;
+    box-shadow: 2px 3px 0 #181818;
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-profile-friends-panel .bubble-profile-friends > button img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-profile-communities-panel .bubble-side-panel-body {
+    min-height: 0;
+    padding: clamp(6px, 0.5vw, 10px) clamp(12px, 1vw, 18px);
+  }
+
+  && .site-bubble .bubble-profile-community {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #aaa;
+    color: #181818;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    display: grid;
+    font: inherit;
+    gap: clamp(8px, 0.8vw, 14px);
+    grid-template-columns: clamp(38px, 3.4vw, 54px) minmax(0, 1fr);
+    padding: clamp(6px, 0.55vw, 10px) 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-profile-community:last-child {
+    border-bottom: 0;
+  }
+
+  && .site-bubble .bubble-profile-community img {
+    border: 2px solid #181818;
+    height: clamp(38px, 3.4vw, 54px);
+    object-fit: cover;
+    width: clamp(38px, 3.4vw, 54px);
+  }
+
+  && .site-bubble .bubble-profile-community span {
+    font-size: clamp(13px, 0.9vw, 17px);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  && .site-bubble .bubble-community-aside .bubble-side-panel-body {
+    min-height: 0;
+    padding: 8px clamp(12px, 1vw, 18px);
+  }
+
+  && .site-bubble .bubble-my-community {
+    gap: clamp(8px, 0.8vw, 14px);
+    grid-template-columns: clamp(44px, 3.5vw, 58px) minmax(0, 1fr);
+    padding: clamp(6px, 0.6vw, 10px) 0;
+  }
+
+  && .site-bubble .bubble-my-community > img {
+    border: 2px solid #181818;
+    display: block;
+    height: clamp(44px, 3.5vw, 58px);
+    object-fit: cover;
+    width: clamp(44px, 3.5vw, 58px);
+  }
+
+  && .site-bubble .bubble-my-community strong {
+    font-size: clamp(13px, 0.9vw, 17px);
+    line-height: 1.15;
+  }
+
+  && .site-bubble .bubble-my-community small {
+    font-size: clamp(11px, 0.72vw, 14px);
+  }
+
+  && .site-bubble .bubble-category-grid button {
+    font-size: clamp(12px, 0.75vw, 15px);
+    padding: clamp(6px, 0.45vw, 9px) 4px;
+  }
+
+  @container bubble-site (max-width: 720px) {
+    && .site-bubble .bubble-profile-cover {
+      min-height: 310px;
+    }
+
+    && .site-bubble .bubble-profile-friends-panel .bubble-side-panel-body {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+
 `;
 
 export default StyledInternalSites;
