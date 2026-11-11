@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Editor } from "tinymce";
@@ -9,9 +10,8 @@ import AppContainer, {
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import DirectionArrow from "components/system/DirectionArrow";
 import { useFileSystemActions } from "contexts/fileSystem";
-import { Buffer } from "buffer";
-import { recordDoorsKeyword } from "utils/doorsKeywords";
 import { useProcess, useProcessesActions } from "contexts/process";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const DOCUMENTS_PATH = "/Users/Public/Documents";
 const INTERNAL_DOCUMENTS_PATH = `${DOCUMENTS_PATH}/.Textos`;
