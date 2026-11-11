@@ -10,11 +10,11 @@ import {
   importStartMenu,
   SEARCH_MENU_EVENT,
 } from "components/system/Taskbar/functions";
-import { useProcessesActions } from "contexts/process";
 import StartButton from "components/system/Taskbar/StartButton";
 import StyledTaskbar from "components/system/Taskbar/StyledTaskbar";
 import TaskbarEntries from "components/system/Taskbar/TaskbarEntries";
 import useTaskbarContextMenu from "components/system/Taskbar/useTaskbarContextMenu";
+import { useProcessesActions } from "contexts/process";
 import { useShowAI } from "hooks/useWindowAI";
 import { CLOCK_CANVAS_BASE_WIDTH, FOCUSABLE_ELEMENT } from "utils/constants";
 import { haltEvent } from "utils/functions";
