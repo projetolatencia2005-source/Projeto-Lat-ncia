@@ -278,19 +278,18 @@ const Desktop: FC = ({ children }) => {
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
   const resetInProgressRef = useRef(false);
-  const [isResetPending, setIsResetPending] = useState(false);
   const resetAndReload = useCallback((): void => {
     if (resetInProgressRef.current) return;
     resetInProgressRef.current = true;
     void resetStorage(rootFs)
-      .catch(() => undefined)
+      .catch(console.error)
       .finally(() => window.location.reload());
   }, [rootFs]);
 
   useEffect(() => {
     try {
       if (window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true") {
-        setIsResetPending(true);
+        desktopRef.current?.style.setProperty("visibility", "hidden");
         resetAndReload();
       }
     } catch {
@@ -307,7 +306,7 @@ const Desktop: FC = ({ children }) => {
       } catch {
         // Reset as much of the session as browser storage permits.
       }
-      void cleanup.catch(() => undefined);
+      void cleanup.catch(console.error);
     };
     const onResetStarting = (): void => {
       resetInProgressRef.current = true;
@@ -469,7 +468,6 @@ const Desktop: FC = ({ children }) => {
     <StyledDesktop
       ref={desktopRef}
       aria-label="Área de trabalho do Doors"
-      style={isResetPending ? { visibility: "hidden" } : undefined}
     >
       <LockedFolderProvider>
         <FileManager

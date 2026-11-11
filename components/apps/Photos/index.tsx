@@ -165,7 +165,7 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
       : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
 
     if (isOverKey && !specialKeyCursorCleanupRef.current) {
-      specialKeyCursorCleanupRef.current = attachDoorsKeywordCursorEffect(target);
+      specialKeyCursorCleanupRef.current = attachDoorsKeywordCursorEffect(target) ?? null;
     } else if (!isOverKey) {
       specialKeyCursorCleanupRef.current?.();
       specialKeyCursorCleanupRef.current = null;

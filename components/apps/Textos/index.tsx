@@ -1095,7 +1095,6 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
     []
   );
   const editor = useTinyMCE(containerProps, editorOptions);
-  const { createPath, exists, mkdirRecursive, updateFolder } = useFileSystemActions();
   const { url: setProcessUrl } = useProcessesActions();
   const [showReturnPrompt, setShowReturnPrompt] = useState(false);
 
@@ -1662,7 +1661,7 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
       doc.defaultView?.removeEventListener("click", onClick, true);
       clearKeywordCursorEffect();
     };
-  }, [createPath, editor, exists, mkdirRecursive, updateFolder]);
+  }, [editor]);
 
   const returnToHome = (): void => {
     if (editor?.isDirty()) {
