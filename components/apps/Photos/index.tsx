@@ -15,13 +15,13 @@ import {
   IMAGE_FILE_EXTENSIONS,
   NATIVE_IMAGE_FORMATS,
 } from "utils/constants";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 import {
   bufferToUrl,
   getExtension,
   getMimeType,
   haltEvent,
 } from "utils/functions";
-import { recordDoorsKeyword } from "utils/doorsKeywords";
 import { loadImageDecoder } from "utils/loaders";
 
 const { minScale, step } = panZoomConfig;
@@ -34,6 +34,11 @@ const PAN_STEPS: Record<string, [number, number]> = {
   ArrowLeft: [1, 0],
   ArrowRight: [-1, 0],
   ArrowUp: [0, 1],
+};
+
+const resetPhotoPointer = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+  const target = event.currentTarget;
+  target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
 };
 
 const Photos: FC<ComponentProcessProps> = ({ id }) => {
@@ -140,7 +145,7 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
   const isSpecialKeyAt = (event: ReactMouseEvent<HTMLButtonElement>): boolean => {
     if (!isKeyImage) return false;
     const rect = event.currentTarget.getBoundingClientRect();
-    const { naturalWidth = 0, naturalHeight = 0 } = image ?? {};
+    const { naturalHeight = 0, naturalWidth = 0 } = image ?? {};
     if (!rect.width || !rect.height || !naturalWidth || !naturalHeight) return false;
     const imageScale = Math.min(rect.width / naturalWidth, rect.height / naturalHeight);
     const shownWidth = naturalWidth * imageScale;
@@ -149,17 +154,13 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
     const top = rect.top + (rect.height - shownHeight) / 2;
     const x = (event.clientX - left) / shownWidth;
     const y = (event.clientY - top) / shownHeight;
-    return x >= .25 && x <= .37 && y >= .20 && y <= .32;
+    return x >= .25 && x <= .37 && y >= .2 && y <= .32;
   };
   const onPhotoPointerMove = (event: ReactMouseEvent<HTMLButtonElement>): void => {
     const target = event.currentTarget;
     target.style.cursor = isSpecialKeyAt(event)
       ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
       : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
-  };
-  const onPhotoPointerLeave = (event: ReactMouseEvent<HTMLButtonElement>): void => {
-    const target = event.currentTarget;
-    target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
   };
   const collectSpecialKey = (event: ReactMouseEvent<HTMLButtonElement>): void => {
     if (!isSpecialKeyAt(event)) return;
@@ -232,7 +233,7 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
             aria-label="Coletar chave especial"
             className="doors-photo-special-key"
             onClick={collectSpecialKey}
-            onMouseLeave={onPhotoPointerLeave}
+            onMouseLeave={resetPhotoPointer}
             onMouseMove={onPhotoPointerMove}
             type="button"
           />
