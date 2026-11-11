@@ -1069,6 +1069,10 @@ const GlobalStyle = styled.createGlobalStyle`
     transition: opacity 120ms ease;
   }
 
+  .doors-system-tray > img:hover {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+  }
+
   .doors-system-tray > img:hover,
   .doors-system-tray > button:hover:not(:disabled) {
     opacity: 0.75 !important;
