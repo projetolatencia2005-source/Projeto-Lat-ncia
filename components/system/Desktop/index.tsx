@@ -276,7 +276,7 @@ const Desktop: FC = ({ children }) => {
     const onKeywordCollected = (event: Event): void => {
       const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
       if (!keyword) return;
-      const normalized = keyword.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR");
+      const normalized = keyword.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLocaleLowerCase("pt-BR");
       if (collectedKeywordsRef.current.has(normalized)) return;
       collectedKeywordsRef.current.add(normalized);
       setBonusSeconds((current) => current + 2 * 60);
