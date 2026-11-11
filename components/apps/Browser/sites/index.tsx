@@ -7,11 +7,11 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
+import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 import {
   isDoorsKeywordCollected,
   recordDoorsKeyword,
 } from "utils/doorsKeywords";
-import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 
 type InternalSitesProps = {
   url: string;
@@ -2233,10 +2233,8 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   ): void => {
     const element = event.currentTarget;
     if (informationCursorCleanupsRef.current.has(element)) return;
-    informationCursorCleanupsRef.current.set(
-      element,
-      attachDoorsKeywordCursorEffect(element)
-    );
+    const cleanup = attachDoorsKeywordCursorEffect(element);
+    if (cleanup) informationCursorCleanupsRef.current.set(element, cleanup);
   };
   const stopInformationCursorEffect = (
     event: ReactMouseEvent<HTMLButtonElement>
@@ -2272,7 +2270,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
             <button
               aria-label="Coletar a chave Informação"
               className="wiki-key-icon"
-              onClick={() => void collectInformation()}
+              onClick={collectInformation}
               type="button"
             >
               <svg aria-hidden="true" viewBox="0 0 32 32">
