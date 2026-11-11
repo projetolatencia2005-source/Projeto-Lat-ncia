@@ -278,16 +278,7 @@ const Desktop: FC = ({ children }) => {
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
   const resetInProgressRef = useRef(false);
-  const [isResetPending] = useState(() => {
-    try {
-      return (
-        typeof window !== "undefined" &&
-        window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true"
-      );
-    } catch {
-      return false;
-    }
-  });
+  const [isResetPending, setIsResetPending] = useState(false);
   const resetAndReload = useCallback((): void => {
     if (resetInProgressRef.current) return;
     resetInProgressRef.current = true;
@@ -297,8 +288,15 @@ const Desktop: FC = ({ children }) => {
   }, [rootFs]);
 
   useEffect(() => {
-    if (isResetPending) resetAndReload();
-  }, [isResetPending, resetAndReload]);
+    try {
+      if (window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true") {
+        setIsResetPending(true);
+        resetAndReload();
+      }
+    } catch {
+      // Keep the session usable when browser storage is unavailable.
+    }
+  }, [resetAndReload]);
 
   useEffect(() => {
     const onPageHide = (): void => {
@@ -314,10 +312,17 @@ const Desktop: FC = ({ children }) => {
     const onResetStarting = (): void => {
       resetInProgressRef.current = true;
     };
+    const onPageShow = (event: PageTransitionEvent): void => {
+      if (!event.persisted || resetInProgressRef.current) return;
+      resetInProgressRef.current = true;
+      window.location.reload();
+    };
     window.addEventListener("pagehide", onPageHide);
+    window.addEventListener("pageshow", onPageShow);
     window.addEventListener("doors-session-reset-starting", onResetStarting);
     return () => {
       window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("doors-session-reset-starting", onResetStarting);
     };
   }, [rootFs]);
