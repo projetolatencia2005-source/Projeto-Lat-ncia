@@ -1,6 +1,5 @@
-import { Buffer } from "buffer";
 import { basename, dirname, extname, join } from "path";
-import { type MouseEvent as ReactMouseEvent, type SyntheticEvent, useEffect, useState } from "react";
+import { type MouseEvent as ReactMouseEvent, type SyntheticEvent, useEffect, useRef, useState } from "react";
 import StyledPhotos from "components/apps/Photos/StyledPhotos";
 import usePanZoom, { panZoomConfig } from "components/apps/Photos/usePanZoom";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
@@ -15,6 +14,7 @@ import {
   IMAGE_FILE_EXTENSIONS,
   NATIVE_IMAGE_FORMATS,
 } from "utils/constants";
+import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 import { recordDoorsKeyword } from "utils/doorsKeywords";
 import {
   bufferToUrl,
@@ -47,10 +47,11 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
   const [src, setSrc] = useState<Record<string, string>>({});
   const [brokenImage, setBrokenImage] = useState(false);
   const { prependFileToTitle } = useTitle(id);
-  const { createPath, exists, mkdirRecursive, readdir, readFile, updateFolder } = useFileSystemActions();
+  const { readdir, readFile } = useFileSystemActions();
   const [container, setContainer] = useState<HTMLDivElement | null>();
   const [image, setImage] = useState<HTMLImageElement | null>();
   const [imageContainer, setImageContainer] = useState<HTMLElement | null>();
+  const specialKeyCursorCleanupRef = useRef<(() => void) | null>(null);
   const { updateWindowSize } = useWindowSize(id);
   const { pan, reset, scale, zoomIn, zoomOut, zoomToPoint } = usePanZoom(
     id,
@@ -158,29 +159,30 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
   };
   const onPhotoPointerMove = (event: ReactMouseEvent<HTMLButtonElement>): void => {
     const target = event.currentTarget;
-    target.style.cursor = isSpecialKeyAt(event)
+    const isOverKey = isSpecialKeyAt(event);
+    target.style.cursor = isOverKey
       ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
       : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+
+    if (isOverKey && !specialKeyCursorCleanupRef.current) {
+      specialKeyCursorCleanupRef.current = attachDoorsKeywordCursorEffect(target);
+    } else if (!isOverKey) {
+      specialKeyCursorCleanupRef.current?.();
+      specialKeyCursorCleanupRef.current = null;
+    }
+  };
+  const onPhotoPointerLeave = (
+    event: ReactMouseEvent<HTMLButtonElement>
+  ): void => {
+    resetPhotoPointer(event);
+    specialKeyCursorCleanupRef.current?.();
+    specialKeyCursorCleanupRef.current = null;
   };
   const collectSpecialKey = (event: ReactMouseEvent<HTMLButtonElement>): void => {
     if (!isSpecialKeyAt(event)) return;
     event.preventDefault();
     event.stopPropagation();
-    const directory = "/Users/Public/Pasta trancada";
-    const fileName = "Chave - Ta chave essa.txt";
-    const filePath = `${directory}/${fileName}`;
-    void (async () => {
-      try {
-        await mkdirRecursive(directory);
-        if (!(await exists(filePath))) {
-          await createPath(fileName, directory, Buffer.from("Ta chave essa"));
-        }
-        await updateFolder(directory, fileName);
-        recordDoorsKeyword("Ta chave essa");
-      } catch {
-        // Leave the image usable if the locked-folder filesystem is unavailable.
-      }
-    })();
+    recordDoorsKeyword("Saber oculto");
   };
   const onImageLoad = ({
     currentTarget,
@@ -197,7 +199,11 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
   useEffect(() => {
     componentWindow?.addEventListener("keydown", onKeyDown);
 
-    return () => componentWindow?.removeEventListener("keydown", onKeyDown);
+    return () => {
+      componentWindow?.removeEventListener("keydown", onKeyDown);
+      specialKeyCursorCleanupRef.current?.();
+      specialKeyCursorCleanupRef.current = null;
+    };
   }, [componentWindow, onKeyDown]);
 
   return (
@@ -233,7 +239,7 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
             aria-label="Coletar chave especial"
             className="doors-photo-special-key"
             onClick={collectSpecialKey}
-            onMouseLeave={resetPhotoPointer}
+            onMouseLeave={onPhotoPointerLeave}
             onMouseMove={onPhotoPointerMove}
             type="button"
           />
