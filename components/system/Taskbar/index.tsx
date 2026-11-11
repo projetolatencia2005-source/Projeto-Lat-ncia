@@ -2,7 +2,6 @@ import { AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import Clock from "components/system/Taskbar/Clock";
-import { useProcessesActions } from "contexts/process";
 import {
   importAIButton,
   importAIChat,
@@ -11,6 +10,7 @@ import {
   importStartMenu,
   SEARCH_MENU_EVENT,
 } from "components/system/Taskbar/functions";
+import { useProcessesActions } from "contexts/process";
 import StartButton from "components/system/Taskbar/StartButton";
 import StyledTaskbar from "components/system/Taskbar/StyledTaskbar";
 import TaskbarEntries from "components/system/Taskbar/TaskbarEntries";
@@ -223,7 +223,7 @@ const SystemTray: FC = () => {
         aria-haspopup="dialog"
         aria-label={`Volume: ${volume}%`}
         className="doors-system-volume-toggle"
-        onClick={() => setVolumeControlOpen((open) => !open)}
+        onClick={() => setVolumeControlOpen((currentlyOpen) => !currentlyOpen)}
         type="button"
       >
         <img
