@@ -504,6 +504,17 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       position: relative;
     }
 
+    .bubble-profile-card::after {
+      background: #31302c;
+      content: "";
+      height: 100%;
+      left: calc(clamp(12px, 0.9vw, 18px) + clamp(44px, 2.7vw, 52px));
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      width: 2px;
+    }
+
     .bubble-profile-avatar {
       border: 1px solid #31302c;
       height: clamp(42px, 2.7vw, 52px);
@@ -517,6 +528,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       font-size: clamp(17px, 1.25vw, 24px);
       line-height: 1.1;
       min-width: 0;
+      padding-left: clamp(5px, 0.4vw, 8px);
     }
 
     .bubble-profile-name small {
@@ -531,7 +543,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       font-size: clamp(11px, 0.73vw, 14px);
       grid-column: 2;
       justify-self: start;
-      padding: 0;
+      padding: 0 0 0 clamp(5px, 0.4vw, 8px);
       text-align: left;
       text-decoration: underline;
     }
