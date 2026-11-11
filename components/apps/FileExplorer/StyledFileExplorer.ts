@@ -149,7 +149,7 @@ const StyledFileExplorer = styled.div`
     grid-template-columns: repeat(6, 104px);
     grid-template-rows: none;
     overflow: auto;
-    padding: 8px 38px;
+    padding: 8px 38px 2px;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -273,8 +273,23 @@ const StyledFileExplorer = styled.div`
 
   .file-explorer-main.photos-folder ${StyledIconFileEntry} {
     align-items: flex-start;
+    background-color: transparent !important;
     display: flex;
     justify-content: center;
+
+    &:hover,
+    &.focus-within {
+      background-color: transparent !important;
+      outline: none !important;
+    }
+  }
+
+  .file-explorer-main.photos-folder
+    > ${StyledIconFileManager}
+    > ${StyledIconFileEntry}.focus-within
+    > button {
+    background: #e7eff9;
+    border-color: #91a3bb;
   }
 
   ${StyledIconFileManager} {
@@ -283,38 +298,6 @@ const StyledFileExplorer = styled.div`
 
     figcaption {
       padding: 1px 0 2px;
-    }
-  }
-
-  .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-    gap: 25px;
-    grid-auto-rows: 170px;
-    grid-template-columns: repeat(6, 104px);
-    grid-template-rows: none;
-    padding: 20px 38px;
-  }
-
-  @media (max-width: 1400px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 25px;
-      grid-template-columns: repeat(4, 104px);
-      padding-left: 24px;
-    }
-  }
-
-  @media (max-width: 1000px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 25px;
-      grid-template-columns: repeat(3, 104px);
-      padding-left: 16px;
-    }
-  }
-
-  @media (max-width: 700px) {
-    .file-explorer-main.photos-folder > ${StyledIconFileManager} {
-      gap: 25px;
-      grid-template-columns: repeat(2, 104px);
-      padding-left: 12px;
     }
   }
 
