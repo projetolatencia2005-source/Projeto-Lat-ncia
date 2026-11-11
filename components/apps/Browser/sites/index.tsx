@@ -209,19 +209,19 @@ const bubbleNavigation: { id: BubblePageKey; label: string; path: string; icon: 
 const bubbleFriends: BubbleFriend[] = [
   { id: "jorge", name: "Jorge Roberto", handle: "@jorgeberto", avatar: bubbleAvatar("jorge"), mutuals: 13, online: true },
   { id: "gustavo", name: "Gustavo Ribeiro", handle: "@guguribeiro", avatar: bubbleAvatar("gustavo"), mutuals: 8, online: true },
-  { id: "barbara", name: "Bárbara Guedes", handle: "@babigu", avatar: bubbleAvatar("barbara"), mutuals: 2, online: false }
-  { id: "malu", name: "Malu Souza", handle: "@maluzinhaaaa...", avatar: bubbleAvatar("malu"), mutuals: 9, online: false }
+  { id: "barbara", name: "Bárbara Guedes", handle: "@babigu", avatar: bubbleAvatar("barbara"), mutuals: 2, online: false },
+  { id: "malu", name: "Malu Souza", handle: "@maluzinhaaaa...", avatar: bubbleAvatar("malu"), mutuals: 9, online: false },
   { id: "gabriela", name: "Gabriela Rosa", handle: "@rosagabi", avatar: bubbleAvatar("gabriela"), mutuals: 16, online: true },
-  { id: "rui", name: "Rui Mendonça", handle: "@rui.mendonca", avatar: bubbleAvatar("rui"), mutuals: 12, online: false }
+  { id: "rui", name: "Rui Mendonça", handle: "@rui.mendonca", avatar: bubbleAvatar("rui"), mutuals: 12, online: false },
   { id: "paulo", name: "Paulo Barbosa", handle: "@paulinho89", avatar: bubbleAvatar("paulo"), mutuals: 6, online: false },
-  { id: "larissa", name: "Larissa Oda", handle: "@odalorissa", avatar: bubbleAvatar("larissa"), mutuals: 11, online: true }
+  { id: "larissa", name: "Larissa Oda", handle: "@odalorissa", avatar: bubbleAvatar("larissa"), mutuals: 11, online: true },
 ];
 
 const bubbleCommunityList = [
-  { id: "acordar", title: "Eu Odeio Acordar Cedo", category: "Relacionamentos & amizades", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", members: "2.842", image: "/System/Doors/sites/bubble/community-garfield.jpg" }
+  { id: "acordar", title: "Eu Odeio Acordar Cedo", category: "Relacionamentos & amizades", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", members: "2.842", image: "/System/Doors/sites/bubble/community-garfield.jpg" },
   { id: "deus-me-disse", title: "Deus me disse: desce e arrasa!", category: "Cotidiano", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", members: "684", image: undefined },
-  { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988", image: "/System/Doors/sites/bubble/community-cat.jpg" }
-  { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842", image: "/System/Doors/sites/bubble/community-chocolate.jpg" }
+  { id: "te-incomodo", title: "Te incomodo? Que pena!", category: "Vida cotidiana", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidas.", members: "988", image: "/System/Doors/sites/bubble/community-cat.jpg" },
+  { id: "chocolate", title: "Eu amo chocolate!", category: "Culinária, Bebidas e Vinhos", description: "Comunidade criada para os chocolotras de montão!", members: "2.842", image: "/System/Doors/sites/bubble/community-chocolate.jpg" },
   { id: "internet-lenta", title: "Internet lenta, papo bom", category: "Tecnologia", description: "A conexão cai, mas a conversa continua.", members: "1.344", image: undefined },
   { id: "clube-noturnos", title: "Clube dos noturnos", category: "Amizades", description: "Para quem só começa a funcionar depois da meia-noite.", members: "816", image: undefined },
 ];
