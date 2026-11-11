@@ -323,6 +323,7 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
             onCancel={() => setShowShutdownPrompt(false)}
             onConfirm={() => {
               setHaltSession(true);
+              window.dispatchEvent(new Event("doors-session-reset-starting"));
               resetStorageAndReload(rootFs);
             }}
           />,
