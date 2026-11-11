@@ -1,7 +1,7 @@
+import { Buffer } from "buffer";
 import { basename, dirname, extname, join } from "path";
 import { type MouseEvent as ReactMouseEvent, type SyntheticEvent, useEffect, useState } from "react";
 import StyledPhotos from "components/apps/Photos/StyledPhotos";
-import { Buffer } from "buffer";
 import usePanZoom, { panZoomConfig } from "components/apps/Photos/usePanZoom";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
 import useFileDrop from "components/system/Files/FileManager/useFileDrop";
@@ -21,8 +21,8 @@ import {
   getMimeType,
   haltEvent,
 } from "utils/functions";
-import { loadImageDecoder } from "utils/loaders";
 import { recordDoorsKeyword } from "utils/doorsKeywords";
+import { loadImageDecoder } from "utils/loaders";
 
 const { minScale, step } = panZoomConfig;
 
@@ -137,27 +137,31 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
     }
   };
   const isKeyImage = basename(url).toLocaleLowerCase("pt-BR") === "ta chave essa.jpeg";
-  const isSpecialKeyAt = (event: ReactMouseEvent<HTMLImageElement>): boolean => {
+  const isSpecialKeyAt = (event: ReactMouseEvent<HTMLButtonElement>): boolean => {
     if (!isKeyImage) return false;
     const rect = event.currentTarget.getBoundingClientRect();
-    const naturalWidth = event.currentTarget.naturalWidth;
-    const naturalHeight = event.currentTarget.naturalHeight;
+    const { naturalWidth = 0, naturalHeight = 0 } = image ?? {};
     if (!rect.width || !rect.height || !naturalWidth || !naturalHeight) return false;
-    const scale = Math.min(rect.width / naturalWidth, rect.height / naturalHeight);
-    const shownWidth = naturalWidth * scale;
-    const shownHeight = naturalHeight * scale;
+    const imageScale = Math.min(rect.width / naturalWidth, rect.height / naturalHeight);
+    const shownWidth = naturalWidth * imageScale;
+    const shownHeight = naturalHeight * imageScale;
     const left = rect.left + (rect.width - shownWidth) / 2;
     const top = rect.top + (rect.height - shownHeight) / 2;
     const x = (event.clientX - left) / shownWidth;
     const y = (event.clientY - top) / shownHeight;
-    return x >= 0.25 && x <= 0.37 && y >= 0.20 && y <= 0.32;
+    return x >= .25 && x <= .37 && y >= .20 && y <= .32;
   };
-  const onPhotoPointerMove = (event: ReactMouseEvent<HTMLImageElement>): void => {
-    event.currentTarget.style.cursor = isSpecialKeyAt(event)
+  const onPhotoPointerMove = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    const target = event.currentTarget;
+    target.style.cursor = isSpecialKeyAt(event)
       ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
       : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
   };
-  const collectSpecialKey = (event: ReactMouseEvent<HTMLImageElement>): void => {
+  const onPhotoPointerLeave = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    const target = event.currentTarget;
+    target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+  };
+  const collectSpecialKey = (event: ReactMouseEvent<HTMLButtonElement>): void => {
     if (!isSpecialKeyAt(event)) return;
     event.preventDefault();
     event.stopPropagation();
@@ -220,12 +224,19 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
           loading="eager"
           onError={() => setBrokenImage(true)}
           onLoad={onImageLoad}
-          onMouseLeave={(event) => { event.currentTarget.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default'; }}
-          onMouseMove={onPhotoPointerMove}
-          onClick={collectSpecialKey}
           src={src[url]}
           {...HIGH_PRIORITY_ELEMENT}
         />
+        {isKeyImage && (
+          <button
+            aria-label="Coletar chave especial"
+            className="doors-photo-special-key"
+            onClick={collectSpecialKey}
+            onMouseLeave={onPhotoPointerLeave}
+            onMouseMove={onPhotoPointerMove}
+            type="button"
+          />
+        )}
         {brokenImage && (
           <div>
             {basename(url)}
