@@ -2,13 +2,13 @@ import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
 
 export const attachDoorsKeywordCursorEffect = (
   target: HTMLElement
-): (() => void) => {
+): (() => void) | undefined => {
   const sourceDocument = target.ownerDocument;
   const sourceWindow = sourceDocument.defaultView;
   const prefersReducedMotion =
     sourceWindow?.matchMedia("(prefers-reduced-motion: reduce)").matches ?? false;
 
-  if (!sourceWindow || prefersReducedMotion) return () => {};
+  if (!sourceWindow || prefersReducedMotion) return undefined;
 
   let overlayDocument: Document = sourceDocument;
   let overlayWindow: Window = sourceWindow;
