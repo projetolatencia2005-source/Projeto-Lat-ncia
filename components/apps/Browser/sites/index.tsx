@@ -1,5 +1,4 @@
-import { Buffer } from "buffer";
-import { type ReactNode, useMemo, useRef, useState } from "react";
+import { type MouseEvent as ReactMouseEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   getInternalSite,
@@ -8,11 +7,11 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
-import { useFileSystemActions } from "contexts/fileSystem";
 import {
   isDoorsKeywordCollected,
   recordDoorsKeyword,
 } from "utils/doorsKeywords";
+import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 
 type InternalSitesProps = {
   url: string;
@@ -2169,25 +2168,7 @@ const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
   ],
 };
 
-const BUBBLE_KEYWORD_FOLDER = "/Users/Public/Pasta trancada";
 
-const saveBubbleKeyword = async (
-  keyword: string,
-  actions: ReturnType<typeof useFileSystemActions>
-): Promise<boolean> => {
-  const fileName = `Chave - ${keyword}.txt`;
-  const filePath = `${BUBBLE_KEYWORD_FOLDER}/${fileName}`;
-  await actions.mkdirRecursive(BUBBLE_KEYWORD_FOLDER);
-  if (!(await actions.exists(filePath))) {
-    await actions.createPath(
-      fileName,
-      BUBBLE_KEYWORD_FOLDER,
-      Buffer.from(keyword)
-    );
-  }
-  await actions.updateFolder(BUBBLE_KEYWORD_FOLDER, fileName);
-  return recordDoorsKeyword(keyword);
-};
 
 const renderWikiComment = (
   comment: WikiDiscussionComment,
@@ -2212,7 +2193,6 @@ const renderWikiComment = (
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const fileActions = useFileSystemActions();
   const pageUrl = new URL(url);
   const query = pageUrl.searchParams.get("q") || "";
   const requestedPath = pageUrl.pathname.replace(/\/+$/, "") || "/";
@@ -2238,13 +2218,36 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
   const [informationCollected, setInformationCollected] = useState(() =>
     isDoorsKeywordCollected("Informação")
   );
-  const collectInformation = async (): Promise<void> => {
-    try {
-      await saveBubbleKeyword("Informação", fileActions);
-      setInformationCollected(true);
-    } catch {
-      // Keep the keyword available if the locked folder could not be updated.
-    }
+  const informationCursorCleanupsRef = useRef(
+    new Map<HTMLElement, () => void>()
+  );
+  useEffect(
+    () => () => {
+      informationCursorCleanupsRef.current.forEach((cleanup) => cleanup());
+      informationCursorCleanupsRef.current.clear();
+    },
+    []
+  );
+  const startInformationCursorEffect = (
+    event: ReactMouseEvent<HTMLButtonElement>
+  ): void => {
+    const element = event.currentTarget;
+    if (informationCursorCleanupsRef.current.has(element)) return;
+    informationCursorCleanupsRef.current.set(
+      element,
+      attachDoorsKeywordCursorEffect(element)
+    );
+  };
+  const stopInformationCursorEffect = (
+    event: ReactMouseEvent<HTMLButtonElement>
+  ): void => {
+    const element = event.currentTarget;
+    informationCursorCleanupsRef.current.get(element)?.();
+    informationCursorCleanupsRef.current.delete(element);
+  };
+  const collectInformation = (): void => {
+    recordDoorsKeyword("Informação");
+    setInformationCollected(true);
   };
   const renderArticleBody = (): ReactNode => {
     if (!isLanHouseArticle) return article.body;
@@ -2255,17 +2258,16 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
       informationOccurrence += 1;
       return (
         <span key={`information-${occurrence}`} className="wiki-keyword-group">
-          {informationCollected ? (
-            part
-          ) : (
-            <button
-              className="wiki-keyword"
-              onClick={() => void collectInformation()}
-              type="button"
-            >
-              {part}
-            </button>
-          )}
+          <button
+            aria-pressed={informationCollected}
+            className="wiki-keyword"
+            onClick={collectInformation}
+            onMouseEnter={startInformationCursorEffect}
+            onMouseLeave={stopInformationCursorEffect}
+            type="button"
+          >
+            {part}
+          </button>
           {!informationCollected && (
             <button
               aria-label="Coletar a chave Informação"
