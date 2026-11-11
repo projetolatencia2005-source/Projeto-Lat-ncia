@@ -228,6 +228,12 @@ const bubbleCommunityList = [
   { id: "bandas-garagem", title: "Bandas de garagem", category: "Música", description: "Música alta, ensaio apertado e muita vontade de tocar.", members: "521", image: "/System/Doors/sites/bubble/community-dog.jpg" },
 ];
 
+const bubbleProfileCommunities = [
+  { id: "tony-ramos", title: "Eu colho Flores e TONY RAMOS!!!", image: bubbleAvatar("paulo"), members: "1.344" },
+  { id: "gina-politass", title: "Tinha medo da Gina Politass", image: bubbleAvatar("barbara"), members: "816" },
+  { id: "sorvete-feijao", title: "Queria sorvete, mas era Feijão", image: "/System/Doors/sites/bubble/community-chocolate.jpg", members: "4.603" },
+];
+
 const bubbleRequestsInitial: BubbleFriend[] = [
   { id: "cris", name: "Cris Francisco", handle: "@crisf", avatar: bubbleAvatar("ana"), mutuals: 14, online: false },
   { id: "jamal", name: "Jamal Neves", handle: "@jamaln", avatar: bubbleAvatar("gustavo"), mutuals: 4, online: true },
@@ -486,9 +492,23 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
       <div className="bubble-profile-columns">
         <main className="bubble-profile-timeline">{renderComposer(true)}<div className="bubble-post-list">{profilePosts.map(renderPost)}</div></main>
         <aside className="bubble-profile-details">
-          <section className="bubble-side-panel"><h2>Sobre mim</h2><div className="bubble-side-panel-body"><p><strong>mora em</strong><br />São Paulo, SP</p><p><strong>aniversário</strong><br />12 de maio</p><p><strong>no Bubble desde</strong><br />março de 2007</p></div></section>
-          <section className="bubble-side-panel"><h2>Amigos</h2><div className="bubble-side-panel-body bubble-profile-friends">{bubbleFriends.slice(0, 6).map((friend) => <button key={friend.id} onClick={() => navigate("amigos")} type="button"><img alt="" src={friend.avatar} /><span>{friend.name}</span></button>)}<button className="bubble-text-link" onClick={() => navigate("amigos")} type="button">ver todos →</button></div></section>
-          <section className="bubble-side-panel"><h2>Comunidades</h2><div className="bubble-side-panel-body">{bubbleCommunityList.slice(0, 3).map((community) => <button className="bubble-community" key={community.id} onClick={() => navigate("comunidades")} type="button">{community.title}</button>)}<button className="bubble-text-link" onClick={() => navigate("comunidades")} type="button">ver todas →</button></div></section>
+          <section className="bubble-side-panel bubble-profile-about-panel">
+            <div className="bubble-profile-panel-heading"><h2>Sobre mim</h2><button className="bubble-text-link" onClick={() => setEditingProfile(true)} type="button">editar</button></div>
+            <div className="bubble-side-panel-body">
+              <p className="bubble-profile-description">Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno</p>
+              <p className="bubble-profile-detail-row"><span>mora em</span><strong>São Paulo, SP</strong></p>
+              <p className="bubble-profile-detail-row"><span>aniversário</span><strong>12 de maio</strong></p>
+              <p className="bubble-profile-detail-row"><span>no Bubble desde</span><strong>março de 2001</strong></p>
+            </div>
+          </section>
+          <section className="bubble-side-panel bubble-profile-friends-panel">
+            <div className="bubble-profile-panel-heading"><h2>Amigos</h2><button className="bubble-text-link" onClick={() => navigate("amigos")} type="button">ver todos →</button></div>
+            <div className="bubble-side-panel-body bubble-profile-friends">{bubbleFriends.slice(0, 6).map((friend) => <button aria-label={"Ver " + friend.name} key={friend.id} onClick={() => navigate("amigos")} type="button"><img alt={friend.name} src={friend.avatar} /></button>)}</div>
+          </section>
+          <section className="bubble-side-panel bubble-profile-communities-panel">
+            <div className="bubble-profile-panel-heading"><h2>Comunidades</h2><button className="bubble-text-link" onClick={() => navigate("comunidades")} type="button">ver todas →</button></div>
+            <div className="bubble-side-panel-body bubble-profile-communities">{bubbleProfileCommunities.map((community) => <button className="bubble-profile-community" key={community.id} onClick={() => navigate("comunidades")} type="button"><img alt="" src={community.image} /><span>{community.title}</span></button>)}</div>
+          </section>
         </aside>
       </div>
     </div>
@@ -565,8 +585,8 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
           </div>
         </main>
         <aside className="bubble-community-aside">
-          <section className="bubble-side-panel"><h2>Minhas comunidades</h2><div className="bubble-side-panel-body">{bubbleCommunityList.filter((community) => joinedCommunities.includes(community.id)).map((community) => <div className="bubble-my-community" key={community.id}><span aria-hidden="true">✦</span><div><strong>{community.title}</strong><small>{community.members} pessoas</small></div></div>)}{createdCommunities.map((title) => <div className="bubble-my-community" key={title}><span>✦</span><div><strong>{title}</strong><small>1 pessoa</small></div></div>)}</div></section>
-          <section className="bubble-side-panel"><h2>Categorias</h2><div className="bubble-side-panel-body bubble-category-panel-body"><div className="bubble-category-grid">{["Música", "Arte", "Filmes", "Culinária", "Jogos", "Tecnologia", "Amizades", "Cotidiano"].map((category, index) => <button key={category} onClick={() => setCommunityCategory(category === "Música" || category === "Arte" || category === "Filmes" || category === "Jogos" ? "Todas" : category === "Culinária" ? "Culinária, Bebidas e Vinhos" : category)} type="button">{category}<span>{[488, 308, 114, 692, 308, 18, 93, 216][index]}</span></button>)}</div></div></section>
+          <section className="bubble-side-panel"><h2>Minhas comunidades</h2><div className="bubble-side-panel-body">{bubbleProfileCommunities.map((community) => <div className="bubble-my-community" key={community.id}><img alt="" src={community.image} /><div><strong>{community.title}</strong><small>{community.members} pessoas</small></div></div>)}{createdCommunities.map((title) => <div className="bubble-my-community" key={title}><img alt="" src="/System/Doors/sites/bubble/community-dog.jpg" /><div><strong>{title}</strong><small>1 pessoa</small></div></div>)}</div></section>
+          <section className="bubble-side-panel"><h2>Categorias</h2><div className="bubble-side-panel-body bubble-category-panel-body"><div className="bubble-category-grid">{["Música", "Arte", "Filmes", "Culinária", "Jogos", "Tecnologia", "Amizades", "Cotidiano"].map((category, index) => <button key={category} onClick={() => setCommunityCategory(category === "Música" || category === "Arte" || category === "Filmes" || category === "Jogos" ? "Todas" : category === "Culinária" ? "Culinária, Bebidas e Vinhos" : category)} type="button">{category}<span>{[488, 308, 14, 692, 308, 18, 93, 216][index]}</span></button>)}</div></div></section>
           <section className="bubble-create-invite"><h2>Não achou sua turma?</h2><p>Crie um espaço novo e convide gente que entende do assunto.</p><button className="bubble-light-button" onClick={() => setCreatingCommunity(true)} type="button">Começar agora</button></section>
         </aside>
       </div>
