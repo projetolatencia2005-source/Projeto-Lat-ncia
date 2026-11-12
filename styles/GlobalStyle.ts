@@ -1286,6 +1286,10 @@ const GlobalStyle = styled.createGlobalStyle`
       white-space: nowrap;
       width: max-content;
     }
+
+    .doors-splash-titlebar .doors-boot-controls {
+      transform: translateY(-3px);
+    }
   }
 `;
 
