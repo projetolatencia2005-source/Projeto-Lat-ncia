@@ -702,9 +702,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .doors-tutorial-arrow {
-      justify-self: center;
-      line-height: 0.7;
-      transform: rotate(90deg);
+      display: none;
     }
   }
 
@@ -787,19 +785,20 @@ const GlobalStyle = styled.createGlobalStyle`
 
     .doors-tutorial-content {
       gap: 18px;
+      justify-content: space-between;
       padding: 24px clamp(12px, 4vw, 24px) 16px;
     }
 
     .doors-tutorial-steps {
       flex: 0 0 auto;
-      gap: 14px;
+      gap: clamp(24px, 4.5vh, 36px);
       grid-template-columns: 1fr;
       margin-top: 0;
       transform: none;
     }
 
     .doors-tutorial-step h2 {
-      align-items: flex-start;
+      align-items: center;
       font-size: 17px;
       line-height: 1.2;
       margin-bottom: 10px;
