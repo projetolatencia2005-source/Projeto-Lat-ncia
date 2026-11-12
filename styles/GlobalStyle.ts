@@ -1288,7 +1288,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .doors-splash-titlebar .doors-boot-controls {
-      transform: translateY(-3px);
+      transform: translate(4px, -3px);
     }
   }
 `;
