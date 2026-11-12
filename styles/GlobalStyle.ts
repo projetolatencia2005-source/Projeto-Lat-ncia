@@ -786,17 +786,24 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .doors-tutorial-content {
+      gap: 18px;
       padding: 24px clamp(12px, 4vw, 24px) 16px;
     }
 
     .doors-tutorial-steps {
+      flex: 0 0 auto;
       gap: 14px;
       grid-template-columns: 1fr;
+      margin-top: 0;
+      transform: none;
     }
 
     .doors-tutorial-step h2 {
+      align-items: flex-start;
       font-size: 17px;
+      line-height: 1.2;
       margin-bottom: 10px;
+      white-space: normal;
     }
 
     .doors-tutorial-number {
@@ -805,7 +812,9 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .doors-tutorial-step p {
-      font-size: 20px;
+      font-size: clamp(16px, 3.8vw, 18px);
+      line-height: 1.35;
+      overflow-wrap: anywhere;
       padding-left: 40px;
     }
 
@@ -816,26 +825,40 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .doors-tutorial-about {
+      align-items: start;
+      flex: 0 0 auto;
       gap: 12px;
-      grid-template-columns: 48px minmax(0, 1fr);
-      padding: 10px;
+      grid-template-columns: 44px minmax(0, 1fr);
+      min-height: auto;
+      padding: 12px;
+    }
+
+    .doors-tutorial-about > div {
+      min-width: 0;
     }
 
     .doors-tutorial-about-icon {
-      font-size: 54px;
+      align-self: start;
+      font-size: 48px;
+      line-height: 1;
     }
 
     .doors-tutorial-about h2 {
       font-size: 15px;
+      line-height: 1.2;
       margin-bottom: 6px;
     }
 
     .doors-tutorial-about p {
       font-size: 13px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
     }
 
     .doors-tutorial-start {
-      margin-top: 18px;
+      flex: 0 0 auto;
+      margin-top: 0;
+      transform: none;
     }
   }
 
