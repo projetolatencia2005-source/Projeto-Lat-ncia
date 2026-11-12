@@ -858,7 +858,7 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-tutorial-start {
       flex: 0 0 auto;
       margin-top: 0;
-      transform: none;
+      transform: translateY(-10px);
     }
   }
 
