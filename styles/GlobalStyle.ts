@@ -1271,6 +1271,22 @@ const GlobalStyle = styled.createGlobalStyle`
     image-rendering: pixelated;
     width: 30px;
   }
+
+  @media (width <= 700px) {
+    .doors-boot-controls img {
+      height: clamp(16px, 4.8vw, 24px);
+      width: clamp(16px, 4.8vw, 24px);
+    }
+
+    .doors-splash-start {
+      font-size: clamp(12px, 3.1vw, 16px);
+      line-height: 1;
+      max-width: calc(100% - 12px);
+      padding: 0 10px;
+      white-space: nowrap;
+      width: max-content;
+    }
+  }
 `;
 
 export default GlobalStyle;
