@@ -127,6 +127,25 @@ const GlobalStyle = styled.createGlobalStyle`
     user-select: text;
   }
 
+  .doors-keyword-gif-overlay {
+    align-items: center;
+    background: #000;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    overflow: hidden;
+    pointer-events: none;
+    position: absolute;
+    z-index: 100002;
+  }
+
+  .doors-keyword-gif-overlay img {
+    display: block;
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+  }
+
   .doors-boot-screen {
     background: #f7ecd6;
     color: #31302c;

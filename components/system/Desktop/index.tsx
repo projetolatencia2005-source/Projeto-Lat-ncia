@@ -13,6 +13,7 @@ import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
 
 const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
+const KEYWORD_GIF_DURATION_MS = 8000;
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",
   "/System/Doors/loading/02.svg",
@@ -274,6 +275,10 @@ const Desktop: FC = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [startedAt, setStartedAt] = useState<null | number>(null);
   const [bonusSeconds, setBonusSeconds] = useState(0);
+  const [keywordGifPlaying, setKeywordGifPlaying] = useState(false);
+  const [keywordGifSequence, setKeywordGifSequence] = useState(0);
+  const keywordGifSequenceRef = useRef(0);
+  const keywordGifTimeoutRef = useRef<null | number>(null);
   const collectedKeywordsRef = useRef(new Set<string>());
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const rootFs = useRootFs();
@@ -330,13 +335,32 @@ const Desktop: FC = ({ children }) => {
     const onKeywordCollected = (event: Event): void => {
       const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
       if (!keyword) return;
-      const normalized = keyword.normalize("NFD").replace(/[\u0300-\u036F]/g, "").toLocaleLowerCase("pt-BR");
+      const normalized = keyword
+        .normalize("NFD")
+        .replace(/[\u0300-\u036F]/g, "")
+        .toLocaleLowerCase("pt-BR");
       if (collectedKeywordsRef.current.has(normalized)) return;
+
       collectedKeywordsRef.current.add(normalized);
       setBonusSeconds((current) => current + 2 * 60);
+      const nextSequence = keywordGifSequenceRef.current + 1;
+      keywordGifSequenceRef.current = nextSequence;
+      setKeywordGifSequence(nextSequence);
+      setKeywordGifPlaying(true);
+
+      if (keywordGifTimeoutRef.current !== null) {
+        window.clearTimeout(keywordGifTimeoutRef.current);
+        keywordGifTimeoutRef.current = null;
+      }
     };
+
     window.addEventListener("doors-keyword-collected", onKeywordCollected);
-    return () => window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+    return () => {
+      window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+      if (keywordGifTimeoutRef.current !== null) {
+        window.clearTimeout(keywordGifTimeoutRef.current);
+      }
+    };
   }, []);
   useWallpaper(desktopRef);
 
@@ -480,6 +504,34 @@ const Desktop: FC = ({ children }) => {
         />
         {children}
       </LockedFolderProvider>
+      {keywordGifPlaying && (
+        <div
+          aria-hidden="true"
+          className="doors-keyword-gif-overlay"
+          key={keywordGifSequence}
+        >
+          <img
+            alt=""
+            draggable={false}
+            onError={() => {
+              if (keywordGifSequenceRef.current === keywordGifSequence) {
+                setKeywordGifPlaying(false);
+              }
+            }}
+            onLoad={() => {
+              if (keywordGifSequenceRef.current !== keywordGifSequence) return;
+              if (keywordGifTimeoutRef.current !== null) {
+                window.clearTimeout(keywordGifTimeoutRef.current);
+              }
+              keywordGifTimeoutRef.current = window.setTimeout(() => {
+                setKeywordGifPlaying(false);
+                keywordGifTimeoutRef.current = null;
+              }, KEYWORD_GIF_DURATION_MS);
+            }}
+            src="/System/Doors/Chave.gif"
+          />
+        </div>
+      )}
       {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} startedAt={startedAt} />}
       {startedAt === null && (
         <>
