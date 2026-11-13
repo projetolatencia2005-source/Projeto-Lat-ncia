@@ -129,6 +129,8 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-keyword-gif-overlay {
     align-items: center;
+    animation: doors-keyword-gif-focus 8000ms ease-in-out both;
+    background: rgb(0 0 0 / 72%);
     display: flex;
     inset: 0;
     justify-content: center;
@@ -136,6 +138,17 @@ const GlobalStyle = styled.createGlobalStyle`
     pointer-events: none;
     position: absolute;
     z-index: 100002;
+  }
+
+  @keyframes doors-keyword-gif-focus {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    6.25%,
+    93.75% {
+      opacity: 1;
+    }
   }
 
   .doors-keyword-gif-overlay img {
