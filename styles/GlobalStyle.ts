@@ -129,7 +129,6 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-keyword-gif-overlay {
     align-items: center;
-    background: #000;
     display: flex;
     inset: 0;
     justify-content: center;
