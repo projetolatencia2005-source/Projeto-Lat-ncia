@@ -4288,7 +4288,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 4px 5px 0 #31302c;
       display: grid;
-      grid-template-columns: minmax(320px, 425fr) minmax(0, 1fr);
+      grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
       height: 983px;
       margin: 0 2.08vw;
       overflow: hidden;
@@ -4948,7 +4948,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 4px 5px 0 #31302c;
       display: grid;
-      grid-template-columns: minmax(320px, 425fr) minmax(0, 1fr);
+      grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
       height: 983px;
       margin: 0 2.08vw;
       overflow: hidden;
@@ -5836,7 +5836,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-bubble .bubble-chat-layout {
-    grid-template-columns: minmax(260px, 22.2vw) minmax(0, 1fr);
+    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
     height: 655px;
   }
 
@@ -6025,7 +6025,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     box-shadow: 5px 6px 0 #31302c;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: minmax(280px, 22.2vw) minmax(0, 1fr);
+    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
     height: min(655px, calc(100vh - 300px));
     margin: 0 2.08vw;
     min-height: 520px;
