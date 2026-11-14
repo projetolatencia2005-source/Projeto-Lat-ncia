@@ -208,7 +208,7 @@ type BubbleFriend = {
 type BubbleConversation = {
   avatar: string;
   id: string;
-  messages: { mine: boolean; text: string; time: string }[];
+  messages: { day?: string; mine: boolean; text: string; time: string }[];
   name: string;
   online: boolean;
   preview: string;
@@ -464,6 +464,7 @@ const bubbleInitialConversations: BubbleConversation[] = [
     messages: [
       { mine: false, text: "boa noiteee!!", time: "19:08" },
       {
+        day: "Ontem",
         mine: false,
         text: "você ainda vai naquele encontro de sábado?",
         time: "14:08",
@@ -478,7 +479,7 @@ const bubbleInitialConversations: BubbleConversation[] = [
         text: "pode crer, posso levar aquela câmera pequena também!",
         time: "14:38",
       },
-      { mine: true, text: "Feliz aniversário!!!", time: "11:39" },
+      { day: "Hoje", mine: true, text: "Feliz aniversário!!!", time: "11:39" },
     ],
     name: "Malu Souza",
     online: true,
@@ -1688,11 +1689,14 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               </header>
               <div aria-live="polite" className="bubble-message-list">
                 {activeChat.messages.map((message, index) => (
-                  <article className={"bubble-message-row " + (message.mine ? "is-sent" : "is-received")} key={activeChat.id + "-" + index}>
-                    {!message.mine && <img alt="" src={activeChat.avatar} />}
-                    <p><span>{message.text}</span><time>{message.time}</time></p>
-                    {message.mine && <span className="bubble-message-spacer" />}
-                  </article>
+                  <div className="bubble-message-fragment" key={activeChat.id + "-" + index}>
+                    {message.day && <div className="bubble-chat-day">{message.day}</div>}
+                    <article className={"bubble-message-row " + (message.mine ? "is-sent" : "is-received")}>
+                      {!message.mine && <img alt="" src={activeChat.avatar} />}
+                      <p><span>{message.text}</span><time>{message.time}</time></p>
+                      {message.mine && <span className="bubble-message-spacer" />}
+                    </article>
+                  </div>
                 ))}
               </div>
               <form className="bubble-message-composer" onSubmit={sendMessage}>
