@@ -398,17 +398,16 @@ const Desktop: FC = ({ children }) => {
   useEffect(() => {
     if (keywordOverlayPhase !== "notice") return;
 
+    let currentCharacters = 0;
     const typingInterval = window.setInterval(() => {
-      setTypedNoticeCharacters((current) => {
-        const next = Math.min(
-          current + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
-          KEYWORD_NOTICE_TOTAL_CHARACTERS,
-        );
-        if (next >= KEYWORD_NOTICE_TOTAL_CHARACTERS) {
-          window.clearInterval(typingInterval);
-        }
-        return next;
-      });
+      currentCharacters = Math.min(
+        currentCharacters + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
+        KEYWORD_NOTICE_TOTAL_CHARACTERS,
+      );
+      setTypedNoticeCharacters(currentCharacters);
+      if (currentCharacters >= KEYWORD_NOTICE_TOTAL_CHARACTERS) {
+        window.clearInterval(typingInterval);
+      }
     }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
 
     return () => window.clearInterval(typingInterval);
@@ -595,6 +594,7 @@ const Desktop: FC = ({ children }) => {
             />
           ) : (
             <section
+              aria-describedby="doors-keyword-notice-description"
               aria-labelledby="doors-keyword-notice-title"
               aria-modal="true"
               className="doors-keyword-notice"
@@ -606,7 +606,10 @@ const Desktop: FC = ({ children }) => {
               >
                 Informação sobre a palavra-chave
               </h2>
-              <p className="doors-keyword-notice-sr-only">
+              <p
+                className="doors-keyword-notice-sr-only"
+                id="doors-keyword-notice-description"
+              >
                 {KEYWORD_NOTICE_ACCESSIBLE_TEXT}
               </p>
               <div aria-hidden="true" className="doors-keyword-notice-copy">
