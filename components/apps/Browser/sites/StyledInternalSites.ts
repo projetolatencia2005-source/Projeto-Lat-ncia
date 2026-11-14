@@ -6710,6 +6710,14 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
+  /* Keep the inbox search pane compact like the conversation reference. */
+  .site-bubble .bubble-chat-layout .bubble-inbox > .bubble-inbox-search {
+    box-sizing: border-box;
+    flex: 0 0 150px;
+    height: 150px;
+    min-height: 150px;
+  }
+
 `;
 
 export default StyledInternalSites;
