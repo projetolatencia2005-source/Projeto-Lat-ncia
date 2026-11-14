@@ -4431,12 +4431,19 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       padding: 18px;
     }
 
-    .bubble-conversation {
+    section.bubble-conversation {
+      align-items: stretch;
       background: #f3f3f3;
+      border: 0;
+      cursor: default;
       display: flex;
       flex-direction: column;
+      gap: 0;
       min-height: 0;
       min-width: 0;
+      padding: 0;
+      text-align: initial;
+      width: 100%;
     }
 
     .bubble-conversation-header {
@@ -5094,12 +5101,19 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       padding: 18px;
     }
 
-    .bubble-conversation {
+    section.bubble-conversation {
+      align-items: stretch;
       background: #f3f3f3;
+      border: 0;
+      cursor: default;
       display: flex;
       flex-direction: column;
+      gap: 0;
       min-height: 0;
       min-width: 0;
+      padding: 0;
+      text-align: initial;
+      width: 100%;
     }
 
     .bubble-conversation-header {
