@@ -592,7 +592,7 @@ const Desktop: FC = ({ children }) => {
                   keywordGifTimeoutRef.current = null;
                 }, KEYWORD_GIF_DURATION_MS);
               }}
-              src="/System/Doors/Chave.gif"
+              src="/System/Doors/Chave_1.gif"
             />
           ) : (
             <section
