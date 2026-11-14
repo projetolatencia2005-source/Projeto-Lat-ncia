@@ -6060,7 +6060,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     width: 55px;
   }
 
-  .site-bubble .bubble-conversation {
+  .site-bubble .bubble-chat-layout > .bubble-conversation {
+    align-items: stretch;
     background: #f2f2f2;
     display: flex;
     flex-direction: column;
@@ -6069,9 +6070,12 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     overflow: hidden;
   }
 
-  .site-bubble .bubble-conversation-header {
+  .site-bubble .bubble-chat-layout > .bubble-conversation > .bubble-conversation-header {
+    align-self: stretch;
+    box-sizing: border-box;
     flex: 0 0 66px;
     min-width: 0;
+    width: 100%;
   }
 
   .site-bubble .bubble-message-list {
