@@ -6710,12 +6710,171 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
-  /* Keep the inbox search pane compact like the conversation reference. */
-  .site-bubble .bubble-chat-layout .bubble-inbox > .bubble-inbox-search {
+  /* Bubble messages follow the proportions and hierarchy from the Figma frame. */
+  .site-bubble .bubble-chat-layout {
+    grid-template-columns: minmax(220px, 23.15%) minmax(0, 1fr);
+    height: min(983px, 51.2vw);
+    min-height: min(520px, 51.2vw);
+  }
+
+  .site-bubble .bubble-inbox h2,
+  .site-bubble .bubble-chat-layout > .bubble-conversation > .bubble-conversation-header {
     box-sizing: border-box;
+    flex: 0 0 clamp(66px, 5.2vw, 100px);
+    min-height: clamp(66px, 5.2vw, 100px);
+  }
+
+  .site-bubble .bubble-inbox h2 {
+    padding: 0 clamp(16px, 2.1vw, 40px);
+  }
+
+  .site-bubble .bubble-inbox-search {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
     flex: 0 0 150px;
+    gap: 8px;
     height: 150px;
     min-height: 150px;
+    padding: 0 12px;
+  }
+
+  .site-bubble .bubble-inbox-search input,
+  .site-bubble .bubble-inbox-search button {
+    box-sizing: border-box;
+    height: 39px;
+    min-height: 39px;
+  }
+
+  .site-bubble .bubble-inbox-search input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-bubble .bubble-inbox-search button {
+    align-items: center;
+    display: flex;
+    flex: 0 0 39px;
+    justify-content: center;
+    padding: 0;
+    width: 39px;
+  }
+
+  .site-bubble .bubble-contact {
+    gap: 12px;
+    grid-template-columns: clamp(58px, 5.73vw, 110px) minmax(0, 1fr) auto;
+    min-height: clamp(82px, 8.33vw, 160px);
+    padding: 10px clamp(12px, 1vw, 18px);
+  }
+
+  .site-bubble .bubble-contact > img {
+    height: clamp(58px, 5.73vw, 110px);
+    width: clamp(58px, 5.73vw, 110px);
+  }
+
+  .site-bubble .bubble-chat-layout > .bubble-conversation > .bubble-conversation-header {
+    gap: clamp(8px, 0.52vw, 10px);
+    padding: 10px clamp(12px, 1.25vw, 24px);
+  }
+
+  .site-bubble .bubble-chat-layout > .bubble-conversation > .bubble-conversation-header > img {
+    flex: 0 0 clamp(48px, 4vw, 77px);
+    height: clamp(48px, 4vw, 77px);
+    width: clamp(48px, 4vw, 77px);
+  }
+
+  .site-bubble .bubble-view-profile {
+    color: #31302c;
+    flex: 0 0 auto;
+    font-size: clamp(12px, 0.83vw, 16px);
+    min-height: 36px;
+    white-space: nowrap;
+  }
+
+  .site-bubble .bubble-message-list {
+    padding: clamp(14px, 1.25vw, 24px);
+  }
+
+  .site-bubble .bubble-chat-day {
+    gap: clamp(12px, 1.25vw, 24px);
+    margin: 10px 0 14px;
+  }
+
+  .site-bubble .bubble-message-row {
+    gap: clamp(8px, 0.78vw, 15px);
+    margin-bottom: clamp(16px, 1.5vw, 29px);
+  }
+
+  .site-bubble .bubble-message-row > img {
+    flex-basis: clamp(42px, 2.86vw, 55px);
+    height: clamp(42px, 2.86vw, 55px);
+    width: clamp(42px, 2.86vw, 55px);
+  }
+
+  .site-bubble .bubble-message-row p {
+    box-sizing: border-box;
+    flex: 0 1 auto;
+    font-size: clamp(9px, 0.72vw, 15px);
+    max-width: min(24.43vw, 469px);
+    min-height: clamp(36px, 3.49vw, 67px);
+    padding: 8px 9px 5px;
+  }
+
+  .site-bubble .bubble-message-row p > span {
+    line-height: 1.3;
+  }
+
+  .site-bubble .bubble-message-row.is-sent {
+    justify-content: flex-end;
+  }
+
+  .site-bubble .bubble-message-row.is-sent > .bubble-message-spacer {
+    display: none;
+  }
+
+  .site-bubble .bubble-message-row.is-sent p {
+    background: #ffdac5;
+  }
+
+  .site-bubble .bubble-message-composer {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 clamp(74px, 5.2vw, 100px);
+    flex-direction: column;
+    gap: 4px;
+    justify-content: space-between;
+    min-height: clamp(74px, 5.2vw, 100px);
+    padding: 8px 12px;
+  }
+
+  .site-bubble .bubble-message-composer textarea {
+    background: transparent;
+    border: 0;
+    flex: 1 1 auto;
+    min-height: 24px;
+    padding: 0;
+  }
+
+  .site-bubble .bubble-message-tools {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  @container (max-width: 900px) {
+    .site-bubble .bubble-chat-layout {
+      height: auto;
+      min-height: 0;
+    }
+
+    .site-bubble .bubble-inbox-search {
+      flex: 0 0 150px;
+      height: 150px;
+      min-height: 150px;
+    }
   }
 
 `;
