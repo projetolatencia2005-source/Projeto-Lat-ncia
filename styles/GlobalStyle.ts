@@ -761,7 +761,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-tutorial-start-final {
     min-width: 0;
-    width: min(368px, 84vw);
+    width: min(19.17vw, 368px);
   }
 
   .doors-tutorial-back {
