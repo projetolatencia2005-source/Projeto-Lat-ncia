@@ -4440,8 +4440,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-conversation-header {
+      align-self: stretch;
       align-items: center;
       background: #f37319;
+      box-sizing: border-box;
+      width: 100%;
       border-bottom: 2px solid #31302c;
       color: #fff;
       display: flex;
@@ -5100,8 +5103,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-conversation-header {
+      align-self: stretch;
       align-items: center;
       background: #f37319;
+      box-sizing: border-box;
+      width: 100%;
       border-bottom: 2px solid #31302c;
       color: #fff;
       display: flex;
