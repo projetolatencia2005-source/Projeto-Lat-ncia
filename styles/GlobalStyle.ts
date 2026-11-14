@@ -477,9 +477,27 @@ const GlobalStyle = styled.createGlobalStyle`
     padding: 0;
   }
 
+  .doors-tutorial-window {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    position: relative;
+    width: 100%;
+  }
+
   .doors-tutorial-content {
     flex: 1;
-    height: auto;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .doors-tutorial-content-multipage {
+    flex: 1 1 auto;
+    height: 100%;
     min-height: 0;
     overflow: hidden;
     position: relative;
@@ -517,48 +535,62 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-tutorial-question {
-    color: #f7ecd6;
-    font-family: "Pixelify Sans", monospace;
-    font-size: clamp(84px, 10vw, 192px);
-    font-weight: 400;
+    display: block;
+    height: auto;
+    image-rendering: pixelated;
     justify-self: center;
-    line-height: 0.86;
-    text-align: center;
+    width: 100%;
   }
 
   .doors-tutorial-intro-copy h1 {
     color: #e3f0ff;
-    font-size: clamp(32px, 2.5vw, 48px);
+    font-size: clamp(42px, 5.1vw, 98px);
     font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1.05;
-    margin-bottom: clamp(12px, 2.6vh, 28px);
+    margin-bottom: clamp(18px, 2.6vh, 28px);
   }
 
   .doors-tutorial-intro-copy p,
   .doors-tutorial-intro-summary {
     color: #f7ecd6;
-    font-size: clamp(18px, 1.67vw, 32px);
+    font-size: clamp(22px, 2.5vw, 48px);
     font-weight: 400;
     letter-spacing: 0.08em;
     line-height: 1.195;
   }
 
   .doors-tutorial-intro-summary {
-    margin-top: clamp(40px, 13vh, 140px);
+    margin-top: clamp(32px, 5.75vh, 66px);
     width: 100%;
   }
 
   .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
     align-items: start;
     display: grid;
-    gap: clamp(24px, 3vw, 58px);
+    gap: clamp(16px, 3vw, 58px);
     grid-template-columns: minmax(0, 650fr) minmax(0, 912fr);
     left: 50%;
     position: absolute;
     top: 16.95vh;
     transform: translateX(-50%);
-    width: min(1620px, 84vw);
+    width: min(1591px, 82.86vw);
+  }
+
+  .doors-tutorial-slide-step-1 {
+    gap: clamp(16px, 4.84vw, 93px) !important;
+    grid-template-columns: minmax(0, 567fr) minmax(0, 912fr) !important;
+    left: calc(50% + 22px) !important;
+    width: min(1572px, 82vw) !important;
+  }
+
+  .doors-tutorial-slide-step-2 {
+    gap: clamp(14px, 1.51vw, 29px) !important;
+    left: calc(50% + 12.5px) !important;
+  }
+
+  .doors-tutorial-slide-step-3 {
+    gap: clamp(14px, 1.51vw, 29px) !important;
   }
 
   .doors-tutorial-step-copy {
@@ -570,18 +602,27 @@ const GlobalStyle = styled.createGlobalStyle`
     color: #e3f0ff;
     display: block;
     font-family: "Pixelify Sans", monospace;
-    font-size: clamp(48px, 4.17vw, 80px);
+    font-size: clamp(40px, 4.17vw, 80px);
     font-weight: 400;
     letter-spacing: 0.08em;
     line-height: 1.15;
-    margin-bottom: clamp(14px, 1.6vh, 20px);
+    margin-bottom: clamp(18px, 3vh, 32px);
   }
 
   .doors-tutorial-step-copy p {
-    font-size: clamp(22px, 1.67vw, 32px);
+    font-size: clamp(22px, 2.29vw, 44px);
     font-weight: 400;
     letter-spacing: 0.08em;
     line-height: 1.18;
+    margin: 0;
+    max-width: 650px;
+  }
+
+  .doors-tutorial-step-copy p + p {
+    margin-top: clamp(20px, 2.4vh, 26px);
+  }
+
+  .doors-tutorial-slide-step-1 .doors-tutorial-step-copy p {
     max-width: 567px;
   }
 
@@ -604,6 +645,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-tutorial-wallpaper {
+    display: block;
     height: 100%;
     image-rendering: pixelated;
     inset: 0;
@@ -1536,10 +1578,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
   @media (width <= 700px) {
     .doors-tutorial-screen { align-items: stretch; padding: 0; }
-    .doors-tutorial-window { border-width: 5px; height: 100%; width: 100%; }
-    .doors-tutorial-titlebar { flex-basis: 48px; flex-shrink: 0; font-size: 17px; padding-left: 12px; }
-    .doors-tutorial-titlebar > span:first-child,
-    .doors-tutorial-titlebar .doors-boot-controls { transform: none; }
+    .doors-tutorial-window { height: 100%; width: 100%; }
     .doors-tutorial-content-multipage { padding: 24px 16px 0; }
     .doors-tutorial-intro-top { gap: 12px; grid-template-columns: 48px minmax(0, 1fr); }
     .doors-tutorial-question { font-size: clamp(58px, 14vw, 78px); }

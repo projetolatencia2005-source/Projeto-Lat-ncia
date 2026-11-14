@@ -748,10 +748,6 @@ const Desktop: FC = ({ children }) => {
               role="dialog"
             >
               <div className="doors-tutorial-window">
-                <header className="doors-tutorial-titlebar">
-                  <span>Tutorial do jogo</span>
-                  <WindowControls />
-                </header>
                 <div className="doors-tutorial-content doors-tutorial-content-multipage">
                 {tutorialPage === 0 ? (
                   <article
@@ -760,25 +756,24 @@ const Desktop: FC = ({ children }) => {
                     className="doors-tutorial-slide doors-tutorial-slide-intro"
                   >
                     <div className="doors-tutorial-intro-top">
-                      <span
-                        aria-hidden="true"
+                      <img
+                        alt=""
                         className="doors-tutorial-question"
-                      >
-                        ?
-                      </span>
+                        src="/System/Doors/figma/tutorial-question.png"
+                      />
                       <div className="doors-tutorial-intro-copy">
                         <h1>O QUE É ESTE SITE?</h1>
                         <p>
                           Esta experiência simula como eram as Lan Houses,
                           espaços que, entre o fim dos anos 1990 e o início dos
-                          anos 2010, democratizaram o acesso à internet.
+                          anos 2010.
                         </p>
                       </div>
                     </div>
                     <p className="doors-tutorial-intro-summary">
-                      Nas periferias brasileiras, conectaram uma geração ao
-                      mundo digital por meio de jogos, descobertas e trocas
-                      coletivas.
+                      Os espaços que democratizaram o acesso à internet nas
+                      periferias brasileiras, conectando uma geração ao mundo
+                      digital por meio de jogos, descobertas e trocas coletivas.
                     </p>
                   </article>
                 ) : (
@@ -795,121 +790,57 @@ const Desktop: FC = ({ children }) => {
                         {tutorialPage}
                       </span>
                       {tutorialPage === 1 && (
-                        <p>
-                          Acesse os diferentes sites e programas da Lan house e
-                          procure pelas <span>palavras-chaves</span>. A dica
-                          sobre onde encontrá-las está no <span>post-it</span>.
-                        </p>
+                        <>
+                          <p>
+                            Acesse os diferentes sites e programas da Lanhouse,
+                            e procure pelas <span>palavras-chaves.</span>
+                          </p>
+                          <p>
+                            A dica da onde estão as palavras chaves está no{" "}
+                            <span>post-it</span>.
+                          </p>
+                        </>
                       )}
                       {tutorialPage === 2 && (
-                        <p>
-                          Cada <span>palavra-chave</span> está escondida no
-                          conteúdo de cada site ou programa. Leia, assista e
-                          pesquise; fique atento aos textos e às imagens.
-                        </p>
+                        <>
+                          <p>
+                            Cada <span>palavras-chave</span> está escondida no
+                            conteúdo de cada site ou programa.
+                          </p>
+                          <p>
+                            Leia, assista, pesquise e <span>fique atento</span>{" "}
+                            aos textos e às imagens.
+                          </p>
+                        </>
                       )}
                       {tutorialPage === 3 && (
-                        <p>
-                          Encontre as <span>5 palavras</span> em até 5 minutos.
-                          A cada palavra encontrada, você ganha 2 minutos.
-                          <br />
-                          <br />
-                          Com todas as chaves, a <span>pasta trancada</span>{" "}
-                          será desbloqueada.
-                        </p>
+                        <>
+                          <p>
+                            Encontre as <span>5</span> <span>palavras</span> em
+                            até <span>5</span> minutos. Cada palavra achada você
+                            ganha <span>2</span> minutos.
+                          </p>
+                          <p>
+                            Com todas as chaves, a <span>pasta trancada</span>{" "}
+                            será desbloqueada.
+                          </p>
+                        </>
                       )}
                     </div>
                     <div
-                      aria-label="Prévia da área de trabalho com espaço para GIF"
+                      aria-label="Prévia da área de trabalho do Doors"
                       className="doors-tutorial-desktop-preview"
                       role="img"
                     >
                       <img
                         alt=""
                         className="doors-tutorial-wallpaper"
-                        src="/System/Doors/latencia-pixel-hills.png"
+                        src="/System/Doors/figma/tutorial-desktop-reference.png"
                       />
-                      <div
-                        aria-hidden="true"
-                        className="doors-tutorial-preview-icons"
-                      >
-                        <span className="doors-tutorial-preview-icon">
-                          <img
-                            alt=""
-                            className="doors-tutorial-preview-icon-image"
-                            src="/System/Doors/figma/icon-trash.png"
-                          />
-                          Lixeira
-                        </span>
-                        <span className="doors-tutorial-preview-icon">
-                          <img
-                            alt=""
-                            className="doors-tutorial-preview-icon-image"
-                            src="/System/Doors/figma/icon-documents.png"
-                          />
-                          Textos
-                        </span>
-                        <span className="doors-tutorial-preview-icon">
-                          <img
-                            alt=""
-                            className="doors-tutorial-preview-icon-image"
-                            src="/System/Doors/figma/icon-post-it.png"
-                          />
-                          Post-it
-                        </span>
-                        <span className="doors-tutorial-preview-icon">
-                          <img
-                            alt=""
-                            className="doors-tutorial-preview-icon-image"
-                            src="/System/Doors/figma/icon-internet-expanded.png"
-                          />
-                          Internet
-                        </span>
-                        <span className="doors-tutorial-preview-icon">
-                          <img
-                            alt=""
-                            className="doors-tutorial-preview-icon-image"
-                            src="/System/Doors/figma/icon-locked-folder.svg"
-                          />
-                          Pasta trancada
-                        </span>
-                      </div>
-                      <div
-                        aria-label="Espaço reservado para o GIF desta etapa"
-                        className="doors-tutorial-gif-slot"
-                        data-tutorial-gif-slot
-                      >
-                        gif
-                      </div>
-                      <div
-                        aria-hidden="true"
-                        className="doors-tutorial-preview-taskbar"
-                      >
-                        <span className="doors-tutorial-preview-start">
-                          <img
-                            alt=""
-                            src="/System/Doors/figma/door-taskbar-source.png"
-                          />
-                          Abrir porta
-                        </span>
-                        <span className="doors-tutorial-preview-tray">
-                          ● ◉ ◌ <span className="doors-tutorial-preview-date">16:00<br />03/10/08</span>
-                        </span>
-                      </div>
                     </div>
                   </article>
                 )}
                 <nav aria-label="Navegação do tutorial" className="doors-tutorial-actions">
-                  {tutorialPage > 0 && (
-                    <button
-                      aria-label="Voltar para a tela anterior do tutorial"
-                      className="doors-tutorial-back"
-                      onClick={() => setTutorialPage((page) => page - 1)}
-                      type="button"
-                    >
-                      ← Voltar
-                    </button>
-                  )}
                   <button
                     ref={tutorialButtonRef}
                     className={`doors-tutorial-start${
