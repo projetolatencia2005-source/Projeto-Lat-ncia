@@ -125,9 +125,9 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
     box-sizing: border-box;
     display: flex;
-    flex: 0 0 128px;
+    flex: 0 0 clamp(120px, 9.1vw, 175px);
     height: 29px;
-    min-width: 128px;
+    min-width: clamp(120px, 9.1vw, 175px);
     overflow: hidden;
     padding: 0 3px 0 0;
 
@@ -136,8 +136,21 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
       box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
       border-bottom: 0;
       height: 31px;
+      margin-bottom: -2px;
       position: relative;
-      z-index: 1;
+      z-index: 3;
+
+      &::after {
+        background: #f7edd7;
+        bottom: -2px;
+        content: "";
+        height: 4px;
+        left: 2px;
+        pointer-events: none;
+        position: absolute;
+        right: 2px;
+        z-index: 2;
+      }
     }
 
     button {
@@ -173,7 +186,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
       span {
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: clip;
         transform: translate(3px, 1px);
         white-space: nowrap;
       }
