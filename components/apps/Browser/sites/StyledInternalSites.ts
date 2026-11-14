@@ -6241,7 +6241,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
-\n
+
   .site-youspace .you-watch-layout {
     align-items: start;
     display: grid;
