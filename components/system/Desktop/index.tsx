@@ -837,6 +837,12 @@ const Desktop: FC = ({ children }) => {
                         className="doors-tutorial-wallpaper"
                         src="/System/Doors/figma/tutorial-desktop-reference.png"
                       />
+                      <span
+                        aria-hidden="true"
+                        className="doors-tutorial-gif-slot"
+                      >
+                        gif
+                      </span>
                     </div>
                   </article>
                 )}

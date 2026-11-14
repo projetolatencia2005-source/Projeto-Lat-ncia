@@ -635,8 +635,8 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-desktop-preview {
     aspect-ratio: 16 / 9;
     background: #79a0cf;
-    border: 1px solid #d7e4f7;
-    box-shadow: 3px 4px 0 #171715;
+    border: 0;
+    box-shadow: none;
     margin-top: 1.95vh;
     min-width: 0;
     overflow: hidden;
@@ -683,14 +683,24 @@ const GlobalStyle = styled.createGlobalStyle`
     font-family: Arial, sans-serif;
     font-size: clamp(20px, 3.33vw, 64px);
     font-weight: 400;
-    height: 55%;
+    height: auto;
     justify-content: center;
-    left: 27%;
+    left: 43.64%;
     line-height: 1;
     position: absolute;
     text-transform: lowercase;
-    top: 21%;
-    width: 50%;
+    top: 37.1%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+  }
+
+  .doors-tutorial-slide-step-2 .doors-tutorial-gif-slot {
+    top: 39.26%;
+  }
+
+  .doors-tutorial-slide-step-3 .doors-tutorial-gif-slot {
+    left: 38.27%;
+    top: 39.26%;
   }
 
   .doors-tutorial-preview-taskbar {
