@@ -109,18 +109,10 @@ const StyledBrowser = styled.div`
 
       > button {
         box-sizing: border-box;
-        flex: 0 0 25px;
-        height: 25px;
-        min-width: 25px;
-        padding: 0;
-        width: 25px;
-      }
-
-      > button:nth-of-type(1),
-      > button:nth-of-type(2) {
-        flex-basis: 27px;
+        flex: 0 0 27px;
         height: 27px;
         min-width: 27px;
+        padding: 0;
         width: 27px;
       }
     }
