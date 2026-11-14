@@ -14,6 +14,8 @@ import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
 const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
+const KEYWORD_OVERLAY_FADE_MS = 500;
+type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "dismissing";
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",
   "/System/Doors/loading/02.svg",
@@ -275,7 +277,8 @@ const Desktop: FC = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [startedAt, setStartedAt] = useState<null | number>(null);
   const [bonusSeconds, setBonusSeconds] = useState(0);
-  const [keywordGifPlaying, setKeywordGifPlaying] = useState(false);
+  const [keywordOverlayPhase, setKeywordOverlayPhase] =
+    useState<KeywordOverlayPhase>("hidden");
   const [keywordGifSequence, setKeywordGifSequence] = useState(0);
   const keywordGifSequenceRef = useRef(0);
   const keywordGifTimeoutRef = useRef<null | number>(null);
@@ -346,7 +349,7 @@ const Desktop: FC = ({ children }) => {
       const nextSequence = keywordGifSequenceRef.current + 1;
       keywordGifSequenceRef.current = nextSequence;
       setKeywordGifSequence(nextSequence);
-      setKeywordGifPlaying(true);
+      setKeywordOverlayPhase("playing");
 
       if (keywordGifTimeoutRef.current !== null) {
         window.clearTimeout(keywordGifTimeoutRef.current);
@@ -488,6 +491,17 @@ const Desktop: FC = ({ children }) => {
   const startSession = (): void =>
     setStartedAt((current) => current ?? Date.now());
 
+  const continueFromKeywordNotice = (): void => {
+    if (keywordGifTimeoutRef.current !== null) {
+      window.clearTimeout(keywordGifTimeoutRef.current);
+    }
+    setKeywordOverlayPhase("dismissing");
+    keywordGifTimeoutRef.current = window.setTimeout(() => {
+      setKeywordOverlayPhase("hidden");
+      keywordGifTimeoutRef.current = null;
+    }, KEYWORD_OVERLAY_FADE_MS);
+  };
+
   return (
     <StyledDesktop
       ref={desktopRef}
@@ -504,32 +518,63 @@ const Desktop: FC = ({ children }) => {
         />
         {children}
       </LockedFolderProvider>
-      {keywordGifPlaying && (
+      {keywordOverlayPhase !== "hidden" && (
         <div
-          aria-hidden="true"
-          className="doors-keyword-gif-overlay"
+          className={"doors-keyword-gif-overlay doors-keyword-gif-overlay--" + keywordOverlayPhase}
           key={keywordGifSequence}
         >
-          <img
-            alt=""
-            draggable={false}
-            onError={() => {
-              if (keywordGifSequenceRef.current === keywordGifSequence) {
-                setKeywordGifPlaying(false);
-              }
-            }}
-            onLoad={() => {
-              if (keywordGifSequenceRef.current !== keywordGifSequence) return;
-              if (keywordGifTimeoutRef.current !== null) {
-                window.clearTimeout(keywordGifTimeoutRef.current);
-              }
-              keywordGifTimeoutRef.current = window.setTimeout(() => {
-                setKeywordGifPlaying(false);
-                keywordGifTimeoutRef.current = null;
-              }, KEYWORD_GIF_DURATION_MS);
-            }}
-            src="/System/Doors/Chave.gif"
-          />
+          {keywordOverlayPhase === "playing" ? (
+            <img
+              alt=""
+              draggable={false}
+              onError={() => {
+                if (keywordGifSequenceRef.current === keywordGifSequence) {
+                  setKeywordOverlayPhase("hidden");
+                }
+              }}
+              onLoad={() => {
+                if (keywordGifSequenceRef.current !== keywordGifSequence) return;
+                if (keywordGifTimeoutRef.current !== null) {
+                  window.clearTimeout(keywordGifTimeoutRef.current);
+                }
+                keywordGifTimeoutRef.current = window.setTimeout(() => {
+                  setKeywordOverlayPhase("notice");
+                  keywordGifTimeoutRef.current = null;
+                }, KEYWORD_GIF_DURATION_MS);
+              }}
+              src="/System/Doors/Chave.gif"
+            />
+          ) : (
+            <section
+              aria-labelledby="doors-keyword-notice-title"
+              aria-modal="true"
+              className="doors-keyword-notice"
+              role="dialog"
+            >
+              <p id="doors-keyword-notice-title">
+                <strong>Você sabia que:</strong> as Lan Houses tiveram um papel
+                importante na <strong>alfabetização digital</strong>, permitindo
+                que muitas pessoas aprendessem a utilizar computadores, digitar
+                textos, pesquisar na internet e explorar programas como o Word.
+              </p>
+              <p>
+                Para quem não tinha acesso à tecnologia em casa, esses espaços
+                representavam uma oportunidade de desenvolver novas habilidades
+                e <strong>conquistar mais autonomia</strong>.
+              </p>
+              <p>
+                Mais do que acessar a internet, era aprender a utilizar a
+                tecnologia para estudar, trabalhar e se comunicar.
+              </p>
+              <button
+                className="doors-keyword-notice-continue"
+                onClick={continueFromKeywordNotice}
+                type="button"
+              >
+                Continuar
+              </button>
+            </section>
+          )}
         </div>
       )}
       {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} startedAt={startedAt} />}

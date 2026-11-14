@@ -129,7 +129,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-keyword-gif-overlay {
     align-items: center;
-    animation: doors-keyword-gif-focus 8000ms ease-in-out both;
+    animation: doors-keyword-overlay-in 500ms ease-out both;
     background: rgb(0 0 0 / 72%);
     display: flex;
     inset: 0;
@@ -140,14 +140,43 @@ const GlobalStyle = styled.createGlobalStyle`
     z-index: 100002;
   }
 
-  @keyframes doors-keyword-gif-focus {
-    0%,
-    100% {
+  .doors-keyword-gif-overlay--notice {
+    pointer-events: auto;
+  }
+
+  .doors-keyword-gif-overlay--dismissing {
+    animation: doors-keyword-overlay-out 500ms ease-in both;
+    pointer-events: none;
+  }
+
+  @keyframes doors-keyword-overlay-in {
+    from {
       opacity: 0;
     }
-    6.25%,
-    93.75% {
+    to {
       opacity: 1;
+    }
+  }
+
+  @keyframes doors-keyword-overlay-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  .doors-keyword-gif-overlay--playing img {
+    animation: doors-keyword-gif-fade-out 500ms ease-in 7500ms both;
+  }
+
+  @keyframes doors-keyword-gif-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
     }
   }
 
@@ -156,6 +185,57 @@ const GlobalStyle = styled.createGlobalStyle`
     height: 100%;
     object-fit: contain;
     width: 100%;
+  }
+
+  .doors-keyword-notice {
+    box-sizing: border-box;
+    color: #f7edd7;
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(18px, 2.2vw, 24px);
+    line-height: 1.5;
+    max-width: min(680px, calc(100% - 48px));
+    width: 100%;
+  }
+
+  .doors-keyword-notice p {
+    margin: 0 0 20px;
+  }
+
+  .doors-keyword-notice strong {
+    font-weight: 700;
+  }
+
+  .doors-keyword-notice-continue {
+    background: #f7edd7;
+    border: 2px solid #171715;
+    box-shadow: 3px 3px 0 #111;
+    color: #31302c;
+    cursor: pointer;
+    font: inherit;
+    font-size: 16px;
+    margin-top: 2px;
+    padding: 6px 20px;
+  }
+
+  .doors-keyword-notice-continue:hover {
+    opacity: 0.9;
+  }
+
+  .doors-keyword-notice-continue:focus-visible {
+    outline: 2px solid #86baff;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .doors-keyword-notice {
+      font-size: clamp(16px, 4.5vw, 20px);
+      line-height: 1.45;
+      max-width: calc(100% - 40px);
+    }
+
+    .doors-keyword-notice p {
+      margin-bottom: 16px;
+    }
   }
 
   .doors-boot-screen {
