@@ -596,6 +596,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-step-copy {
     color: #f7ecd6;
     min-width: 0;
+    text-align: left;
   }
 
   .doors-tutorial-step-number {
