@@ -15,6 +15,33 @@ const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
+const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 32;
+const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 2;
+type KeywordNoticePart = { text: string; strong?: boolean };
+const KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
+  [
+    { text: "Você sabia que: ", strong: true },
+    { text: "as Lan Houses tiveram um papel importante na " },
+    { text: "alfabetização digital", strong: true },
+    { text: ", permitindo que muitas pessoas aprendessem a utilizar computadores, digitar textos, pesquisar na internet e explorar programas como o Word." },
+  ],
+  [
+    { text: "Para quem não tinha acesso à tecnologia em casa, esses espaços representavam uma oportunidade de desenvolver novas habilidades e " },
+    { text: "conquistar mais autonomia", strong: true },
+    { text: "." },
+  ],
+  [
+    { text: "Mais do que acessar a internet, era aprender a utilizar a tecnologia para estudar, trabalhar e se comunicar." },
+  ],
+];
+const KEYWORD_NOTICE_ACCESSIBLE_TEXT = KEYWORD_NOTICE_PARAGRAPHS
+  .map((paragraph) => paragraph.map((part) => part.text).join(""))
+  .join("\n\n");
+const KEYWORD_NOTICE_TOTAL_CHARACTERS = KEYWORD_NOTICE_PARAGRAPHS.reduce(
+  (total, paragraph) =>
+    total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
+  0,
+);
 type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "dismissing";
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",
@@ -279,6 +306,7 @@ const Desktop: FC = ({ children }) => {
   const [bonusSeconds, setBonusSeconds] = useState(0);
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
+  const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
   const [keywordGifSequence, setKeywordGifSequence] = useState(0);
   const keywordGifSequenceRef = useRef(0);
   const keywordGifTimeoutRef = useRef<null | number>(null);
@@ -349,6 +377,7 @@ const Desktop: FC = ({ children }) => {
       const nextSequence = keywordGifSequenceRef.current + 1;
       keywordGifSequenceRef.current = nextSequence;
       setKeywordGifSequence(nextSequence);
+      setTypedNoticeCharacters(0);
       setKeywordOverlayPhase("playing");
 
       if (keywordGifTimeoutRef.current !== null) {
@@ -365,6 +394,26 @@ const Desktop: FC = ({ children }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "notice") return;
+
+    const typingInterval = window.setInterval(() => {
+      setTypedNoticeCharacters((current) => {
+        const next = Math.min(
+          current + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
+          KEYWORD_NOTICE_TOTAL_CHARACTERS,
+        );
+        if (next >= KEYWORD_NOTICE_TOTAL_CHARACTERS) {
+          window.clearInterval(typingInterval);
+        }
+        return next;
+      });
+    }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
+
+    return () => window.clearInterval(typingInterval);
+  }, [keywordOverlayPhase]);
+
   useWallpaper(desktopRef);
 
   const beginBootLoading = useCallback(
@@ -551,28 +600,62 @@ const Desktop: FC = ({ children }) => {
               className="doors-keyword-notice"
               role="dialog"
             >
-              <p id="doors-keyword-notice-title">
-                <strong>Você sabia que:</strong> as Lan Houses tiveram um papel
-                importante na <strong>alfabetização digital</strong>, permitindo
-                que muitas pessoas aprendessem a utilizar computadores, digitar
-                textos, pesquisar na internet e explorar programas como o Word.
-              </p>
-              <p>
-                Para quem não tinha acesso à tecnologia em casa, esses espaços
-                representavam uma oportunidade de desenvolver novas habilidades
-                e <strong>conquistar mais autonomia</strong>.
-              </p>
-              <p>
-                Mais do que acessar a internet, era aprender a utilizar a
-                tecnologia para estudar, trabalhar e se comunicar.
-              </p>
-              <button
-                className="doors-keyword-notice-continue"
-                onClick={continueFromKeywordNotice}
-                type="button"
+              <h2
+                className="doors-keyword-notice-sr-only"
+                id="doors-keyword-notice-title"
               >
-                Continuar
-              </button>
+                Informação sobre a palavra-chave
+              </h2>
+              <p className="doors-keyword-notice-sr-only">
+                {KEYWORD_NOTICE_ACCESSIBLE_TEXT}
+              </p>
+              <div aria-hidden="true" className="doors-keyword-notice-copy">
+                {(() => {
+                  let paragraphStart = 0;
+                  return KEYWORD_NOTICE_PARAGRAPHS.map((paragraph, paragraphIndex) => {
+                    const paragraphLength = paragraph.reduce(
+                      (total, part) => total + part.text.length,
+                      0,
+                    );
+                    const paragraphEnd = paragraphStart + paragraphLength;
+                    let partStart = paragraphStart;
+                    const isTypingParagraph =
+                      typedNoticeCharacters > paragraphStart &&
+                      typedNoticeCharacters <= paragraphEnd;
+                    const renderedParagraph = (
+                      <p key={paragraphIndex}>
+                        {paragraph.map((part, partIndex) => {
+                          const visibleCharacters = Math.max(
+                            0,
+                            Math.min(part.text.length, typedNoticeCharacters - partStart),
+                          );
+                          partStart += part.text.length;
+                          const content = part.text.slice(0, visibleCharacters);
+                          return part.strong ? (
+                            <strong key={partIndex}>{content}</strong>
+                          ) : (
+                            <span key={partIndex}>{content}</span>
+                          );
+                        })}
+                        {isTypingParagraph && (
+                          <span className="doors-keyword-notice-caret" />
+                        )}
+                      </p>
+                    );
+                    paragraphStart = paragraphEnd;
+                    return renderedParagraph;
+                  });
+                })()}
+              </div>
+              {typedNoticeCharacters >= KEYWORD_NOTICE_TOTAL_CHARACTERS && (
+                <button
+                  className="doors-keyword-notice-continue"
+                  onClick={continueFromKeywordNotice}
+                  type="button"
+                >
+                  Continuar
+                </button>
+              )}
             </section>
           )}
         </div>
