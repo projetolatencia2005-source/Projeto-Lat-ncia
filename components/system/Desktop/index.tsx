@@ -299,6 +299,7 @@ const Desktop: FC = ({ children }) => {
   const splashButtonRef = useRef<HTMLButtonElement | null>(null);
   const tutorialButtonRef = useRef<HTMLButtonElement | null>(null);
   const [bootStage, setBootStage] = useState<BootStage>("splash");
+  const [tutorialPage, setTutorialPage] = useState(0);
   const [bootDestination, setBootDestination] =
     useState<BootDestination | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -523,6 +524,7 @@ const Desktop: FC = ({ children }) => {
       }
 
       event.preventDefault();
+      setTutorialPage(0);
       beginBootLoading("tutorial");
     };
 
@@ -726,7 +728,10 @@ const Desktop: FC = ({ children }) => {
                 <button
                   ref={splashButtonRef}
                   className="doors-splash-start"
-                  onClick={() => beginBootLoading("tutorial")}
+                  onClick={() => {
+                    setTutorialPage(0);
+                    beginBootLoading("tutorial");
+                  }}
                   type="button"
                 >
                   aperte qualquer tecla para iniciar
@@ -747,78 +752,189 @@ const Desktop: FC = ({ children }) => {
                   <span>Tutorial do jogo</span>
                   <WindowControls />
                 </header>
-                <div className="doors-tutorial-content">
-                  <aside className="doors-tutorial-about">
-                    <span
-                      aria-hidden="true"
-                      className="doors-tutorial-about-icon"
-                    >
-                      ?
-                    </span>
-                    <div>
-                      <h2>O QUE É ESTE SITE?</h2>
-                      <p>
-                        Esta experiência simula como era os Lan House, espaços
-                        que, entre o fim dos anos 1990 e o início dos anos 2010,
-                        eram espaços que democratizaram o acesso à internet nos
-                        periféricos brasileiros, conectando a população ao mundo
-                        digital por meio de jogos, descobertas e trocas coletivas.
-                      </p>
+                <div className="doors-tutorial-content doors-tutorial-content-multipage">
+                {tutorialPage === 0 ? (
+                  <article
+                    key="intro"
+                    aria-live="polite"
+                    className="doors-tutorial-slide doors-tutorial-slide-intro"
+                  >
+                    <div className="doors-tutorial-intro-top">
+                      <span
+                        aria-hidden="true"
+                        className="doors-tutorial-question"
+                      >
+                        ?
+                      </span>
+                      <div className="doors-tutorial-intro-copy">
+                        <h1>O QUE É ESTE SITE?</h1>
+                        <p>
+                          Esta experiência simula como eram as Lan Houses,
+                          espaços que, entre o fim dos anos 1990 e o início dos
+                          anos 2010, democratizaram o acesso à internet.
+                        </p>
+                      </div>
                     </div>
-                  </aside>
-                  <div className="doors-tutorial-steps">
-                    <article className="doors-tutorial-step">
-                      <h2>
-                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>1</span></span>
-                        <span>Navegue pelos sites</span>
-                      </h2>
-                      <p>
-                        Acesse os diferentes sites e programas da Lan house, e
-                        procure pelas <span>palavras-chaves</span> escondidas.
-                      </p>
-                    </article>
-                    <span aria-hidden="true" className="doors-tutorial-arrow">
-                      &gt;
-                    </span>
-                    <article className="doors-tutorial-step">
-                      <h2>
-                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>2</span></span>
-                        <span>Palavras-chaves</span>
-                      </h2>
-                      <p>
-                        Cada palavra-chave está escondida no conteúdo de cada
-                        site. Leia, assista, pesquise e <span>fique atento</span>{" "}
-                        ao mouse para encontrá-las.
-                      </p>
-                    </article>
-                    <span aria-hidden="true" className="doors-tutorial-arrow">
-                      &gt;
-                    </span>
-                    <article className="doors-tutorial-step">
-                      <h2>
-                        <span className="doors-tutorial-number"><img alt="" aria-hidden="true" src="/System/Doors/circle.svg" /><span>3</span></span>
-                        <span>Pegue as 5 chaves</span>
-                      </h2>
-                      <p>
-                        Encontre as 5 palavras em até 5 minutos. Com todas as
-                        chaves, a <span>pasta trancada</span> será desbloqueada.
-                      </p>
-                    </article>
-                  </div>
+                    <p className="doors-tutorial-intro-summary">
+                      Nas periferias brasileiras, conectaram uma geração ao
+                      mundo digital por meio de jogos, descobertas e trocas
+                      coletivas.
+                    </p>
+                  </article>
+                ) : (
+                  <article
+                    key={`step-${tutorialPage}`}
+                    aria-live="polite"
+                    className={`doors-tutorial-slide doors-tutorial-slide-step-${tutorialPage}`}
+                  >
+                    <div className="doors-tutorial-step-copy">
+                      <span
+                        aria-label={`Etapa ${tutorialPage} de 3`}
+                        className="doors-tutorial-step-number"
+                      >
+                        {tutorialPage}
+                      </span>
+                      {tutorialPage === 1 && (
+                        <p>
+                          Acesse os diferentes sites e programas da Lan house e
+                          procure pelas <span>palavras-chaves</span>. A dica
+                          sobre onde encontrá-las está no <span>post-it</span>.
+                        </p>
+                      )}
+                      {tutorialPage === 2 && (
+                        <p>
+                          Cada <span>palavra-chave</span> está escondida no
+                          conteúdo de cada site ou programa. Leia, assista e
+                          pesquise; fique atento aos textos e às imagens.
+                        </p>
+                      )}
+                      {tutorialPage === 3 && (
+                        <p>
+                          Encontre as <span>5 palavras</span> em até 5 minutos.
+                          A cada palavra encontrada, você ganha 2 minutos.
+                          <br />
+                          <br />
+                          Com todas as chaves, a <span>pasta trancada</span>{" "}
+                          será desbloqueada.
+                        </p>
+                      )}
+                    </div>
+                    <div
+                      aria-label="Prévia da área de trabalho com espaço para GIF"
+                      className="doors-tutorial-desktop-preview"
+                      role="img"
+                    >
+                      <img
+                        alt=""
+                        className="doors-tutorial-wallpaper"
+                        src="/System/Doors/latencia-pixel-hills.png"
+                      />
+                      <div
+                        aria-hidden="true"
+                        className="doors-tutorial-preview-icons"
+                      >
+                        <span className="doors-tutorial-preview-icon">
+                          <img
+                            alt=""
+                            className="doors-tutorial-preview-icon-image"
+                            src="/System/Doors/figma/icon-trash.png"
+                          />
+                          Lixeira
+                        </span>
+                        <span className="doors-tutorial-preview-icon">
+                          <img
+                            alt=""
+                            className="doors-tutorial-preview-icon-image"
+                            src="/System/Doors/figma/icon-documents.png"
+                          />
+                          Textos
+                        </span>
+                        <span className="doors-tutorial-preview-icon">
+                          <img
+                            alt=""
+                            className="doors-tutorial-preview-icon-image"
+                            src="/System/Doors/figma/icon-post-it.png"
+                          />
+                          Post-it
+                        </span>
+                        <span className="doors-tutorial-preview-icon">
+                          <img
+                            alt=""
+                            className="doors-tutorial-preview-icon-image"
+                            src="/System/Doors/figma/icon-internet-expanded.png"
+                          />
+                          Internet
+                        </span>
+                        <span className="doors-tutorial-preview-icon">
+                          <img
+                            alt=""
+                            className="doors-tutorial-preview-icon-image"
+                            src="/System/Doors/figma/icon-locked-folder.svg"
+                          />
+                          Pasta trancada
+                        </span>
+                      </div>
+                      <div
+                        aria-label="Espaço reservado para o GIF desta etapa"
+                        className="doors-tutorial-gif-slot"
+                        data-tutorial-gif-slot
+                      >
+                        gif
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        className="doors-tutorial-preview-taskbar"
+                      >
+                        <span className="doors-tutorial-preview-start">
+                          <img
+                            alt=""
+                            src="/System/Doors/figma/door-taskbar-source.png"
+                          />
+                          Abrir porta
+                        </span>
+                        <span className="doors-tutorial-preview-tray">
+                          ● ◉ ◌ <span className="doors-tutorial-preview-date">16:00<br />03/10/08</span>
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                )}
+                <nav aria-label="Navegação do tutorial" className="doors-tutorial-actions">
+                  {tutorialPage > 0 && (
+                    <button
+                      aria-label="Voltar para a tela anterior do tutorial"
+                      className="doors-tutorial-back"
+                      onClick={() => setTutorialPage((page) => page - 1)}
+                      type="button"
+                    >
+                      ← Voltar
+                    </button>
+                  )}
                   <button
                     ref={tutorialButtonRef}
-                    className="doors-tutorial-start"
-                    onClick={() => beginBootLoading("login")}
+                    className={`doors-tutorial-start${
+                      tutorialPage === 3 ? " doors-tutorial-start-final" : ""
+                    }`}
+                    onClick={() => {
+                      if (tutorialPage < 3) {
+                        setTutorialPage((page) => page + 1);
+                        return;
+                      }
+
+                      beginBootLoading("login");
+                    }}
                     type="button"
                   >
-                    Entendi, começar a jogar
+                    {tutorialPage === 3
+                      ? "Entendi, começar o jogo!"
+                      : "Continuar"}
                   </button>
-                </div>
+                </nav>
+              </div>
+            
               </div>
             </section>
-          )}
-
-          {bootStage === "login" && (
+          )}{bootStage === "login" && (
             <section
               aria-label="Tela de login do Doors"
               aria-modal="true"
