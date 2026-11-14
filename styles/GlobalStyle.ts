@@ -192,6 +192,7 @@ const GlobalStyle = styled.createGlobalStyle`
     color: #ffffff;
     font-family: "Pixelify Sans", monospace;
     font-size: clamp(21px, calc(2.2vw + 3px), 27px);
+    font-weight: 400;
     line-height: 1.7;
     max-width: calc(100% - 48px);
     width: min(56vw, 860px);
@@ -235,7 +236,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-keyword-notice strong {
-    font-weight: 700;
+    font-weight: 400;
   }
 
   .doors-keyword-notice-continue {
