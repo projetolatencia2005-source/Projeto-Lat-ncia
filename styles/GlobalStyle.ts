@@ -140,6 +140,10 @@ const GlobalStyle = styled.createGlobalStyle`
     z-index: 100002;
   }
 
+  .doors-keyword-gif-overlay--playing {
+    background: rgb(0 0 0 / 78%);
+  }
+
   .doors-keyword-gif-overlay--notice {
     pointer-events: auto;
   }
@@ -199,7 +203,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-keyword-notice-copy {
-    transform: translateY(-10px);
+    transform: translateY(-25px);
   }
 
   .doors-keyword-notice-copy p {
