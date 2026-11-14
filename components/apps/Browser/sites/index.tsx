@@ -532,7 +532,6 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
   const path = new URL(url).pathname.toLowerCase();
   const routePart = path.split("/").find(Boolean) || "";
-  const isLoginRoute = routePart === "";
   const validPages: BubblePageKey[] = [
     "inicio",
     "perfil",
@@ -543,12 +542,12 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const page: BubblePageKey = validPages.includes(routePart as BubblePageKey)
     ? (routePart as BubblePageKey)
     : "inicio";
-  const [sessionActive, setSessionActive] = useState(
+  const [, setSessionActive] = useState(
     () =>
       typeof window !== "undefined" &&
       window.sessionStorage.getItem(BUBBLE_SESSION_KEY) === "signed-in"
   );
-  const loggedIn = sessionActive && !isLoginRoute;
+  const loggedIn = true;
   const emailInputRef = useRef<HTMLInputElement>(null);
   const [postText, setPostText] = useState("");
   const [postPhoto, setPostPhoto] = useState<
@@ -2515,7 +2514,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     ? wikiLanHouseSections
                     : wikiSociabilitySections
                   )
-                    .slice(0, 2)
+                    .slice(0, isLanHouseArticle ? 3 : 2)
                     .map((section) => (
                       <section
                         key={section.heading}
@@ -2551,7 +2550,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     ? wikiLanHouseSections
                     : wikiSociabilitySections
                   )
-                    .slice(2)
+                    .slice(isLanHouseArticle ? 3 : 2)
                     .map((section) => (
                       <section
                         key={section.heading}
@@ -2704,9 +2703,10 @@ const popularVideoSearches = ["videoclipes", "skate", "vlog", "engraçado", "gam
 
 const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const [playing, setPlaying] = useState(false);
+  const [playerStatus, setPlayerStatus] = useState<"idle" | "loading" | "error">("idle");
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [showMoreNotice, setShowMoreNotice] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const query = new URL(url).searchParams.get("q") || "";
   const pathParts = new URL(url).pathname.split("/").filter(Boolean);
@@ -2726,6 +2726,30 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const navigate = (path: string): void =>
     browserTabs?.navigate(SITE_URLS.youspace + path);
 
+  useEffect(() => {
+    if (playerStatus !== "loading") return;
+    const timer = window.setTimeout(() => setPlayerStatus("error"), 1200);
+    return () => window.clearTimeout(timer);
+  }, [playerStatus]);
+
+  useEffect(() => {
+    if (playerStatus !== "error") return;
+    const timer = window.setTimeout(
+      () => browserTabs?.navigate(SITE_URLS.youspace),
+      1700,
+    );
+    return () => window.clearTimeout(timer);
+  }, [playerStatus, browserTabs]);
+
+  useEffect(() => {
+    if (!loadingMore) return;
+    const timer = window.setTimeout(() => {
+      setLoadingMore(false);
+      setShowMoreNotice(true);
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [loadingMore]);
+
   return (
     <section className="site-youspace">
       <header className="you-topbar">
@@ -2743,39 +2767,47 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
           <div className="player-screen">
             <img alt={video.title} src={video.image} />
             <button
-              aria-label={playing ? "Pausar demonstração" : "Reproduzir demonstração"}
-              onClick={() => setPlaying((current) => !current)}
+              aria-label={playerStatus === "loading" ? "Carregando vídeo" : playerStatus === "error" ? "Falha ao carregar vídeo" : "Reproduzir demonstração"}
+              disabled={playerStatus !== "idle"}
+              onClick={() => setPlayerStatus("loading")}
               type="button"
             >
-              {playing ? "Ⅱ" : "▶"}
+              {playerStatus === "idle" ? "▶" : playerStatus === "loading" ? "…" : "!"}
             </button>
+            {playerStatus !== "idle" && (
+              <p aria-live="polite" className={"you-player-feedback you-player-feedback--" + playerStatus} role="status">
+                {playerStatus === "loading" ? "Carregando vídeo..." : "Erro ao carregar o vídeo. Voltando ao início do YouSpace."}
+              </p>
+            )}
           </div>
-          <div className="player-controls"><strong>{video.title}</strong><span>por {video.author} · {video.views}</span><span>{playing ? "Reproduzindo prévia" : "Prévia pausada"}</span></div>
+          <div className="player-controls"><strong>{video.title}</strong><span>por {video.author} · {video.views}</span><span>{playerStatus === "idle" ? "Prévia pausada" : playerStatus === "loading" ? "Carregando vídeo..." : "Falha ao carregar vídeo"}</span></div>
         </section>
       ) : (
         <div className="you-page-layout">
           <main className="you-main">
             <div className="you-section-heading">
               <div><span>HOJE</span><h1>{query ? "Resultados para “" + query + "”" : "Vídeos em alta"}</h1></div>
-              <p>{visibleVideos.length === videos.length ? "13 vídeos encontrados" : visibleVideos.length + " vídeos encontrados"}</p>
+              <p>{visibleVideos.length + " vídeos encontrados"}</p>
             </div>
             <nav aria-label="Filtrar vídeos por categoria" className="you-category-list">
               {["Todos", "Música", "Vlogs", "Esportes", "Comédia", "Tecnologia"].map((category) => (
-                <button aria-pressed={activeCategory === category} className={activeCategory === category ? "is-selected" : ""} key={category} onClick={() => { setActiveCategory(category); setShowMoreNotice(false); }} type="button">{category}</button>
+                <button aria-pressed={activeCategory === category} className={activeCategory === category ? "is-selected" : ""} key={category} onClick={() => { setActiveCategory(category); setShowMoreNotice(false); setLoadingMore(false); }} type="button">{category}</button>
               ))}
             </nav>
             <div className="you-video-grid">
               {visibleVideos.map((item) => (
                 <article className="you-video-card" key={item.id}>
-                  <button aria-label={"Assistir: " + item.title} className="you-video-thumbnail" onClick={() => { setPlaying(false); navigate("watch/" + item.id); }} type="button"><img alt="" src={item.image} /><span>{item.duration}</span></button>
-                  <button className="you-video-title" onClick={() => { setPlaying(false); navigate("watch/" + item.id); }} type="button">{item.title}</button>
+                  <button aria-label={"Assistir: " + item.title} className="you-video-thumbnail" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button"><img alt="" src={item.image} /><span>{item.duration}</span></button>
+                  <button className="you-video-title" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button">{item.title}</button>
                   <p>por <button onClick={() => navigate("perfil/" + item.author)} type="button">{item.author}</button> · {item.views}</p>
                 </article>
               ))}
               {visibleVideos.length === 0 && <p className="you-empty-results">Nenhum vídeo encontrado.</p>}
             </div>
-            <button className="you-load-more" onClick={() => setShowMoreNotice(true)} type="button">Carregar mais vídeos</button>
-            {showMoreNotice && <p aria-live="polite" className="you-load-message">13 vídeos encontrados. Os 9 vídeos desta prévia estão carregados.</p>}
+            <button className="you-load-more" disabled={loadingMore || showMoreNotice} onClick={() => setLoadingMore(true)} type="button">
+              {loadingMore ? "Carregando vídeos..." : showMoreNotice ? "Todos os vídeos carregados" : "Carregar mais vídeos"}
+            </button>
+            {showMoreNotice && <p aria-live="polite" className="you-load-message">Todos os vídeos disponíveis nesta prévia já foram carregados.</p>}
           </main>
           <aside className="you-sidebar">
             <section className="you-sidebar-welcome"><h2>Bem-vindo ao YouSpace!</h2><p>Seu acervo digital de vídeos.</p></section>
