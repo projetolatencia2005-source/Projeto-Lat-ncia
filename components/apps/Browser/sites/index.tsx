@@ -2733,7 +2733,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const pathParts = new URL(url).pathname.split("/").filter(Boolean);
   const videoId = pathParts[pathParts.length - 1];
   const isHome = pathParts.length === 0 && !query;
-  const video = videos.find(({ id }) => id === videoId) ?? (isHome ? videos[0] : undefined);
+  const video = videos.find(({ id }) => id === videoId);
   const visibleVideos = useMemo(
     () =>
       videos.filter(({ title }) =>
