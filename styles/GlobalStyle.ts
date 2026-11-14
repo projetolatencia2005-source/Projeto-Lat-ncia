@@ -454,9 +454,12 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-start {
     align-self: center;
     flex: 0 0 auto;
-    margin-top: clamp(24px, 3vh, 34px);
-    transform: translateY(-40px);
-    width: min(316px, 90%);
+    font-size: clamp(16px, 1.45vw, 28px);
+    height: clamp(40px, 4.45vh, 48px);
+    margin: 0;
+    min-width: clamp(150px, 10.6vw, 203px);
+    white-space: nowrap;
+    width: auto;
   }
 
   .doors-splash-start:hover,
@@ -470,210 +473,264 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-tutorial-screen {
-    padding: clamp(10px, 2.22vh, 24px) clamp(12px, 1.875vw, 36px);
-  }
-
-  .doors-tutorial-window {
-    animation: doorsTutorialFadeZoomOut 1s ease-out both;
-    background: #31302c;
-    border: 5px solid #f7edd7;
-    box-sizing: border-box;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    height: min(800px, calc(100vh - 32px));
-    min-height: 0;
-    min-width: 0;
     overflow: hidden;
-  }
-
-  @keyframes doorsTutorialFadeZoomOut {
-    from {
-      opacity: 0;
-      transform: scale(1.08);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .doors-tutorial-titlebar {
-    flex: 0 0 clamp(32px, 4.44vh, 48px);
-    font-size: 20px;
-    padding-left: clamp(10px, 1.2vw, 23px);
-  }
-
-  .doors-tutorial-titlebar > span:first-child {
-    font-weight: 700;
-    transform: translateY(-4px);
-  }
-
-  .doors-tutorial-titlebar .doors-boot-controls {
-    transform: translateY(-4px);
+    padding: 0;
   }
 
   .doors-tutorial-content {
-    display: flex;
     flex: 1;
-    flex-direction: column;
-    gap: clamp(24px, 3.4vh, 42px);
-    justify-content: flex-start;
+    height: auto;
     min-height: 0;
-    -ms-overflow-style: none;
-    overflow: auto;
-    padding: clamp(24px, 4vh, 44px) clamp(24px, 5vw, 80px)
-      clamp(24px, 3vh, 36px);
-    scrollbar-width: none;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
 
-    &::-webkit-scrollbar {
-      background: transparent;
-      display: none !important;
-      height: 0;
-      width: 0 !important;
+  .doors-tutorial-slide {
+    animation: doors-tutorial-slide-in 260ms ease-out both;
+    color: #f7ecd6;
+    font-family: "Pixelify Sans", monospace;
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes doors-tutorial-slide-in {
+    0% {
+      opacity: 0%;
+    }
+
+    100% {
+      opacity: 100%;
     }
   }
 
-  .doors-tutorial-content::-webkit-scrollbar {
-    display: none !important;
-    height: 0 !important;
-    width: 0 !important;
-  }
-
-  .doors-tutorial-about {
-    align-items: center;
-    border: 3px dashed #f7edd7;
-    box-sizing: border-box;
-    display: grid;
-    gap: clamp(14px, 2vw, 28px);
-    grid-template-columns: 164px minmax(0, 1fr);
+  .doors-tutorial-slide-intro {
     margin: 0 auto;
-    min-height: 250px;
-    padding: 55px 80px;
-    max-width: 100%;
-    width: 1200px;
+    padding-top: 16.95vh;
+    width: min(1302px, 84vw);
   }
 
-  .doors-tutorial-about-icon {
+  .doors-tutorial-intro-top {
+    align-items: center;
+    display: grid;
+    gap: clamp(20px, 5.73vw, 110px);
+    grid-template-columns: clamp(80px, 7.86vw, 151px) minmax(0, 1fr);
+  }
+
+  .doors-tutorial-question {
+    color: #f7ecd6;
     font-family: "Pixelify Sans", monospace;
-    font-size: 164px;
+    font-size: clamp(84px, 10vw, 192px);
     font-weight: 400;
     justify-self: center;
-    line-height: 0.8;
-  }
-
-  .doors-tutorial-about h2 {
-    font-size: 28px;
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
-    margin-bottom: 8px;
-    text-align: left;
-  }
-
-  .doors-tutorial-about p {
-    font-size: 20px;
-    letter-spacing: 0.04em;
-    line-height: 1.2;
-    text-align: left;
-  }
-
-  .doors-tutorial-steps {
-    align-items: start;
-    display: grid;
-    gap: clamp(12px, 2vw, 38px);
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(
-        0,
-        1fr
-      );
-    margin-top: 50px;
-    transform: translateY(-20px);
-  }
-
-  .doors-tutorial-step h2 {
-    align-items: center;
-    display: flex;
-    font-size: clamp(15px, 1.25vw, 24px);
-    font-weight: 600;
-    gap: clamp(8px, 0.9vw, 17px);
-    line-height: 1.1;
-    letter-spacing: 0.08em;
-    margin-bottom: clamp(22px, 2.7vh, 30px);
-    white-space: nowrap;
-  }
-
-  .doors-tutorial-number {
-    align-items: center;
-    display: inline-flex;
-    flex: 0 0 clamp(30px, 2.5vw, 48px);
-    height: clamp(30px, 2.5vw, 48px);
-    isolation: isolate;
-    justify-content: center;
-    position: relative;
-
-    > img {
-      height: 100%;
-      image-rendering: pixelated;
-      inset: 0;
-      object-fit: contain;
-      position: absolute;
-      width: 100%;
-      z-index: 1;
-    }
-
-    > span {
-      align-items: center;
-      color: #f7edd7;
-      display: flex;
-      font-size: 0.78em;
-      font-weight: 700;
-      inset: 0;
-      justify-content: center;
-      line-height: 1;
-      pointer-events: none;
-      position: absolute;
-      z-index: 3 !important;
-    }
-  }
-
-  .doors-tutorial-step p {
-    font-size: clamp(20px, 1.49vw, 28px);
-    letter-spacing: 0.08em;
-    line-height: 1.22;
-    max-width: 390px;
-    text-align: left;
-  }
-
-  .doors-tutorial-step p span,
-  .doors-tutorial-about p span {
-    color: #69a6ff;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .doors-tutorial-arrow {
-    align-self: start;
-    font-family: "Pixelify Sans", monospace;
-    font-size: clamp(15px, 1.25vw, 24px);
-    font-weight: 700;
-    line-height: 1;
-    margin-top: 1px;
+    line-height: 0.86;
     text-align: center;
   }
 
-  @media (width >= 901px) and (height <= 1200px) {
-    .doors-tutorial-content {
-      gap: clamp(18px, 2.5vh, 30px);
-      padding-bottom: clamp(16px, 2.5vh, 30px);
-      padding-top: clamp(18px, 3vh, 36px);
-    }
+  .doors-tutorial-intro-copy h1 {
+    color: #e3f0ff;
+    font-size: clamp(32px, 2.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.05;
+    margin-bottom: clamp(12px, 2.6vh, 28px);
   }
 
-  .doors-tutorial-start {
-    margin-top: auto;
+  .doors-tutorial-intro-copy p,
+  .doors-tutorial-intro-summary {
+    color: #f7ecd6;
+    font-size: clamp(18px, 1.67vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.195;
+  }
+
+  .doors-tutorial-intro-summary {
+    margin-top: clamp(40px, 13vh, 140px);
+    width: 100%;
+  }
+
+  .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
+    align-items: start;
+    display: grid;
+    gap: clamp(24px, 3vw, 58px);
+    grid-template-columns: minmax(0, 650fr) minmax(0, 912fr);
+    left: 50%;
+    position: absolute;
+    top: 16.95vh;
+    transform: translateX(-50%);
+    width: min(1620px, 84vw);
+  }
+
+  .doors-tutorial-step-copy {
+    color: #f7ecd6;
+    min-width: 0;
+  }
+
+  .doors-tutorial-step-number {
+    color: #e3f0ff;
+    display: block;
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(48px, 4.17vw, 80px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.15;
+    margin-bottom: clamp(14px, 1.6vh, 20px);
+  }
+
+  .doors-tutorial-step-copy p {
+    font-size: clamp(22px, 1.67vw, 32px);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.18;
+    max-width: 567px;
+  }
+
+  .doors-tutorial-step-copy p span {
+    color: #d7e4f7;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .doors-tutorial-desktop-preview {
+    aspect-ratio: 16 / 9;
+    background: #79a0cf;
+    border: 1px solid #d7e4f7;
+    box-shadow: 3px 4px 0 #171715;
+    margin-top: 1.95vh;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .doors-tutorial-wallpaper {
+    height: 100%;
+    image-rendering: pixelated;
+    inset: 0;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+  }
+
+  .doors-tutorial-preview-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6%;
+    left: 1.7%;
+    position: absolute;
+    top: 2.5%;
+    width: 9%;
+  }
+
+  .doors-tutorial-preview-icon {
+    align-items: center;
+    color: #24231f;
+    display: flex;
+    flex-direction: column;
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(5px, 0.48vw, 9px);
+    line-height: 1;
+    text-align: center;
+    text-shadow: 0 1px #f7ecd6;
+  }
+
+  .doors-tutorial-gif-slot {
+    align-items: center;
+    color: #090909;
+    display: flex;
+    font-family: Arial, sans-serif;
+    font-size: clamp(20px, 3.33vw, 64px);
+    font-weight: 400;
+    height: 55%;
+    justify-content: center;
+    left: 27%;
+    line-height: 1;
+    position: absolute;
+    text-transform: lowercase;
+    top: 21%;
+    width: 50%;
+  }
+
+  .doors-tutorial-preview-taskbar {
+    align-items: center;
+    background: #8ba2c1;
+    border-top: 1px solid #292824;
+    bottom: 0;
+    color: #25241f;
+    display: flex;
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(5px, 0.47vw, 9px);
+    height: 6.2%;
+    justify-content: space-between;
+    left: 0;
+    position: absolute;
+    width: 100%;
+  }
+
+  .doors-tutorial-preview-start {
+    align-items: center;
+    background: #f7ecd6;
+    border: 1px solid #302e2a;
+    display: flex;
+    gap: 2%;
+    height: 88%;
+    justify-content: flex-start;
+    padding: 0 1.2%;
+    white-space: nowrap;
+    width: 14%;
+  }
+
+  .doors-tutorial-preview-tray {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+    height: 100%;
+    padding-right: 1.2%;
+  }
+
+  .doors-tutorial-preview-date {
+    line-height: 1;
+    text-align: center;
+  }
+
+  .doors-tutorial-actions {
+    align-items: center;
+    bottom: 14.35vh;
+    display: flex;
+    gap: clamp(12px, 2vw, 24px);
+    justify-content: center;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+    width: max-content;
+    z-index: 1;
+  }
+
+  .doors-tutorial-start-final {
+    min-width: 0;
+    width: min(368px, 84vw);
+  }
+
+  .doors-tutorial-back {
+    background: transparent;
+    color: #f7ecd6;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(15px, 1.15vw, 22px);
+    padding: 10px;
+    position: absolute;
+    right: calc(100% + 14px);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
+  .doors-tutorial-back:hover {
+    opacity: 90%;
   }
 
   .doors-tutorial-start:focus-visible,
+  .doors-tutorial-back:focus-visible,
   .doors-splash-start:focus-visible {
     outline: 2px solid #69a6ff;
     outline-offset: 5px;
@@ -1440,6 +1497,72 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-splash-titlebar .doors-boot-controls {
       transform: translate(4px, -3px);
     }
+  }
+
+  @media (width <= 900px) {
+    .doors-tutorial-screen { align-items: stretch; padding: 0; }
+    .doors-tutorial-window { min-height: 0; }
+    .doors-tutorial-content-multipage {
+      display: flex; flex-direction: column; height: 100%; overflow: hidden auto;
+      padding: 32px clamp(14px, 4vw, 36px);
+    }
+    .doors-tutorial-slide-intro { flex: 0 0 auto; padding-top: 0; width: 100%; }
+    .doors-tutorial-intro-top {
+      gap: clamp(12px, 3vw, 28px);
+      grid-template-columns: clamp(64px, 12vw, 104px) minmax(0, 1fr);
+    }
+    .doors-tutorial-question { font-size: clamp(76px, 12vw, 108px); }
+    .doors-tutorial-intro-copy h1 { font-size: clamp(23px, 4vw, 36px); margin-bottom: 12px; }
+    .doors-tutorial-intro-copy p, .doors-tutorial-intro-summary {
+      font-size: clamp(17px, 2.3vw, 22px); line-height: 1.35;
+    }
+    .doors-tutorial-intro-summary { margin-top: 24px; }
+    .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
+      flex: 0 0 auto; gap: 20px; grid-template-columns: minmax(0, 1fr);
+      left: auto; position: relative; top: auto; transform: none; width: 100%;
+    }
+    .doors-tutorial-step-number { font-size: clamp(40px, 8vw, 64px); margin-bottom: 12px; }
+    .doors-tutorial-step-copy p { font-size: clamp(20px, 2.7vw, 25px); line-height: 1.35; max-width: 100%; }
+    .doors-tutorial-desktop-preview { margin: 0 auto; max-width: 912px; width: 100%; }
+    .doors-tutorial-actions {
+      align-self: stretch;
+      background: linear-gradient(180deg, rgb(49 48 44 / 0%), #31302c 26%);
+      bottom: 0; flex: 0 0 auto; justify-content: center; left: auto;
+      margin-top: auto; padding: 20px 0 max(18px, env(safe-area-inset-bottom));
+      position: sticky; transform: none; width: 100%;
+    }
+    .doors-tutorial-back { position: static; right: auto; }
+    .doors-tutorial-start { font-size: clamp(16px, 2.4vw, 21px); min-width: 150px; }
+  }
+  @media (width <= 700px) {
+    .doors-tutorial-screen { align-items: stretch; padding: 0; }
+    .doors-tutorial-window { border-width: 5px; height: 100%; width: 100%; }
+    .doors-tutorial-titlebar { flex-basis: 48px; flex-shrink: 0; font-size: 17px; padding-left: 12px; }
+    .doors-tutorial-titlebar > span:first-child,
+    .doors-tutorial-titlebar .doors-boot-controls { transform: none; }
+    .doors-tutorial-content-multipage { padding: 24px 16px 0; }
+    .doors-tutorial-intro-top { gap: 12px; grid-template-columns: 48px minmax(0, 1fr); }
+    .doors-tutorial-question { font-size: clamp(58px, 14vw, 78px); }
+    .doors-tutorial-intro-copy h1 {
+      font-size: clamp(21px, 5.4vw, 27px); letter-spacing: 0.04em; line-height: 1.1;
+    }
+    .doors-tutorial-intro-copy p, .doors-tutorial-intro-summary {
+      font-size: clamp(16px, 4.2vw, 19px); letter-spacing: 0.04em; line-height: 1.35;
+    }
+    .doors-tutorial-intro-summary { margin-top: 20px; }
+    .doors-tutorial-slide:not(.doors-tutorial-slide-intro) { gap: 16px; }
+    .doors-tutorial-step-number { font-size: 42px; line-height: 1; margin-bottom: 10px; }
+    .doors-tutorial-step-copy p { font-size: clamp(18px, 5vw, 21px); letter-spacing: 0.035em; line-height: 1.38; }
+    .doors-tutorial-preview-icons { gap: 0; }
+    .doors-tutorial-preview-icon { font-size: clamp(5px, 1.2vw, 7px); }
+    .doors-tutorial-preview-taskbar { font-size: clamp(5px, 1.15vw, 7px); }
+    .doors-tutorial-actions { gap: 8px; justify-content: center; padding-top: 16px; }
+    .doors-tutorial-back { font-size: 15px; padding: 8px 4px; }
+    .doors-tutorial-start { font-size: clamp(14px, 4vw, 17px); height: 40px; min-width: 128px; padding: 0 8px; }
+    .doors-tutorial-start-final { flex: 0 1 auto; min-width: 0; width: min(242px, calc(100% - 88px)); }
+  }
+  @media (width <= 360px) {
+    .doors-tutorial-start-final { font-size: 12px; }
   }
 `;
 
