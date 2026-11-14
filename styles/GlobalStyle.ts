@@ -130,7 +130,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-keyword-gif-overlay {
     align-items: center;
     animation: doors-keyword-overlay-in 500ms ease-out both;
-    background: rgb(0 0 0 / 86%);
+    background: rgb(0 0 0 / 92%);
     display: flex;
     inset: 0;
     justify-content: center;
@@ -192,9 +192,13 @@ const GlobalStyle = styled.createGlobalStyle`
     color: #ffffff;
     font-family: "Pixelify Sans", monospace;
     font-size: clamp(21px, calc(2.2vw + 3px), 27px);
-    line-height: 1.5;
+    line-height: 1.7;
     max-width: calc(100% - 48px);
     width: min(56vw, 860px);
+  }
+
+  .doors-keyword-notice-copy {
+    transform: translateY(-10px);
   }
 
   .doors-keyword-notice-copy p {
@@ -258,7 +262,7 @@ const GlobalStyle = styled.createGlobalStyle`
   @media (max-width: 600px) {
     .doors-keyword-notice {
       font-size: clamp(19px, calc(4.5vw + 3px), 23px);
-      line-height: 1.45;
+      line-height: 1.6;
       max-width: calc(100% - 40px);
       width: calc(100% - 40px);
     }
