@@ -18,30 +18,36 @@ const KEYWORD_OVERLAY_FADE_MS = 500;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
 type KeywordNoticePart = { text: string; strong?: boolean };
-const KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
+const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
   [
     { text: "Você sabia que: ", strong: true },
-    { text: "as Lan Houses tiveram um papel importante na " },
-    { text: "alfabetização digital", strong: true },
-    { text: ", permitindo que muitas pessoas aprendessem a utilizar computadores, digitar textos, pesquisar na internet e explorar programas como o Word." },
+    { text: "as Lan Houses foram, para muita gente, o primeiro contato com ferramentas de edição de imagem e vídeo?" },
   ],
   [
-    { text: "Para quem não tinha acesso à tecnologia em casa, esses espaços representavam uma oportunidade de desenvolver novas habilidades e " },
-    { text: "conquistar mais autonomia", strong: true },
-    { text: "." },
+    { text: "Em um tempo em que produzir conteúdo parecia restrito a grandes emissoras e a quem tinha muito dinheiro, era ali que fragmentos do dia a dia ganhavam cortes, cores e efeitos pela primeira vez." },
   ],
   [
-    { text: "Mais do que acessar a internet, era aprender a utilizar a tecnologia para estudar, trabalhar e se comunicar." },
+    { text: "Muita gente se apaixonou por criar e foi atrás de aprender a editar e publicar o próprio conteúdo, e esses espaços se tornaram a porta de entrada para o início de muitas trajetórias criativas." },
   ],
 ];
-const KEYWORD_NOTICE_ACCESSIBLE_TEXT = KEYWORD_NOTICE_PARAGRAPHS
-  .map((paragraph) => paragraph.map((part) => part.text).join(""))
-  .join("\n\n");
-const KEYWORD_NOTICE_TOTAL_CHARACTERS = KEYWORD_NOTICE_PARAGRAPHS.reduce(
-  (total, paragraph) =>
-    total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
-  0,
-);
+const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
+  informacao: [
+    [
+      { text: "Você sabia que a Wikipedia foi criada em 2001 e se tornou uma das maiores enciclopédias livres da internet?" },
+    ],
+    [
+      { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares. Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
+    ],
+  ],
+};
+const getKeywordNoticeText = (paragraphs: KeywordNoticePart[][]): string =>
+  paragraphs.map((paragraph) => paragraph.map((part) => part.text).join("")).join("\n\n");
+const getKeywordNoticeLength = (paragraphs: KeywordNoticePart[][]): number =>
+  paragraphs.reduce(
+    (total, paragraph) =>
+      total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
+    0,
+  );
 type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "dismissing";
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",
@@ -61,7 +67,7 @@ const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
   ...BOOT_LOADING_FRAME_SEQUENCE,
 ]).flat();
 
-type SessionStatusProps = { bonusSeconds: number; startedAt: number };
+type SessionStatusProps = { bonusSeconds: number; keysCollected: number; startedAt: number };
 
 type StatusPosition = { x: number; y: number };
 
@@ -97,7 +103,7 @@ const WindowControls: FC = () => (
   </span>
 );
 
-const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, startedAt }) => {
+const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, startedAt }) => {
   const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
   const [position, setPosition] = useState<null | StatusPosition>(null);
   const statusRef = useRef<HTMLElement | null>(null);
@@ -259,9 +265,9 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, startedAt }) => {
     <aside
       ref={statusRef}
       aria-label={
-        `Latência System. Tempo decorrido ${  time  }. Valor R$ 4,00.`
+        `Latência System. Tempo restante ${time}. ${keysCollected} de 5 chaves resgatadas. Valor R$ 4,00.`
       }
-      className="doors-session-status"
+      className="doors-session-status doors-session-status--centered"
       onPointerCancel={endDrag}
       onPointerDown={startDrag}
       onPointerMove={moveDrag}
@@ -287,7 +293,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, startedAt }) => {
           <strong>Valor:</strong> R$4,00
         </span>
       </div>
-      <p className="notice">Para usar por mais tempo fale com o proprietário</p>
+      <p className="notice">Você já pegou {keysCollected} de 5 chaves</p>
     </aside>
   );
 };
@@ -308,6 +314,10 @@ const Desktop: FC = ({ children }) => {
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
   const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
+  const [activeKeyword, setActiveKeyword] = useState("");
+  const noticeParagraphs = KEYWORD_NOTICE_PARAGRAPHS_BY_KEY[activeKeyword] ?? DEFAULT_KEYWORD_NOTICE_PARAGRAPHS;
+  const noticeAccessibleText = getKeywordNoticeText(noticeParagraphs);
+  const noticeTotalCharacters = getKeywordNoticeLength(noticeParagraphs);
   const [keywordGifSequence, setKeywordGifSequence] = useState(0);
   const keywordGifSequenceRef = useRef(0);
   const keywordGifTimeoutRef = useRef<null | number>(null);
@@ -374,6 +384,7 @@ const Desktop: FC = ({ children }) => {
       if (collectedKeywordsRef.current.has(normalized)) return;
 
       collectedKeywordsRef.current.add(normalized);
+      setActiveKeyword(normalized);
       setBonusSeconds((current) => current + 2 * 60);
       const nextSequence = keywordGifSequenceRef.current + 1;
       keywordGifSequenceRef.current = nextSequence;
@@ -403,16 +414,16 @@ const Desktop: FC = ({ children }) => {
     const typingInterval = window.setInterval(() => {
       currentCharacters = Math.min(
         currentCharacters + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
-        KEYWORD_NOTICE_TOTAL_CHARACTERS,
+        noticeTotalCharacters,
       );
       setTypedNoticeCharacters(currentCharacters);
-      if (currentCharacters >= KEYWORD_NOTICE_TOTAL_CHARACTERS) {
+      if (currentCharacters >= noticeTotalCharacters) {
         window.clearInterval(typingInterval);
       }
     }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
 
     return () => window.clearInterval(typingInterval);
-  }, [keywordOverlayPhase]);
+  }, [keywordOverlayPhase, noticeTotalCharacters]);
 
   useWallpaper(desktopRef);
 
@@ -612,12 +623,12 @@ const Desktop: FC = ({ children }) => {
                 className="doors-keyword-notice-sr-only"
                 id="doors-keyword-notice-description"
               >
-                {KEYWORD_NOTICE_ACCESSIBLE_TEXT}
+                {noticeAccessibleText}
               </p>
               <div aria-hidden="true" className="doors-keyword-notice-copy">
                 {(() => {
                   let paragraphStart = 0;
-                  return KEYWORD_NOTICE_PARAGRAPHS.map((paragraph, paragraphIndex) => {
+                  return noticeParagraphs.map((paragraph, paragraphIndex) => {
                     const paragraphLength = paragraph.reduce(
                       (total, part) => total + part.text.length,
                       0,
@@ -652,7 +663,7 @@ const Desktop: FC = ({ children }) => {
                   });
                 })()}
               </div>
-              {typedNoticeCharacters >= KEYWORD_NOTICE_TOTAL_CHARACTERS && (
+              {typedNoticeCharacters >= noticeTotalCharacters && (
                 <button
                   className="doors-keyword-notice-continue"
                   onClick={continueFromKeywordNotice}
@@ -665,7 +676,7 @@ const Desktop: FC = ({ children }) => {
           )}
         </div>
       )}
-      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} startedAt={startedAt} />}
+      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} keysCollected={Math.min(collectedKeywordsRef.current.size, 5)} startedAt={startedAt} />}
       {startedAt === null && (
         <>
           {bootStage === "loading" && (
