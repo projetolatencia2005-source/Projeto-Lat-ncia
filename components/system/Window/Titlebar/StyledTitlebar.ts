@@ -90,7 +90,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     margin-left: 5px;
     max-width: calc(100% - 40px);
     min-width: 0;
-    overflow-x: clip;
+    overflow-x: auto;
     overflow-y: visible;
     width: max-content;
   }
@@ -125,9 +125,9 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
     box-sizing: border-box;
     display: flex;
-    flex: 0 1 190px;
+    flex: 0 0 128px;
     height: 29px;
-    min-width: 112px;
+    min-width: 128px;
     overflow: hidden;
     padding: 0 3px 0 0;
 
