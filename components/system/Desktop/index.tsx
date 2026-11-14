@@ -267,14 +267,14 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
       aria-label={
         `Latência System. Tempo restante ${time}. ${keysCollected} de 5 chaves resgatadas. Valor R$ 4,00.`
       }
-      className="doors-session-status doors-session-status--centered"
+      className={`doors-session-status ${position ? "doors-session-status--movable" : "doors-session-status--centered"}`}
       onPointerCancel={endDrag}
       onPointerDown={startDrag}
       onPointerMove={moveDrag}
       onPointerUp={endDrag}
       style={
         position
-          ? { left: position.x, right: "auto", top: position.y }
+          ? { left: position.x, right: "auto", top: position.y, transform: "none" }
           : undefined
       }
     >

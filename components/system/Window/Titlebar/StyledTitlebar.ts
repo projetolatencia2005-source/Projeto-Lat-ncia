@@ -133,9 +133,8 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
     &.active {
       background: #f7edd7;
-      box-shadow:
-        2px 0 0 rgb(49 48 44 / 35%),
-        0 2px 0 #f7edd7;
+      box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
+      border-bottom: 0;
       height: 31px;
       position: relative;
       z-index: 1;

@@ -1197,11 +1197,11 @@ const GlobalStyle = styled.createGlobalStyle`
       font-weight: 700;
     }
     .notice {
-      background: #dbd0ba;
+      background: #D7E4F7;
       border: 2px solid #31302c;
       align-items: center;
       display: flex;
-      font-size: clamp(10px, 0.83vw, 16px);
+      font-size: calc(clamp(10px, 0.83vw, 16px) + 2.67px);
       line-height: 1.15;
       justify-content: center;
       margin: 0;

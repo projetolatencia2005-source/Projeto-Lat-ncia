@@ -4288,7 +4288,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 4px 5px 0 #31302c;
       display: grid;
-      grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
+      grid-template-columns: minmax(220px, 0.24fr) minmax(0, 0.76fr);
       height: 983px;
       margin: 0 2.08vw;
       overflow: hidden;
@@ -4948,7 +4948,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 4px 5px 0 #31302c;
       display: grid;
-      grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
+      grid-template-columns: minmax(220px, 0.24fr) minmax(0, 0.76fr);
       height: 983px;
       margin: 0 2.08vw;
       overflow: hidden;
@@ -5836,7 +5836,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-bubble .bubble-chat-layout {
-    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
+    grid-template-columns: minmax(220px, 0.24fr) minmax(0, 0.76fr);
     height: 655px;
   }
 
@@ -6025,7 +6025,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     box-shadow: 5px 6px 0 #31302c;
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 0.58fr);
+    grid-template-columns: minmax(220px, 0.24fr) minmax(0, 0.76fr);
     height: min(655px, calc(100vh - 300px));
     margin: 0 2.08vw;
     min-height: 520px;
@@ -6238,6 +6238,451 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     .site-youspace .you-player-feedback {
       font-size: 14px;
       top: calc(50% + 34px);
+    }
+  }
+
+\n
+  .site-youspace .you-watch-layout {
+    align-items: start;
+    display: grid;
+    flex: 1 0 auto;
+    gap: 0;
+    grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+    padding: 40px 3vw 72px;
+    width: 100%;
+  }
+
+  .site-youspace .you-watch-main {
+    min-width: 0;
+    padding-right: 34px;
+  }
+
+  .site-youspace .you-watch-main .you-player {
+    margin: 0;
+    max-width: none;
+    padding: 0;
+    width: 100%;
+  }
+
+  .site-youspace .you-watch-main .player-screen {
+    aspect-ratio: 1016 / 572;
+    background: #111;
+    border: 3px solid #111;
+    min-height: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .site-youspace .you-watch-main .player-screen > img {
+    display: block;
+    height: 100%;
+    max-height: none;
+    max-width: none;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .site-youspace .you-watch-main .player-screen .you-video-duration {
+    background: #111;
+    bottom: 0;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1;
+    padding: 4px 7px;
+    position: absolute;
+    right: 0;
+  }
+
+  .site-youspace .you-watch-main .you-player .player-controls {
+    background: transparent;
+    border: 0;
+    color: #31302c;
+    display: block;
+    padding: 0;
+  }
+
+  .site-youspace .you-watch-info h1 {
+    border-bottom: 2px solid #aaa;
+    font-size: clamp(22px, 1.8vw, 32px);
+    font-weight: 400;
+    line-height: 1.18;
+    margin: 12px 0 0;
+    padding: 0 4px 10px;
+  }
+
+  .site-youspace .you-watch-meta-row {
+    align-items: center;
+    border-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    padding: 14px 4px 18px;
+  }
+
+  .site-youspace .you-watch-channel {
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    gap: 10px;
+    min-width: 220px;
+  }
+
+  .site-youspace .you-watch-channel > img {
+    border: 1px solid #31302c;
+    border-radius: 50%;
+    flex: 0 0 57px;
+    height: 57px;
+    object-fit: cover;
+    width: 57px;
+  }
+
+  .site-youspace .you-watch-channel > div {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .site-youspace .you-watch-channel strong {
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  .site-youspace .you-watch-channel small {
+    color: #777;
+    font-size: 11px;
+  }
+
+  .site-youspace .you-watch-channel > button {
+    background: #f33;
+    border: 0;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 4px;
+    padding: 5px 8px;
+  }
+
+  .site-youspace .you-watch-channel > button.is-subscribed {
+    background: #d7e4f7;
+    color: #31302c;
+  }
+
+  .site-youspace .you-watch-actions {
+    align-items: center;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 12px;
+  }
+
+  .site-youspace .you-watch-actions button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: #31302c;
+    display: flex;
+    flex-direction: column;
+    font-size: 17px;
+    gap: 2px;
+    min-width: 34px;
+    padding: 4px;
+  }
+
+  .site-youspace .you-watch-actions button span {
+    font-size: 11px;
+  }
+
+  .site-youspace .you-comments-panel {
+    border: 2px solid #111;
+    box-shadow: 4px 5px 0 #111;
+    margin-top: 8px;
+    padding: 16px 20px 20px;
+  }
+
+  .site-youspace .you-comments-panel h2 {
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0 0 14px;
+  }
+
+  .site-youspace .you-comment-composer {
+    align-items: center;
+    background: #f7f7f7;
+    border: 2px solid #111;
+    box-shadow: 3px 4px 0 #111;
+    display: flex;
+    gap: 10px;
+    margin: 0 8px 22px;
+    min-height: 48px;
+    padding: 5px 8px;
+  }
+
+  .site-youspace .you-comment-composer > span {
+    background: #d7e4f7;
+    border: 1px solid #31302c;
+    flex: 0 0 28px;
+    font-size: 17px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  .site-youspace .you-comment-composer input {
+    background: transparent;
+    border: 0;
+    color: #31302c;
+    flex: 1 1 auto;
+    font: inherit;
+    min-width: 0;
+    outline: 0;
+    user-select: text;
+  }
+
+  .site-youspace .you-comment-composer button {
+    background: #f7f7f7;
+    border: 2px solid #111;
+    box-shadow: 2px 2px 0 #111;
+    font-size: 18px;
+    height: 28px;
+    line-height: 20px;
+    width: 30px;
+  }
+
+  .site-youspace .you-comments-panel ol {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+  }
+
+  .site-youspace .you-comment {
+    align-items: flex-start;
+    background: #fff;
+    border: 2px solid #111;
+    box-shadow: 3px 4px 0 #111;
+    display: flex;
+    gap: 12px;
+    min-width: 0;
+    padding: 9px 10px 6px;
+  }
+
+  .site-youspace .you-comment-avatar {
+    border: 1px solid #111;
+    flex: 0 0 24px;
+    height: 24px;
+    width: 24px;
+  }
+
+  .site-youspace .you-comment-body {
+    min-width: 0;
+  }
+
+  .site-youspace .you-comment-body > p:first-child {
+    font-size: 11px;
+    margin: 0 0 2px;
+  }
+
+  .site-youspace .you-comment-body > p:first-child strong {
+    font-weight: 400;
+  }
+
+  .site-youspace .you-comment-body > p:first-child small {
+    color: #888;
+  }
+
+  .site-youspace .you-comment-body > p:nth-child(2) {
+    font-size: clamp(13px, 0.95vw, 17px);
+    line-height: 1.25;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .site-youspace .you-comment-actions {
+    align-items: center;
+    display: flex;
+    gap: 7px;
+    margin-top: 5px;
+  }
+
+  .site-youspace .you-comment-actions button {
+    background: transparent;
+    border: 0;
+    font-size: 11px;
+    padding: 0;
+  }
+
+  .site-youspace .you-watch-related {
+    border-left: 2px solid #c7c7c7;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    min-width: 0;
+    padding: 0 0 20px 34px;
+  }
+
+  .site-youspace .you-related-video {
+    align-items: start;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+    min-width: 0;
+  }
+
+  .site-youspace .you-related-thumbnail {
+    aspect-ratio: 16 / 9;
+    background: #fff;
+    border: 2px solid #111;
+    box-shadow: 5px 6px 0 #111;
+    display: block;
+    line-height: 0;
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    width: calc(100% - 6px);
+  }
+
+  .site-youspace .you-related-thumbnail img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .site-youspace .you-related-thumbnail span {
+    background: #111;
+    bottom: 0;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    padding: 3px 5px;
+    position: absolute;
+    right: 0;
+  }
+
+  .site-youspace .you-related-title {
+    background: transparent;
+    border: 0;
+    color: #078bff;
+    display: block;
+    font-size: clamp(15px, 1.05vw, 20px);
+    line-height: 1.15;
+    margin: 0 0 8px;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline !important;
+    text-underline-offset: 2px;
+    width: 100%;
+  }
+
+  .site-youspace .you-related-video p {
+    font-size: clamp(11px, 0.72vw, 14px);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .site-youspace .you-watch-related .you-load-more {
+    margin: 18px auto 0;
+  }
+
+  .site-youspace .you-load-message {
+    color: #b42318;
+    font-size: 14px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .site-youspace .you-video-grid,
+  .site-youspace .you-video-card {
+    overflow: visible;
+  }
+
+  .site-youspace .you-video-card {
+    padding-bottom: 6px;
+  }
+
+  .site-youspace .you-video-card .you-video-thumbnail {
+    box-shadow: 5px 6px 0 #111 !important;
+    margin: 0 6px 6px 0;
+    width: calc(100% - 6px);
+  }
+
+  .site-youspace .you-sidebar-panel ol li button {
+    text-decoration: underline !important;
+    text-underline-offset: 2px;
+  }
+
+  @container (max-width: 900px) {
+    .site-youspace .you-watch-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+      padding: 28px 18px 48px;
+    }
+
+    .site-youspace .you-watch-main {
+      padding-right: 0;
+    }
+
+    .site-youspace .you-watch-related {
+      border-left: 0;
+      border-top: 2px solid #c7c7c7;
+      padding: 28px 0 0;
+    }
+
+    .site-youspace .you-related-video {
+      grid-template-columns: minmax(120px, 0.4fr) minmax(0, 0.6fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .site-youspace .you-watch-layout {
+      padding: 16px 12px 34px;
+    }
+
+    .site-youspace .you-watch-meta-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 2px 16px;
+    }
+
+    .site-youspace .you-watch-channel {
+      gap: 8px;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .site-youspace .you-watch-channel > img {
+      flex-basis: 46px;
+      height: 46px;
+      width: 46px;
+    }
+
+    .site-youspace .you-watch-channel strong {
+      font-size: 15px;
+    }
+
+    .site-youspace .you-watch-channel small {
+      font-size: 10px;
+    }
+
+    .site-youspace .you-watch-channel > button {
+      font-size: 10px;
+      margin-left: auto;
+    }
+
+    .site-youspace .you-watch-actions {
+      align-self: flex-end;
+    }
+
+    .site-youspace .you-comments-panel {
+      padding: 12px 10px 14px;
+    }
+
+    .site-youspace .you-comment-composer {
+      margin: 0 2px 18px;
+    }
+
+    .site-youspace .you-related-video {
+      gap: 12px;
+      grid-template-columns: minmax(108px, 0.4fr) minmax(0, 0.6fr);
     }
   }
 
