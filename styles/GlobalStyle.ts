@@ -132,6 +132,7 @@ const GlobalStyle = styled.createGlobalStyle`
     animation: doors-keyword-overlay-in 500ms ease-out both;
     background: rgb(0 0 0 / 92%);
     display: flex;
+    transition: background-color 700ms ease;
     inset: 0;
     justify-content: center;
     overflow: hidden;
@@ -141,7 +142,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-keyword-gif-overlay--playing {
-    background: rgb(0 0 0 / 78%);
+    background: rgb(0 0 0 / 70%);
   }
 
   .doors-keyword-gif-overlay--notice {
@@ -1614,6 +1615,24 @@ const GlobalStyle = styled.createGlobalStyle`
   @media (width <= 360px) {
     .doors-tutorial-start-final { font-size: 12px; }
   }
+  .doors-tutorial-intro-copy h1,
+  .doors-tutorial-intro-copy p,
+  .doors-tutorial-intro-summary {
+    text-align: left;
+  }
+
+  .doors-session-status--centered {
+    bottom: auto !important;
+    left: 50% !important;
+    right: auto !important;
+    top: 8px !important;
+    transform: translateX(-50%);
+  }
+
+  .doors-session-status--centered .notice {
+    text-align: center;
+  }
+
 `;
 
 export default GlobalStyle;
