@@ -2171,6 +2171,50 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
+  /* Preview hotfix: bind the annotated spacing and sizing changes to the global stylesheet. */
+  .site-youspace .you-load-message {
+    margin-top: 20px !important;
+  }
+
+  .site-youspace .you-comments-panel > .you-comment-composer {
+    margin-bottom: 20px !important;
+  }
+
+  .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  .site-bubble .bubble-profile-cover {
+    min-height: clamp(700px, 38vw, 780px) !important;
+  }
+
+  .site-bubble .bubble-inbox-search {
+    box-sizing: border-box !important;
+    flex: 0 0 150px !important;
+    gap: 0 !important;
+    height: 150px !important;
+    max-height: 150px !important;
+    min-height: 150px !important;
+  }
+
+  .site-bubble .bubble-inbox-search input,
+  .site-bubble .bubble-inbox-search button {
+    box-sizing: border-box !important;
+    height: 39px !important;
+    min-height: 39px !important;
+  }
+
+  .site-bubble .bubble-inbox-search button {
+    margin-left: 0 !important;
+  }
+
+  @media (max-width: 720px) {
+    .site-bubble .bubble-profile-cover {
+      min-height: 620px !important;
+    }
+  }
+
 `;
 
 export default GlobalStyle;
