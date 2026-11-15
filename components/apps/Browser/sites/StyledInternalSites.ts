@@ -7620,6 +7620,114 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
 
+  /* Correções consolidadas para o preview solicitado. */
+  && .site-youspace .you-comment-actions button[aria-label^="Responder a"] {
+    position: relative !important;
+    top: -3px !important;
+  }
+
+  && .site-youspace .you-comment-actions button[aria-label="Curtir comentário"] > span {
+    position: relative !important;
+    top: -4px !important;
+  }
+
+  && .site-youspace .you-comment-reply {
+    border-left: 0 !important;
+    box-shadow: none !important;
+  }
+
+  && .site-youspace .you-watch-layout {
+    grid-template-columns: minmax(0, 981px) minmax(280px, 1fr) !important;
+  }
+
+  && .site-youspace .you-watch-main,
+  && .site-youspace .you-watch-main .you-player {
+    box-sizing: border-box !important;
+    max-width: 981px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen > img {
+    height: 100% !important;
+    inset: 0 !important;
+    max-height: none !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    position: absolute !important;
+    width: 100% !important;
+    z-index: 0 !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen > button {
+    z-index: 2 !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen .you-player-feedback {
+    left: 50% !important;
+    margin: 0 !important;
+    max-width: calc(100% - 32px) !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 20 !important;
+  }
+
+  && .site-youspace .you-video-card .you-video-thumbnail {
+    border: 2px solid #111 !important;
+    box-shadow: 7px 8px 0 #111 !important;
+  }
+
+  && .site-youspace .you-topbar form.site-search > button {
+    border: 2px solid #31302c !important;
+  }
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  && .site-bubble .bubble-inbox-search {
+    box-sizing: border-box !important;
+    flex: 0 0 150px !important;
+    gap: 0 !important;
+    height: 150px !important;
+    max-height: 150px !important;
+    min-height: 150px !important;
+  }
+
+  && .site-bubble .bubble-inbox-search input {
+    border-right: 0 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  && .site-bubble .bubble-inbox-search button {
+    border-left: 0 !important;
+    flex: 0 0 39px !important;
+    height: 39px !important;
+    min-height: 39px !important;
+    width: 39px !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent {
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+
+  && .site-bubble .bubble-view-profile {
+    white-space: nowrap !important;
+  }
+
 `;
 
 export default StyledInternalSites;
