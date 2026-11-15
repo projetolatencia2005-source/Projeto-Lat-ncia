@@ -7128,14 +7128,19 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
 
-  /* Final fixes for the Bubble conversation and YouSpace player. */
-  .site-bubble .bubble-view-profile { color: #31302c !important; }
-  .site-bubble .bubble-chat-layout {
+  /* Final, high-specificity layout rules for the requested preview corrections. */
+  && .site-bubble .bubble-view-profile {
+    color: #31302c !important;
+  }
+
+  && .site-bubble .bubble-chat-layout {
     box-sizing: border-box;
-    height: min(620px, calc(100vh - 320px)) !important;
+    grid-template-columns: minmax(220px, 24%) minmax(0, 1fr) !important;
+    height: min(620px, calc(100vh - 300px)) !important;
     min-height: min(500px, calc(100vh - 320px)) !important;
   }
-  .site-bubble .bubble-inbox-search {
+
+  && .site-bubble .bubble-inbox-search {
     align-items: center;
     box-sizing: border-box;
     flex: 0 0 150px !important;
@@ -7143,57 +7148,105 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     max-height: 150px !important;
     min-height: 150px !important;
   }
-  .site-bubble .bubble-contact-list { flex: 1 1 auto; min-height: 0; }
-  .site-bubble .bubble-conversation {
+
+  && .site-bubble .bubble-contact-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  && .site-bubble .bubble-conversation {
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
     min-height: 0 !important;
   }
-  .site-bubble .bubble-conversation-header { flex: 0 0 100px !important; }
-  .site-bubble .bubble-message-list {
+
+  && .site-bubble .bubble-conversation-header {
+    flex: 0 0 100px !important;
+    min-height: 100px !important;
+  }
+
+  && .site-bubble .bubble-message-list {
+    align-items: stretch !important;
+    display: flex !important;
     flex: 1 1 0 !important;
+    flex-direction: column !important;
     min-height: 0 !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
   }
-  .site-bubble .bubble-message-row {
+
+  && .site-bubble .bubble-message-row {
+    align-items: flex-end !important;
     box-sizing: border-box !important;
     display: flex !important;
+    flex: 0 0 auto !important;
     width: 100% !important;
   }
-  .site-bubble .bubble-message-row.is-sent {
+
+  && .site-bubble .bubble-message-row.is-received {
+    justify-content: flex-start !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent {
+    align-self: stretch !important;
     justify-content: flex-end !important;
+    margin-left: 0 !important;
     width: 100% !important;
   }
-  .site-bubble .bubble-message-row.is-sent p { margin-left: auto !important; }
-  .site-bubble .bubble-message-composer {
-    box-sizing: border-box !important;
+
+  && .site-bubble .bubble-message-row.is-sent > p {
+    background: #ffdac5 !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+
+  && .site-bubble .bubble-message-composer {
+    box-sizing: border-box;
     flex: 0 0 100px !important;
     min-height: 100px !important;
   }
-  .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
     border: 2px solid #31302c !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
   }
-  .site-youspace .you-watch-main .you-player {
-    margin: 0 0 0 auto !important;
+
+  && .site-youspace .you-watch-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr) !important;
+  }
+
+  && .site-youspace .you-watch-main {
+    min-width: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  && .site-youspace .you-watch-main .you-player {
+    margin: 0 !important;
     max-width: none !important;
     padding: 0 !important;
     width: 100% !important;
   }
-  .site-youspace .you-watch-main .player-screen {
+
+  && .site-youspace .you-watch-main .player-screen {
     aspect-ratio: 1016 / 572 !important;
+    min-height: 0 !important;
     overflow: hidden !important;
     position: relative !important;
     width: 100% !important;
   }
-  .site-youspace .you-watch-main .player-screen > img {
+
+  && .site-youspace .you-watch-main .player-screen > img {
+    display: block !important;
     height: 100% !important;
+    max-height: none !important;
+    max-width: none !important;
     object-fit: cover !important;
     width: 100% !important;
   }
-  .site-youspace .you-watch-main .you-player-feedback {
+
+  && .site-youspace .you-watch-main .you-player-feedback {
     left: 50% !important;
     margin: 0 !important;
     max-width: calc(100% - 32px) !important;
@@ -7202,20 +7255,35 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     transform: translate(-50%, -50%) !important;
     z-index: 20 !important;
   }
-  .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
-  .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
+
+  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
+  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
     transform: none !important;
   }
-  .site-youspace .you-load-message { margin-top: 60px !important; }
-  @container (max-width: 900px) {
-    .site-bubble .bubble-chat-layout { height: auto !important; min-height: 0 !important; }
-    .site-bubble .bubble-inbox-search {
-      flex: 0 0 150px !important;
-      height: 150px !important;
-      max-height: 150px !important;
-      min-height: 150px !important;
+
+  && .site-youspace .you-load-message {
+    margin-top: 60px !important;
+  }
+
+  @container bubble-site (max-width: 900px) {
+    && .site-bubble .bubble-chat-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+      height: auto !important;
+      min-height: 0 !important;
     }
-    .site-bubble .bubble-conversation { height: auto !important; min-height: 560px !important; }
+
+    && .site-bubble .bubble-conversation {
+      height: auto !important;
+      min-height: 560px !important;
+    }
+
+    && .site-youspace .you-watch-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    && .site-youspace .you-watch-main {
+      padding-right: 0 !important;
+    }
   }
 
 `;
