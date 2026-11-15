@@ -6892,7 +6892,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
 
-  .site-bubble .bubble-profile-card::after {
+  && .site-bubble .bubble-profile-card::after {
     left: max(110px, 48.78%);
   }
 
