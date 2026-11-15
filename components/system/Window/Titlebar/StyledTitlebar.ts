@@ -141,8 +141,8 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
     &.active {
       background: #f7edd7;
+      border-bottom: 0;
       box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
-      border-bottom: 2px solid #f7edd7;
       height: 31px;
       margin-bottom: -2px;
       position: relative;
@@ -160,7 +160,6 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
         z-index: 2;
       }
     }
-
     button {
       background: transparent;
       border: 0;
