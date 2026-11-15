@@ -475,10 +475,16 @@ const bubbleInitialConversations: BubbleConversation[] = [
         time: "14:29",
       },
       {
+        mine: false,
+        text: "confirmaram agora, começa às oito e a gente se encontra na entrada.",
+        time: "14:30",
+      },
+      {
         mine: true,
         text: "pode crer, posso levar aquela câmera pequena também!",
-        time: "14:38",
+        time: "14:33",
       },
+      { mine: false, text: "Fechado! eu levo os CDs", time: "14:30" },
       { day: "Hoje", mine: true, text: "Feliz aniversário!!!", time: "11:39" },
     ],
     name: "Malu Souza",
@@ -489,7 +495,22 @@ const bubbleInitialConversations: BubbleConversation[] = [
   {
     avatar: bubbleAvatar("larissa"),
     id: "larissa",
-    messages: [{ mine: false, text: "NÃO ACREDITO AMGGGG", time: "10:34" }],
+    messages: [
+      { mine: false, text: "boa noite ai mano", time: "13:08" },
+      { day: "Hoje", mine: false, text: "manoooooooooo tu não sabe !!", time: "10:00" },
+      { mine: true, text: "oque Falo ai", time: "10:21" },
+      {
+        mine: false,
+        text: "Eu finalmente achei o novo DVD do sandy e Junior para vender lá na boa do gato",
+        time: "10:21",
+      },
+      {
+        mine: true,
+        text: "Eu já sabia, e comprei um para mim e para você",
+        time: "10:28",
+      },
+      { mine: false, text: "NÃO ACREDITO AMGGGG", time: "10:34" },
+    ],
     name: "Larissa Oda",
     online: true,
     preview: "NÃO ACREDITO AMGGGG",
@@ -498,27 +519,94 @@ const bubbleInitialConversations: BubbleConversation[] = [
   {
     avatar: bubbleAvatar("jorge"),
     id: "jorge",
-    messages: [{ mine: false, text: "tchaaaaau", time: "ontem" }],
+    messages: [
+      {
+        mine: true,
+        text: "ta bom tchou, vê se você leva dinheiro a mais para a lan",
+        time: "14:29",
+      },
+      {
+        day: "Ontem",
+        mine: false,
+        text: "ana, acabei de voltar do encontro com a Stella.",
+        time: "19:18",
+      },
+      { mine: true, text: "Eai como Foi ??", time: "19:18" },
+      {
+        mine: false,
+        text: "Foi muito bom ela é perfeita e eu achei ela tão fofa e engraçada, acho que to apaixonado",
+        time: "19:19",
+      },
+      { mine: true, text: "Pelo amor de Deus que melação, credo", time: "19:20" },
+      { mine: false, text: "Aquela conexão Foi mágica.", time: "19:23" },
+    ],
     name: "Jorge Roberto",
     online: true,
-    preview: "tchaaaaau",
-    stamp: "ontem",
+    preview: "Aquela conexão Foi mágica.",
+    stamp: "19:23",
   },
   {
     avatar: bubbleAvatar("barbara"),
     id: "barbara",
     messages: [
-      { mine: false, text: "não mos isso foi muito...", time: "ontem" },
+      { mine: true, text: "Ba você vai estar na sua casa no dia 11", time: "14:29" },
+      {
+        day: "Ontem",
+        mine: false,
+        text: "oi eu saí mais cedo da lan houses ontem",
+        time: "19:18",
+      },
+      { mine: true, text: "você ??? por que ??", time: "19:18" },
+      {
+        mine: false,
+        text: "Meu pai ta Falando que eu to gastando muito dinheiro na lan house",
+        time: "19:19",
+      },
+      { mine: false, text: "aquele velho", time: "19:23" },
+      {
+        mine: true,
+        text: "mas também vc fica a semana toda na lan house",
+        time: "19:20",
+      },
+      { mine: false, text: "não mos isso Foi muito injusto", time: "19:23" },
     ],
     name: "Bárbara Guedes",
     online: false,
-    preview: "não mos isso foi muito...",
-    stamp: "ontem",
+    preview: "não mos isso Foi muito injusto",
+    stamp: "19:23",
   },
   {
     avatar: bubbleAvatar("rui"),
     id: "rui",
-    messages: [{ mine: false, text: "eai gatinha. O_-", time: "sexta-feira" }],
+    messages: [
+      { mine: false, text: "oi, tudo bem ? rs", time: "18:06" },
+      {
+        day: "11/11",
+        mine: false,
+        text: "oi eu saí mais cedo da lan houses ontem",
+        time: "19:18",
+      },
+      { mine: false, text: "oi, linda, vamos sair por Favor", time: "19:18" },
+      {
+        day: "12/11",
+        mine: false,
+        text: "olá gata, te achei mó bonita, me responde para a gente marcar de ir na praça.",
+        time: "14:14",
+      },
+      { mine: false, text: "eu sou um cara legal confia", time: "14:16" },
+      {
+        day: "13/11",
+        mine: false,
+        text: "nossa não vai me responder mesmo, sabia que vc não prestava",
+        time: "14:14",
+      },
+      {
+        day: "Sexta-feira",
+        mine: false,
+        text: "eai gatinha. O_-",
+        time: "19:33",
+      },
+    ],
     name: "Rui Mendonça",
     online: true,
     preview: "eai gatinha. O_-",
@@ -2886,7 +2974,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                             <img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" />
                             <span>Responder</span>
                           </button>
-                          <button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /> {comment.likes}</button>
+                          <button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{comment.likes}</span></button>
                           <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /></button>
                         </div>
                         {replyingTo === commentKey && (
