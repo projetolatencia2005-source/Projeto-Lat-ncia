@@ -23,6 +23,6 @@
     "target": "esnext",
     "types": ["jest", "wicg-file-system-access"]
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "work/lint-fix"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mts"]
 }

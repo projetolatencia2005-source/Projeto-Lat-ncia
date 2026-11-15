@@ -1,6 +1,7 @@
 // @ts-check
 
 const isProduction = process.env.NODE_ENV === "production";
+const githubPagesBasePath = process.env.GITHUB_PAGES === "true" ? "/projeto-latencia" : undefined;
 
 const bundleAnalyzer = process.env.npm_config_argv?.includes(
   "build:bundle-analyzer"
@@ -28,6 +29,22 @@ const nextConfig = {
     },
   },
   devIndicators: false,
+  ...(githubPagesBasePath ? { basePath: githubPagesBasePath, assetPrefix: githubPagesBasePath } : {}),
+  headers: githubPagesBasePath ? undefined : async () => [
+    {
+      source: "/:path*",
+      headers: [
+        {
+          key: "Cross-Origin-Opener-Policy",
+          value: "same-origin",
+        },
+        {
+          key: "Cross-Origin-Embedder-Policy",
+          value: "credentialless",
+        },
+      ],
+    },
+  ],
   output: "export",
   productionBrowserSourceMaps: false,
   reactCompiler: true,
@@ -87,12 +104,13 @@ const nextConfig = {
 
     config.module.rules.push(
       {
-        include: path.resolve(__dirname, "node_modules/Burn-My-Windows"),
+        // Match the real package path as well when node_modules uses a link.
+        include: /[\\/]Burn-My-Windows[\\/]/,
         test: /\.(frag|glsl|xml)$/,
         type: "asset/source",
       },
       {
-        include: path.resolve(__dirname, "node_modules/stockfish/bin"),
+        include: /[\\/]stockfish[\\/]bin[\\/]/,
         test: /\.(js|wasm)$/,
         type: "asset/resource",
       }

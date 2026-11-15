@@ -14,7 +14,6 @@ import StartButton from "components/system/Taskbar/StartButton";
 import StyledTaskbar from "components/system/Taskbar/StyledTaskbar";
 import TaskbarEntries from "components/system/Taskbar/TaskbarEntries";
 import useTaskbarContextMenu from "components/system/Taskbar/useTaskbarContextMenu";
-import { useProcessesActions } from "contexts/process";
 import { useShowAI } from "hooks/useWindowAI";
 import { CLOCK_CANVAS_BASE_WIDTH, FOCUSABLE_ELEMENT } from "utils/constants";
 import { haltEvent } from "utils/functions";
@@ -43,7 +42,6 @@ const onSystemMediaPlay = (event: Event): void => {
 };
 
 const SystemTray: FC = () => {
-  const { open } = useProcessesActions();
   const [volume, setVolume] = useState(() =>
     Math.round(getSystemVolume() * 100)
   );
@@ -200,14 +198,6 @@ const SystemTray: FC = () => {
 
   return (
     <div ref={trayRef} className="doors-system-tray">
-      <button
-        aria-label="Acessibilidade"
-        className="doors-accessibility-toggle"
-        onClick={() => open("Accessibility")}
-        type="button"
-      >
-        <img alt="" aria-hidden="true" src="/System/Icons/accessibility.svg" />
-      </button>
       <img
         alt=""
         aria-hidden="true"
@@ -223,7 +213,7 @@ const SystemTray: FC = () => {
         aria-haspopup="dialog"
         aria-label={`Volume: ${volume}%`}
         className="doors-system-volume-toggle"
-        onClick={() => setVolumeControlOpen((currentlyOpen) => !currentlyOpen)}
+        onClick={() => setVolumeControlOpen((open) => !open)}
         type="button"
       >
         <img

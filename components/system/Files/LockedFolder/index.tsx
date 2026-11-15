@@ -7,9 +7,11 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { LOCKED_FOLDER_WORDS } from "components/system/Files/LockedFolder/constants";
+import {
+  LOCKED_FOLDER_QUIZ_KEYWORD,
+  LOCKED_FOLDER_WORDS,
+} from "components/system/Files/LockedFolder/constants";
 import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
-import { getDoorsCollectedKeywords } from "utils/doorsKeywords";
 
 type RequestAccess = (onUnlocked: () => void) => void;
 
@@ -32,21 +34,6 @@ const normalizeWord = (word: string): string =>
     .trim()
     .replace(/\s+/g, " ")
     .toLocaleLowerCase("pt-BR");
-
-const inputIndexForKeyword = (keyword: string): number => {
-  const normalized = normalizeWord(keyword);
-  const wordIndex = LOCKED_FOLDER_WORDS.findIndex(
-    (word) => normalizeWord(word) === normalized
-  );
-  return wordIndex;
-};
-
-const canonicalKeyword = (keyword: string): string => {
-  const normalized = normalizeWord(keyword);
-  return LOCKED_FOLDER_WORDS.find(
-    (word) => normalizeWord(word) === normalized
-  ) || keyword;
-};
 
 const LockedFolderProvider: FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -74,30 +61,6 @@ const LockedFolderProvider: FC = ({ children }) => {
   }, [isUnlocked]);
 
   useEffect(() => {
-    const applyKeyword = (keyword: string): void => {
-      const index = inputIndexForKeyword(keyword);
-      if (index < 0) return;
-      const value = canonicalKeyword(keyword);
-      setWords((current) =>
-        current.map((word, wordIndex) => wordIndex === index ? value : word)
-      );
-      setError("");
-    };
-    const syncStoredKeywords = (): void => {
-      getDoorsCollectedKeywords().forEach(applyKeyword);
-    };
-    const onKeywordCollected = (event: Event): void => {
-      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword;
-      if (keyword) applyKeyword(keyword);
-      else syncStoredKeywords();
-    };
-
-    syncStoredKeywords();
-    window.addEventListener("doors-keyword-collected", onKeywordCollected);
-    return () => window.removeEventListener("doors-keyword-collected", onKeywordCollected);
-  }, []);
-
-  useEffect(() => {
     if (isOpen) firstInputRef.current?.focus();
   }, [isOpen]);
 
@@ -109,14 +72,19 @@ const LockedFolderProvider: FC = ({ children }) => {
   const submit: React.SubmitEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
 
+    const enteredWords = words.filter((word) => word.trim());
+    const matchesQuizKeyword =
+      enteredWords.length === 1 &&
+      normalizeWord(enteredWords[0] || "") ===
+        normalizeWord(LOCKED_FOLDER_QUIZ_KEYWORD);
     const matchesAllWords = words.every(
       (word, index) =>
         normalizeWord(word) ===
         normalizeWord(LOCKED_FOLDER_WORDS[index] || "")
     );
 
-    if (!matchesAllWords) {
-      setError("Preencha as cinco palavras-chave corretas para desbloquear.");
+    if (!matchesQuizKeyword && !matchesAllWords) {
+      setError("A palavra-chave ou as cinco palavras não correspondem. Tente novamente.");
       return;
     }
 
@@ -238,7 +206,7 @@ const LockedFolderProvider: FC = ({ children }) => {
               </header>
               <form className="doors-locked-folder-form" onSubmit={submit}>
                 <p className="doors-locked-folder-prompt">
-                  Digite as cinco palavras-chave encontradas no jogo. Todas são necessárias para desbloquear.
+                  Digite a palavra-chave liberada pela prova ou as cinco palavras encontradas no jogo.
                 </p>
                 <div className="doors-locked-folder-words">
                   {words.map((word, index) => (
@@ -264,7 +232,7 @@ const LockedFolderProvider: FC = ({ children }) => {
                 <div className="doors-locked-folder-actions">
                   <button
                     className="doors-locked-folder-submit"
-                    disabled={words.some((word) => !word.trim())}
+                    disabled={words.every((word) => !word.trim())}
                     type="submit"
                   >
                     Desbloquear

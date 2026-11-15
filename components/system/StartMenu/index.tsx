@@ -180,7 +180,7 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/pasta.svg" />
+                  <img alt="" src="/System/Doors/figma/icon-documents.png" />
                   <span>Pastas</span>
                 </button>
               </li>
@@ -190,14 +190,14 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Browser",
                       undefined,
-                      "/System/Doors/figma/internet.svg"
+                      "/System/Doors/figma/icon-internet-expanded.png"
                     )
                   }
                   type="button"
                 >
                   <img
                     alt=""
-                    src="/System/Doors/figma/internet.svg"
+                    src="/System/Doors/figma/icon-internet-expanded.png"
                   />
                   <span>Internet Expandida</span>
                 </button>
@@ -205,15 +205,11 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
               <li>
                 <button
                   onClick={() =>
-                    openFavorite(
-                      "Paint",
-                      undefined,
-                      "/System/Doors/figma/paintnovo.svg"
-                    )
+                    openFavorite("Paint", undefined, "/System/Doors/paint.svg")
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/paintnovo.svg" />
+                  <img alt="" src="/System/Doors/paint.svg" />
                   <span>Rabisco</span>
                 </button>
               </li>
@@ -253,12 +249,12 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
                     openFavorite(
                       "Chess",
                       undefined,
-                      "/System/Doors/figma/xadrez-prancheta.svg"
+                      "/System/Doors/cavalo_preto.svg"
                     )
                   }
                   type="button"
                 >
-                  <img alt="" src="/System/Doors/figma/xadrez-prancheta.svg" />
+                  <img alt="" src="/System/Doors/cavalo_preto.svg" />
                   <span>Xadrez</span>
                 </button>
               </li>
@@ -323,7 +319,6 @@ const StartMenu: FC<StartMenuProps> = ({ toggleSearch, toggleStartMenu }) => {
             onCancel={() => setShowShutdownPrompt(false)}
             onConfirm={() => {
               setHaltSession(true);
-              window.dispatchEvent(new Event("doors-session-reset-starting"));
               resetStorageAndReload(rootFs);
             }}
           />,

@@ -45,8 +45,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
       width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
       figcaption {
-        color: ${({ $desktop, theme }) =>
-          $desktop ? "#31302C" : theme.colors.fileEntry.text};
+        color: ${({ theme }) => theme.colors.fileEntry.text};
         font-size: ${({ $desktop, theme }) =>
           $desktop ? "16px" : theme.sizes.fileEntry.fontSize};
         line-height: 1.2;
@@ -54,9 +53,9 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         overflow-wrap: anywhere;
         padding: ${({ $desktop }) => ($desktop ? "0" : "2px 0")};
         text-align: ${({ $desktop }) => ($desktop ? "center" : undefined)};
-        text-shadow: ${({ $desktop }) =>
-          $desktop ? "1px 1px 0 #F7EDD7" : undefined};
-        -webkit-text-stroke: ${({ $desktop }) => ($desktop ? "0" : undefined)};
+        text-shadow: ${({ $desktop }) => ($desktop ? "none" : undefined)};
+        -webkit-text-stroke: ${({ $desktop }) =>
+          ($desktop ? "1px #F7EDD7" : undefined)};
         width: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
 
         &.desktop-documents-label {
@@ -103,27 +102,8 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     gap: 0;
 
     picture:first-of-type {
-      height: 46px;
-      width: 46px;
-    }
-  }
-
-  button.doors-picture-thumbnail figure > picture:first-of-type {
-    display: block;
-    flex: 0 0 100px;
-    height: 100px;
-    overflow: hidden;
-    width: 100px;
-
-    > img {
-      aspect-ratio: 1;
-      height: 100px !important;
-      max-height: 100px !important;
-      max-width: 100px !important;
-      min-height: 100px !important;
-      min-width: 100px !important;
-      object-fit: cover;
-      width: 100px !important;
+      height: 56px;
+      width: 56px;
     }
   }
 

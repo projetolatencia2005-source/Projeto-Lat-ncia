@@ -72,49 +72,16 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     }
   }
 
-  .browser-tab-strip {
-    align-items: flex-end;
-    display: flex;
-    flex: 1 1 auto;
-    gap: 6px;
-    height: 100%;
-    min-width: 0;
-  }
-
   .browser-tabs {
     align-items: flex-end;
     display: flex;
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     gap: 2px;
     height: 100%;
     margin-left: 5px;
-    max-width: calc(100% - 40px);
     min-width: 0;
-    overflow-x: auto;
+    overflow-x: clip;
     overflow-y: visible;
-    width: max-content;
-  }
-
-  .browser-tab-add {
-    align-items: center;
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    color: #31302c;
-    display: flex;
-    flex: 0 0 34px;
-    font-family: "Pixelify Sans", monospace;
-    font-size: 25px;
-    height: 30px;
-    justify-content: center;
-    line-height: 1;
-    margin-bottom: 2px;
-    padding: 0;
-    width: 34px;
-
-    &:hover {
-      background: rgb(255 255 255 / 45%);
-    }
   }
 
   .browser-tab {
@@ -125,32 +92,28 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
     box-sizing: border-box;
     display: flex;
-    flex: 0 0 clamp(120px, 9.1vw, 175px);
+    flex: 0 1 190px;
     height: 29px;
-    min-width: clamp(120px, 9.1vw, 175px);
+    min-width: 86px;
     overflow: hidden;
     padding: 0 3px 0 0;
 
     &.active {
       background: #f7edd7;
-      box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
-      border-bottom: 0;
+      box-shadow:
+        2px 0 0 rgb(49 48 44 / 35%),
+        0 2px 0 #f7edd7;
+      clip-path: polygon(
+        0 100%,
+        0 7px,
+        7px 0,
+        calc(100% - 7px) 0,
+        100% 7px,
+        100% 100%
+      );
       height: 31px;
-      margin-bottom: -2px;
       position: relative;
-      z-index: 3;
-
-      &::after {
-        background: #f7edd7;
-        bottom: -2px;
-        content: "";
-        height: 4px;
-        left: 2px;
-        pointer-events: none;
-        position: absolute;
-        right: 2px;
-        z-index: 2;
-      }
+      z-index: 1;
     }
 
     button {
@@ -186,7 +149,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
       span {
         overflow: hidden;
-        text-overflow: clip;
+        text-overflow: ellipsis;
         transform: translate(3px, 1px);
         white-space: nowrap;
       }

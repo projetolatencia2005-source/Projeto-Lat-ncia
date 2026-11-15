@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Editor } from "tinymce";
@@ -11,18 +10,11 @@ import { type ComponentProcessProps } from "components/system/Apps/RenderCompone
 import DirectionArrow from "components/system/DirectionArrow";
 import { useFileSystemActions } from "contexts/fileSystem";
 import { useProcess, useProcessesActions } from "contexts/process";
-import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const DOCUMENTS_PATH = "/Users/Public/Documents";
 const INTERNAL_DOCUMENTS_PATH = `${DOCUMENTS_PATH}/.Textos`;
 const DEFAULT_SAVE_PATH = `${INTERNAL_DOCUMENTS_PATH}/Novo documento.whtml`;
 const CONTENT_STYLE = `
-  html,
-  body,
-  body * {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
-  }
-
   html,
   body {
     scrollbar-width: none;
@@ -167,7 +159,7 @@ const CONTENT_STYLE = `
   }
   .doors-quiz-key {
     color: #7d94b8;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: pointer !important;
     display: inline-block;
     text-decoration: underline;
   }
@@ -306,7 +298,7 @@ const SCHOOL_TEST_TEMPLATE_CONTENT = `
       <h2>Resultado:</h2>
       <p data-quiz-score></p>
       <p data-quiz-grade></p>
-      <p data-quiz-key-row hidden>Palavra chave: <span class="doors-quiz-key">Alfabetização</span></p>
+      <p data-quiz-key-row hidden>Palavra chave: <span class="doors-quiz-key" style="cursor: pointer !important;">Alfabetização</span></p>
       <p data-quiz-blocked hidden>Palavra chave: Bloqueado</p>
       <p class="doors-quiz-feedback" data-quiz-feedback hidden>As respostas corretas estão em verde. Reinicie o teste para tentar novamente.</p>
       <button class="doors-quiz-action" data-quiz-restart hidden type="button">Tentar novamente ←</button>
@@ -1597,20 +1589,6 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
 
     const onClick = (event: MouseEvent): void => {
       const target = event.target as Element | null;
-      const keywordElement = target?.closest<HTMLElement>(".doors-quiz-key");
-      if (keywordElement) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (keywordElement.dataset.collecting === "true" || keywordElement.dataset.collected === "true") return;
-        keywordElement.dataset.collecting = "true";
-        const keyword =
-          keywordElement.textContent?.trim().split(" · ")[0] || "Alfabetização";
-        recordDoorsKeyword(keyword);
-        keywordElement.dataset.collected = "true";
-        delete keywordElement.dataset.collecting;
-        return;
-      }
-
       const button = target?.closest<HTMLButtonElement>(
         "[data-quiz-submit], [data-quiz-restart]"
       );

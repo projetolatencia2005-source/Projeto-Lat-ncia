@@ -177,52 +177,35 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
         </Button>
       )}
       {isBrowser && browserTabs ? (
-        <div className="browser-tab-strip">
-          <div
-            aria-label="Abas do navegador"
-            className="browser-tabs"
-            role="tablist"
-          >
-            {browserTabs.tabs.map((tab) => (
-              <div
-                key={tab.id}
-                className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
+        <div
+          aria-label="Abas do navegador"
+          className="browser-tabs"
+          role="tablist"
+        >
+          {browserTabs.tabs.map((tab) => (
+            <div
+              key={tab.id}
+              className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
+            >
+              <Button
+                aria-selected={tab.id === browserTabs.activeTab.id}
+                className="browser-tab-select cancel"
+                onClick={() => browserTabs.selectTab(tab.id)}
+                role="tab"
+                type="button"
               >
-                <Button
-                  aria-selected={tab.id === browserTabs.activeTab.id}
-                  className="browser-tab-select cancel"
-                  onClick={() => browserTabs.selectTab(tab.id)}
-                  role="tab"
-                  type="button"
-                >
-                  <span>{tab.title}</span>
-                </Button>
-                <Button
-                  aria-label={
-                    browserTabs.tabs.length === 1
-                      ? "Fechar navegador"
-                      : `Fechar aba ${tab.title}`
-                  }
-                  className="browser-tab-close cancel"
-                  onClick={() => {
-                    if (browserTabs.tabs.length === 1) clickCloseCallback();
-                    else browserTabs.closeTab(tab.id);
-                  }}
-                  type="button"
-                >
-                  <span aria-hidden="true">×</span>
-                </Button>
-              </div>
-            ))}
-          </div>
-          <Button
-            aria-label="Nova aba"
-            className="browser-tab-add cancel"
-            onClick={() => browserTabs.createTab()}
-            type="button"
-          >
-            +
-          </Button>
+                <span>{tab.title}</span>
+              </Button>
+              <Button
+                aria-label={`Fechar aba ${tab.title}`}
+                className="browser-tab-close cancel"
+                onClick={() => browserTabs.closeTab(tab.id)}
+                type="button"
+              >
+                <span aria-hidden="true">×</span>
+              </Button>
+            </div>
+          ))}
         </div>
       ) : (
         <Button
