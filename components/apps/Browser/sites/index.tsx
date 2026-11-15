@@ -475,16 +475,10 @@ const bubbleInitialConversations: BubbleConversation[] = [
         time: "14:29",
       },
       {
-        mine: false,
-        text: "confirmaram agora, começa às oito e a gente se encontra na entrada.",
-        time: "14:30",
-      },
-      {
         mine: true,
         text: "pode crer, posso levar aquela câmera pequena também!",
-        time: "14:33",
+        time: "14:38",
       },
-      { mine: false, text: "Fechado! eu levo os CDs", time: "14:30" },
       { day: "Hoje", mine: true, text: "Feliz aniversário!!!", time: "11:39" },
     ],
     name: "Malu Souza",
