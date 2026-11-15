@@ -6964,6 +6964,45 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
 
+  /* Keep the comment composer aligned with the comment cards and make replies easy to use. */
+  && .site-youspace .you-comments-panel > .you-comment-composer {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  && .site-youspace .you-comment-reply-form {
+    align-items: center !important;
+    display: flex !important;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  && .site-youspace .you-comment-reply-form input {
+    background: #fff;
+    border: 1px solid #7d94b8;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    font: inherit;
+    min-width: 0;
+    padding: 6px 8px;
+  }
+
+  && .site-youspace .you-comment-reply-form button {
+    background: #f33;
+    border: 1px solid #111;
+    box-shadow: 2px 2px 0 #111;
+    color: #fff;
+    flex: 0 0 auto;
+    padding: 6px 10px;
+  }
+
+  && .site-youspace .you-comment-reply-form button:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+
   && .site-bubble .bubble-profile-card::after {
     left: max(110px, 48.78%);
   }
