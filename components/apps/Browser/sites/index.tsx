@@ -2730,6 +2730,9 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [commentDraft, setCommentDraft] = useState("");
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyDraft, setReplyDraft] = useState("");
+  const [commentReplies, setCommentReplies] = useState<Record<string, typeof youSpaceInitialComments>>({});
   const [videoComments, setVideoComments] = useState<Record<string, typeof youSpaceInitialComments>>({
     "eles-sabem": youSpaceInitialComments,
   });
@@ -2741,9 +2744,16 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const isHome = pathParts.length === 0 && !query;
   const video = videos.find(({ id }) => id === videoId);
   const comments = video ? videoComments[video.id] || [] : [];
+  const replyCount = video
+    ? Object.entries(commentReplies).reduce(
+        (total, [key, replies]) =>
+          key.startsWith(`${video.id}:`) ? total + replies.length : total,
+        0
+      )
+    : 0;
   const commentCount = video?.id === "eles-sabem"
-    ? 34 + comments.length - youSpaceInitialComments.length
-    : comments.length;
+    ? 34 + comments.length - youSpaceInitialComments.length + replyCount
+    : comments.length + replyCount;
   const visibleVideos = useMemo(
     () =>
       videos.filter(({ title }) =>
@@ -2786,7 +2796,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
     <section className="site-youspace">
       <header className="you-topbar">
         <button aria-label="Página inicial do YouSpace" className="you-home-link" onClick={() => navigate("")} type="button">
-          <img alt="YouSpace" src="/System/Doors/sites/youspace-logo.png" />
+          <img alt="YouSpace" src="/System/Doors/sites/youspace-logo-pixel.png" />
         </button>
         <SearchField key={query} initialValue={query} label="Pesquisar vídeos" onSearch={search} />
         <div className="you-profile-control">
@@ -2831,7 +2841,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                 </div>
                 <div className="you-watch-actions">
                   <button aria-label="Curtir" aria-pressed={liked} onClick={() => setLiked((value) => !value)} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{liked ? "67" : "66"}</span></button>
-                  <button aria-label="Não gostei" type="button">👎 <span>12</span></button>
+                  <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>12</span></button>
                   <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /><span>{commentCount}</span></button>
                 </div>
               </div>
@@ -2856,16 +2866,70 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                 <button aria-label="Publicar comentário" type="submit">›</button>
               </form>
               <ol>
-                {comments.map((comment, index) => (
-                  <li className="you-comment" key={comment.author + comment.text + index}>
-                    <span aria-hidden="true" className="you-comment-avatar" style={{ backgroundColor: comment.color }} />
-                    <div className="you-comment-body">
-                      <p><strong>{comment.author}</strong><small> · {comment.time}</small></p>
-                      <p>{comment.text}</p>
-                      <div className="you-comment-actions"><button aria-label={"Responder a " + comment.author} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /></button><button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /> {comment.likes}</button><button aria-label="Não gostei" type="button">👎</button></div>
-                    </div>
-                  </li>
-                ))}
+                {comments.map((comment) => {
+                  const commentKey = `${video.id}:${comment.author}:${comment.text}`;
+                  return (
+                    <li className="you-comment" key={commentKey}>
+                      <span aria-hidden="true" className="you-comment-avatar" style={{ backgroundColor: comment.color }} />
+                      <div className="you-comment-body">
+                        <p><strong>{comment.author}</strong><small> · {comment.time}</small></p>
+                        <p>{comment.text}</p>
+                        <div className="you-comment-actions">
+                          <button
+                            aria-label={`Responder a ${comment.author}`}
+                            aria-expanded={replyingTo === commentKey}
+                            onClick={() => {
+                              setReplyingTo((current) => current === commentKey ? null : commentKey);
+                              setReplyDraft("");
+                            }}
+                            type="button"
+                          >
+                            <img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" />
+                            <span>Responder</span>
+                          </button>
+                          <button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /> {comment.likes}</button>
+                          <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /></button>
+                        </div>
+                        {replyingTo === commentKey && (
+                          <form
+                            className="you-comment-reply-form"
+                            onSubmit={(event) => {
+                              event.preventDefault();
+                              const text = replyDraft.trim();
+                              if (!text) return;
+                              setCommentReplies((current) => ({
+                                ...current,
+                                [commentKey]: [
+                                  ...(current[commentKey] || []),
+                                  { author: "Você", color: "#f33", text, time: "agora", likes: "0" },
+                                ],
+                              }));
+                              setReplyDraft("");
+                              setReplyingTo(null);
+                            }}
+                          >
+                            <input
+                              aria-label={`Responder ao comentário de ${comment.author}`}
+                              onChange={(event) => setReplyDraft(event.target.value)}
+                              placeholder={`Responder a ${comment.author}...`}
+                              value={replyDraft}
+                            />
+                            <button disabled={!replyDraft.trim()} type="submit">Enviar</button>
+                          </form>
+                        )}
+                        {(commentReplies[commentKey] || []).map((reply, replyIndex) => (
+                          <div className="you-comment-reply" key={reply.author + reply.text + replyIndex}>
+                            <span aria-hidden="true" className="you-comment-avatar" style={{ backgroundColor: reply.color }} />
+                            <div>
+                              <p><strong>{reply.author}</strong><small> · {reply.time}</small></p>
+                              <p>{reply.text}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             </section>
           </main>
@@ -2931,7 +2995,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
         </div>
       )}
       <footer className="you-footer">
-        <img alt="YouSpace" src="/System/Doors/sites/youspace-logo.png" />
+        <img alt="YouSpace" src="/System/Doors/sites/youspace-logo-pixel.png" />
         <nav aria-label="Informações do YouSpace">{["sobre", "segurança", "privacidade", "ajuda"].map((item) => <button key={item} type="button">{item}</button>)}</nav>
         <small>© YouSpace, 2007. Todos os direitos reservados</small>
       </footer>
