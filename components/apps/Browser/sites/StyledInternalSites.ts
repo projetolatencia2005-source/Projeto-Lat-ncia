@@ -7007,6 +7007,127 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     left: max(110px, 48.78%);
   }
 
+  /* Requested corrections for YouSpace and Bubble. */
+  && .site-youspace .you-load-message {
+    margin-top: 60px !important;
+  }
+
+  && .site-youspace .you-comment-reply {
+    border-left: 0 !important;
+  }
+
+  && .site-youspace .you-watch-main .you-video-duration {
+    display: none !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen {
+    aspect-ratio: 1016 / 572;
+    overflow: hidden;
+    position: relative;
+  }
+
+  && .site-youspace .you-watch-main .you-player-feedback {
+    left: 50% !important;
+    margin: 0 !important;
+    max-width: calc(100% - 32px);
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 4;
+  }
+
+  && .site-youspace .you-topbar form.site-search > button {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box;
+  }
+
+  && .site-youspace .you-comment-actions {
+    align-items: center;
+    gap: 15px !important;
+  }
+
+  && .site-youspace .you-comment-actions button {
+    align-items: center;
+    line-height: 1;
+  }
+
+  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
+  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
+    transform: rotate(180deg) !important;
+  }
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box;
+  }
+
+  && .site-bubble .bubble-chat-layout {
+    grid-template-columns: minmax(220px, 24%) minmax(0, 1fr) !important;
+    height: min(620px, 72vh) !important;
+    min-height: 500px !important;
+  }
+
+  && .site-bubble .bubble-inbox > h2 {
+    flex-basis: 90px;
+    min-height: 90px;
+  }
+
+  && .site-bubble .bubble-inbox-search {
+    flex: 0 0 150px;
+    height: 150px;
+    min-height: 150px;
+  }
+
+  && .site-bubble .bubble-conversation {
+    height: 100%;
+    min-height: 0;
+  }
+
+  && .site-bubble .bubble-conversation > .bubble-conversation-header {
+    flex: 0 0 122px;
+    min-height: 122px;
+  }
+
+  && .site-bubble .bubble-message-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  && .site-bubble .bubble-message-row {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent {
+    justify-content: flex-end !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-received {
+    justify-content: flex-start !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent > .bubble-message-spacer {
+    display: none !important;
+  }
+
+  @container (max-width: 900px) {
+    .site-bubble .bubble-chat-layout {
+      height: auto !important;
+      min-height: 0 !important;
+    }
+
+    .site-bubble .bubble-conversation {
+      min-height: 560px;
+    }
+
+    .site-bubble .bubble-conversation > .bubble-conversation-header {
+      flex-basis: 98px;
+      min-height: 98px;
+    }
+  }
+
+
 `;
 
 export default StyledInternalSites;
