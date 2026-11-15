@@ -6442,7 +6442,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     box-shadow: 3px 4px 0 #111;
     display: flex;
     gap: 10px;
-    margin: 0 8px 22px;
+    margin: 0 0 22px;
     min-height: 48px;
     padding: 5px 8px;
   }
@@ -6547,6 +6547,78 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     width: 14px;
   }
 
+  .site-youspace .you-watch-actions button:nth-child(2) img,
+  .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
+    transform: rotate(180deg);
+  }
+
+  .site-youspace .you-comment-reply-form {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .site-youspace .you-comment-reply-form input {
+    background: #fff;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    font: inherit;
+    min-width: 0;
+    padding: 6px 8px;
+  }
+
+  .site-youspace .you-comment-reply-form button {
+    background: #f33;
+    border: 1px solid #111;
+    box-shadow: 2px 2px 0 #111;
+    color: #fff;
+    flex: 0 0 auto;
+    padding: 6px 10px;
+  }
+
+  .site-youspace .you-comment-reply-form button:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+
+  .site-youspace .you-comment-reply {
+    align-items: flex-start;
+    background: #f7f7f7;
+    border-left: 2px solid #f33;
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 7px;
+  }
+
+  .site-youspace .you-comment-reply > div {
+    min-width: 0;
+  }
+
+  .site-youspace .you-comment-reply p:first-child {
+    font-size: 11px;
+    margin: 0 0 2px;
+  }
+
+  .site-youspace .you-comment-reply p:first-child small {
+    color: #888;
+  }
+
+  .site-youspace .you-comment-reply p:last-child {
+    font-size: clamp(13px, 0.95vw, 17px);
+    line-height: 1.25;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .site-youspace .you-home-link img,
+  .site-youspace .you-footer > img {
+    image-rendering: pixelated;
+  }
+
   .site-youspace .you-watch-related {
     border-left: 2px solid #c7c7c7;
     display: flex;
@@ -6623,7 +6695,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   .site-youspace .you-load-message {
     color: #b42318;
     font-size: 14px;
-    margin: 20px auto 0;
+    margin: 40px auto 0;
     text-align: center;
   }
 
@@ -6715,7 +6787,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .site-youspace .you-comment-composer {
-      margin: 0 2px 18px;
+      margin: 0 0 18px;
     }
 
     .site-youspace .you-related-video {
