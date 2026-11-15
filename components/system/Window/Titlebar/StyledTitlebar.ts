@@ -117,7 +117,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     line-height: 1;
     margin-bottom: 0;
     padding: 0;
-    transform: translateX(-2px);
+    transform: translate(-5px, 2px);
     width: 34px;
 
     &:hover {
@@ -142,7 +142,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     &.active {
       background: #f7edd7;
       box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
-      border-bottom: 0;
+      border-bottom: 2px solid #f7edd7;
       height: 31px;
       margin-bottom: -2px;
       position: relative;
