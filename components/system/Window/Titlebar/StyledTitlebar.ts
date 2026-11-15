@@ -91,8 +91,15 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     max-width: calc(100% - 40px);
     min-width: 0;
     overflow-x: auto;
-    overflow-y: visible;
+    overflow-y: hidden;
+    scrollbar-width: none;
     width: max-content;
+
+    &::-webkit-scrollbar {
+      display: none;
+      height: 0;
+      width: 0;
+    }
   }
 
   .browser-tab-add {
