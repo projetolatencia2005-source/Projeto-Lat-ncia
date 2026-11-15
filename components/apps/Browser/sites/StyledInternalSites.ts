@@ -7453,6 +7453,172 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
+  /* Final pass for the annotated Bubble and YouSpace preview. */
+  && .site-youspace .you-load-message {
+    margin-top: 120px !important;
+  }
+
+  && .site-youspace .you-comments-panel > .you-comment-composer {
+    margin-bottom: 20px !important;
+  }
+
+  && .site-youspace .you-comment-actions {
+    align-items: center !important;
+    gap: 15px !important;
+  }
+
+  && .site-youspace .you-comment-actions button {
+    align-items: center !important;
+    line-height: 1 !important;
+  }
+
+  && .site-youspace .you-comment-actions button[aria-label^="Responder a"] {
+    position: relative;
+    top: -3px;
+  }
+
+  && .site-youspace .you-comment-actions button[aria-label="Curtir comentário"] > span {
+    position: relative;
+    top: -4px;
+  }
+
+  && .site-youspace .you-comment-reply,
+  && .site-youspace .you-comment-reply-form {
+    border-left: 0 !important;
+    box-shadow: none !important;
+  }
+
+  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
+  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
+    transform: rotate(180deg) !important;
+  }
+
+  && .site-youspace .you-watch-layout {
+    gap: 20px !important;
+    grid-template-columns: minmax(0, 981px) minmax(280px, 1fr) !important;
+  }
+
+  && .site-youspace .you-watch-main,
+  && .site-youspace .you-watch-main .you-player {
+    max-width: 981px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen > img {
+    display: block !important;
+    height: 100% !important;
+    max-height: none !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen .you-player-feedback {
+    left: 50% !important;
+    margin: 0 !important;
+    max-width: calc(100% - 32px) !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 20 !important;
+  }
+
+  && .site-youspace .you-video-card .you-video-thumbnail {
+    border: 2px solid #111 !important;
+    box-shadow: 7px 8px 0 #111 !important;
+    box-sizing: border-box !important;
+    margin: 0 9px 9px 0 !important;
+    overflow: visible !important;
+    width: calc(100% - 9px) !important;
+  }
+
+  && .site-youspace .you-topbar form.site-search > button {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  && .site-youspace .you-comment-composer > button {
+    align-items: center !important;
+    background: #f7f7f7 !important;
+    border: 2px solid #111 !important;
+    box-shadow: 2px 2px 0 #111 !important;
+    display: flex !important;
+    flex: 0 0 28px !important;
+    font-size: 18px !important;
+    height: 28px !important;
+    justify-content: center !important;
+    line-height: 20px !important;
+    padding: 0 !important;
+    width: 28px !important;
+  }
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  && .site-bubble .bubble-inbox-search {
+    box-sizing: border-box !important;
+    flex: 0 0 150px !important;
+    gap: 0 !important;
+    height: 150px !important;
+    max-height: 150px !important;
+    min-height: 150px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  && .site-bubble .bubble-inbox-search input,
+  && .site-bubble .bubble-inbox-search button {
+    box-sizing: border-box !important;
+    height: 39px !important;
+    min-height: 39px !important;
+  }
+
+  && .site-bubble .bubble-inbox-search input {
+    border-right: 0 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  && .site-bubble .bubble-inbox-search button {
+    border-left: 0 !important;
+    flex: 0 0 39px !important;
+    width: 39px !important;
+  }
+
+  && .site-bubble .bubble-view-profile {
+    align-items: center !important;
+    color: #31302c !important;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+    min-height: 36px !important;
+    white-space: nowrap !important;
+  }
+
+  @container bubble-site (max-width: 1260px) {
+    && .site-youspace .you-watch-layout {
+      grid-template-columns: minmax(0, 981px) !important;
+      justify-content: center !important;
+    }
+
+    && .site-youspace .you-watch-main {
+      margin: 0 auto !important;
+    }
+  }
+
+
 `;
 
 export default StyledInternalSites;
