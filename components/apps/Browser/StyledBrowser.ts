@@ -260,6 +260,20 @@ const StyledBrowser = styled.div`
       }
     }
   }
+  /* Mantém a atualização com a mesma presença dos botões de navegação. */
+  .browser-toolbar .navigation-buttons > button {
+    box-sizing: border-box;
+    flex: 0 0 27px;
+    height: 27px;
+    min-width: 27px;
+    width: 27px;
+  }
+
+  .browser-toolbar .navigation-buttons > button:not(.arrow-button) svg {
+    height: 19px;
+    width: 19px;
+  }
+
 `;
 
 export default StyledBrowser;
