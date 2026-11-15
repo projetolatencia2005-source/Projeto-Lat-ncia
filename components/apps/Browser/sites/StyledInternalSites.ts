@@ -7258,7 +7258,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   && .site-youspace .you-watch-main .player-screen {
+    align-self: stretch !important;
     aspect-ratio: 1016 / 572 !important;
+    flex: 0 0 100% !important;
+    height: auto !important;
+    max-height: none !important;
     min-height: 0 !important;
     overflow: hidden !important;
     position: relative !important;
