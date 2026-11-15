@@ -7037,7 +7037,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   /* Requested corrections for YouSpace and Bubble. */
   && .site-youspace .you-load-message {
-    margin-top: 60px !important;
+    margin-top: 80px !important;
   }
 
   && .site-youspace .you-comment-reply {
@@ -7315,6 +7315,101 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     && .site-youspace .you-watch-main {
       padding-right: 0 !important;
+    }
+  }
+
+
+  /* Final preview corrections: keep the full video frame and chat alignment intact. */
+  && .site-bubble .bubble-chat-layout {
+    grid-template-columns: minmax(220px, 24%) minmax(0, 1fr) !important;
+  }
+
+  && .site-bubble .bubble-inbox-search {
+    box-sizing: border-box !important;
+    flex: 0 0 150px !important;
+    height: 150px !important;
+    min-height: 150px !important;
+  }
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  && .site-bubble .bubble-message-list {
+    align-items: stretch !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent {
+    align-self: stretch !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+
+  && .site-bubble .bubble-message-row.is-sent > p {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+
+  && .site-youspace .you-watch-layout {
+    align-items: start !important;
+    gap: 0 !important;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr) !important;
+  }
+
+  && .site-youspace .you-watch-main,
+  && .site-youspace .you-watch-main .you-player {
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen {
+    aspect-ratio: 16 / 9 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen > img {
+    display: block !important;
+    height: 100% !important;
+    max-height: none !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .player-screen .you-player-feedback {
+    left: 50% !important;
+    margin: 0 !important;
+    max-width: calc(100% - 32px) !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 20 !important;
+  }
+
+  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
+  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
+    transform: none !important;
+  }
+
+  && .site-youspace .you-load-message {
+    margin-top: 80px !important;
+  }
+
+  @container bubble-site (max-width: 900px) {
+    && .site-youspace .you-watch-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
     }
   }
 
