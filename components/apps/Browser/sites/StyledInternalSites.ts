@@ -18,13 +18,13 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   overflow: auto;
   position: relative;
   scrollbar-color: #7d94b8 #f7edd7;
-  scrollbar-width: auto;
+  scrollbar-width: none;
   width: 100%;
 
   &::-webkit-scrollbar {
-    background: #f7edd7;
-    border-radius: 0;
-    width: 16px;
+    display: none;
+    height: 0;
+    width: 0;
   }
 
   &::-webkit-scrollbar-track {
@@ -6197,9 +6197,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     padding: 10px 14px;
     position: absolute;
     text-align: center;
-    top: calc(50% + 48px);
-    transform: translateX(-50%);
-    z-index: 2;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
   }
 
   .site-youspace .you-load-more:disabled {
@@ -6261,7 +6261,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .site-youspace .you-player-feedback {
       font-size: 14px;
-      top: calc(50% + 34px);
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 
@@ -6415,6 +6416,12 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     font-size: 11px;
   }
 
+  .site-youspace .you-watch-actions button img {
+    height: 20px;
+    object-fit: contain;
+    width: 20px;
+  }
+
   .site-youspace .you-comments-panel {
     border: 2px solid #111;
     box-shadow: 4px 5px 0 #111;
@@ -6440,13 +6447,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     padding: 5px 8px;
   }
 
-  .site-youspace .you-comment-composer > span {
-    background: #d7e4f7;
-    border: 1px solid #31302c;
-    flex: 0 0 28px;
-    font-size: 17px;
-    line-height: 24px;
-    text-align: center;
+  .site-youspace .you-comment-composer > img {
+    flex: 0 0 20px;
+    height: 20px;
+    object-fit: contain;
+    width: 20px;
   }
 
   .site-youspace .you-comment-composer input {
@@ -6527,10 +6532,19 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-comment-actions button {
+    align-items: center;
     background: transparent;
     border: 0;
+    display: inline-flex;
     font-size: 11px;
+    gap: 4px;
     padding: 0;
+  }
+
+  .site-youspace .you-comment-actions button img {
+    height: 14px;
+    object-fit: contain;
+    width: 14px;
   }
 
   .site-youspace .you-watch-related {
@@ -6609,7 +6623,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   .site-youspace .you-load-message {
     color: #b42318;
     font-size: 14px;
-    margin: 0 auto;
+    margin: 20px auto 0;
     text-align: center;
   }
 
@@ -6623,9 +6637,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-video-card .you-video-thumbnail {
-    box-shadow: 5px 6px 0 #111 !important;
-    margin: 0 6px 6px 0;
-    width: calc(100% - 6px);
+    box-shadow: 7px 8px 0 #111 !important;
+    margin: 0 9px 9px 0;
+    width: calc(100% - 9px);
   }
 
   .site-youspace .you-sidebar-panel ol li button {
@@ -6875,6 +6889,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       height: 150px;
       min-height: 150px;
     }
+  }
+
+
+  .site-bubble .bubble-profile-card::after {
+    left: max(110px, 48.78%);
   }
 
 `;
