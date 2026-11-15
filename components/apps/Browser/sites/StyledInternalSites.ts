@@ -4484,6 +4484,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .bubble-view-profile {
       background: #fff;
+      color: #31302c;
       border: 2px solid #31302c;
       box-shadow: 2px 2px 0 #31302c;
       margin-left: auto;
