@@ -1694,7 +1694,6 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
                     <article className={"bubble-message-row " + (message.mine ? "is-sent" : "is-received")}>
                       {!message.mine && <img alt="" src={activeChat.avatar} />}
                       <p><span>{message.text}</span><time>{message.time}</time></p>
-                      {message.mine && <span className="bubble-message-spacer" />}
                     </article>
                   </div>
                 ))}
@@ -2810,7 +2809,6 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
             <section className="you-player">
               <div className="player-screen">
                 <img alt={video.title} src={video.image} />
-                <span className="you-video-duration">{video.duration}</span>
                 <button
                   aria-label={playerStatus === "loading" ? "Carregando vídeo" : playerStatus === "error" ? "Falha ao carregar vídeo" : "Reproduzir vídeo"}
                   disabled={playerStatus !== "idle"}
