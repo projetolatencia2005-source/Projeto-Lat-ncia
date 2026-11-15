@@ -516,7 +516,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-profile-avatar {
-      border: 1px solid #31302c;
+      border: 2px solid #31302c;
       height: clamp(42px, 2.7vw, 52px);
       object-fit: cover;
       width: clamp(42px, 2.7vw, 52px);
@@ -4522,6 +4522,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: flex-end;
       display: flex;
       gap: 15px;
+      width: 100%;
       margin: 0 0 29px;
 
       > img {
@@ -4553,6 +4554,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         font-size: 11px;
         line-height: 1;
       }
+    }
+
+    .bubble-message-row.is-sent {
+      justify-content: flex-end;
+      width: 100%;
     }
 
     .bubble-message-row.is-sent p {
@@ -5192,6 +5198,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: flex-end;
       display: flex;
       gap: 15px;
+      width: 100%;
       margin: 0 0 29px;
 
       > img {
@@ -5223,6 +5230,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         font-size: 11px;
         line-height: 1;
       }
+    }
+
+    .bubble-message-row.is-sent {
+      justify-content: flex-end;
+      width: 100%;
     }
 
     .bubble-message-row.is-sent p {
@@ -6186,6 +6198,18 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     position: relative;
   }
 
+  .site-youspace .you-watch-main .player-screen {
+    position: relative;
+  }
+
+  .site-youspace .you-watch-main .player-screen .you-player-feedback {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+  }
+
   .site-youspace .you-player-feedback {
     background: #31302c;
     border: 2px solid #111;
@@ -6279,7 +6303,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   .site-youspace .you-watch-main {
     min-width: 0;
-    padding-right: 34px;
+    padding-right: 0;
   }
 
   .site-youspace .you-watch-main .you-player {
@@ -6308,6 +6332,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-watch-main .player-screen .you-video-duration {
+    display: none;
     background: #111;
     bottom: 0;
     color: #fff;
@@ -6547,7 +6572,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     width: 14px;
   }
 
-  .site-youspace .you-watch-actions button:nth-child(2) img,
+  .site-youspace .you-watch-actions button:nth-child(2) img {
+    transform: none;
+  }
+
   .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
     transform: rotate(180deg);
   }
