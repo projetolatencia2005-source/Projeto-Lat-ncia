@@ -2730,7 +2730,9 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [commentDraft, setCommentDraft] = useState("");
-  const [comments, setComments] = useState(youSpaceInitialComments);
+  const [videoComments, setVideoComments] = useState<Record<string, typeof youSpaceInitialComments>>({
+    "eles-sabem": youSpaceInitialComments,
+  });
   const [liked, setLiked] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const query = new URL(url).searchParams.get("q") || "";
@@ -2738,6 +2740,10 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const videoId = pathParts[pathParts.length - 1];
   const isHome = pathParts.length === 0 && !query;
   const video = videos.find(({ id }) => id === videoId);
+  const comments = video ? videoComments[video.id] || [] : [];
+  const commentCount = video?.id === "eles-sabem"
+    ? 34 + comments.length - youSpaceInitialComments.length
+    : comments.length;
   const visibleVideos = useMemo(
     () =>
       videos.filter(({ title }) =>
@@ -2824,25 +2830,28 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                   </button>
                 </div>
                 <div className="you-watch-actions">
-                  <button aria-label="Curtir" aria-pressed={liked} onClick={() => setLiked((value) => !value)} type="button">👍 <span>{liked ? "67" : "66"}</span></button>
+                  <button aria-label="Curtir" aria-pressed={liked} onClick={() => setLiked((value) => !value)} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{liked ? "67" : "66"}</span></button>
                   <button aria-label="Não gostei" type="button">👎 <span>12</span></button>
-                  <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button">▤ <span>{34 + comments.length - youSpaceInitialComments.length}</span></button>
+                  <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /><span>{commentCount}</span></button>
                 </div>
               </div>
             </section>
             <section className="you-comments-panel">
-              <h2>{34 + comments.length - youSpaceInitialComments.length} comentários</h2>
+              <h2>{commentCount} comentários</h2>
               <form
                 className="you-comment-composer"
                 onSubmit={(event) => {
                   event.preventDefault();
                   const text = commentDraft.trim();
-                  if (!text) return;
-                  setComments((current) => [{ author: "Você", color: "#f33", text, time: "agora", likes: "0" }, ...current]);
+                  if (!text || !video) return;
+                  setVideoComments((current) => ({
+                    ...current,
+                    [video.id]: [{ author: "Você", color: "#f33", text, time: "agora", likes: "0" }, ...(current[video.id] || [])],
+                  }));
                   setCommentDraft("");
                 }}
               >
-                <span aria-hidden="true">▦</span>
+                <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/comments.svg" />
                 <input aria-label="Deixe seu comentário" onChange={(event) => setCommentDraft(event.target.value)} placeholder="Deixe seu comentário..." value={commentDraft} />
                 <button aria-label="Publicar comentário" type="submit">›</button>
               </form>
@@ -2853,7 +2862,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                     <div className="you-comment-body">
                       <p><strong>{comment.author}</strong><small> · {comment.time}</small></p>
                       <p>{comment.text}</p>
-                      <div className="you-comment-actions"><button type="button">▤</button><button type="button">👍 {comment.likes}</button><button type="button">👎</button></div>
+                      <div className="you-comment-actions"><button aria-label={"Responder a " + comment.author} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /></button><button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /> {comment.likes}</button><button aria-label="Não gostei" type="button">👎</button></div>
                     </div>
                   </li>
                 ))}
