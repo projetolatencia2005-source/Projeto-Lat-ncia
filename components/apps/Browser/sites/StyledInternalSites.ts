@@ -7413,6 +7413,46 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
   }
 
+  /* Latest visual review: spacing and proportions requested in the preview. */
+  && .site-youspace .you-load-message {
+    margin-top: 100px !important;
+  }
+
+  && .site-youspace .you-comments-panel > .you-comment-composer {
+    margin-bottom: 20px !important;
+  }
+
+  && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
+    border: 2px solid #31302c !important;
+    box-sizing: border-box !important;
+  }
+
+  && .site-bubble .bubble-profile-cover {
+    min-height: clamp(700px, 38vw, 780px) !important;
+  }
+
+  && .site-bubble .bubble-inbox-search {
+    box-sizing: border-box !important;
+    flex: 0 0 100px !important;
+    gap: 0 !important;
+    height: 100px !important;
+    max-height: 100px !important;
+    min-height: 100px !important;
+  }
+
+  && .site-bubble .bubble-inbox-search input,
+  && .site-bubble .bubble-inbox-search button {
+    box-sizing: border-box !important;
+    height: 39px !important;
+    min-height: 39px !important;
+  }
+
+  @container bubble-site (max-width: 720px) {
+    && .site-bubble .bubble-profile-cover {
+      min-height: 620px !important;
+    }
+  }
+
 `;
 
 export default StyledInternalSites;
