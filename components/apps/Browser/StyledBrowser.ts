@@ -133,27 +133,27 @@ const StyledBrowser = styled.div`
       width: 27px;
 
       &.arrow-button {
-        background: transparent;
-        border: 0;
-        box-shadow: none;
+        background: #f7edd7;
+        border: 2px solid #31302c;
+        box-shadow: 2px 2px 0 #31302c;
 
         img {
-          height: 25px;
-          width: 25px;
+          height: 17px;
+          width: 17px;
         }
 
         &:hover {
-          background: transparent;
-          filter: brightness(1.04);
+          background: #edf3fa;
+          filter: none;
         }
 
         &:active {
-          background: transparent;
+          background: #c4d4e8;
           transform: translate(2px, 2px);
         }
 
         &:disabled {
-          background: transparent;
+          background: #d7e0eb;
           box-shadow: none;
           opacity: 0.5;
         }
