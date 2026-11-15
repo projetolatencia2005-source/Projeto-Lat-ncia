@@ -115,8 +115,9 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     height: 30px;
     justify-content: center;
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 0;
     padding: 0;
+    transform: translateX(-2px);
     width: 34px;
 
     &:hover {
@@ -145,7 +146,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
       height: 31px;
       margin-bottom: -2px;
       position: relative;
-      z-index: 3;
+      z-index: 5;
 
       &::after {
         background: #f7edd7;
