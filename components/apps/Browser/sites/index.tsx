@@ -2850,6 +2850,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
               <h2>{commentCount} comentários</h2>
               <form
                 className="you-comment-composer"
+                style={{ margin: "0" }}
                 onSubmit={(event) => {
                   event.preventDefault();
                   const text = commentDraft.trim();
@@ -2893,6 +2894,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                         {replyingTo === commentKey && (
                           <form
                             className="you-comment-reply-form"
+                            style={{ alignItems: "center", display: "flex", gap: 8, marginTop: 8, width: "100%" }}
                             onSubmit={(event) => {
                               event.preventDefault();
                               const text = replyDraft.trim();
@@ -2910,11 +2912,12 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                           >
                             <input
                               aria-label={`Responder ao comentário de ${comment.author}`}
+                              style={{ background: "#fff", border: "1px solid #7d94b8", boxSizing: "border-box", flex: "1 1 auto", font: "inherit", minWidth: 0, padding: "6px 8px" }}
                               onChange={(event) => setReplyDraft(event.target.value)}
                               placeholder={`Responder a ${comment.author}...`}
                               value={replyDraft}
                             />
-                            <button disabled={!replyDraft.trim()} type="submit">Enviar</button>
+                            <button disabled={!replyDraft.trim()} style={{ background: "#f33", border: "1px solid #111", boxShadow: "2px 2px 0 #111", color: "#fff", flex: "0 0 auto", padding: "6px 10px" }} type="submit">Enviar</button>
                           </form>
                         )}
                         {(commentReplies[commentKey] || []).map((reply, replyIndex) => (
