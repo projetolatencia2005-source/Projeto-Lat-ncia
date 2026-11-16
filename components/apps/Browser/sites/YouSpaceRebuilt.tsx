@@ -1,4 +1,4 @@
-import { type FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { type FormEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
@@ -168,11 +168,11 @@ const Root = styled.div`
   }
 `;
 
-const Icon = ({ kind }: { kind: "like" | "comment" }): JSX.Element => (
+const Icon = ({ kind }: { kind: "like" | "comment" }): ReactElement => (
   <img alt="" src={`/System/Doors/sites/bubble/icons/${kind === "like" ? "thumbsup.svg" : "comments.svg"}`} />
 );
 
-const YouSpacePage = ({ url }: { url: string }): JSX.Element => {
+const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const browserTabs = useBrowserTabs();
   const navigate = useCallback((next: string): void => { browserTabs?.navigate(next); }, [browserTabs]);
   const path = useMemo(() => {

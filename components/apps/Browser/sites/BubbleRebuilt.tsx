@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { type FormEvent, type ReactElement, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
@@ -329,7 +329,7 @@ const Root = styled.div`
   }
 `;
 
-const Footer = (): JSX.Element => (
+const Footer = (): ReactElement => (
   <footer className="rb-footer">
     <img alt="Bubble" src={bubbleImage("wordmark.png")} />
     <nav aria-label="Links do Bubble">
@@ -339,7 +339,7 @@ const Footer = (): JSX.Element => (
   </footer>
 );
 
-const BubbleHeader = ({ active, onNavigate }: { active: string; onNavigate: (path: string) => void }): JSX.Element => (
+const BubbleHeader = ({ active, onNavigate }: { active: string; onNavigate: (path: string) => void }): ReactElement => (
   <header className="rb-nav">
     <button aria-label="Página inicial do Bubble" className="rb-brand" onClick={() => onNavigate("inicio")} type="button">bubble</button>
     <nav aria-label="Navegação do Bubble" className="rb-nav-links">
@@ -363,7 +363,7 @@ const BubblePostCard = ({
   post: FeedPost;
   onComment: (value: string) => void;
   onLike: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const [commenting, setCommenting] = useState(false);
   const [draft, setDraft] = useState("");
   return (
@@ -387,7 +387,7 @@ const BubblePostCard = ({
   );
 };
 
-const BubblePage = ({ url }: { url: string }): JSX.Element => {
+const BubblePage = ({ url }: { url: string }): ReactElement => {
   const browserTabs = useBrowserTabs();
   const pathname = useMemo(() => {
     try { return new URL(url).pathname.replace(/^\/+|\/+$/g, "") || "inicio"; } catch { return "inicio"; }
