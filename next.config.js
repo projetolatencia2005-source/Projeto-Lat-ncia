@@ -7,7 +7,11 @@ const bundleAnalyzer = process.env.npm_config_argv?.includes(
 );
 
 const path = require("path");
+const fs = require("fs");
 const webpack = require("webpack");
+
+const burnMyWindowsPath = path.resolve(__dirname, "node_modules/Burn-My-Windows");
+const burnMyWindowsRealPath = fs.realpathSync(burnMyWindowsPath);
 
 /**
  * @type {import("next").NextConfig}
@@ -87,7 +91,7 @@ const nextConfig = {
 
     config.module.rules.push(
       {
-        include: path.resolve(__dirname, "node_modules/Burn-My-Windows"),
+        include: [burnMyWindowsPath, burnMyWindowsRealPath],
         test: /\.(frag|glsl|xml)$/,
         type: "asset/source",
       },

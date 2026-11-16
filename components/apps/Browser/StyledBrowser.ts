@@ -270,8 +270,8 @@ const StyledBrowser = styled.div`
   }
 
   .browser-toolbar .navigation-buttons > button:not(.arrow-button) svg {
-    height: 19px;
-    width: 19px;
+    height: 21px;
+    width: 21px;
   }
 
 `;

@@ -153,10 +153,10 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
         bottom: -2px;
         content: "";
         height: 4px;
-        left: 2px;
+        left: -2px;
         pointer-events: none;
         position: absolute;
-        right: 2px;
+        right: -2px;
         z-index: 2;
       }
     }

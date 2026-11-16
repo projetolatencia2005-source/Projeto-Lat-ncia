@@ -64,8 +64,8 @@ const conversations: Conversation[] = [
   {
     ...friends[7],
     messages: [
-      { from: "friend", text: "boa noite ai mano", time: "13:08", day: "Hoje" },
-      { from: "friend", text: "manoooooooooo tu não sabe !!", time: "10:00" },
+      { from: "friend", text: "boa noite ai mano", time: "13:08" },
+      { from: "friend", text: "manoooooooooo tu não sabe !!", time: "10:00", day: "Hoje" },
       { from: "me", text: "oque Falo ai", time: "10:21" },
       { from: "friend", text: "Eu finalmente achei o novo DVD do sandy e Junior para vender lá na boa do gato", time: "10:21" },
       { from: "me", text: "Eu já sabia, e comprei um para mim e para você", time: "10:28" },
@@ -227,7 +227,7 @@ const Root = styled.div`
   .rb-online { color: #37a83d; font-size: 12px; }
   .rb-cover { background: center 40% / cover no-repeat url("/System/Doors/sites/bubble/profile-cover.jpg"); border: 2px solid #222; height: clamp(150px, 18vw, 300px); }
   .rb-profile-summary { align-items: center; background: #fff; border: 2px solid #222; box-shadow: 4px 4px #222; display: flex; gap: 28px; margin-bottom: 30px; min-height: 185px; padding: 16px clamp(22px, 3vw, 56px); position: relative; }
-  .rb-profile-avatar { align-self: flex-end; border: 3px solid #222; box-shadow: 3px 3px #222; height: clamp(130px, 14vw, 210px); margin-top: -100px; object-fit: cover; width: clamp(130px, 14vw, 210px); }
+  .rb-profile-avatar { align-self: flex-end; border: 2px solid #222; box-shadow: 3px 3px #222; height: clamp(130px, 14vw, 210px); margin-top: -100px; object-fit: cover; width: clamp(130px, 14vw, 210px); }
   .rb-profile-bio { flex: 1; min-width: 0; }
   .rb-profile-bio h2 { font-size: clamp(26px, 2vw, 38px); margin: 0 0 4px; }
   .rb-profile-bio p { margin: 5px 0; }
@@ -244,9 +244,9 @@ const Root = styled.div`
   .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); min-height: min(77vh, 920px); }
   .rb-inbox { border-right: 2px solid #222; display: flex; flex-direction: column; min-height: 0; }
   .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; font-size: clamp(21px, 1.7vw, 32px); margin: 0; min-height: 78px; padding: 16px 24px; }
-  .rb-inbox-search { display: flex; gap: 0; padding: 14px; }
+  .rb-inbox-search { align-items: center; display: flex; flex: 0 0 150px; gap: 0; height: 150px; padding: 14px; }
   .rb-inbox-search input { border: 1px solid #999; height: 42px; min-width: 0; padding: 8px 10px; width: 100%; }
-  .rb-inbox-search button { background: #fff; border: 1px solid #999; border-left: 0; height: 42px; width: 42px; }
+  .rb-inbox-search button { align-items: center; background: #fff; border: 1px solid #999; border-left: 0; display: grid; flex: 0 0 42px; height: 42px; justify-items: center; padding: 0; width: 42px; }
   .rb-contact-list { border-top: 1px solid #bbb; flex: 1; min-height: 150px; overflow: auto; }
   .rb-contact { align-items: center; background: white; border: 0; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 112px; padding: 12px; text-align: left; width: 100%; }
   .rb-contact[aria-current="true"] { background: var(--rb-peach); border-left: 5px solid var(--rb-orange); padding-left: 7px; }

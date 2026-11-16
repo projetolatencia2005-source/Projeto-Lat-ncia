@@ -79,7 +79,7 @@ const Root = styled.div`
   .ry-button[aria-pressed="true"] { background: #ef242d; }
   .ry-video-grid { display: grid; gap: 30px 22px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .ry-video-card { min-width: 0; }
-  .ry-thumbnail { background: #111; border: 2px solid #111; box-shadow: 5px 5px 0 #111; display: block; margin: 0 5px 10px 0; overflow: hidden; padding: 0; position: relative; width: calc(100% - 5px); }
+  .ry-thumbnail { background: #111; border: 2px solid #111; box-shadow: 7px 7px 0 #111; display: block; margin: 0 7px 12px 0; overflow: hidden; padding: 0; position: relative; width: calc(100% - 7px); }
   .ry-thumbnail img { aspect-ratio: 16 / 9; display: block; height: auto; object-fit: cover; transition: opacity .12s ease; width: 100%; }
   .ry-thumbnail:hover img { opacity: .9; }
   .ry-duration { background: #111; bottom: 4px; color: white; font-size: 13px; padding: 2px 5px; position: absolute; right: 4px; }
@@ -98,7 +98,7 @@ const Root = styled.div`
   .ry-tag-list { display: flex; flex-wrap: wrap; gap: 10px; }
   .ry-tag-list button { background: #ff3038; border: 2px solid #111; box-shadow: 3px 3px 0 #111; color: #fff; padding: 7px 10px; }
   .ry-load-area { align-items: center; display: flex; flex-direction: column; margin: 42px auto 0; max-width: 680px; }
-  .ry-load-message { margin: 20px 0 0; text-align: center; }
+  .ry-load-message { margin: 40px 0 0; text-align: center; }
   .ry-footer { align-items: center; background: #f2f2f2; border-top: 2px solid #222; display: flex; gap: 42px; margin-top: 35px; min-height: 96px; padding: 18px clamp(20px, 3vw, 50px); }
   .ry-footer img { height: auto; max-width: 170px; width: 100%; }
   .ry-footer nav { display: flex; gap: 24px; }
@@ -134,10 +134,11 @@ const Root = styled.div`
   .ry-comment-text { margin: 3px 0 8px; }
   .ry-comment-actions { align-items: center; display: flex; gap: 15px; }
   .ry-reply { background: transparent; border: 0; font-size: 13px; padding: 0; position: relative; top: -3px; }
-  .ry-reply-list { border-left: 2px solid #ddd; display: grid; gap: 7px; margin: 8px 0 0 10px; padding-left: 10px; }
+  .ry-reply-list { display: grid; gap: 7px; margin: 8px 0 0 10px; }
+  .ry-comment-count { position: relative; top: -4px; }
   .ry-related { display: grid; gap: 18px; }
   .ry-related-card { display: grid; gap: 12px; grid-template-columns: minmax(130px, 42%) minmax(0, 1fr); }
-  .ry-related-card button { background: #111; border: 2px solid #111; box-shadow: 4px 4px 0 #111; padding: 0; }
+  .ry-related-card button { background: #111; border: 2px solid #111; box-shadow: 6px 6px 0 #111; padding: 0; }
   .ry-related-card img { aspect-ratio: 16 / 9; display: block; object-fit: cover; width: 100%; }
   .ry-related-card a { color: #0872d1; line-height: 1.3; text-decoration: underline; }
   .ry-related-card p { font-size: 13px; margin: 6px 0 0; }
@@ -281,7 +282,7 @@ const YouSpacePage = ({ url }: { url: string }): JSX.Element => {
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
               <h2>{activeComments.length ? 34 + Math.max(0, activeComments.length - starterComments.length) : 0} comentários</h2>
               <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit">›</button></form>
-              {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{comment.text}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" />{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</button><button aria-label="Não gostei do comentário" type="button"><Icon kind="like" /></button></div>
+              {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{comment.text}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" type="button"><Icon kind="like" /></button></div>
                 {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>Você · agora</strong><div>{reply}</div></div>)}</div> : null}
                 {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit">›</button></form>}
               </div></article>)}</div>}
