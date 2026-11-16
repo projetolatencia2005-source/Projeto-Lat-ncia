@@ -2,6 +2,7 @@ import { type FormEvent, type ReactElement, useCallback, useEffect, useMemo, use
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
+import { Arrow } from "components/apps/Browser/NavigationIcons";
 
 const ASSETS = "/System/Doors/sites/youspace/";
 const LOGO = "/System/Doors/sites/youspace-logo-pixel.png";
@@ -126,7 +127,8 @@ const Root = styled.div`
   .ry-comments h2 { font-size: 22px; margin: 0 0 16px; }
   .ry-comment-composer { align-items: center; background: #f6f6f6; border: 2px solid #111; box-shadow: 3px 3px 0 #111; display: flex; gap: 8px; margin-bottom: 20px; padding: 8px; }
   .ry-comment-composer textarea { background: transparent; border: 0; min-height: 42px; padding: 10px; resize: vertical; width: 100%; }
-  .ry-comment-composer button { background: white; border: 2px solid #111; box-shadow: 2px 2px 0 #111; font-size: 20px; height: 38px; width: 38px; }
+  .ry-comment-composer button { align-items: center; background: white; border: 2px solid #111; box-shadow: 2px 2px 0 #111; display: flex; height: 38px; justify-content: center; padding: 0; width: 38px; }
+  .ry-comment-composer button img { height: 22px; width: 22px; }
   .ry-comment-list { display: grid; gap: 14px; }
   .ry-comment { border: 2px solid #111; box-shadow: 3px 3px 0 #111; display: grid; gap: 12px; grid-template-columns: 32px minmax(0, 1fr); padding: 12px; }
   .ry-comment-color { height: 28px; width: 28px; }
@@ -191,7 +193,9 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const [draft, setDraft] = useState("");
   const [replyDraft, setReplyDraft] = useState("");
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
-  const [comments, setComments] = useState<Comment[]>(() => [...starterComments]);
+  const [commentsByVideo, setCommentsByVideo] = useState<Record<string, Comment[]>>(() => ({
+    "eles-sabem": [...starterComments],
+  }));
   const [commentLikes, setCommentLikes] = useState<number[]>([]);
   const visibleVideos = useMemo(() => videos.filter((video) => (category === "Todos" || video.category === category) && `${video.title} ${video.creator} ${video.category}`.toLowerCase().includes(search.toLowerCase())), [category, search]);
   const suggestions = useMemo(() => videos.filter((video) => search.trim() && video.title.toLowerCase().includes(search.toLowerCase())).slice(0, 4), [search]);
@@ -210,25 +214,39 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
     setPlayerState("idle");
     setLiked(false);
     setDisliked(false);
+    setReplyingTo(null);
+    setReplyDraft("");
     navigate(`${SITE_URLS.youspace}watch/${id}`);
   };
 
   const submitComment = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     if (!draft.trim() || !activeVideo) return;
-    setComments((current) => [...current, { id: Date.now(), author: "Você", age: "agora", text: draft.trim(), color: "#71d65c", likes: 0 }]);
+    const videoId = activeVideo.id;
+    setCommentsByVideo((current) => ({
+      ...current,
+      [videoId]: [...(current[videoId] || []), { id: Date.now(), author: "Você", age: "agora", text: draft.trim(), color: "#71d65c", likes: 0 }],
+    }));
     setDraft("");
   };
 
   const submitReply = (event: FormEvent<HTMLFormElement>, commentId: number): void => {
     event.preventDefault();
-    if (!replyDraft.trim()) return;
-    setComments((current) => current.map((comment) => comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), replyDraft.trim()] } : comment));
+    if (!replyDraft.trim() || !activeVideo) return;
+    const videoId = activeVideo.id;
+    setCommentsByVideo((current) => ({
+      ...current,
+      [videoId]: (current[videoId] || []).map((comment) => comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), replyDraft.trim()] } : comment),
+    }));
     setReplyDraft("");
     setReplyingTo(null);
   };
 
-  const activeComments = activeVideo?.id === "eles-sabem" ? comments : [];
+  const activeComments = activeVideo ? commentsByVideo[activeVideo.id] || [] : [];
+  const seededVideo = activeVideo?.id === "eles-sabem";
+  const commentCount = activeVideo
+    ? (seededVideo ? 34 : 0) + Math.max(0, activeComments.length - (seededVideo ? starterComments.length : 0))
+    : 0;
   const searchForm = (event: FormEvent<HTMLFormElement>): void => { event.preventDefault(); setSearchOpen(false); };
 
   return (
@@ -277,14 +295,14 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
               <img alt="Canal" className="ry-channel-avatar" src={`${ASSETS}verdade.png`} />
               <div><strong>{activeVideo.creator}</strong><div>{activeVideo.views} visualizações</div></div>
               <button className="ry-subscribe" onClick={() => setSubscribed((current) => !current)} type="button">{subscribed ? "INSCRITO" : "INSCREVA-SE"}</button>
-              <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon kind="like" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{activeComments.length ? 34 : 0}</button></div>
+              <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon kind="like" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{commentCount}</button></div>
             </section>
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
-              <h2>{activeComments.length ? 34 + Math.max(0, activeComments.length - starterComments.length) : 0} comentários</h2>
-              <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit">›</button></form>
+              <h2>{commentCount} comentários</h2>
+              <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><Arrow direction="right" /></button></form>
               {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{comment.text}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" type="button"><Icon kind="like" /></button></div>
                 {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>Você · agora</strong><div>{reply}</div></div>)}</div> : null}
-                {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit">›</button></form>}
+                {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
               </div></article>)}</div>}
             </section>
           </main>

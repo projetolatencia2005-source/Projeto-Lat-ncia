@@ -183,7 +183,9 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
             className="browser-tabs"
             role="tablist"
           >
-            {browserTabs.tabs.map((tab) => (
+            {[...browserTabs.tabs]
+              .sort((left, right) => Number(right.id === browserTabs.activeTab.id) - Number(left.id === browserTabs.activeTab.id))
+              .map((tab) => (
               <div
                 key={tab.id}
                 className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
@@ -213,7 +215,7 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
                   <span aria-hidden="true">×</span>
                 </Button>
               </div>
-            ))}
+              ))}
           </div>
           <Button
             aria-label="Nova aba"

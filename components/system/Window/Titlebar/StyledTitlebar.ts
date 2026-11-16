@@ -79,6 +79,20 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     gap: 6px;
     height: 100%;
     min-width: 0;
+    position: relative;
+
+    /* Covers the titlebar rule beneath the active tab so it reads as one connected tab. */
+    &::after {
+      background: #f7edd7;
+      bottom: -2px;
+      content: "";
+      height: 2px;
+      left: 5px;
+      pointer-events: none;
+      position: absolute;
+      width: clamp(120px, 9.1vw, 175px);
+      z-index: 6;
+    }
   }
 
   .browser-tabs {

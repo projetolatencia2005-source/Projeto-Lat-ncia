@@ -56,6 +56,8 @@ const conversations: Conversation[] = [
       { from: "friend", text: "você ainda vai naquele encontro de sábado?", time: "14:08", day: "Ontem" },
       { from: "me", text: "vou sim! só tava esperando confirmarem o horário", time: "14:29" },
       { from: "me", text: "pode crer, posso levar aquela câmera pequena também!", time: "14:38" },
+      { from: "friend", text: "confirmaram agora, começa às oito e a gente se encontra na entrada.", time: "14:30" },
+      { from: "friend", text: "Fechado! eu levo os CDs", time: "14:30" },
       { from: "me", text: "Feliz aniversário!!!", time: "11:39", day: "Hoje" },
     ],
   },
