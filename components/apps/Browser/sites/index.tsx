@@ -1,5 +1,6 @@
 import { type MouseEvent as ReactMouseEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
+import BubbleRebuilt from "components/apps/Browser/sites/BubbleRebuilt";
 import {
   getInternalSite,
   INTERNAL_SITES,
@@ -7,6 +8,7 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
+import YouSpaceRebuilt from "components/apps/Browser/sites/YouSpaceRebuilt";
 import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 import {
   isDoorsKeywordCollected,
@@ -3094,9 +3096,9 @@ const InternalSites: FC<InternalSitesProps> = ({ url }) => {
   return (
     <StyledInternalSites key={url} $site={siteId}>
       {siteId === "gluugli" && <GluugliPage url={url} />}
-      {siteId === "bubble" && <BubblePage url={url} />}
+      {siteId === "bubble" && <BubbleRebuilt url={url} />}
       {siteId === "encicloweb" && <EncicloWebPage url={url} />}
-      {siteId === "youspace" && <YouSpacePage url={url} />}
+      {siteId === "youspace" && <YouSpaceRebuilt url={url} />}
     </StyledInternalSites>
   );
 };
