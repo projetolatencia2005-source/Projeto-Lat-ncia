@@ -104,9 +104,10 @@ const Root = styled.div`
   .ry-footer nav { display: flex; gap: 24px; }
   .ry-footer a { color: #647c9b; text-decoration: none; }
   .ry-footer small { color: #647c9b; margin-left: auto; }
-  .ry-watch { display: grid; gap: 28px; grid-template-columns: minmax(0, 981px) minmax(270px, 1fr); }
-  .ry-watch-main, .ry-watch-side { min-width: 0; }
-  .ry-player { aspect-ratio: 16 / 9; background: #101010; border: 5px solid #111; box-shadow: 5px 5px 0 #111; overflow: hidden; position: relative; width: 100%; }
+  .ry-watch { align-items: start; display: grid; gap: 28px; grid-template-columns: minmax(0, 981px) minmax(270px, 1fr); }
+  .ry-watch-main, .ry-watch-side { align-self: start; min-width: 0; }
+  .ry-player { aspect-ratio: 16 / 9; background: #101010; border: 5px solid #111; box-shadow: 5px 5px 0 #111; justify-self: start; overflow: hidden; position: relative; width: 100%; }
+  .ry-watch-title, .ry-watch-meta, .ry-comments { width: 100%; }
   .ry-player > img { display: block; height: 100%; object-fit: contain; width: 100%; }
   .ry-play { align-items: center; background: #ff3038; border: 3px solid white; border-radius: 50%; color: #fff; display: grid; font-size: 28px; height: 66px; left: 50%; place-items: center; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 66px; }
   .ry-player-feedback { align-items: center; background: rgb(0 0 0 / 62%); color: white; display: flex; flex-direction: column; gap: 14px; inset: 0; justify-content: center; padding: 20px; position: absolute; text-align: center; }
@@ -116,7 +117,7 @@ const Root = styled.div`
   .ry-watch-title { border-bottom: 2px solid #aaa; font-size: clamp(23px, 1.7vw, 30px); line-height: 1.25; margin: 18px 0 12px; padding-bottom: 12px; }
   .ry-watch-meta { align-items: center; border-bottom: 2px solid #aaa; display: flex; gap: 18px; min-height: 72px; padding: 10px 0; }
   .ry-channel-avatar { background: #ddd; border: 2px solid #111; border-radius: 50%; height: 56px; width: 56px; }
-  .ry-subscribe { background: #ff3038; border: 2px solid #111; box-shadow: 4px 4px 0 #111; color: white; margin-left: 8px; padding: 9px 13px; }
+  .ry-subscribe { background: #ff3038; border: 2px solid #111; box-shadow: 5px 5px 0 #111; color: white; margin-left: 8px; padding: 9px 13px; }
   .ry-watch-actions { display: flex; gap: 16px; margin-left: auto; }
   .ry-watch-actions button, .ry-comment-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: column; gap: 2px; padding: 4px; }
   .ry-watch-actions img, .ry-comment-actions img { height: 22px; width: 22px; }
