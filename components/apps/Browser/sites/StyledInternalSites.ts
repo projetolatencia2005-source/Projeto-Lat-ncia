@@ -5429,6 +5429,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         background: #fff;
         border-color: #31302c;
         border-width: 2px;
+        border-right: 0;
         padding: 6px 14px;
       }
 
@@ -5437,8 +5438,10 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       }
 
       .site-search button {
-        background: #fff;
-        border-color: #31302c;
+        background: #f7edd7;
+        border: 2px solid #31302c !important;
+        border-radius: 0;
+        box-sizing: border-box;
         flex-basis: 44px;
       }
 
@@ -7731,3 +7734,4 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 `;
 
 export default StyledInternalSites;
+
