@@ -5848,10 +5848,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     padding: clamp(15px, 3vw, 34px);
   }
 
-  @media (max-width: 1100px) {
-  
-
-
   /* Match the Figma frame proportions at desktop width. */
   .site-bubble .bubble-header {
     height: 44px;
@@ -7731,7 +7727,51 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     white-space: nowrap !important;
   }
 
+  /* Match the watch player to the comments panel and align it with recommendations. */
+  && .site-youspace .you-watch-layout {
+    align-items: start !important;
+    column-gap: 20px !important;
+    grid-template-columns: 981px minmax(280px, 1fr) !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  && .site-youspace .you-watch-main,
+  && .site-youspace .you-watch-main .you-player,
+  && .site-youspace .you-watch-main .you-watch-info,
+  && .site-youspace .you-watch-main .you-comments-panel {
+    box-sizing: border-box !important;
+    max-width: 981px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  && .site-youspace .you-watch-main .you-player {
+    align-self: start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  && .site-youspace .you-watch-channel > button {
+    border: 2px solid #111 !important;
+    box-shadow: 3px 4px 0 #111 !important;
+  }
+
+  @container bubble-site (max-width: 1328px) {
+    && .site-youspace .you-watch-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    && .site-youspace .you-watch-main,
+    && .site-youspace .you-watch-main .you-player,
+    && .site-youspace .you-watch-main .you-watch-info,
+    && .site-youspace .you-watch-main .you-comments-panel {
+      margin-left: auto !important;
+      margin-right: auto !important;
+      max-width: 981px !important;
+    }
+  }
+
 `;
 
 export default StyledInternalSites;
-
