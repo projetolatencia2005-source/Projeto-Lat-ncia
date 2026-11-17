@@ -183,9 +183,7 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
             className="browser-tabs"
             role="tablist"
           >
-            {[...browserTabs.tabs]
-              .sort((left, right) => Number(right.id === browserTabs.activeTab.id) - Number(left.id === browserTabs.activeTab.id))
-              .map((tab) => (
+            {browserTabs.tabs.map((tab) => (
               <div
                 key={tab.id}
                 className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
