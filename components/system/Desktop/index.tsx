@@ -16,6 +16,7 @@ const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
+const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
 const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
@@ -324,6 +325,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
 
 const Desktop: FC = ({ children }) => {
   const desktopRef = useRef<HTMLElement | null>(null);
+  const lockedFolderVideoRef = useRef<HTMLVideoElement | null>(null);
   const requestedFilesCleanupRef = useRef(false);
   const loginButtonRef = useRef<HTMLButtonElement | null>(null);
   const splashButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -337,6 +339,9 @@ const Desktop: FC = ({ children }) => {
   const [bonusSeconds, setBonusSeconds] = useState(0);
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
+  const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
+    "hidden" | "fading-in" | "playing" | "fading-out" | "blocked"
+  >("hidden");
   const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
   const [activeKeyword, setActiveKeyword] = useState("");
   const noticeParagraphs = KEYWORD_NOTICE_PARAGRAPHS_BY_KEY[activeKeyword] ?? DEFAULT_KEYWORD_NOTICE_PARAGRAPHS;
@@ -396,6 +401,50 @@ const Desktop: FC = ({ children }) => {
       window.removeEventListener("doors-session-reset-starting", onResetStarting);
     };
   }, [rootFs]);
+
+  const startLockedFolderVideo = useCallback((): void => {
+    const video = lockedFolderVideoRef.current;
+    if (!video) return;
+    try {
+      video.currentTime = 0;
+    } catch {
+      // Continue playback if seeking isn't available yet.
+    }
+    setLockedFolderVideoPhase("fading-in");
+    void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
+    return () =>
+      window.removeEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
+  }, [startLockedFolderVideo]);
+
+  useEffect(() => {
+    if (lockedFolderVideoPhase !== "fading-in") return;
+    const timeout = window.setTimeout(
+      () => setLockedFolderVideoPhase("playing"),
+      LOCKED_FOLDER_VIDEO_FADE_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [lockedFolderVideoPhase]);
+
+  useEffect(() => {
+    if (lockedFolderVideoPhase !== "fading-out") return;
+    const timeout = window.setTimeout(() => {
+      const video = lockedFolderVideoRef.current;
+      video?.pause();
+      if (video) {
+        try {
+          video.currentTime = 0;
+        } catch {
+          // The video can stay at its final frame until the overlay is hidden.
+        }
+      }
+      setLockedFolderVideoPhase("hidden");
+    }, LOCKED_FOLDER_VIDEO_FADE_MS);
+    return () => window.clearTimeout(timeout);
+  }, [lockedFolderVideoPhase]);
 
   useEffect(() => {
     const onKeywordCollected = (event: Event): void => {
@@ -718,6 +767,37 @@ const Desktop: FC = ({ children }) => {
           )}
         </div>
       )}
+      <div
+        aria-hidden={lockedFolderVideoPhase === "hidden"}
+        className={`doors-unlock-video-overlay doors-unlock-video-overlay--${lockedFolderVideoPhase}`}
+        role={lockedFolderVideoPhase === "blocked" ? "alert" : undefined}
+      >
+        <video
+          ref={lockedFolderVideoRef}
+          aria-label="Vídeo exibido após desbloquear a pasta trancada"
+          onEnded={() => setLockedFolderVideoPhase("fading-out")}
+          onError={() => {
+            if (lockedFolderVideoPhase !== "hidden") {
+              setLockedFolderVideoPhase("blocked");
+            }
+          }}
+          playsInline
+          preload="metadata"
+          src="/System/Doors/locked-folder-unlocked.mp4"
+        />
+        {lockedFolderVideoPhase === "blocked" && (
+          <div className="doors-unlock-video-error">
+            <p>Não foi possível iniciar o vídeo.</p>
+            <button
+              className="doors-unlock-video-retry"
+              onClick={startLockedFolderVideo}
+              type="button"
+            >
+              Reproduzir vídeo
+            </button>
+          </div>
+        )}
+      </div>
       {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} keysCollected={Math.min(collectedKeywordsRef.current.size, LOCKED_FOLDER_KEY_COUNT)} startedAt={startedAt} />}
       {startedAt === null && (
         <>

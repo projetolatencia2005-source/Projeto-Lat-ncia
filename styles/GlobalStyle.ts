@@ -196,6 +196,71 @@ const GlobalStyle = styled.createGlobalStyle`
     width: 100%;
   }
 
+  .doors-unlock-video-overlay {
+    align-items: center;
+    background: #000;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    transition: opacity 800ms ease;
+    visibility: hidden;
+    z-index: 100003;
+  }
+
+  .doors-unlock-video-overlay--fading-in,
+  .doors-unlock-video-overlay--playing,
+  .doors-unlock-video-overlay--blocked {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .doors-unlock-video-overlay--blocked {
+    pointer-events: auto;
+  }
+
+  .doors-unlock-video-overlay--fading-out {
+    opacity: 0;
+    visibility: visible;
+  }
+
+  .doors-unlock-video-overlay video {
+    display: block;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 800ms ease;
+    width: 100%;
+  }
+
+  .doors-unlock-video-overlay--playing video {
+    opacity: 1;
+  }
+
+  .doors-unlock-video-overlay--blocked video {
+    opacity: 0;
+  }
+
+  .doors-unlock-video-error {
+    color: #fff;
+    font-family: "Pixelify Sans", monospace;
+    position: absolute;
+    text-align: center;
+  }
+
+  .doors-unlock-video-retry {
+    background: #f5ecd6;
+    border: 2px solid #ded3b9;
+    box-shadow: 3px 3px 0 #111;
+    color: #111;
+    cursor: pointer;
+    font: inherit;
+    padding: 12px 18px;
+    position: absolute;
+  }
+
   .doors-keyword-notice {
     box-sizing: border-box;
     color: #ffffff;
