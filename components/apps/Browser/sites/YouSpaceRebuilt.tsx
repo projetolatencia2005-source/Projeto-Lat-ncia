@@ -99,7 +99,8 @@ const Root = styled.div`
   .ry-tag-list { display: flex; flex-wrap: wrap; gap: 10px; }
   .ry-tag-list button { background: #ff3038; border: 2px solid #111; box-shadow: 3px 3px 0 #111; color: #fff; padding: 7px 10px; }
   .ry-load-area { align-items: center; display: flex; flex-direction: column; margin: 42px auto 0; max-width: 680px; }
-  .ry-load-message { margin: 120px 0 0; text-align: center; }
+  .ry-load-area > .ry-button { position: relative; top: 20px; }
+  .ry-load-message { margin: 90px 0 0; text-align: center; }
   .ry-footer { align-items: center; background: #f2f2f2; border-top: 2px solid #222; display: flex; gap: 42px; margin-top: 35px; min-height: 96px; padding: 18px clamp(20px, 3vw, 50px); }
   .ry-footer img { height: auto; max-width: 170px; width: 100%; }
   .ry-footer nav { display: flex; gap: 24px; }
