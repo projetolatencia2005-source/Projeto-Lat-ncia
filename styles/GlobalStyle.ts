@@ -260,6 +260,27 @@ const GlobalStyle = styled.createGlobalStyle`
     font-weight: 400;
   }
 
+  .doors-keyword-notice-continue {
+    background: #f7edd7;
+    border: 2px solid #171715;
+    box-shadow: 3px 3px 0 #111;
+    color: #31302c;
+    cursor: pointer;
+    font: inherit;
+    font-size: 16px;
+    margin-top: 2px;
+    padding: 6px 20px;
+  }
+
+  .doors-keyword-notice-continue:hover {
+    opacity: 0.9;
+  }
+
+  .doors-keyword-notice-continue:focus-visible {
+    outline: 2px solid #86baff;
+    outline-offset: 3px;
+  }
+
   @media (max-width: 600px) {
     .doors-keyword-notice {
       font-size: clamp(19px, calc(4.5vw + 3px), 23px);

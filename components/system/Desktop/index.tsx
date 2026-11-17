@@ -16,7 +16,6 @@ const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
-const KEYWORD_NOTICE_COMPLETE_PAUSE_MS = 500;
 const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
@@ -440,21 +439,6 @@ const Desktop: FC = ({ children }) => {
   }, [keywordOverlayPhase, noticeTotalCharacters]);
 
   useEffect(() => {
-    if (
-      keywordOverlayPhase !== "notice" ||
-      typedNoticeCharacters < noticeTotalCharacters
-    ) {
-      return;
-    }
-
-    const timeout = window.setTimeout(
-      () => setKeywordOverlayPhase("confirmation"),
-      KEYWORD_NOTICE_COMPLETE_PAUSE_MS,
-    );
-    return () => window.clearTimeout(timeout);
-  }, [keywordOverlayPhase, noticeTotalCharacters, typedNoticeCharacters]);
-
-  useEffect(() => {
     if (keywordOverlayPhase !== "confirmation") return;
 
     const timeout = window.setTimeout(
@@ -601,6 +585,11 @@ const Desktop: FC = ({ children }) => {
   const startSession = (): void =>
     setStartedAt((current) => current ?? Date.now());
 
+  const continueFromKeywordNotice = (): void => {
+    if (typedNoticeCharacters < noticeTotalCharacters) return;
+    setKeywordOverlayPhase("confirmation");
+  };
+
   return (
     <StyledDesktop
       ref={desktopRef}
@@ -701,6 +690,15 @@ const Desktop: FC = ({ children }) => {
                   });
                 })()}
               </div>
+              {typedNoticeCharacters >= noticeTotalCharacters && (
+                <button
+                  className="doors-keyword-notice-continue"
+                  onClick={continueFromKeywordNotice}
+                  type="button"
+                >
+                  Continuar
+                </button>
+              )}
             </section>
           ) : (
             <p aria-live="polite" className="doors-keyword-confirmation" role="status">

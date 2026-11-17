@@ -4,7 +4,6 @@ export const LOCKED_FOLDER_WORDS = [
   "Saber oculto",
   "Conexão",
   "Fragmentos",
-  "Cognição",
 ] as const;
 export const LOCKED_FOLDER_KEY_COUNT = LOCKED_FOLDER_WORDS.length;
 
@@ -23,3 +22,4 @@ export const isLockedFolderEntry = (path: string, url: string): boolean =>
       normalizedPath.endsWith("/pasta trancada.url")
     );
   });
+
