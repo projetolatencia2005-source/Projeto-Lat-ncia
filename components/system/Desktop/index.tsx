@@ -5,6 +5,7 @@ import FileManager from "components/system/Files/FileManager";
 import LockedFolderProvider from "components/system/Files/LockedFolder";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
 import { resetStorage } from "contexts/fileSystem/functions";
+import { LOCKED_FOLDER_KEY_COUNT } from "components/system/Files/LockedFolder/constants";
 import {
   applyAccessibilityPreferences,
   readAccessibilityPreferences,
@@ -31,6 +32,17 @@ const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
   ],
 ];
 const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
+  conexao: [
+    [
+      { text: "Uma conexão pode começar com um clique, mas ganha sentido quando existe alguém do outro lado." },
+    ],
+    [
+      { text: "Nas Lan Houses, mensagens, jogos e arquivos cruzavam a mesma rede e transformavam máquinas compartilhadas em pontos de encontro." },
+    ],
+    [
+      { text: "Às vezes, uma conversa basta para fazer a distância parecer menor." },
+    ],
+  ],
   informacao: [
     [
       { text: "Você sabia que a Wikipedia foi criada em 2001 e se tornou uma das maiores enciclopédias livres da internet?" },
@@ -265,7 +277,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
     <aside
       ref={statusRef}
       aria-label={
-        `Latência System. Tempo restante ${time}. ${keysCollected} de 5 chaves resgatadas. Valor R$ 4,00.`
+        `Latência System. Tempo restante ${time}. ${keysCollected} de ${LOCKED_FOLDER_KEY_COUNT} chaves resgatadas. Valor R$ 4,00.`
       }
       className={`doors-session-status ${position ? "doors-session-status--movable" : "doors-session-status--centered"}`}
       onPointerCancel={endDrag}
@@ -293,7 +305,7 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
           <strong>Valor:</strong> R$4,00
         </span>
       </div>
-      <p className="notice">Você já pegou {keysCollected} de 5 chaves</p>
+      <p className="notice">Você já pegou {keysCollected} de {LOCKED_FOLDER_KEY_COUNT} chaves</p>
     </aside>
   );
 };
@@ -676,7 +688,7 @@ const Desktop: FC = ({ children }) => {
           )}
         </div>
       )}
-      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} keysCollected={Math.min(collectedKeywordsRef.current.size, 5)} startedAt={startedAt} />}
+      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} keysCollected={Math.min(collectedKeywordsRef.current.size, LOCKED_FOLDER_KEY_COUNT)} startedAt={startedAt} />}
       {startedAt === null && (
         <>
           {bootStage === "loading" && (

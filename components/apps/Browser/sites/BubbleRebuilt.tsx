@@ -1,7 +1,9 @@
-import { type FormEvent, type ReactElement, useEffect, useMemo, useState } from "react";
+import { type FormEvent, type MouseEvent as ReactMouseEvent, type ReactElement, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
+import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
+import { isDoorsKeywordCollected, recordDoorsKeyword } from "utils/doorsKeywords";
 
 const BUBBLE_ASSETS = "/System/Doors/sites/bubble/";
 const bubbleImage = (name: string): string => `${BUBBLE_ASSETS}${name}`;
@@ -283,6 +285,9 @@ const Root = styled.div`
   .rb-message { background: white; border: 2px solid #222; box-shadow: 2px 2px #222; min-width: 82px; padding: 12px 14px 22px; position: relative; }
   .rb-message-row--me .rb-message { background: var(--rb-peach); }
   .rb-message p { line-height: 1.35; margin: 0; }
+  .rb-keyword { background: transparent; border: 0; color: #7d94b8; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; font: inherit; padding: 0; text-decoration: underline; }
+  .rb-key-icon { background: transparent; border: 0; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; display: inline-flex; margin-left: 5px; padding: 0; vertical-align: middle; }
+  .rb-key-icon svg { height: 18px; width: 24px; }
   .rb-message time { bottom: 5px; font-size: 11px; position: absolute; right: 8px; }
   .rb-message-compose { align-items: flex-end; border-top: 1px solid #aaa; display: flex; gap: 12px; padding: 12px; }
   .rb-message-compose textarea { border: 1px solid #999; min-height: 56px; padding: 10px; resize: vertical; width: 100%; }
@@ -419,6 +424,8 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
   const [selectedConversation, setSelectedConversation] = useState(selectedId);
   const [messages, setMessages] = useState<Record<string, Message[]>>(() => Object.fromEntries(conversations.map((conversation) => [conversation.handle.slice(1), conversation.messages])));
   const [messageDraft, setMessageDraft] = useState("");
+  const [connectionCollected, setConnectionCollected] = useState(() => isDoorsKeywordCollected("Conexão"));
+  const connectionCursorCleanupsRef = useRef(new Map<HTMLElement, () => void>());
   const [profileEditing, setProfileEditing] = useState(false);
   const [bio, setBio] = useState("“Por aí, com uma câmera na bolsa e uma música na cabeça.”");
   const [communityName, setCommunityName] = useState("");
@@ -426,6 +433,69 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
   useEffect(() => {
     setSelectedConversation(selectedId);
   }, [selectedId]);
+
+  useEffect(() => {
+    const onKeywordCollected = (event: Event): void => {
+      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword;
+      if (keyword?.normalize("NFD").replace(/[\u0300-\u036F]/g, "").trim().toLocaleLowerCase("pt-BR") === "conexao") {
+        setConnectionCollected(true);
+      }
+    };
+    window.addEventListener("doors-keyword-collected", onKeywordCollected);
+    return () => {
+      window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+      connectionCursorCleanupsRef.current.forEach((cleanup) => cleanup());
+      connectionCursorCleanupsRef.current.clear();
+    };
+  }, []);
+
+  const collectConnection = (): void => {
+    recordDoorsKeyword("Conexão");
+    setConnectionCollected(true);
+  };
+  const startConnectionCursorEffect = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    const element = event.currentTarget;
+    if (connectionCursorCleanupsRef.current.has(element)) return;
+    const cleanup = attachDoorsKeywordCursorEffect(element);
+    if (cleanup) connectionCursorCleanupsRef.current.set(element, cleanup);
+  };
+  const stopConnectionCursorEffect = (event: ReactMouseEvent<HTMLButtonElement>): void => {
+    const element = event.currentTarget;
+    connectionCursorCleanupsRef.current.get(element)?.();
+    connectionCursorCleanupsRef.current.delete(element);
+  };
+  const renderMessageText = (text: string): ReactNode =>
+    text.split(/(conex[aã]o)/gi).map((part, index) => {
+      if (!/^conex[aã]o$/i.test(part)) return part;
+      return (
+        <span className="rb-keyword-group" key={`connection-${index}`}>
+          <button
+            aria-pressed={connectionCollected}
+            className="rb-keyword"
+            onClick={collectConnection}
+            onMouseEnter={startConnectionCursorEffect}
+            onMouseLeave={stopConnectionCursorEffect}
+            type="button"
+          >
+            {part}
+          </button>
+          {!connectionCollected && (
+            <button
+              aria-label="Coletar a chave Conexão"
+              className="rb-key-icon"
+              onClick={collectConnection}
+              type="button"
+            >
+              <svg aria-hidden="true" viewBox="0 0 32 32">
+                <circle cx="10" cy="12" fill="#f6c344" r="7" stroke="#31302c" strokeWidth="2" />
+                <circle cx="10" cy="12" fill="#fff4d0" r="2.4" stroke="#31302c" strokeWidth="1.5" />
+                <path d="M16 12h12v4h-3v3h-4v-3h-5" fill="#f6c344" stroke="#31302c" strokeLinejoin="round" strokeWidth="2" />
+              </svg>
+            </button>
+          )}
+        </span>
+      );
+    });
 
   const selected = conversations.find(({ handle }) => handle.slice(1) === selectedConversation) || conversations[0];
   const filteredConversations = conversations.filter(({ name, handle, preview }) => `${name} ${handle} ${preview || ""}`.toLowerCase().includes(search.toLowerCase()));
@@ -513,7 +583,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
                   {message.day && <div className="rb-day"><span>{message.day}</span></div>}
                   <div className={`rb-message-row ${message.from === "me" ? "rb-message-row--me" : ""}`}>
                     {message.from === "friend" && <img alt="" className="rb-message-avatar" src={bubbleImage(selected.avatar)} />}
-                    <div className="rb-message"><p>{message.text}</p><time>{message.time}</time></div>
+                    <div className="rb-message"><p>{renderMessageText(message.text)}</p><time>{message.time}</time></div>
                   </div>
                 </div>)}
               </div>

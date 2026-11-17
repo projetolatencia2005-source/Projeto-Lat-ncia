@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { LOCKED_FOLDER_WORDS } from "components/system/Files/LockedFolder/constants";
+import { LOCKED_FOLDER_KEY_COUNT, LOCKED_FOLDER_WORDS } from "components/system/Files/LockedFolder/constants";
 import StyledLockedFolderDialog from "components/system/Files/LockedFolder/StyledLockedFolderDialog";
 import { getDoorsCollectedKeywords } from "utils/doorsKeywords";
 
@@ -116,7 +116,7 @@ const LockedFolderProvider: FC = ({ children }) => {
     );
 
     if (!matchesAllWords) {
-      setError("Preencha as cinco palavras-chave corretas para desbloquear.");
+      setError(`Preencha as ${LOCKED_FOLDER_KEY_COUNT} palavras-chave corretas para desbloquear.`);
       return;
     }
 
@@ -238,7 +238,7 @@ const LockedFolderProvider: FC = ({ children }) => {
               </header>
               <form className="doors-locked-folder-form" onSubmit={submit}>
                 <p className="doors-locked-folder-prompt">
-                  Digite as cinco palavras-chave encontradas no jogo. Todas são necessárias para desbloquear.
+                  Digite as {LOCKED_FOLDER_KEY_COUNT} palavras-chave encontradas no jogo. Todas são necessárias para desbloquear.
                 </p>
                 <div className="doors-locked-folder-words">
                   {words.map((word, index) => (
