@@ -14,6 +14,7 @@ const StyledBrowser = styled.div`
     align-items: stretch;
     background: #f7edd7;
     border-bottom: 2px solid #31302c;
+    border-top: 2px solid #31302c;
     box-sizing: border-box;
     display: flex;
     flex: 0 0 32px;
@@ -22,6 +23,18 @@ const StyledBrowser = styled.div`
     padding: 2px 6px 1px;
     position: relative;
     z-index: 4;
+
+    &::before {
+      background: #f7edd7;
+      content: "";
+      height: 2px;
+      left: 5px;
+      pointer-events: none;
+      position: absolute;
+      top: -2px;
+      width: clamp(120px, 9.1vw, 175px);
+      z-index: 5;
+    }
 
     > .menu-item {
       background: transparent;
