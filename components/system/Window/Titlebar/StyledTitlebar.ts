@@ -133,7 +133,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     align-items: center;
     background: #d7e4f7;
     border: 2px solid #31302c;
-    border-bottom: 2px solid #31302c;
+    border-bottom: 0;
     box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
     box-sizing: border-box;
     display: flex;

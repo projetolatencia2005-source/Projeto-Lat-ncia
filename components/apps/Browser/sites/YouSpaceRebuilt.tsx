@@ -63,7 +63,8 @@ const Root = styled.div`
   .ry-logo { display: block; height: auto; max-height: 42px; max-width: 170px; object-fit: contain; object-position: left center; width: 100%; }
   .ry-search { display: flex; height: 42px; min-width: 0; position: relative; }
   .ry-search input { background: #fff; border: 2px solid #222; border-right: 0; min-width: 0; padding: 0 12px; width: 100%; }
-  .ry-search > button { align-items: center; background: #f5f5f5; border: 2px solid #222; display: grid; flex: 0 0 44px; font-size: 21px; height: 42px; margin-left: 0; place-items: center; position: relative; width: 44px; z-index: 1; }
+  .ry-search > button { align-items: center; background: #f5f5f5; border: 2px solid #222; display: grid; flex: 0 0 44px; height: 42px; margin-left: 0; place-items: center; position: relative; width: 44px; z-index: 1; }
+  .ry-search > button img { height: 20px; object-fit: contain; width: 20px; }
   .ry-suggestions { background: #fff; border: 2px solid #222; left: 0; max-height: 260px; overflow: auto; position: absolute; right: 0; top: calc(100% + 3px); z-index: 5; }
   .ry-suggestions button { background: #fff; border: 0; border-bottom: 1px solid #ccc; display: block; padding: 10px; text-align: left; width: 100%; }
   .ry-user { justify-self: end; }
@@ -98,6 +99,7 @@ const Root = styled.div`
   .ry-toplist button { background: none; border: 0; line-height: 1.3; padding: 0; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
   .ry-tag-list { display: flex; flex-wrap: wrap; gap: 10px; }
   .ry-tag-list button { background: #ff3038; border: 2px solid #111; box-shadow: 3px 3px 0 #111; color: #fff; padding: 7px 10px; }
+  .ry-tag-list .ry-trending-reset { background: #f5f5f5; color: #111; flex: 1 0 100%; text-align: center; }
   .ry-load-area { align-items: center; display: flex; flex-direction: column; margin: 42px auto 0; max-width: 680px; }
   .ry-load-area > .ry-button { position: relative; top: 20px; }
   .ry-load-message { margin: 90px 0 0; text-align: center; }
@@ -106,7 +108,7 @@ const Root = styled.div`
   .ry-footer nav { display: flex; gap: 24px; }
   .ry-footer a { color: #647c9b; text-decoration: none; }
   .ry-footer small { color: #647c9b; margin-left: auto; }
-  .ry-watch { align-items: start; display: grid; gap: 28px; grid-template-columns: minmax(0, 981px) minmax(270px, 1fr); }
+  .ry-watch { align-items: start; display: grid; gap: 48px; grid-template-columns: minmax(0, 981px) minmax(270px, 1fr); }
   .ry-watch-main, .ry-watch-side { align-self: start; min-width: 0; }
   .ry-player { aspect-ratio: 16 / 9; background: #101010; border: 5px solid #111; box-shadow: 5px 5px 0 #111; justify-self: stretch; margin-top: 0; overflow: hidden; position: relative; width: 100%; }
   .ry-watch-title, .ry-watch-meta, .ry-comments { width: 100%; }
@@ -118,10 +120,12 @@ const Root = styled.div`
   @keyframes ry-spin { to { transform: rotate(360deg); } }
   .ry-watch-title { border-bottom: 2px solid #aaa; font-size: clamp(23px, 1.7vw, 30px); line-height: 1.25; margin: 18px 0 12px; padding-bottom: 12px; }
   .ry-watch-meta { align-items: center; border-bottom: 2px solid #aaa; display: flex; gap: 18px; min-height: 72px; padding: 10px 0; }
-  .ry-channel-avatar { background: #ddd; border: 2px solid #111; border-radius: 50%; height: 56px; width: 56px; }
+  .ry-channel-avatar { background: #ddd; border: 2px solid #111; border-radius: 0; height: 56px; object-fit: cover; width: 56px; }
   .ry-watch-meta .ry-subscribe { background: #ff3038; border: 2px solid #111; box-shadow: 5px 5px 0 #111 !important; color: white; margin: 0 0 6px 8px; padding: 9px 13px; }
+  .ry-watch-meta .ry-subscribe.is-subscribed { background: #b8b8b8; color: #222; }
   .ry-watch-actions { display: flex; gap: 16px; margin-left: auto; }
-  .ry-watch-actions button, .ry-comment-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: column; gap: 2px; padding: 4px; }
+  .ry-watch-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: row; gap: 6px; padding: 4px; white-space: nowrap; }
+  .ry-comment-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: column; gap: 2px; padding: 4px; }
   .ry-watch-actions img, .ry-comment-actions img { height: 22px; width: 22px; }
   .ry-watch-actions .ry-dislike img, .ry-comment-actions .ry-dislike img { transform: rotate(180deg); }
   .ry-comments { border: 2px solid #111; box-shadow: 4px 4px 0 #111; margin-top: 22px; padding: 18px; }
@@ -149,8 +153,11 @@ const Root = styled.div`
   @media (max-width: 1050px) {
     .ry-layout { grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; }
     .ry-video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .ry-watch { grid-template-columns: minmax(0, 1fr); }
+    .ry-watch { gap: 28px; grid-template-columns: minmax(0, 1fr); }
     .ry-watch-side { border-top: 2px solid #aaa; padding-top: 20px; }
+  }
+  @media (min-width: 1051px) and (max-width: 1350px) {
+    .ry-watch { gap: 28px; }
   }
   @media (max-width: 700px) {
     .ry-topbar { gap: 10px; grid-template-columns: minmax(0, 1fr) auto; padding: 8px 12px; }
@@ -251,14 +258,20 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
     ? (seededVideo ? 34 : 0) + Math.max(0, activeComments.length - (seededVideo ? starterComments.length : 0))
     : 0;
   const searchForm = (event: FormEvent<HTMLFormElement>): void => { event.preventDefault(); setSearchOpen(false); };
+  const resetTrending = (): void => {
+    setCategory("Todos");
+    setSearch("");
+    setSearchOpen(false);
+    setLoadState("idle");
+  };
 
   return (
     <Root>
       <header className="ry-topbar">
-        <button aria-label="Início do YouSpace" className="ry-home" onClick={() => navigate(SITE_URLS.youspace)} type="button"><img alt="YouSpace" className="ry-logo" src={LOGO} /></button>
+        <button aria-label="Início do YouSpace" className="ry-home" onClick={() => { resetTrending(); setPlayerState("idle"); navigate(SITE_URLS.youspace); }} type="button"><img alt="YouSpace" className="ry-logo" src={LOGO} /></button>
         <form className="ry-search" onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setSearchOpen(false); }} onSubmit={searchForm}>
           <input aria-label="Pesquisar vídeos" onChange={(event) => { setSearch(event.currentTarget.value); setSearchOpen(true); }} onFocus={() => setSearchOpen(true)} placeholder="Pesquisar" value={search} />
-          <button aria-label="Pesquisar" type="submit">⌕</button>
+          <button aria-label="Pesquisar" type="submit"><img alt="" src="/System/Doors/search.svg" /></button>
           {searchOpen && suggestions.length > 0 && <div className="ry-suggestions">{suggestions.map((video) => <button key={video.id} onClick={() => openVideo(video.id)} type="button">{video.title}</button>)}</div>}
         </form>
         <div className="ry-user"><button aria-label="Conta do YouSpace" type="button">●</button></div>
@@ -268,7 +281,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
         <div className="ry-page ry-layout">
           <main className="ry-main">
             <div className="ry-heading"><div><small>HOJE</small><h1>Vídeos em alta</h1></div><span className="ry-found">{visibleVideos.length} vídeos encontrados</span></div>
-            <nav aria-label="Categorias de vídeo" className="ry-categories">{categories.map((item) => <button aria-pressed={category === item} className="ry-button" key={item} onClick={() => setCategory(item)} type="button">{item}</button>)}</nav>
+            <nav aria-label="Categorias de vídeo" className="ry-categories">{categories.map((item) => <button aria-pressed={category === item} className="ry-button" key={item} onClick={() => { setCategory(item); if (item === "Todos") setSearch(""); }} type="button">{item}</button>)}</nav>
             <div className="ry-video-grid">{visibleVideos.map((video) => <article className="ry-video-card" key={video.id}>
               <button aria-label={`Assistir ${video.title}`} className="ry-thumbnail" onClick={() => openVideo(video.id)} type="button"><img alt={video.title} src={`${ASSETS}${video.image}`} /><span className="ry-duration">{video.duration}</span></button>
               <a className="ry-video-title" href={`${SITE_URLS.youspace}watch/${video.id}`} onClick={(event) => { event.preventDefault(); openVideo(video.id); }}>{video.title}</a>
@@ -279,7 +292,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
           <aside className="ry-sidebar">
             <section className="ry-panel"><h2>Bem-vindo ao YouSpace!</h2><div className="ry-panel-body">Vídeos, histórias e momentos compartilhados.</div></section>
             <section className="ry-panel"><h2>Mais assistidos hoje</h2><div className="ry-panel-body"><ol className="ry-toplist">{videos.slice(0, 5).map((video, index) => <li key={video.id}><span className="ry-rank">{index + 1}</span><button onClick={() => openVideo(video.id)} type="button">{video.title}</button></li>)}</ol></div></section>
-            <section className="ry-panel"><h2>Buscas populares</h2><div className="ry-panel-body ry-tag-list">{["videoclipes", "skate", "vlog", "engraçado", "games", "amigos", "tutorial", "escola"].map((tag) => <button key={tag} onClick={() => { setSearch(tag); setCategory("Todos"); }} type="button">{tag}</button>)}</div></section>
+            <section className="ry-panel"><h2>Buscas populares</h2><div className="ry-panel-body ry-tag-list"><button className="ry-trending-reset" onClick={resetTrending} type="button">Voltar para vídeos em alta</button>{["videoclipes", "skate", "vlog", "engraçado", "games", "amigos", "tutorial", "escola"].map((tag) => <button key={tag} onClick={() => { setSearch(tag); setCategory("Todos"); }} type="button">{tag}</button>)}</div></section>
           </aside>
         </div>
       )}
@@ -297,7 +310,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
             <section className="ry-watch-meta">
               <img alt="Canal" className="ry-channel-avatar" src={`${ASSETS}verdade.png`} />
               <div><strong>{activeVideo.creator}</strong><div>{activeVideo.views} visualizações</div></div>
-              <button className="ry-subscribe" onClick={() => setSubscribed((current) => !current)} type="button">{subscribed ? "INSCRITO" : "INSCREVA-SE"}</button>
+              <button aria-pressed={subscribed} className={`ry-subscribe${subscribed ? " is-subscribed" : ""}`} onClick={() => setSubscribed((current) => !current)} type="button">{subscribed ? "INSCRITO" : "INSCREVA-SE"}</button>
               <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon kind="like" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{commentCount}</button></div>
             </section>
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
