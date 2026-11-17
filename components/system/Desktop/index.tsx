@@ -33,6 +33,17 @@ const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
   ],
 ];
 const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
+  alfabetizacao: [
+    [
+      { text: "Você sabia que as Lan Houses tiveram um papel importante na alfabetização digital?" },
+    ],
+    [
+      { text: "Para quem não tinha acesso à tecnologia em casa, esses espaços representavam uma oportunidade de desenvolver novas habilidades e conquistar mais autonomia." },
+    ],
+    [
+      { text: "Mais do que acessar a internet, era aprender a utilizar a tecnologia para estudar, trabalhar e se comunicar." },
+    ],
+  ],
   conexao: [
     [
       { text: "Você sabia que as lan houses ajudaram a popularizar o Orkut no Brasil?" },
