@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import {
   HOME_PAGE,
@@ -59,7 +59,19 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
     goToHistory,
     moveHistory,
     navigate,
+    tabs,
   } = browserTabs;
+  const activeTabIndex = Math.max(
+    0,
+    tabs.findIndex(({ id: tabId }) => tabId === activeTab.id)
+  );
+  const activeTabSeamOffset = Array.from(
+    { length: activeTabIndex },
+    () => "clamp(120px, 9.1vw, 175px) + 2px"
+  ).join(" + ");
+  const activeTabSeamStyle = {
+    "--active-tab-left": `calc(5px${activeTabSeamOffset ? ` + ${activeTabSeamOffset}` : ""})`,
+  } as CSSProperties;
 
   const closeMenu = (): void => setOpenMenu(null);
   const onMenuClick = (
@@ -102,6 +114,7 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
       <nav
         aria-label="Menu do navegador"
         className="browser-menu-bar"
+        style={activeTabSeamStyle}
       >
         {MENU_ITEMS.map(([title, menuId]) => (
           <Button
@@ -258,3 +271,4 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
 };
 
 export default Browser;
+

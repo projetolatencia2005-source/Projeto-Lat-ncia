@@ -14,6 +14,7 @@ const StyledBrowser = styled.div`
     align-items: stretch;
     background: #f7edd7;
     border-bottom: 2px solid #31302c;
+    border-top: 2px solid #31302c;
     box-sizing: border-box;
     display: flex;
     flex: 0 0 32px;
@@ -22,6 +23,18 @@ const StyledBrowser = styled.div`
     padding: 2px 6px 1px;
     position: relative;
     z-index: 4;
+
+    &::before {
+      background: #f7edd7;
+      content: "";
+      height: 2px;
+      left: var(--active-tab-left, 5px);
+      pointer-events: none;
+      position: absolute;
+      top: -2px;
+      width: clamp(120px, 9.1vw, 175px);
+      z-index: 5;
+    }
 
     > .menu-item {
       background: transparent;
@@ -109,18 +122,10 @@ const StyledBrowser = styled.div`
 
       > button {
         box-sizing: border-box;
-        flex: 0 0 25px;
-        height: 25px;
-        min-width: 25px;
-        padding: 0;
-        width: 25px;
-      }
-
-      > button:nth-of-type(1),
-      > button:nth-of-type(2) {
-        flex-basis: 27px;
+        flex: 0 0 27px;
         height: 27px;
         min-width: 27px;
+        padding: 0;
         width: 27px;
       }
     }
@@ -141,27 +146,27 @@ const StyledBrowser = styled.div`
       width: 27px;
 
       &.arrow-button {
-        background: transparent;
-        border: 0;
-        box-shadow: none;
+        background: #f7edd7;
+        border: 2px solid #31302c;
+        box-shadow: 2px 2px 0 #31302c;
 
         img {
-          height: 25px;
-          width: 25px;
+          height: 17px;
+          width: 17px;
         }
 
         &:hover {
-          background: transparent;
-          filter: brightness(1.04);
+          background: #edf3fa;
+          filter: none;
         }
 
         &:active {
-          background: transparent;
+          background: #c4d4e8;
           transform: translate(2px, 2px);
         }
 
         &:disabled {
-          background: transparent;
+          background: #d7e0eb;
           box-shadow: none;
           opacity: 0.5;
         }
@@ -268,6 +273,21 @@ const StyledBrowser = styled.div`
       }
     }
   }
+  /* Mantém a atualização com a mesma presença dos botões de navegação. */
+  .browser-toolbar .navigation-buttons > button {
+    box-sizing: border-box;
+    flex: 0 0 27px;
+    height: 27px;
+    min-width: 27px;
+    width: 27px;
+  }
+
+  .browser-toolbar .navigation-buttons > button:not(.arrow-button) svg {
+    height: 20px;
+    width: 20px;
+  }
+
 `;
 
 export default StyledBrowser;
+

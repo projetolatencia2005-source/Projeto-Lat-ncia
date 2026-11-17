@@ -1,5 +1,6 @@
 import { type MouseEvent as ReactMouseEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
+import BubbleRebuilt from "components/apps/Browser/sites/BubbleRebuilt";
 import {
   getInternalSite,
   INTERNAL_SITES,
@@ -7,6 +8,7 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
+import YouSpaceRebuilt from "components/apps/Browser/sites/YouSpaceRebuilt";
 import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 import {
   isDoorsKeywordCollected,
@@ -208,7 +210,7 @@ type BubbleFriend = {
 type BubbleConversation = {
   avatar: string;
   id: string;
-  messages: { mine: boolean; text: string; time: string }[];
+  messages: { day?: string; mine: boolean; text: string; time: string }[];
   name: string;
   online: boolean;
   preview: string;
@@ -464,6 +466,7 @@ const bubbleInitialConversations: BubbleConversation[] = [
     messages: [
       { mine: false, text: "boa noiteee!!", time: "19:08" },
       {
+        day: "Ontem",
         mine: false,
         text: "você ainda vai naquele encontro de sábado?",
         time: "14:08",
@@ -478,7 +481,7 @@ const bubbleInitialConversations: BubbleConversation[] = [
         text: "pode crer, posso levar aquela câmera pequena também!",
         time: "14:38",
       },
-      { mine: true, text: "Feliz aniversário!!!", time: "11:39" },
+      { day: "Hoje", mine: true, text: "Feliz aniversário!!!", time: "11:39" },
     ],
     name: "Malu Souza",
     online: true,
@@ -488,7 +491,22 @@ const bubbleInitialConversations: BubbleConversation[] = [
   {
     avatar: bubbleAvatar("larissa"),
     id: "larissa",
-    messages: [{ mine: false, text: "NÃO ACREDITO AMGGGG", time: "10:34" }],
+    messages: [
+      { mine: false, text: "boa noite ai mano", time: "13:08" },
+      { day: "Hoje", mine: false, text: "manoooooooooo tu não sabe !!", time: "10:00" },
+      { mine: true, text: "oque Falo ai", time: "10:21" },
+      {
+        mine: false,
+        text: "Eu finalmente achei o novo DVD do sandy e Junior para vender lá na boa do gato",
+        time: "10:21",
+      },
+      {
+        mine: true,
+        text: "Eu já sabia, e comprei um para mim e para você",
+        time: "10:28",
+      },
+      { mine: false, text: "NÃO ACREDITO AMGGGG", time: "10:34" },
+    ],
     name: "Larissa Oda",
     online: true,
     preview: "NÃO ACREDITO AMGGGG",
@@ -497,27 +515,94 @@ const bubbleInitialConversations: BubbleConversation[] = [
   {
     avatar: bubbleAvatar("jorge"),
     id: "jorge",
-    messages: [{ mine: false, text: "tchaaaaau", time: "ontem" }],
+    messages: [
+      {
+        mine: true,
+        text: "ta bom tchou, vê se você leva dinheiro a mais para a lan",
+        time: "14:29",
+      },
+      {
+        day: "Ontem",
+        mine: false,
+        text: "ana, acabei de voltar do encontro com a Stella.",
+        time: "19:18",
+      },
+      { mine: true, text: "Eai como Foi ??", time: "19:18" },
+      {
+        mine: false,
+        text: "Foi muito bom ela é perfeita e eu achei ela tão fofa e engraçada, acho que to apaixonado",
+        time: "19:19",
+      },
+      { mine: true, text: "Pelo amor de Deus que melação, credo", time: "19:20" },
+      { mine: false, text: "Aquela conexão Foi mágica.", time: "19:23" },
+    ],
     name: "Jorge Roberto",
     online: true,
-    preview: "tchaaaaau",
-    stamp: "ontem",
+    preview: "Aquela conexão Foi mágica.",
+    stamp: "19:23",
   },
   {
     avatar: bubbleAvatar("barbara"),
     id: "barbara",
     messages: [
-      { mine: false, text: "não mos isso foi muito...", time: "ontem" },
+      { mine: true, text: "Ba você vai estar na sua casa no dia 11", time: "14:29" },
+      {
+        day: "Ontem",
+        mine: false,
+        text: "oi eu saí mais cedo da lan houses ontem",
+        time: "19:18",
+      },
+      { mine: true, text: "você ??? por que ??", time: "19:18" },
+      {
+        mine: false,
+        text: "Meu pai ta Falando que eu to gastando muito dinheiro na lan house",
+        time: "19:19",
+      },
+      { mine: false, text: "aquele velho", time: "19:23" },
+      {
+        mine: true,
+        text: "mas também vc fica a semana toda na lan house",
+        time: "19:20",
+      },
+      { mine: false, text: "não mos isso Foi muito injusto", time: "19:23" },
     ],
     name: "Bárbara Guedes",
     online: false,
-    preview: "não mos isso foi muito...",
-    stamp: "ontem",
+    preview: "não mos isso Foi muito injusto",
+    stamp: "19:23",
   },
   {
     avatar: bubbleAvatar("rui"),
     id: "rui",
-    messages: [{ mine: false, text: "eai gatinha. O_-", time: "sexta-feira" }],
+    messages: [
+      { mine: false, text: "oi, tudo bem ? rs", time: "18:06" },
+      {
+        day: "11/11",
+        mine: false,
+        text: "oi eu saí mais cedo da lan houses ontem",
+        time: "19:18",
+      },
+      { mine: false, text: "oi, linda, vamos sair por Favor", time: "19:18" },
+      {
+        day: "12/11",
+        mine: false,
+        text: "olá gata, te achei mó bonita, me responde para a gente marcar de ir na praça.",
+        time: "14:14",
+      },
+      { mine: false, text: "eu sou um cara legal confia", time: "14:16" },
+      {
+        day: "13/11",
+        mine: false,
+        text: "nossa não vai me responder mesmo, sabia que vc não prestava",
+        time: "14:14",
+      },
+      {
+        day: "Sexta-feira",
+        mine: false,
+        text: "eai gatinha. O_-",
+        time: "19:33",
+      },
+    ],
     name: "Rui Mendonça",
     online: true,
     preview: "eai gatinha. O_-",
@@ -532,7 +617,6 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
   const path = new URL(url).pathname.toLowerCase();
   const routePart = path.split("/").find(Boolean) || "";
-  const isLoginRoute = routePart === "";
   const validPages: BubblePageKey[] = [
     "inicio",
     "perfil",
@@ -543,12 +627,12 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const page: BubblePageKey = validPages.includes(routePart as BubblePageKey)
     ? (routePart as BubblePageKey)
     : "inicio";
-  const [sessionActive, setSessionActive] = useState(
+  const [, setSessionActive] = useState(
     () =>
       typeof window !== "undefined" &&
       window.sessionStorage.getItem(BUBBLE_SESSION_KEY) === "signed-in"
   );
-  const loggedIn = sessionActive && !isLoginRoute;
+  const loggedIn = true;
   const emailInputRef = useRef<HTMLInputElement>(null);
   const [postText, setPostText] = useState("");
   const [postPhoto, setPostPhoto] = useState<
@@ -595,6 +679,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   const [activeConversation, setActiveConversation] = useState("malu");
   const [messageSearch, setMessageSearch] = useState("");
   const [messageDraft, setMessageDraft] = useState("");
+  const [messageAttachment, setMessageAttachment] = useState("");
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
   const [commentingPost, setCommentingPost] = useState<null | string>(null);
   const [commentDraft, setCommentDraft] = useState("");
@@ -1616,8 +1701,8 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
   );
   const sendMessage = (event: { preventDefault: () => void }): void => {
     event.preventDefault();
-    if (!messageDraft.trim() || !activeChat) return;
-    const text = messageDraft.trim();
+    if ((!messageDraft.trim() && !messageAttachment) || !activeChat) return;
+    const text = messageDraft.trim() || "📎 " + messageAttachment;
     setConversations((current) =>
       current.map((conversation) =>
         conversation.id === activeChat.id
@@ -1634,118 +1719,88 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
       )
     );
     setMessageDraft("");
+    setMessageAttachment("");
   };
 
   const renderMessages = (): ReactNode => (
     <div className="bubble-page-content">
-      <header className="bubble-page-banner">
+      <header className="bubble-page-heading">
         <h1>Mensagens</h1>
-        <p>
-          Conversas privadas, planos de última hora e links que você vai abrir
-          só depois.
-        </p>
+        <p>Conversas privadas, planos de última hora e links que você vai abrir só depois.</p>
       </header>
-      <section className="bubble-messenger">
+      <section aria-label="Conversas do Bubble" className="bubble-chat-layout">
         <aside className="bubble-inbox">
           <h2>Caixa de entrada</h2>
-          <label className="bubble-inbox-search">
-            <span className="bubble-visually-hidden">Buscar conversas</span>
+          <form aria-label="Buscar conversas" className="bubble-inbox-search" onSubmit={(event) => event.preventDefault()}>
             <input
-              onChange={({ currentTarget }) =>
-                setMessageSearch(currentTarget.value)
-              }
+              aria-label="Buscar conversas"
+              onChange={({ currentTarget }) => setMessageSearch(currentTarget.value)}
               placeholder="Buscar conversas"
               value={messageSearch}
             />
-            <span aria-hidden="true">⌕</span>
-          </label>
-          <div className="bubble-conversation-list">
+            <button aria-label="Buscar conversas" type="submit">
+              <img alt="" src="/System/Doors/sites/bubble/search.svg" />
+            </button>
+          </form>
+          <div className="bubble-contact-list">
             {visibleConversations.map((conversation) => (
               <button
                 key={conversation.id}
-                aria-current={
-                  activeChat?.id === conversation.id ? "true" : undefined
-                }
-                className={`bubble-conversation${activeChat?.id === conversation.id ? " is-active" : ""}`}
+                aria-current={activeChat?.id === conversation.id ? "true" : undefined}
+                className={"bubble-contact" + (activeChat?.id === conversation.id ? " is-selected" : "")}
                 onClick={() => setActiveConversation(conversation.id)}
                 type="button"
               >
                 <img alt="" src={conversation.avatar} />
-                <span className="bubble-conversation-copy">
-                  <strong>
-                    {conversation.name}
-                    {conversation.online && (
-                      <i aria-label="Online" className="bubble-online-dot" />
-                    )}
-                  </strong>
-                  <small>{conversation.preview}</small>
+                <span className="bubble-contact-copy">
+                  <strong>{conversation.name}{conversation.online && <i aria-label="online agora" />}</strong>
+                  <span>{conversation.preview}</span>
                 </span>
-                <span className="bubble-conversation-stamp">
-                  {conversation.unread ? <b>{conversation.unread}</b> : null}
-                  {conversation.stamp}
-                </span>
+                <span className="bubble-contact-time">{conversation.stamp}</span>
+                {conversation.unread ? <span className="bubble-unread">{conversation.unread}</span> : null}
               </button>
             ))}
+            {visibleConversations.length === 0 && <p className="bubble-empty-inbox">Nenhuma conversa encontrada.</p>}
           </div>
         </aside>
-        <main className="bubble-chat">
+        <section aria-label={"Conversa com " + (activeChat?.name || "")} className="bubble-conversation">
           {activeChat ? (
             <>
-              <header className="bubble-chat-header">
+              <header className="bubble-conversation-header">
                 <img alt="" src={activeChat.avatar} />
-                <div>
-                  <strong>{activeChat.name}</strong>
-                  <small>
-                    {activeChat.online ? "online agora" : "visto recentemente"}
-                  </small>
-                </div>
-                <button
-                  className="bubble-light-button"
-                  onClick={() => navigate("perfil")}
-                  type="button"
-                >
-                  Ver perfil
-                </button>
+                <div><strong>{activeChat.name}</strong><span>{activeChat.online ? "online agora" : "visto recentemente"}</span></div>
+                <button className="bubble-view-profile" onClick={() => navigate("perfil")} type="button">Ver perfil</button>
               </header>
-              <div
-                aria-label={`Conversa com ${activeChat.name}`}
-                aria-live="polite"
-                className="bubble-chat-history"
-              >
-                {activeChat.messages.map((message) => (
-                  <div
-                    key={`${activeChat.id}-${message.time}-${message.text}`}
-                    className={`bubble-chat-message ${message.mine ? "is-mine" : "is-theirs"}`}
-                  >
-                    <p>{message.text}</p>
-                    <small>{message.time}</small>
+              <div aria-live="polite" className="bubble-message-list">
+                {activeChat.messages.map((message, index) => (
+                  <div className="bubble-message-fragment" key={activeChat.id + "-" + index}>
+                    {message.day && <div className="bubble-chat-day">{message.day}</div>}
+                    <article className={"bubble-message-row " + (message.mine ? "is-sent" : "is-received")}>
+                      {!message.mine && <img alt="" src={activeChat.avatar} />}
+                      <p><span>{message.text}</span><time>{message.time}</time></p>
+                    </article>
                   </div>
                 ))}
               </div>
-              <form className="bubble-chat-composer" onSubmit={sendMessage}>
-                <input
+              <form className="bubble-message-composer" onSubmit={sendMessage}>
+                <textarea
                   aria-label="Escreva sua mensagem"
-                  onChange={({ currentTarget }) =>
-                    setMessageDraft(currentTarget.value)
-                  }
+                  onChange={({ currentTarget }) => setMessageDraft(currentTarget.value)}
                   placeholder="Escreva sua mensagem..."
                   value={messageDraft}
                 />
-                <button
-                  className="bubble-primary-button"
-                  disabled={!messageDraft.trim()}
-                  type="submit"
-                >
-                  Enviar
-                </button>
+                <div className="bubble-message-tools">
+                  <label className="bubble-attach-message">
+                    <img alt="" src="/System/Doors/sites/bubble/link.svg" />
+                    <span>{messageAttachment || "Anexar"}</span>
+                    <input aria-label="Anexar arquivo à mensagem" onChange={({ currentTarget }) => setMessageAttachment(currentTarget.files?.[0]?.name || "")} type="file" />
+                  </label>
+                  <button className="bubble-send-message" disabled={!messageDraft.trim() && !messageAttachment} type="submit">Enviar</button>
+                </div>
               </form>
             </>
-          ) : (
-            <div className="bubble-empty-state">
-              <h2>Escolha uma conversa</h2>
-            </div>
-          )}
-        </main>
+          ) : <div className="bubble-empty-state"><h2>Escolha uma conversa</h2></div>}
+        </section>
       </section>
     </div>
   );
@@ -1761,7 +1816,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               onClick={() => navigate("inicio")}
               type="button"
             >
-              bubble
+              <img alt="Bubble" src="/System/Doors/sites/bubble/wordmark.png" />
             </button>
             <nav aria-label="Navegação do Bubble">
               {bubbleNavigation.map((item) => (
@@ -2355,9 +2410,6 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     { label: "Portal Comunitário", path: wikiSociabilityArticlePath },
     { label: "Eventos atuais", path: wikiLanHouseArticlePath },
     { label: "Mudanças Recentes", path: wikiTechnologyArticlePath },
-    { label: "Sobre nós", path: "/artigo/historia-da-internet" },
-    { label: "Ajuda", path: "" },
-    { label: "Donativos", path: "" },
   ];
 
   const wikiToolItems = [
@@ -2546,7 +2598,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     ? wikiLanHouseSections
                     : wikiSociabilitySections
                   )
-                    .slice(0, 2)
+                    .slice(0, isLanHouseArticle ? 3 : 2)
                     .map((section) => (
                       <section
                         key={section.heading}
@@ -2582,7 +2634,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     ? wikiLanHouseSections
                     : wikiSociabilitySections
                   )
-                    .slice(2)
+                    .slice(isLanHouseArticle ? 3 : 2)
                     .map((section) => (
                       <section
                         key={section.heading}
@@ -2720,132 +2772,322 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
 };
 
 const videos = [
-  {
-    id: "peter-parker",
-    image: "/System/Doors/sites/video-spiderman.png",
-    title: "Peter Parker chorando pela tia...",
-  },
-  {
-    id: "crianca-revoltada",
-    image: "/System/Doors/sites/video-reaction.png",
-    title: "Criança revoltada com show da TV...",
-  },
-  {
-    id: "mc-daleste",
-    image: "/System/Doors/sites/video-music.png",
-    title: "Mc Daleste - São Paulo (Clipe oficial)",
-  },
-  {
-    id: "nissim-ourfali",
-    image: "/System/Doors/sites/video-orca.png",
-    title: "Nissim Ourfali - Vamos pra Baleia...",
-  },
+  { id: "eles-sabem", image: "/System/Doors/sites/youspace/verdade.png", title: "A verdade que eles não te contam, mas nós vamso te contar, porque nós não somos eles!!", author: "eles.sabem", views: "10,1 mil visualizações", duration: "11:42", category: "Comédia" },
+  { id: "ensaio-banda", image: "/System/Doors/sites/youspace/banda.png", title: "ensaio de banda de garagem (deu tudo errado)", author: "mari.mp3", views: "3,4 mil visualizações", duration: "4:38", category: "Música" },
+  { id: "skate-amigos", image: "/System/Doors/sites/youspace/skate.png", title: "um dia inteiro andando de skate com meus amigos", author: "guizera1993", views: "900 visualizações", duration: "6:09", category: "Esportes" },
+  { id: "role-centro", image: "/System/Doors/sites/youspace/role-centro.png", title: "rolê no centro gravando com uma câmera velha", author: "nat.videos", views: "610 visualizações", duration: "3:04", category: "Vlogs" },
+  { id: "cachorro-chinelo", image: "/System/Doors/sites/youspace/cachorro.png", title: "meu cachorro tentando pegar o chinelo", author: "tiaguinho.x", views: "2,1 mil visualizações", duration: "0:47", category: "Comédia" },
+  { id: "festa-junina", image: "/System/Doors/sites/youspace/festa-junina.png", title: "festa junina da escola, minha mãe filmou", author: "dudu_rj", views: "880 visualizações", duration: "8:31", category: "Vlogs" },
+  { id: "webcam-avo", image: "/System/Doors/sites/youspace/webcam.png", title: "minha avó descobrindo a webcam kkkkk", author: "lu.fernandes", views: "4,2 mil visualizações", duration: "2:15", category: "Comédia" },
+  { id: "bicicleta", image: "/System/Doors/sites/youspace/bicicleta.png", title: "a primeira vez que eu andei de bicicleta sem rodinha!!", author: "gabi.santos", views: "1,1 mil visualizações", duration: "1:56", category: "Vlogs" },
+  { id: "irmao-chuveiro", image: "/System/Doors/sites/youspace/chuveiro.png", title: "meu irmão cantando no chuveiro (não me mata natan)", author: "tati_oliveira", views: "4,8 mil visualizações", duration: "1:23", category: "Música" },
 ];
+
+const popularVideoSearches = ["videoclipes", "skate", "vlog", "engraçado", "games", "amigos", "tutorial", "escola"];
+
+const youSpaceInitialComments = [
+  { author: "lu.fernandes", color: "#74ed55", text: "Eu assisti até o final, cadê minha palavra-chave???", time: "1 semana", likes: "12" },
+  { author: "joao.oliveira", color: "#214bff", text: "Não acredito que fui enganado esse tempo todo, obrigado por mostrar a VERDADE. +1 INSCRITO", time: "1 semana", likes: "8" },
+  { author: "mariana.mp3", color: "#ff3333", text: "Faz um vídeo sobre como os computadores mudaram a nossa vida. Manda um salve!", time: "2 semanas", likes: "5" },
+  { author: "gui1993", color: "#ffdf00", text: "MANO!!! Eu sabia que tinha alguma coisa estranha com essa internet!!!", time: "2 semanas", likes: "3" },
+  { author: "eliaszinho", color: "#00bdd4", text: "O vídeo é muito bom. Só add com som, quer ter?", time: "1 mês", likes: "1" },
+];
+
+const youSpaceVideoDescriptions: Record<string, string> = {
+  "eles-sabem": "Um vídeo que mostra tudo o que ninguém conta. Assista até o final e descubra a verdade.",
+  "cachorro-chinelo": "Ele faz isso todo dia e nunca desiste. Hoje eu resolvi filmar porque o vídeo parou de funcionar.",
+  "irmao-chuveiro": "Gravei enquanto ninguém estava vendo. Não sei se ele percebeu a câmera no final.",
+  "webcam-avo": "Minha avó descobrindo a webcam pela primeira vez. Ela olha para a câmera e começa a rir.",
+  "ensaio-banda": "Primeiro ensaio com todo mundo junto, numa sala emprestada. O som ficou estranho e a viola desafinou no meio.",
+  "skate-amigos": "Meu amigo tentando fazer uma manobra. Demorou, mas caiu no final.",
+  "bicicleta": "Meu pai tirou as rodinhas no meio da manhã e eu não achei que ia conseguir.",
+  "festa-junina": "Todo mundo posando no final da festa. Minha mãe pediu para eu guardar a câmera.",
+  "role-centro": "Passeio no centro, na frente da fonte. A câmera é velha e a imagem ficou com chuviscos.",
+};
 
 const YouSpacePage: FC<{ url: string }> = ({ url }) => {
   const browserTabs = useBrowserTabs();
-  const [playing, setPlaying] = useState(false);
+  const [playerStatus, setPlayerStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [showMoreNotice, setShowMoreNotice] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [commentDraft, setCommentDraft] = useState("");
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyDraft, setReplyDraft] = useState("");
+  const [commentReplies, setCommentReplies] = useState<Record<string, typeof youSpaceInitialComments>>({});
+  const [videoComments, setVideoComments] = useState<Record<string, typeof youSpaceInitialComments>>({
+    "eles-sabem": youSpaceInitialComments,
+  });
+  const [liked, setLiked] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
   const query = new URL(url).searchParams.get("q") || "";
   const pathParts = new URL(url).pathname.split("/").filter(Boolean);
   const videoId = pathParts[pathParts.length - 1];
+  const isHome = pathParts.length === 0 && !query;
   const video = videos.find(({ id }) => id === videoId);
+  const comments = video ? videoComments[video.id] || [] : [];
+  const replyCount = video
+    ? Object.entries(commentReplies).reduce(
+        (total, [key, replies]) =>
+          key.startsWith(`${video.id}:`) ? total + replies.length : total,
+        0
+      )
+    : 0;
+  const commentCount = video?.id === "eles-sabem"
+    ? 34 + comments.length - youSpaceInitialComments.length + replyCount
+    : comments.length + replyCount;
   const visibleVideos = useMemo(
     () =>
       videos.filter(({ title }) =>
         title.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+      ).filter(({ category }) =>
+        activeCategory === "Todos" || category === activeCategory
       ),
-    [query]
+    [query, activeCategory]
   );
   const search = (value: string): void =>
-    browserTabs?.navigate(searchUrl(`${SITE_URLS.youspace}buscar`, value));
+    browserTabs?.navigate(searchUrl(SITE_URLS.youspace + "buscar", value));
   const navigate = (path: string): void =>
-    browserTabs?.navigate(`${SITE_URLS.youspace}${path}`);
+    browserTabs?.navigate(SITE_URLS.youspace + path);
+
+  useEffect(() => {
+    if (playerStatus !== "loading") return;
+    const timer = window.setTimeout(() => setPlayerStatus("error"), 1200);
+    return () => window.clearTimeout(timer);
+  }, [playerStatus]);
+
+  useEffect(() => {
+    if (playerStatus !== "error") return;
+    const timer = window.setTimeout(() => {
+      setPlayerStatus("idle");
+      if (!isHome) browserTabs?.navigate(SITE_URLS.youspace);
+    }, 1700);
+    return () => window.clearTimeout(timer);
+  }, [playerStatus, browserTabs, isHome]);
+
+  useEffect(() => {
+    if (!loadingMore) return;
+    const timer = window.setTimeout(() => {
+      setLoadingMore(false);
+      setShowMoreNotice(true);
+    }, 700);
+    return () => window.clearTimeout(timer);
+  }, [loadingMore]);
 
   return (
     <section className="site-youspace">
       <header className="you-topbar">
-        <nav aria-label="Seções do YouSpace">
-          {[
-            "Home",
-            "My Videos",
-            "My Favorite",
-            "My Messages",
-            "My Profile",
-          ].map((item) => (
-            <button key={item} onClick={() => navigate("")} type="button">
-              {item}
-            </button>
-          ))}
-        </nav>
-        <nav aria-label="Conta">
-          {[
-            ["Sing Up", "cadastro"],
-            ["Log In", "login"],
-            ["Help", "ajuda"],
-          ].map(([label, path]) => (
-            <button key={path} onClick={() => navigate(path)} type="button">
-              {label}
-            </button>
-          ))}
-        </nav>
+        <button aria-label="Página inicial do YouSpace" className="you-home-link" onClick={() => navigate("")} type="button">
+          <img alt="YouSpace" src="/System/Doors/sites/youspace-logo-pixel.png" />
+        </button>
+        <SearchField key={query} initialValue={query} label="Pesquisar vídeos" onSearch={search} />
+        <div className="you-profile-control">
+          <button aria-label="Abrir perfil do YouSpace" className="you-profile-button" onClick={() => setProfileOpen((open) => !open)} type="button"><span aria-hidden="true">●</span></button>
+          {profileOpen && <div className="you-profile-menu"><strong>Meu YouSpace</strong><button onClick={() => { setProfileOpen(false); navigate("perfil"); }} type="button">Ver perfil</button></div>}
+        </div>
       </header>
-      <div className="you-brand-search">
-        <img alt="YouSpace" src="/System/Doors/sites/youspace-logo.png" />
-        <small>Seu acervo digital de vídeos</small>
-        <SearchField
-          key={query}
-          initialValue={query}
-          label="Pesquisar vídeos"
-          onSearch={search}
-        />
-      </div>
       {video ? (
-        <section className="you-player">
-          <div className="player-screen">
-            <img alt={video.title} src={video.image} />
-            <button
-              aria-label={
-                playing ? "Pausar demonstração" : "Reproduzir demonstração"
-              }
-              onClick={() => setPlaying((current) => !current)}
-              type="button"
-            >
-              {playing ? "Ⅱ" : "▶"}
-            </button>
-          </div>
-          <div className="player-controls">
-            {playing
-              ? "Reproduzindo demonstração local"
-              : "Vídeo pronto para reprodução"}{" "}
-            · {video.title}
-          </div>
-        </section>
-      ) : (
-        <>
-          <h2 className="you-section-title">
-            {query ? `Resultados para “${query}”` : "Vídeos em alta"}
-          </h2>
-          <div className="you-video-grid">
-            {(visibleVideos.length > 0 ? visibleVideos : videos).map((item) => (
-              <button
-                key={item.id}
-                className="you-video-card"
-                onClick={() => {
-                  setPlaying(false);
-                  navigate(`watch/${item.id}`);
+        <div className="you-watch-layout">
+          <main className="you-watch-main">
+            <section className="you-player">
+              <div className="player-screen">
+                <img alt={video.title} src={video.image} />
+                <button
+                  aria-label={playerStatus === "loading" ? "Carregando vídeo" : playerStatus === "error" ? "Falha ao carregar vídeo" : "Reproduzir vídeo"}
+                  disabled={playerStatus !== "idle"}
+                  onClick={() => setPlayerStatus("loading")}
+                  type="button"
+                >
+                  {playerStatus === "idle" ? "▶" : playerStatus === "loading" ? "…" : "!"}
+                </button>
+                {playerStatus !== "idle" && (
+                  <p aria-live="polite" className={"you-player-feedback you-player-feedback--" + playerStatus} role="status">
+                    {playerStatus === "loading" ? "Carregando vídeo..." : "Erro ao carregar o vídeo. Voltando ao início do YouSpace."}
+                  </p>
+                )}
+              </div>
+            </section>
+            <section className="you-watch-info">
+              <h1>{video.title}</h1>
+              <div className="you-watch-meta-row">
+                <div className="you-watch-channel">
+                  <img alt="" src="/System/Doors/sites/youspace-author-avatar.png" />
+                  <div>
+                    <strong>{video.id === "eles-sabem" ? "Eles Sabem" : video.author}</strong>
+                    <small>{video.id === "eles-sabem" ? "3 mil seguidores" : video.views}</small>
+                  </div>
+                  <button className={subscribed ? "is-subscribed" : ""} onClick={() => setSubscribed((value) => !value)} type="button">
+                    {subscribed ? "INSCRITO" : "INSCREVA-SE"}
+                  </button>
+                </div>
+                <div className="you-watch-actions">
+                  <button aria-label="Curtir" aria-pressed={liked} onClick={() => setLiked((value) => !value)} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{liked ? "67" : "66"}</span></button>
+                  <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>12</span></button>
+                  <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /><span>{commentCount}</span></button>
+                </div>
+              </div>
+            </section>
+            <section className="you-comments-panel">
+              <h2>{commentCount} comentários</h2>
+              <form
+                className="you-comment-composer"
+                style={{ margin: "0" }}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  const text = commentDraft.trim();
+                  if (!text || !video) return;
+                  setVideoComments((current) => ({
+                    ...current,
+                    [video.id]: [{ author: "Você", color: "#f33", text, time: "agora", likes: "0" }, ...(current[video.id] || [])],
+                  }));
+                  setCommentDraft("");
                 }}
-                type="button"
               >
-                <img alt="" src={item.image} />
-                <strong>{item.title}</strong>
-              </button>
+                <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/comments.svg" />
+                <input aria-label="Deixe seu comentário" onChange={(event) => setCommentDraft(event.target.value)} placeholder="Deixe seu comentário..." value={commentDraft} />
+                <button aria-label="Publicar comentário" type="submit">›</button>
+              </form>
+              <ol>
+                {comments.map((comment) => {
+                  const commentKey = `${video.id}:${comment.author}:${comment.text}`;
+                  return (
+                    <li className="you-comment" key={commentKey}>
+                      <span aria-hidden="true" className="you-comment-avatar" style={{ backgroundColor: comment.color }} />
+                      <div className="you-comment-body">
+                        <p><strong>{comment.author}</strong><small> · {comment.time}</small></p>
+                        <p>{comment.text}</p>
+                        <div className="you-comment-actions">
+                          <button
+                            aria-label={`Responder a ${comment.author}`}
+                            aria-expanded={replyingTo === commentKey}
+                            onClick={() => {
+                              setReplyingTo((current) => current === commentKey ? null : commentKey);
+                              setReplyDraft("");
+                            }}
+                            type="button"
+                          >
+                            <img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" />
+                            <span>Responder</span>
+                          </button>
+                          <button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{comment.likes}</span></button>
+                          <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /></button>
+                        </div>
+                        {replyingTo === commentKey && (
+                          <form
+                            className="you-comment-reply-form"
+                            style={{ alignItems: "center", display: "flex", gap: 8, marginTop: 8, width: "100%" }}
+                            onSubmit={(event) => {
+                              event.preventDefault();
+                              const text = replyDraft.trim();
+                              if (!text) return;
+                              setCommentReplies((current) => ({
+                                ...current,
+                                [commentKey]: [
+                                  ...(current[commentKey] || []),
+                                  { author: "Você", color: "#f33", text, time: "agora", likes: "0" },
+                                ],
+                              }));
+                              setReplyDraft("");
+                              setReplyingTo(null);
+                            }}
+                          >
+                            <input
+                              aria-label={`Responder ao comentário de ${comment.author}`}
+                              style={{ background: "#fff", border: "1px solid #7d94b8", boxSizing: "border-box", flex: "1 1 auto", font: "inherit", minWidth: 0, padding: "6px 8px" }}
+                              onChange={(event) => setReplyDraft(event.target.value)}
+                              placeholder={`Responder a ${comment.author}...`}
+                              value={replyDraft}
+                            />
+                            <button disabled={!replyDraft.trim()} style={{ background: "#f33", border: "1px solid #111", boxShadow: "2px 2px 0 #111", color: "#fff", flex: "0 0 auto", padding: "6px 10px" }} type="submit">Enviar</button>
+                          </form>
+                        )}
+                        {(commentReplies[commentKey] || []).map((reply, replyIndex) => (
+                          <div className="you-comment-reply" key={reply.author + reply.text + replyIndex}>
+                            <span aria-hidden="true" className="you-comment-avatar" style={{ backgroundColor: reply.color }} />
+                            <div>
+                              <p><strong>{reply.author}</strong><small> · {reply.time}</small></p>
+                              <p>{reply.text}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          </main>
+          <aside aria-label="Vídeos relacionados" className="you-watch-related">
+            {videos.filter((item) => item.id !== video.id).map((item) => (
+              <article className="you-related-video" key={item.id}>
+                <button aria-label={"Assistir: " + item.title} className="you-related-thumbnail" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button">
+                  <img alt="" src={item.image} />
+                  <span>{item.duration}</span>
+                </button>
+                <div>
+                  <button className="you-related-title" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button">{item.title}</button>
+                  <p>{youSpaceVideoDescriptions[item.id] || item.title}</p>
+                </div>
+              </article>
             ))}
-          </div>
-        </>
+            <button className="you-load-more" disabled={loadingMore} onClick={() => { setShowMoreNotice(false); setLoadingMore(true); }} type="button">
+              {loadingMore ? "Carregando vídeos..." : showMoreNotice ? "Erro ao carregar" : "Carregar mais vídeos"}
+            </button>
+            {showMoreNotice && <p aria-live="polite" className="you-load-message" role="status">Não foi possível carregar mais vídeos. Tente novamente.</p>}
+          </aside>
+        </div>
+      ) : (
+        <div className="you-page-layout">
+          <main className="you-main">
+            <div className="you-section-heading">
+              <div><span>HOJE</span><h1>{query ? "Resultados para “" + query + "”" : "Vídeos em alta"}</h1></div>
+              <p>{visibleVideos.length + " vídeos encontrados"}</p>
+            </div>
+            <nav aria-label="Filtrar vídeos por categoria" className="you-category-list">
+              {["Todos", "Música", "Vlogs", "Esportes", "Comédia", "Tecnologia"].map((category) => (
+                <button aria-pressed={activeCategory === category} className={activeCategory === category ? "is-selected" : ""} key={category} onClick={() => { setActiveCategory(category); setShowMoreNotice(false); setLoadingMore(false); }} type="button">{category}</button>
+              ))}
+            </nav>
+            <div className="you-video-grid">
+              {visibleVideos.map((item) => (
+                <article className="you-video-card" key={item.id}>
+                  <button aria-label={"Assistir: " + item.title} className="you-video-thumbnail" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button"><img alt="" src={item.image} /><span>{item.duration}</span></button>
+                  <button className="you-video-title" onClick={() => { setPlayerStatus("idle"); navigate("watch/" + item.id); }} type="button">{item.title}</button>
+                  <p>por <button onClick={() => navigate("perfil/" + item.author)} type="button">{item.author}</button> · {item.views}</p>
+                </article>
+              ))}
+              {visibleVideos.length === 0 && <p className="you-empty-results">Nenhum vídeo encontrado.</p>}
+            </div>
+            <button className="you-load-more" disabled={loadingMore} onClick={() => { setShowMoreNotice(false); setLoadingMore(true); }} type="button">
+              {loadingMore ? "Carregando vídeos..." : showMoreNotice ? "Erro ao carregar" : "Carregar mais vídeos"}
+            </button>
+            {showMoreNotice && <p aria-live="polite" className="you-load-message" role="status">Não foi possível carregar mais vídeos. Tente novamente.</p>}
+          </main>
+          <aside className="you-sidebar">
+            <section className="you-sidebar-welcome"><h2>Bem-vindo ao YouSpace!</h2><p>Seu acervo digital de vídeos.</p></section>
+            <section className="you-sidebar-panel">
+              <h2>Mais assistidos hoje</h2>
+              <ol>{[videos[0], videos[4], videos[8], videos[6], videos[1]].map((item, index) => (
+                <li key={item.id}><span>{index + 1}</span><button onClick={() => navigate("watch/" + item.id)} type="button">{item.title}</button></li>
+              ))}</ol>
+            </section>
+            <section className="you-sidebar-panel you-popular-panel">
+              <h2>Buscas populares</h2>
+              <div>{popularVideoSearches.map((tag) => <button key={tag} onClick={() => { setActiveCategory("Todos"); search(tag); }} type="button">{tag}</button>)}</div>
+            </section>
+          </aside>
+        </div>
       )}
+      <footer className="you-footer">
+        <img alt="YouSpace" src="/System/Doors/sites/youspace-logo-pixel.png" />
+        <nav aria-label="Informações do YouSpace">{["sobre", "segurança", "privacidade", "ajuda"].map((item) => <button key={item} type="button">{item}</button>)}</nav>
+        <small>© YouSpace, 2007. Todos os direitos reservados</small>
+      </footer>
     </section>
   );
 };
+
 
 const InternalSites: FC<InternalSitesProps> = ({ url }) => {
   const site = getInternalSite(url);
@@ -2854,9 +3096,9 @@ const InternalSites: FC<InternalSitesProps> = ({ url }) => {
   return (
     <StyledInternalSites key={url} $site={siteId}>
       {siteId === "gluugli" && <GluugliPage url={url} />}
-      {siteId === "bubble" && <BubblePage url={url} />}
+      {siteId === "bubble" && <BubbleRebuilt url={url} />}
       {siteId === "encicloweb" && <EncicloWebPage url={url} />}
-      {siteId === "youspace" && <YouSpacePage url={url} />}
+      {siteId === "youspace" && <YouSpaceRebuilt url={url} />}
     </StyledInternalSites>
   );
 };

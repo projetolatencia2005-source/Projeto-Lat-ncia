@@ -213,7 +213,7 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
                   <span aria-hidden="true">×</span>
                 </Button>
               </div>
-            ))}
+              ))}
           </div>
           <Button
             aria-label="Nova aba"

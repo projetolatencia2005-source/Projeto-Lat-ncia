@@ -17,9 +17,11 @@ const styledBorder = ({
   $titlebarColor,
   theme,
 }: StyledTitlebarProps & { theme: DefaultTheme }): string =>
-  $fileExplorer || $browser || $paint || $titlebarColor
-    ? "2px solid #31425b"
-    : $foreground
+  $browser
+    ? "0"
+    : $fileExplorer || $paint || $titlebarColor
+      ? "2px solid #31425b"
+      : $foreground
       ? `1px solid ${theme.colors.titleBar.background}`
       : `1px solid ${theme.colors.titleBar.backgroundInactive}`;
 
@@ -79,6 +81,8 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     gap: 6px;
     height: 100%;
     min-width: 0;
+    position: relative;
+
   }
 
   .browser-tabs {
@@ -90,9 +94,16 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     margin-left: 5px;
     max-width: calc(100% - 40px);
     min-width: 0;
-    overflow-x: clip;
-    overflow-y: visible;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
     width: max-content;
+
+    &::-webkit-scrollbar {
+      display: none;
+      height: 0;
+      width: 0;
+    }
   }
 
   .browser-tab-add {
@@ -108,8 +119,9 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     height: 30px;
     justify-content: center;
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 0;
     padding: 0;
+    transform: translate(-3px, 0);
     width: 34px;
 
     &:hover {
@@ -125,22 +137,33 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
     box-sizing: border-box;
     display: flex;
-    flex: 0 1 190px;
+    flex: 0 0 clamp(120px, 9.1vw, 175px);
     height: 29px;
-    min-width: 112px;
+    min-width: clamp(120px, 9.1vw, 175px);
     overflow: hidden;
     padding: 0 3px 0 0;
 
     &.active {
       background: #f7edd7;
-      box-shadow:
-        2px 0 0 rgb(49 48 44 / 35%),
-        0 2px 0 #f7edd7;
+      border-bottom: 0;
+      box-shadow: 2px 0 0 rgb(49 48 44 / 35%);
       height: 31px;
+      margin-bottom: -2px;
       position: relative;
-      z-index: 1;
-    }
+      z-index: 5;
 
+      &::after {
+        background: #f7edd7;
+        bottom: -2px;
+        content: "";
+        height: 4px;
+        left: -2px;
+        pointer-events: none;
+        position: absolute;
+        right: -2px;
+        z-index: 2;
+      }
+    }
     button {
       background: transparent;
       border: 0;
@@ -174,7 +197,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
       span {
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: clip;
         transform: translate(3px, 1px);
         white-space: nowrap;
       }

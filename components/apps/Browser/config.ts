@@ -1,7 +1,7 @@
 export const SITE_URLS = {
   bubble: "https://bubble.br/",
   encicloweb: "https://encicloweb.br/",
-  gluugli: "https://gluugli.local/",
+  gluugli: "https://gluugli.com/",
   youspace: "https://youspace.com/",
 } as const;
 
@@ -25,6 +25,7 @@ export const HOME_PAGE = SITE_URLS.gluugli;
 const hostToSite: Record<string, InternalSiteId> = {
   "bubble.br": "bubble",
   "encicloweb.br": "encicloweb",
+  "gluugli.com": "gluugli",
   "gluugli.local": "gluugli",
   "youspace.com": "youspace",
 };
