@@ -154,11 +154,14 @@ const Root = styled.div`
     padding: 8px clamp(18px, 2.2vw, 44px);
     width: 100%;
   }
-  .rb-brand { color: white; font-size: clamp(27px, 2.2vw, 40px); font-weight: 700; line-height: 1; margin-right: auto; text-decoration: none; }
+  .rb-brand { background: transparent; border: 0; color: white; display: flex; flex: 0 0 auto; line-height: 1; margin-right: auto; padding: 0; text-decoration: none; }
+  .rb-brand img { display: block; height: 38px; object-fit: contain; width: 118px; }
   .rb-nav-links { align-items: center; display: flex; flex: 0 0 auto; gap: clamp(14px, 2vw, 42px); }
   .rb-nav-links button, .rb-signout {
     background: transparent; border: 0; color: white; font-size: clamp(14px, 1vw, 20px); padding: 8px 0; white-space: nowrap;
   }
+  .rb-nav-links button { align-items: center; display: inline-flex; gap: 8px; }
+  .rb-nav-links img { height: 20px; object-fit: contain; width: 20px; }
   .rb-nav-links button[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; }
   .rb-search { display: flex; flex: 0 1 430px; margin-left: auto; min-width: 140px; }
   .rb-search input { background: white; border: 2px solid #292929; border-right: 0; height: 42px; min-width: 0; padding: 0 12px; width: 100%; }
@@ -174,9 +177,11 @@ const Root = styled.div`
   .rb-box { background: #fff; border: 2px solid var(--rb-line); box-shadow: 4px 4px 0 var(--rb-line); min-width: 0; }
   .rb-box-title { align-items: center; background: var(--rb-orange); color: white; display: flex; justify-content: space-between; min-height: 66px; padding: 12px 20px; }
   .rb-box-title h2 { font-size: clamp(19px, 1.55vw, 28px); line-height: 1.05; margin: 0; }
+  .rb-box-title > button { background: #fff; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #222; min-height: 34px; padding: 4px 10px; }
   .rb-panel-content { padding: 18px 20px; }
   .rb-composer { background: var(--rb-orange); border: 2px solid var(--rb-line); box-shadow: 4px 4px 0 var(--rb-line); color: white; padding: clamp(16px, 1.6vw, 28px); }
   .rb-composer h2 { font-size: clamp(19px, 1.5vw, 28px); margin: 0 0 14px; }
+  .rb-composer h2 img { height: 22px; margin-left: 5px; object-fit: contain; vertical-align: middle; width: 22px; }
   .rb-composer textarea { background: #fff; border: 2px solid #222; color: #202020; display: block; min-height: 118px; padding: 12px; resize: vertical; width: 100%; }
   .rb-composer-actions { align-items: center; display: flex; gap: 12px; justify-content: flex-end; padding-top: 12px; }
   .rb-composer-actions .rb-attach { margin-right: auto; }
@@ -221,6 +226,8 @@ const Root = styled.div`
   .rb-section-bar button { background: transparent; border: 0; color: white; padding: 8px 12px; }
   .rb-section-bar button[aria-pressed="true"] { background: #fff; color: #222; text-decoration: underline; }
   .rb-friends-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; }
+  .rb-friends-photo-grid img { aspect-ratio: 1; border: 2px solid #222; box-shadow: 3px 3px 0 #222; display: block; height: auto; object-fit: cover; width: 100%; }
   .rb-friend-card { display: grid; grid-template-columns: 120px minmax(0, 1fr); min-height: 150px; }
   .rb-friend-card > img { border-right: 2px solid #222; height: 100%; min-height: 150px; object-fit: cover; width: 120px; }
   .rb-friend-info { align-content: center; display: grid; gap: 8px; padding: 16px; }
@@ -232,8 +239,8 @@ const Root = styled.div`
   .rb-profile-bio { flex: 1; min-width: 0; }
   .rb-profile-bio h2 { font-size: clamp(26px, 2vw, 38px); margin: 0 0 4px; }
   .rb-profile-bio p { margin: 5px 0; }
-  .rb-community-feature { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 28px; min-height: 420px; }
-  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: 420px; object-fit: cover; width: 100%; }
+  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 40%) minmax(0, 1fr); margin-bottom: 28px; min-height: 300px; }
+  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: 300px; object-fit: cover; width: 100%; }
   .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: 16px; padding: clamp(24px, 4vw, 72px); }
   .rb-community-feature-copy h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.05; margin: 0; }
   .rb-community-feature-copy p { font-size: clamp(16px, 1.2vw, 22px); margin: 0; }
@@ -245,10 +252,10 @@ const Root = styled.div`
   .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); min-height: min(77vh, 920px); }
   .rb-inbox { border-right: 2px solid #222; display: flex; flex-direction: column; min-height: 0; }
   .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; font-size: clamp(21px, 1.7vw, 32px); margin: 0; min-height: 78px; padding: 16px 24px; }
-  .rb-inbox-search-panel { align-items: center; background: transparent; border: 0; box-sizing: border-box; display: flex; flex: 0 0 58px; height: 58px; margin: 8px 10px 4px; padding: 0; }
-  .rb-inbox-search { align-items: center; background: #fff; border: 0; box-sizing: border-box; display: flex; flex: 1 1 auto; gap: 0; height: 42px; margin: 0; min-width: 0; padding: 0; width: 100%; }
-  .rb-inbox-search input { border: 1px solid #999; height: 42px; min-width: 0; padding: 8px 10px; width: 100%; }
-  .rb-inbox-search button { align-items: center; background: #fff; border: 1px solid #999; border-left: 0; display: grid; flex: 0 0 42px; height: 42px; justify-items: center; padding: 0; width: 42px; }
+  .rb-inbox-search-panel { align-items: center; background: #f7faff; border: 1px solid #9da7b5; box-sizing: border-box; display: flex; flex: 0 0 150px; height: 150px; margin: 0; padding: 16px; }
+  .rb-inbox-search { align-items: stretch; background: #fff; border: 1px solid #7f8792; box-sizing: border-box; display: flex; flex: 1 1 auto; gap: 0; height: 36px; margin: 0; min-width: 0; padding: 0; width: 100%; }
+  .rb-inbox-search input { border: 0; height: 100%; min-width: 0; padding: 6px 10px; width: 100%; }
+  .rb-inbox-search button { align-items: center; background: #f7faff; border: 0; display: grid; flex: 0 0 36px; height: 100%; justify-items: center; padding: 0; width: 36px; }
   .rb-contact-list { border-top: 0; flex: 1; min-height: 0; overflow: auto; }
   .rb-contact { align-items: center; background: white; border: 0; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 112px; padding: 12px; text-align: left; width: 100%; }
   .rb-contact[aria-current="true"] { background: var(--rb-peach); border-left: 5px solid var(--rb-orange); padding-left: 7px; }
@@ -264,7 +271,7 @@ const Root = styled.div`
   .rb-conversation-title strong { display: block; font-size: clamp(19px, 1.45vw, 28px); }
   .rb-conversation-title small { display: block; margin-top: 3px; }
   .rb-view-profile { background: white; border: 2px solid #222; box-shadow: 3px 3px #222; color: #222; font-size: clamp(12px, .9vw, 16px); min-height: 40px; min-width: 96px; padding: 5px 12px; white-space: nowrap; }
-  .rb-message-list { background: #f2f2f2; display: flex; flex: 1; flex-direction: column; gap: 16px; min-height: 260px; overflow: auto; padding: clamp(20px, 2vw, 36px); }
+  .rb-message-list { background: #f2f2f2; display: flex; flex: 1; flex-direction: column; gap: 20px; min-height: 260px; overflow: auto; padding: clamp(20px, 2vw, 36px); }
   .rb-day { align-items: center; color: #999; display: flex; gap: 16px; justify-content: center; margin: 10px 0; }
   .rb-day::before, .rb-day::after { border-top: 1px solid #bbb; content: ""; flex: 1; }
   .rb-message-row { align-items: flex-end; display: flex; gap: 12px; max-width: min(82%, 680px); }
@@ -346,10 +353,10 @@ const Footer = (): ReactElement => (
 
 const BubbleHeader = ({ active, onNavigate }: { active: string; onNavigate: (path: string) => void }): ReactElement => (
   <header className="rb-nav">
-    <button aria-label="Página inicial do Bubble" className="rb-brand" onClick={() => onNavigate("inicio")} type="button">bubble</button>
+    <button aria-label="Página inicial do Bubble" className="rb-brand" onClick={() => onNavigate("inicio")} type="button"><img alt="Bubble" src={bubbleImage("wordmark.png")} /></button>
     <nav aria-label="Navegação do Bubble" className="rb-nav-links">
-      {[["⌂ Início", "inicio"], ["♟ Perfil", "perfil"], ["♣ Amigos", "amigos"], ["◉ Comunidades", "comunidades"], ["▣ Mensagens", "mensagens"]].map(([label, path]) => (
-        <button aria-current={active === path ? "page" : undefined} key={path} onClick={() => onNavigate(path)} type="button">{label}</button>
+      {[{ label: "Início", path: "inicio", icon: "inicio.png" }, { label: "Perfil", path: "perfil", icon: "perfil.png" }, { label: "Amigos", path: "amigos", icon: "amigos.png" }, { label: "Comunidades", path: "comunidades", icon: "comunidades.png" }, { label: "Mensagens", path: "mensagens", icon: "mensagens.png" }].map(({ label, path, icon }) => (
+        <button aria-current={active === path ? "page" : undefined} key={path} onClick={() => onNavigate(path)} type="button"><img alt="" src={bubbleImage(`icons/${icon}`)} />{label}</button>
       ))}
     </nav>
     <form aria-label="Buscar no Bubble" className="rb-search" onSubmit={(event) => event.preventDefault()}>
@@ -445,9 +452,9 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
         <div className="rb-shell rb-columns">
           <main className="rb-stack" aria-label="Mural do Bubble">
             <form className="rb-composer" onSubmit={publishPost}>
-              <h2>E aí! O que tá rolando? ▣</h2>
+              <h2>E aí! O que tá rolando? <img alt="" src={bubbleImage("icons/o-que-ta-rolando.png")} /></h2>
               <textarea aria-label="Escreva uma publicação" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} />
-              <div className="rb-composer-actions"><label className="rb-button rb-attach">♧ Anexar Foto<input accept="image/*" aria-label="Anexar foto" hidden type="file" /></label><span>{composerText.length}/240</span><button className="rb-button" type="submit">Publicar</button></div>
+              <div className="rb-composer-actions"><label className="rb-button rb-attach"><img alt="" src={bubbleImage("icons/link.svg")} /> Anexar Foto<input accept="image/*" aria-label="Anexar foto" hidden type="file" /></label><span>{composerText.length}/240</span><button className="rb-button" type="submit">Publicar</button></div>
             </form>
             <div className="rb-stack">
               {posts.map((post, index) => <BubblePostCard key={`${post.handle}-${post.time}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}
@@ -472,7 +479,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           </section>
           <div className="rb-columns">
             <main className="rb-stack"><section className="rb-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.slice(0, 4).map((post, index) => <BubblePostCard key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}</main>
-            <aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Sobre mim</h2><button onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno.</p><hr /><p>mora em <strong>São Paulo, SP</strong></p><p>aniversário <strong>12 de maio</strong></p><p>no Bubble desde <strong>março de 2001</strong></p></div></section><section className="rb-box"><header className="rb-box-title"><h2>Amigos</h2><button onClick={() => nav("amigos")} type="button">ver todos →</button></header><div className="rb-panel-content rb-friends-grid">{friends.slice(0, 6).map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section></aside>
+            <aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Sobre mim</h2><button onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno.</p><hr /><p>mora em <strong>São Paulo, SP</strong></p><p>aniversário <strong>12 de maio</strong></p><p>no Bubble desde <strong>março de 2001</strong></p></div></section><section className="rb-box"><header className="rb-box-title"><h2>Amigos</h2><button onClick={() => nav("amigos")} type="button">ver todos →</button></header><div className="rb-friends-photo-grid">{friends.slice(0, 6).map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section></aside>
           </div>
         </div>
       )}
@@ -498,7 +505,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           <section aria-label="Conversas do Bubble" className="rb-chat-layout">
             <aside className="rb-inbox"><h2>Caixa de entrada</h2><div className="rb-inbox-search-panel"><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => { setSelectedConversation(conversation.handle.slice(1)); nav(`mensagens/${conversation.handle.slice(1)}`); }} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
             <section aria-label={`Conversa com ${selected.name}`} className="rb-conversation">
-              <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.status || (selected.online ? "online agora" : "online recentemente")}</small></div><button className="rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
+              <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.status || (selected.online ? "online agora" : "online recentemente")}</small></div><button className="rb-button rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
               <div className="rb-message-list" key={selectedConversation}>
                 {(messages[selected.handle.slice(1)] || []).map((message, index) => <div className="rb-message-entry" key={`${message.time}-${index}`}>
                   {message.day && <div className="rb-day"><span>{message.day}</span></div>}
@@ -522,3 +529,4 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
 };
 
 export default BubblePage;
+
