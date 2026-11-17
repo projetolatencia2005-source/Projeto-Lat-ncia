@@ -28,7 +28,7 @@ const StyledBrowser = styled.div`
       background: #f7edd7;
       content: "";
       height: 2px;
-      left: 5px;
+      left: var(--active-tab-left, 5px);
       pointer-events: none;
       position: absolute;
       top: -2px;
@@ -290,3 +290,4 @@ const StyledBrowser = styled.div`
 `;
 
 export default StyledBrowser;
+
