@@ -180,6 +180,7 @@ const Root = styled.div`
   .rb-box-title > button { background: #fff; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #222; min-height: 34px; padding: 4px 10px; }
   .rb-panel-content { padding: 18px 20px; }
   .rb-composer { background: var(--rb-orange); border: 2px solid var(--rb-line); box-shadow: 4px 4px 0 var(--rb-line); color: white; padding: clamp(16px, 1.6vw, 28px); }
+  .rb-home-composer, .rb-home-mini-profile { box-sizing: border-box; height: 282px; }
   .rb-composer h2 { font-size: clamp(19px, 1.5vw, 28px); margin: 0 0 14px; }
   .rb-composer h2 img { height: 22px; margin-left: 5px; object-fit: contain; vertical-align: middle; width: 22px; }
   .rb-composer textarea { background: #fff; border: 2px solid #222; color: #202020; display: block; min-height: 118px; padding: 12px; resize: vertical; width: 100%; }
@@ -203,6 +204,7 @@ const Root = styled.div`
   .rb-visibility { color: #777; font-size: 13px; margin-left: auto; }
   .rb-mini-profile { background: var(--rb-orange); color: white; display: grid; grid-template-columns: 1fr 1fr; min-height: 170px; overflow: hidden; }
   .rb-mini-profile img { border: 2px solid #222; height: 100%; max-height: 210px; min-height: 170px; object-fit: cover; width: 100%; }
+  .rb-home-mini-profile img { max-height: none; min-height: 0; }
   .rb-mini-profile-copy { display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; }
   .rb-mini-profile-copy strong { font-size: clamp(17px, 1.2vw, 23px); }
   .rb-mini-profile-copy a { color: white; font-size: 14px; }
@@ -451,7 +453,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
       {section === "inicio" && (
         <div className="rb-shell rb-columns">
           <main className="rb-stack" aria-label="Mural do Bubble">
-            <form className="rb-composer" onSubmit={publishPost}>
+            <form className="rb-composer rb-home-composer" onSubmit={publishPost}>
               <h2>E aí! O que tá rolando? <img alt="" src={bubbleImage("icons/o-que-ta-rolando.png")} /></h2>
               <textarea aria-label="Escreva uma publicação" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} />
               <div className="rb-composer-actions"><label className="rb-button rb-attach"><img alt="" src={bubbleImage("icons/link.svg")} /> Anexar Foto<input accept="image/*" aria-label="Anexar foto" hidden type="file" /></label><span>{composerText.length}/240</span><button className="rb-button" type="submit">Publicar</button></div>
@@ -461,7 +463,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             </div>
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
-            <section className="rb-box rb-mini-profile"><img alt="Ana Paula na lan house" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
+            <section className="rb-box rb-mini-profile rb-home-mini-profile"><img alt="Ana Paula na lan house" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
             <section className="rb-box"><header className="rb-box-title"><h2>Aniversariantes</h2></header><div className="rb-panel-content rb-birthday"><div className="rb-calendar"><span>NOV</span>24</div><div><strong>Malu Souza</strong><p>Faz aniversário hoje! Mande uma mensagem antes que seja tarde!</p><button className="rb-button rb-button--orange" onClick={() => nav("mensagens/malu")} type="button">Enviar mensagem</button></div></div></section>
             <section className="rb-box"><header className="rb-box-title"><h2>Sugestões de Amigos</h2></header><div className="rb-panel-content">{friends.filter((friend) => ["Jorge Roberto", "Gustavo Ribeiro", "Bárbara Guedes"].includes(friend.name)).map((friend) => <div className="rb-suggestion" key={friend.handle}><img alt="" src={bubbleImage(friend.avatar)} /><div className="rb-suggestion-copy"><strong>{friend.name}</strong><small>{friend.mutual} amigos em comum</small></div><button className="rb-button" onClick={() => setAdded((value) => value.includes(friend.handle) ? value : [...value, friend.handle])} type="button">{added.includes(friend.handle) ? "Enviado" : "+ Add"}</button></div>)}</div></section>
             <section className="rb-box"><header className="rb-box-title"><h2>Comunidades</h2></header><div className="rb-panel-content">{communities.slice(0, 3).map((community) => <p key={community.title}><a href={`${SITE_URLS.bubble}comunidades`} onClick={(event) => { event.preventDefault(); nav("comunidades"); }}>{community.title}</a></p>)}</div></section>
