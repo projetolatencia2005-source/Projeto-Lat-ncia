@@ -16,6 +16,8 @@ const SESSION_DURATION_SECONDS = 5 * 60;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
+const KEYWORD_NOTICE_COMPLETE_PAUSE_MS = 500;
+const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
 type KeywordNoticePart = { text: string; strong?: boolean };
@@ -34,13 +36,13 @@ const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
 const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
   conexao: [
     [
-      { text: "Uma conexão pode começar com um clique, mas ganha sentido quando existe alguém do outro lado." },
+      { text: "Você sabia que as lan houses ajudaram a popularizar o Orkut no Brasil?" },
     ],
     [
-      { text: "Nas Lan Houses, mensagens, jogos e arquivos cruzavam a mesma rede e transformavam máquinas compartilhadas em pontos de encontro." },
+      { text: "Para quem não tinha internet em casa, esses espaços eram uma oportunidade de criar perfis, postar fotos, deixar recados e participar de comunidades." },
     ],
     [
-      { text: "Às vezes, uma conversa basta para fazer a distância parecer menor." },
+      { text: "Assim, muitas pessoas puderam se expressar, fazer amizades e manter contato com outras, transformando o Orkut em um importante espaço de comunicação e conexão." },
     ],
   ],
   informacao: [
@@ -60,7 +62,7 @@ const getKeywordNoticeLength = (paragraphs: KeywordNoticePart[][]): number =>
       total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
     0,
   );
-type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "dismissing";
+type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "confirmation" | "dismissing";
 const BOOT_LOADING_FRAME_SEQUENCE = [
   "/System/Doors/loading/01.svg",
   "/System/Doors/loading/02.svg",
@@ -437,6 +439,41 @@ const Desktop: FC = ({ children }) => {
     return () => window.clearInterval(typingInterval);
   }, [keywordOverlayPhase, noticeTotalCharacters]);
 
+  useEffect(() => {
+    if (
+      keywordOverlayPhase !== "notice" ||
+      typedNoticeCharacters < noticeTotalCharacters
+    ) {
+      return;
+    }
+
+    const timeout = window.setTimeout(
+      () => setKeywordOverlayPhase("confirmation"),
+      KEYWORD_NOTICE_COMPLETE_PAUSE_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [keywordOverlayPhase, noticeTotalCharacters, typedNoticeCharacters]);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "confirmation") return;
+
+    const timeout = window.setTimeout(
+      () => setKeywordOverlayPhase("dismissing"),
+      KEYWORD_CONFIRMATION_DURATION_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [keywordOverlayPhase]);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "dismissing") return;
+
+    const timeout = window.setTimeout(
+      () => setKeywordOverlayPhase("hidden"),
+      KEYWORD_OVERLAY_FADE_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [keywordOverlayPhase]);
+
   useWallpaper(desktopRef);
 
   const beginBootLoading = useCallback(
@@ -564,17 +601,6 @@ const Desktop: FC = ({ children }) => {
   const startSession = (): void =>
     setStartedAt((current) => current ?? Date.now());
 
-  const continueFromKeywordNotice = (): void => {
-    if (keywordGifTimeoutRef.current !== null) {
-      window.clearTimeout(keywordGifTimeoutRef.current);
-    }
-    setKeywordOverlayPhase("dismissing");
-    keywordGifTimeoutRef.current = window.setTimeout(() => {
-      setKeywordOverlayPhase("hidden");
-      keywordGifTimeoutRef.current = null;
-    }, KEYWORD_OVERLAY_FADE_MS);
-  };
-
   return (
     <StyledDesktop
       ref={desktopRef}
@@ -617,7 +643,7 @@ const Desktop: FC = ({ children }) => {
               }}
               src="/System/Doors/Chave_1.gif"
             />
-          ) : (
+          ) : keywordOverlayPhase === "notice" ? (
             <section
               aria-describedby="doors-keyword-notice-description"
               aria-labelledby="doors-keyword-notice-title"
@@ -675,16 +701,11 @@ const Desktop: FC = ({ children }) => {
                   });
                 })()}
               </div>
-              {typedNoticeCharacters >= noticeTotalCharacters && (
-                <button
-                  className="doors-keyword-notice-continue"
-                  onClick={continueFromKeywordNotice}
-                  type="button"
-                >
-                  Continuar
-                </button>
-              )}
             </section>
+          ) : (
+            <p aria-live="polite" className="doors-keyword-confirmation" role="status">
+              A palavra-chave foi enviada para a pasta trancada.
+            </p>
           )}
         </div>
       )}
@@ -960,3 +981,4 @@ const Desktop: FC = ({ children }) => {
 };
 
 export default Desktop;
+
