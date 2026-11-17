@@ -124,6 +124,7 @@ const LockedFolderProvider: FC = ({ children }) => {
     const continueOpening = onUnlocked;
     setIsOpen(false);
     setOnUnlocked(null);
+    window.dispatchEvent(new Event("doors-locked-folder-unlocked"));
     continueOpening?.();
   };
 

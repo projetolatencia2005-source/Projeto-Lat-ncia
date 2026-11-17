@@ -3,7 +3,7 @@ export const LOCKED_FOLDER_WORDS = [
   "Informação",
   "Saber oculto",
   "Conexão",
-  "Fragmentos",
+  "Sinal",
 ] as const;
 export const LOCKED_FOLDER_KEY_COUNT = LOCKED_FOLDER_WORDS.length;
 

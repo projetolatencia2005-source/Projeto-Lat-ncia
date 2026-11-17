@@ -1,8 +1,9 @@
-import { type FormEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import { type FormEvent, type ReactElement, type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
 import { Arrow } from "components/apps/Browser/NavigationIcons";
+import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const ASSETS = "/System/Doors/sites/youspace/";
 const LOGO = "/System/Doors/sites/youspace-logo-pixel.png";
@@ -47,6 +48,7 @@ const starterComments: Comment[] = [
   { id: 3, author: "mariana.mp3", age: "2 semanas", text: "Faz um vídeo sobre como os computadores mudaram a nossa vida. Manda um salve!", color: "#ff3333", likes: 5 },
   { id: 4, author: "gui1993", age: "2 semanas", text: "MANO!!! Eu sabia que tinha alguma coisa estranha com essa internet!!!", color: "#ffdf00", likes: 3 },
   { id: 5, author: "eliaszinho", age: "1 mês", text: "O vídeo é muito bom. Só add com som, quer ter?", color: "#00bdd4", likes: 1 },
+  { id: 6, author: "chumbobagoso", age: "1 semana", text: "A palavra piscou bem rápido no vídeo, parecia mensagem subliminar, no minuto 2:31. A palavra é Sinal", color: "#68739b", likes: 0 },
 ];
 
 const Root = styled.div`
@@ -140,6 +142,7 @@ const Root = styled.div`
   .ry-comment-color { height: 28px; width: 28px; }
   .ry-comment-author { font-size: 12px; }
   .ry-comment-text { margin: 3px 0 8px; }
+  .ry-comment-keyword { background: transparent; border: 0; color: #0872d1; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
   .ry-comment-actions { align-items: center; display: flex; gap: 15px; }
   .ry-reply { background: transparent; border: 0; font-size: 13px; padding: 0; position: relative; text-decoration: none; top: -3px; }
   .ry-reply-list { border: 0; box-shadow: none; display: grid; gap: 7px; margin: 8px 0 0 10px; text-decoration: none; }
@@ -258,6 +261,22 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const commentCount = activeVideo
     ? (seededVideo ? 34 : 0) + Math.max(0, activeComments.length - (seededVideo ? starterComments.length : 0))
     : 0;
+  const renderCommentText = (comment: Comment): ReactNode => {
+    if (comment.id !== 6) return comment.text;
+    return comment.text.split(/(Sinal)/g).map((part, index) =>
+      part === "Sinal" ? (
+        <button
+          aria-label="Coletar a palavra-chave Sinal"
+          className="ry-comment-keyword"
+          key={`sinal-${index}`}
+          onClick={() => recordDoorsKeyword("Sinal")}
+          type="button"
+        >
+          {part}
+        </button>
+      ) : part
+    );
+  };
   const searchForm = (event: FormEvent<HTMLFormElement>): void => { event.preventDefault(); setSearchOpen(false); };
   const resetTrending = (): void => {
     setCategory("Todos");
@@ -317,7 +336,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
               <h2>{commentCount} comentários</h2>
               <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><Arrow direction="right" /></button></form>
-              {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{comment.text}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button></div>
+              {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{renderCommentText(comment)}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button></div>
                 {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>Você · agora</strong><div>{reply}</div></div>)}</div> : null}
                 {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
               </div></article>)}</div>}
