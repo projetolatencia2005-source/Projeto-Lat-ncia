@@ -121,7 +121,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     line-height: 1;
     margin-bottom: 0;
     padding: 0;
-    transform: translate(-3px, 2px);
+    transform: translate(-3px, 0);
     width: 34px;
 
     &:hover {
