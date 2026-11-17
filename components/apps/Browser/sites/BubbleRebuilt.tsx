@@ -13,6 +13,7 @@ type Friend = {
   name: string;
   online: boolean;
   preview?: string;
+  status?: string;
 };
 
 type Message = {
@@ -38,12 +39,12 @@ type FeedPost = {
 };
 
 const friends: Friend[] = [
-  { name: "Jorge Roberto", handle: "@jorgeberto", avatar: "avatar-jorge.png", mutual: 13, online: true, preview: "Aquela conexão foi mágica." },
+  { name: "Jorge Roberto", handle: "@jorgeberto", avatar: "avatar-jorge.png", mutual: 13, online: true, preview: "Aquela conexão foi mágica.", status: "online ontem às 19:30" },
   { name: "Gustavo Ribeiro", handle: "@guguribeiro", avatar: "avatar-gustavo.png", mutual: 8, online: true, preview: "lança perfume ♪♪♪" },
-  { name: "Bárbara Guedes", handle: "@babigu", avatar: "avatar-barbara.png", mutual: 2, online: false, preview: "não mos isso foi muito injusto" },
-  { name: "Malu Souza", handle: "@maluzinhaaaa", avatar: "avatar-malu.png", mutual: 9, online: false, preview: "Feliz aniversário!!!" },
+  { name: "Bárbara Guedes", handle: "@babigu", avatar: "avatar-barbara.png", mutual: 2, online: false, preview: "não mos isso foi muito injusto", status: "online ontem às 16:20" },
+  { name: "Malu Souza", handle: "@maluzinhaaaa", avatar: "avatar-malu.png", mutual: 9, online: true, preview: "Feliz aniversário!!!" },
   { name: "Gabriela Rosa", handle: "@rosagabi", avatar: "avatar-gabriela.png", mutual: 16, online: true, preview: "descobri uma banda nova" },
-  { name: "Rui Mendonça", handle: "@rui.mendonca", avatar: "avatar-rui.png", mutual: 12, online: false, preview: "eai gatinha. O_-" },
+  { name: "Rui Mendonça", handle: "@rui.mendonca", avatar: "avatar-rui.png", mutual: 12, online: true, preview: "eai gatinha. O_-" },
   { name: "Paulo Barbosa", handle: "@paulinho89", avatar: "avatar-paulo.png", mutual: 6, online: false, preview: "nóisss na aula do Josi ontem" },
   { name: "Larissa Oda", handle: "@odalorissa", avatar: "avatar-larissa.png", mutual: 11, online: true, preview: "NÃO ACREDITO AMGGGG" },
 ];
@@ -55,9 +56,9 @@ const conversations: Conversation[] = [
       { from: "friend", text: "boa noiteee!!", time: "19:08" },
       { from: "friend", text: "você ainda vai naquele encontro de sábado?", time: "14:08", day: "Ontem" },
       { from: "me", text: "vou sim! só tava esperando confirmarem o horário", time: "14:29" },
-      { from: "me", text: "pode crer, posso levar aquela câmera pequena também!", time: "14:38" },
-      { from: "friend", text: "confirmaram agora, começa às oito e a gente se encontra na entrada.", time: "14:30" },
+      { from: "friend", text: "confirmaram agora. começa às oito e a gente se encontra na entrada.", time: "14:30" },
       { from: "friend", text: "Fechado! eu levo os CDs", time: "14:30" },
+      { from: "me", text: "pode crer, posso levar aquela câmera pequena também!", time: "14:33" },
       { from: "me", text: "Feliz aniversário!!!", time: "11:39", day: "Hoje" },
     ],
   },
@@ -66,8 +67,8 @@ const conversations: Conversation[] = [
     messages: [
       { from: "friend", text: "boa noite ai mano", time: "13:08" },
       { from: "friend", text: "manoooooooooo tu não sabe !!", time: "10:00", day: "Hoje" },
-      { from: "me", text: "oque Falo ai", time: "10:21" },
-      { from: "friend", text: "Eu finalmente achei o novo DVD do sandy e Junior para vender lá na boa do gato", time: "10:21" },
+      { from: "me", text: "oque Fala ai", time: "10:21" },
+      { from: "friend", text: "Eu finalmente achei o novo DVD da sandy e Junior para vender lá no bar do gato", time: "10:21" },
       { from: "me", text: "Eu já sabia, e comprei um para mim e para você", time: "10:28" },
       { from: "friend", text: "NÃO ACREDITO AMGGGG", time: "10:34" },
     ],
@@ -75,7 +76,7 @@ const conversations: Conversation[] = [
   {
     ...friends[0],
     messages: [
-      { from: "me", text: "ta bom tchou, vê se você leva dinheiro a mais para a lan", time: "14:29" },
+      { from: "me", text: "ta bom tchou, vê se você leva dinheiro a mais para a lan house", time: "14:29" },
       { from: "friend", text: "ana, acabei de voltar do encontro com a Stella.", time: "19:18", day: "Ontem" },
       { from: "me", text: "Eai como Foi ??", time: "19:18" },
       { from: "friend", text: "Foi muito bom ela é perfeita e eu achei ela tão fofa e engraçada, acho que to apaixonado", time: "19:19" },
@@ -87,7 +88,7 @@ const conversations: Conversation[] = [
     ...friends[2],
     messages: [
       { from: "me", text: "Ba você vai estar na sua casa no dia 11", time: "14:29" },
-      { from: "friend", text: "oi eu saí mais cedo da lan houses ontem", time: "19:18", day: "Ontem" },
+      { from: "friend", text: "oi eu sai mais cedo da lan houses ontem", time: "19:18", day: "Ontem" },
       { from: "me", text: "você ??? por que ??", time: "19:18" },
       { from: "friend", text: "Meu pai ta Falando que eu to gastando muito dinheiro na lan house", time: "19:19" },
       { from: "friend", text: "aquele velho", time: "19:23" },
@@ -98,13 +99,13 @@ const conversations: Conversation[] = [
   {
     ...friends[5],
     messages: [
-      { from: "friend", text: "oi, tudo bem ? rs", time: "18:06" },
+      { from: "friend", text: "oi, tudo bem ? rs", time: "12:06" },
       { from: "friend", text: "oi eu saí mais cedo da lan houses ontem", time: "19:18", day: "11/11" },
       { from: "friend", text: "oi, linda, vamos sair por Favor", time: "19:18" },
       { from: "friend", text: "olá gata, te achei mó bonita, me responde para a gente marcar de ir na praça.", time: "14:14", day: "12/11" },
       { from: "friend", text: "eu sou um cara legal confia", time: "14:16" },
       { from: "friend", text: "nossa não vai me responder mesmo, sabia que vc não prestava", time: "14:14", day: "13/11" },
-      { from: "friend", text: "eai gatinha. O_-", time: "19:33", day: "Sexta-feira" },
+      { from: "friend", text: "eai gatinha. O_-", time: "19:33", day: "Sexta-Feira" },
     ],
   },
 ];
@@ -225,7 +226,7 @@ const Root = styled.div`
   .rb-friend-info { align-content: center; display: grid; gap: 8px; padding: 16px; }
   .rb-friend-info h2 { font-size: clamp(19px, 1.5vw, 27px); margin: 0; }
   .rb-online { color: #37a83d; font-size: 12px; }
-  .rb-cover { background: center 40% / cover no-repeat url("/System/Doors/sites/bubble/profile-cover.jpg"); border: 2px solid #222; height: clamp(150px, 18vw, 300px); }
+  .rb-cover { background: center 40% / cover no-repeat url("/System/Doors/sites/bubble/profile-cover.jpg"); border: 2px solid #222; height: clamp(300px, 36vw, 600px); }
   .rb-profile-summary { align-items: center; background: #fff; border: 2px solid #222; box-shadow: 4px 4px #222; display: flex; gap: 28px; margin-bottom: 30px; min-height: 185px; padding: 16px clamp(22px, 3vw, 56px); position: relative; }
   .rb-profile-avatar { align-self: flex-end; border: 2px solid #222; box-shadow: 3px 3px #222; height: clamp(130px, 14vw, 210px); margin-top: -100px; object-fit: cover; width: clamp(130px, 14vw, 210px); }
   .rb-profile-bio { flex: 1; min-width: 0; }
@@ -244,10 +245,11 @@ const Root = styled.div`
   .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); min-height: min(77vh, 920px); }
   .rb-inbox { border-right: 2px solid #222; display: flex; flex-direction: column; min-height: 0; }
   .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; font-size: clamp(21px, 1.7vw, 32px); margin: 0; min-height: 78px; padding: 16px 24px; }
-  .rb-inbox-search { align-items: center; display: flex; flex: 0 0 150px; gap: 0; height: 150px; padding: 14px; }
+  .rb-inbox-search-panel { align-items: center; background: transparent; border: 0; box-sizing: border-box; display: flex; flex: 0 0 58px; height: 58px; margin: 8px 10px 4px; padding: 0; }
+  .rb-inbox-search { align-items: center; background: #fff; border: 0; box-sizing: border-box; display: flex; flex: 1 1 auto; gap: 0; height: 42px; margin: 0; min-width: 0; padding: 0; width: 100%; }
   .rb-inbox-search input { border: 1px solid #999; height: 42px; min-width: 0; padding: 8px 10px; width: 100%; }
   .rb-inbox-search button { align-items: center; background: #fff; border: 1px solid #999; border-left: 0; display: grid; flex: 0 0 42px; height: 42px; justify-items: center; padding: 0; width: 42px; }
-  .rb-contact-list { border-top: 1px solid #bbb; flex: 1; min-height: 150px; overflow: auto; }
+  .rb-contact-list { border-top: 0; flex: 1; min-height: 0; overflow: auto; }
   .rb-contact { align-items: center; background: white; border: 0; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 112px; padding: 12px; text-align: left; width: 100%; }
   .rb-contact[aria-current="true"] { background: var(--rb-peach); border-left: 5px solid var(--rb-orange); padding-left: 7px; }
   .rb-contact img { border: 2px solid #222; height: 74px; object-fit: cover; width: 74px; }
@@ -261,12 +263,13 @@ const Root = styled.div`
   .rb-conversation-title { flex: 1; }
   .rb-conversation-title strong { display: block; font-size: clamp(19px, 1.45vw, 28px); }
   .rb-conversation-title small { display: block; margin-top: 3px; }
-  .rb-view-profile { background: white; border: 2px solid #222; box-shadow: 3px 3px #222; color: #222; min-height: 40px; padding: 5px 12px; }
+  .rb-view-profile { background: white; border: 2px solid #222; box-shadow: 3px 3px #222; color: #222; font-size: clamp(12px, .9vw, 16px); min-height: 40px; min-width: 96px; padding: 5px 12px; white-space: nowrap; }
   .rb-message-list { background: #f2f2f2; display: flex; flex: 1; flex-direction: column; gap: 16px; min-height: 260px; overflow: auto; padding: clamp(20px, 2vw, 36px); }
   .rb-day { align-items: center; color: #999; display: flex; gap: 16px; justify-content: center; margin: 10px 0; }
   .rb-day::before, .rb-day::after { border-top: 1px solid #bbb; content: ""; flex: 1; }
   .rb-message-row { align-items: flex-end; display: flex; gap: 12px; max-width: min(82%, 680px); }
-  .rb-message-row--me { align-self: flex-end; }
+  .rb-message-row--me { align-self: flex-end; margin-left: auto; }
+  .rb-message-entry { display: flex; flex-direction: column; width: 100%; }
   .rb-message-avatar { border: 2px solid #222; height: 48px; object-fit: cover; width: 48px; }
   .rb-message { background: white; border: 2px solid #222; box-shadow: 2px 2px #222; min-width: 82px; padding: 12px 14px 22px; position: relative; }
   .rb-message-row--me .rb-message { background: var(--rb-peach); }
@@ -316,7 +319,7 @@ const Root = styled.div`
     .rb-community-card { grid-template-columns: 110px minmax(0, 1fr); min-height: 155px; }
     .rb-community-card > img { min-height: 155px; width: 110px; }
     .rb-chat-layout { grid-template-columns: 1fr; min-height: auto; }
-    .rb-inbox { border-bottom: 2px solid #222; border-right: 0; max-height: 260px; }
+    .rb-inbox { border-bottom: 2px solid #222; border-right: 0; max-height: 360px; }
     .rb-inbox > h2 { min-height: 58px; }
     .rb-contact-list { max-height: 145px; }
     .rb-contact { min-height: 86px; }
@@ -396,7 +399,8 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
   }, [url]);
   const nav = (path: string): void => browserTabs?.navigate(`${SITE_URLS.bubble}${path === "inicio" ? "" : path}`);
   const section = pathname.startsWith("mensagens") ? "mensagens" : pathname.split("/")[0];
-  const selectedId = pathname.split("/")[1] || "malu";
+  const routeConversationId = pathname.split("/")[1] || "maluzinhaaaa";
+  const selectedId = routeConversationId === "malu" ? "maluzinhaaaa" : routeConversationId;
   const [posts, setPosts] = useState(initialPosts);
   const [composerText, setComposerText] = useState("");
   const [search, setSearch] = useState("");
@@ -492,11 +496,11 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
         <div className="rb-shell">
           <header className="rb-page-heading"><h1>Mensagens</h1><p>Conversas privadas, planos de última hora e links que você vai abrir só depois.</p></header>
           <section aria-label="Conversas do Bubble" className="rb-chat-layout">
-            <aside className="rb-inbox"><h2>Caixa de entrada</h2><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => { setSelectedConversation(conversation.handle.slice(1)); nav(`mensagens/${conversation.handle.slice(1)}`); }} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
+            <aside className="rb-inbox"><h2>Caixa de entrada</h2><div className="rb-inbox-search-panel"><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => { setSelectedConversation(conversation.handle.slice(1)); nav(`mensagens/${conversation.handle.slice(1)}`); }} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
             <section aria-label={`Conversa com ${selected.name}`} className="rb-conversation">
-              <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.online ? "online agora" : "online recentemente"}</small></div><button className="rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
+              <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.status || (selected.online ? "online agora" : "online recentemente")}</small></div><button className="rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
               <div className="rb-message-list" key={selectedConversation}>
-                {(messages[selected.handle.slice(1)] || []).map((message, index) => <div key={`${message.time}-${index}`}>
+                {(messages[selected.handle.slice(1)] || []).map((message, index) => <div className="rb-message-entry" key={`${message.time}-${index}`}>
                   {message.day && <div className="rb-day"><span>{message.day}</span></div>}
                   <div className={`rb-message-row ${message.from === "me" ? "rb-message-row--me" : ""}`}>
                     {message.from === "friend" && <img alt="" className="rb-message-avatar" src={bubbleImage(selected.avatar)} />}
