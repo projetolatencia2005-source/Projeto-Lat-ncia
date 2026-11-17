@@ -17,9 +17,11 @@ const styledBorder = ({
   $titlebarColor,
   theme,
 }: StyledTitlebarProps & { theme: DefaultTheme }): string =>
-  $fileExplorer || $browser || $paint || $titlebarColor
-    ? "2px solid #31425b"
-    : $foreground
+  $browser
+    ? "0"
+    : $fileExplorer || $paint || $titlebarColor
+      ? "2px solid #31425b"
+      : $foreground
       ? `1px solid ${theme.colors.titleBar.background}`
       : `1px solid ${theme.colors.titleBar.backgroundInactive}`;
 
