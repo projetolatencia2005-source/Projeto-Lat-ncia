@@ -47,7 +47,7 @@ const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = 
   ],
   conexao: [
     [
-      { text: "Você sabia que as lan houses ajudaram a popularizar o Orkut no Brasil?" },
+      { text: "Você sabia que as Lan Houses ajudaram a popularizar o Orkut no Brasil?" },
     ],
     [
       { text: "Para quem não tinha internet em casa, esses espaços eram uma oportunidade de criar perfis, postar fotos, deixar recados e participar de comunidades." },
@@ -852,7 +852,7 @@ const Desktop: FC = ({ children }) => {
                   </header>
                   <div className="doors-splash-brand">
                     <img
-                      alt="Latência System, Lan house"
+                      alt="Latência System, Lan House"
                       className="doors-splash-logo"
                       src="/System/Doors/latencia-logo.svg"
                     />
@@ -925,7 +925,7 @@ const Desktop: FC = ({ children }) => {
                       {tutorialPage === 1 && (
                         <>
                           <p>
-                            Acesse os diferentes sites e programas da Lanhouse,
+                            Acesse os diferentes sites e programas da Lan House,
                             e procure pelas <span>palavras-chaves.</span>
                           </p>
                           <p>
