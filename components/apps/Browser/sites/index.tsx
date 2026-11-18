@@ -549,19 +549,19 @@ const bubbleInitialConversations: BubbleConversation[] = [
       {
         day: "Ontem",
         mine: false,
-        text: "oi eu saí mais cedo da lan houses ontem",
+        text: "oi eu saí mais cedo da Lan House ontem",
         time: "19:18",
       },
       { mine: true, text: "você ??? por que ??", time: "19:18" },
       {
         mine: false,
-        text: "Meu pai ta Falando que eu to gastando muito dinheiro na lan house",
+        text: "Meu pai ta Falando que eu to gastando muito dinheiro na Lan House",
         time: "19:19",
       },
       { mine: false, text: "aquele velho", time: "19:23" },
       {
         mine: true,
-        text: "mas também vc fica a semana toda na lan house",
+        text: "mas também vc fica a semana toda na Lan House",
         time: "19:20",
       },
       { mine: false, text: "não mos isso Foi muito injusto", time: "19:23" },
@@ -579,7 +579,7 @@ const bubbleInitialConversations: BubbleConversation[] = [
       {
         day: "11/11",
         mine: false,
-        text: "oi eu saí mais cedo da lan houses ontem",
+        text: "oi eu saí mais cedo da Lan House ontem",
         time: "19:18",
       },
       { mine: false, text: "oi, linda, vamos sair por Favor", time: "19:18" },
@@ -2041,9 +2041,9 @@ const wikiArticles = [
     title: "História da internet",
   },
   {
-    body: "LAN House ou casa da rede é um estabelecimento comercial onde, à semelhança de um cibercafé, os usuários podem pagar para utilizar um PC com acesso à Internet e a uma rede local, com o principal fim de acesso à informação rápida pela rede e entretenimento através dos jogos em rede ou online.",
+    body: "Lan House ou casa da rede é um estabelecimento comercial onde, à semelhança de um cibercafé, os usuários podem pagar para utilizar um PC com acesso à Internet e a uma rede local, com o principal fim de acesso à informação rápida pela rede e entretenimento através dos jogos em rede ou online.",
     path: "/artigo/lan-house",
-    title: "Lan house",
+    title: "Lan House",
   },
   {
     body: "Relatório extraoficial sobre o avanço tecnológico, a escravidão eletrônica e o inevitável desaparecimento da realidade como a conhecemos.",
@@ -2051,36 +2051,36 @@ const wikiArticles = [
     title: "Avanço da tecnologia e teorias de distopia digital",
   },
   {
-    body: "O artigo Sociabilidade nas lan houses das periferias, de Fábio Mariano Borges, procura compreender por que esses espaços atraíam adolescentes e jovens da cidade de São Paulo e qual era sua importância para as relações sociais. As lan houses também eram locais de encontro, lazer, amizade e convivência.",
+    body: "O artigo Sociabilidade nas Lan Houses das periferias, de Fábio Mariano Borges, procura compreender por que esses espaços atraíam adolescentes e jovens da cidade de São Paulo e qual era sua importância para as relações sociais. As Lan Houses também eram locais de encontro, lazer, amizade e convivência.",
     path: wikiSociabilityArticlePath,
-    title: "Sociabilidade nas lan houses das periferias",
+    title: "Sociabilidade nas Lan Houses das periferias",
   },
 ];
 
 const wikiLanHouseSections = [
   {
-    body: "O conceito de LAN house é famoso na Coreia do Sul, conhecido por PC bang (coreano: PC방). Esses estabelecimentos se tornaram particularmente populares a partir de 1998, com o lançamento de jogos como StarCraft. No Brasil, o conceito inicial trazido pela Monkey Paulista se baseou no modelo sul-coreano. A primeira LAN house brasileira foi inaugurada em São Paulo em 1998 e encerrou suas atividades em 2010. A Lan House Connection foi fundada em meados de 2002, em São Miguel Paulista.",
+    body: "O conceito de Lan House é famoso na Coreia do Sul, conhecido por PC bang (coreano: PC방). Esses estabelecimentos se tornaram particularmente populares a partir de 1998, com o lançamento de jogos como StarCraft. No Brasil, o conceito inicial trazido pela Monkey Paulista se baseou no modelo sul-coreano. A primeira Lan House brasileira foi inaugurada em São Paulo em 1998 e encerrou suas atividades em 2010. A Lan House Connection foi fundada em meados de 2002, em São Miguel Paulista.",
     heading: "Surgimento",
   },
   {
-    body: "O estabelecimento é um centro de entretenimento, educação e cultura. LAN significa Local Area Network, ou rede local de computadores. Uma LAN house oferece computadores conectados para acesso à internet e a programas em geral, como jogos eletrônicos e soluções de escritório. Normalmente, é cobrada uma taxa proporcional ao tempo de uso. Mais do que uma casa de jogos, uma LAN house bem estruturada oferece acesso democrático à tecnologia, lazer, oportunidades, educação e cultura a pessoas de todas as idades.",
+    body: "O estabelecimento é um centro de entretenimento, educação e cultura. LAN significa Local Area Network, ou rede local de computadores. Uma Lan House oferece computadores conectados para acesso à internet e a programas em geral, como jogos eletrônicos e soluções de escritório. Normalmente, é cobrada uma taxa proporcional ao tempo de uso. Mais do que uma casa de jogos, uma Lan House bem estruturada oferece acesso democrático à tecnologia, lazer, oportunidades, educação e cultura a pessoas de todas as idades.",
     heading: "Características",
   },
   {
-    body: "As LAN houses também são uma ferramenta no processo de inclusão digital, conforme dados levantados pelo Comitê Gestor da Internet no Brasil. Há uma tendência para que instalações de baixo custo se tornem parceiras da educação, com investimentos públicos que cheguem diretamente às comunidades. O Projeto Lan-Social, do professor Ernesto Neto, alcançou resultados e vem sendo desenvolvido em diferentes variantes pelo país.",
+    body: "As Lan Houses também são uma ferramenta no processo de inclusão digital, conforme dados levantados pelo Comitê Gestor da Internet no Brasil. Há uma tendência para que instalações de baixo custo se tornem parceiras da educação, com investimentos públicos que cheguem diretamente às comunidades. O Projeto Lan-Social, do professor Ernesto Neto, alcançou resultados e vem sendo desenvolvido em diferentes variantes pelo país.",
     heading: "Inclusão digital",
   },
   {
-    body: "De acordo com o CGI.br, em 2007 as LAN houses foram responsáveis por quase 50% dos acessos à internet no país. Nas regiões Norte e Nordeste, o índice chegou a quase 70%. A maioria dos clientes era do sexo masculino, com predominância das classes C, D e E.",
+    body: "De acordo com o CGI.br, em 2007 as Lan Houses foram responsáveis por quase 50% dos acessos à internet no país. Nas regiões Norte e Nordeste, o índice chegou a quase 70%. A maioria dos clientes era do sexo masculino, com predominância das classes C, D e E.",
     heading: "Estatísticas",
   },
   {
-    body: "Segundo o SINDLANSP, o Brasil tinha mais de 90 mil LAN houses e cybercafés, embora muitas funcionassem sem legalização por falta de legislação adequada. Esses estabelecimentos também eram responsáveis por parte importante do acesso a serviços públicos, bancos e redes sociais. Mesmo quem tinha conexão em casa podia frequentar uma LAN house para usar a impressora ou resolver problemas de conexão.",
+    body: "Segundo o SINDLANSP, o Brasil tinha mais de 90 mil Lan Houses e cybercafés, embora muitas funcionassem sem legalização por falta de legislação adequada. Esses estabelecimentos também eram responsáveis por parte importante do acesso a serviços públicos, bancos e redes sociais. Mesmo quem tinha conexão em casa podia frequentar uma Lan House para usar a impressora ou resolver problemas de conexão.",
     heading: "Acesso e serviços",
   },
   {
-    body: "A maioria das LAN houses utiliza programas gerenciadores para cadastrar clientes, registrar acessos, controlar vendas, administrar o caixa, gerar relatórios e auxiliar na segurança dos computadores. O sistema costuma ser dividido entre servidor e cliente. Como os computadores são usados pelo público em geral, manter registros das conexões ajuda em auditorias quando necessário.",
-    heading: "Programas para gerenciar LAN houses",
+    body: "A maioria das Lan Houses utiliza programas gerenciadores para cadastrar clientes, registrar acessos, controlar vendas, administrar o caixa, gerar relatórios e auxiliar na segurança dos computadores. O sistema costuma ser dividido entre servidor e cliente. Como os computadores são usados pelo público em geral, manter registros das conexões ajuda em auditorias quando necessário.",
+    heading: "Programas para gerenciar Lan Houses",
   },
   {
     body: "O projeto também apresenta pontos de acesso Wi-Fi, encontrados em cafés, restaurantes, hotéis e aeroportos. Como quem controla um hotspot pode acessar o conteúdo dos aparelhos conectados, é importante escolher redes confiáveis. Smartphones também podem compartilhar sua conexão de dados com outros dispositivos.",
@@ -2090,15 +2090,15 @@ const wikiLanHouseSections = [
 
 const wikiSociabilitySections = [
   {
-    body: "Com o avanço da tecnologia e da internet, surgiram novas formas de comunicação, interação e relacionamento. O acesso, porém, depende das condições econômicas e sociais. Nas periferias, muitas famílias não possuem computador ou conexão em casa, então as lan houses oferecem uma alternativa acessível, com internet, jogos, redes sociais, música e serviços de informática. Uma pesquisa em bairros periféricos de São Paulo, realizada entre outubro de 2007 e dezembro de 2008, observou que jovens de 14 a 20 anos frequentavam esses espaços para acessar a internet, encontrar amigos, conversar e fortalecer vínculos sociais.",
-    heading: "O surgimento e a importância das lan houses",
+    body: "Com o avanço da tecnologia e da internet, surgiram novas formas de comunicação, interação e relacionamento. O acesso, porém, depende das condições econômicas e sociais. Nas periferias, muitas famílias não possuem computador ou conexão em casa, então as Lan Houses oferecem uma alternativa acessível, com internet, jogos, redes sociais, música e serviços de informática. Uma pesquisa em bairros periféricos de São Paulo, realizada entre outubro de 2007 e dezembro de 2008, observou que jovens de 14 a 20 anos frequentavam esses espaços para acessar a internet, encontrar amigos, conversar e fortalecer vínculos sociais.",
+    heading: "O surgimento e a importância das Lan Houses",
   },
   {
-    body: "Em muitas periferias, casas pequenas e compartilhadas dificultam a privacidade dos adolescentes. As lan houses permitiam que passassem um tempo fora de casa e convivessem com pessoas da mesma faixa etária, sem a observação constante de pais, irmãos e vizinhos.",
+    body: "Em muitas periferias, casas pequenas e compartilhadas dificultam a privacidade dos adolescentes. As Lan Houses permitiam que passassem um tempo fora de casa e convivessem com pessoas da mesma faixa etária, sem a observação constante de pais, irmãos e vizinhos.",
     heading: "Moradia, privacidade e liberdade",
   },
   {
-    body: "O autor aborda também a violência urbana e os preconceitos que associam as periferias à pobreza e à criminalidade. Por receio de que os filhos fossem vítimas de violência, alguns pais viam espaços fechados, como as lan houses, como alternativas mais seguras para os encontros. Parte da convivência que acontecia nas ruas passou a ocorrer em estabelecimentos comerciais.",
+    body: "O autor aborda também a violência urbana e os preconceitos que associam as periferias à pobreza e à criminalidade. Por receio de que os filhos fossem vítimas de violência, alguns pais viam espaços fechados, como as Lan Houses, como alternativas mais seguras para os encontros. Parte da convivência que acontecia nas ruas passou a ocorrer em estabelecimentos comerciais.",
     heading: "Segurança e convivência",
   },
   {
@@ -2110,15 +2110,15 @@ const wikiSociabilitySections = [
     heading: "Troca de conhecimentos",
   },
   {
-    body: "Muitos jovens acreditavam que as habilidades digitais adquiridas nas lan houses poderiam ajudar nos estudos e no futuro profissional. Proprietários e atendentes eram vistos como pessoas com conhecimentos especializados, capazes de orientar os frequentadores sobre tecnologia, jogos e informática.",
+    body: "Muitos jovens acreditavam que as habilidades digitais adquiridas nas Lan Houses poderiam ajudar nos estudos e no futuro profissional. Proprietários e atendentes eram vistos como pessoas com conhecimentos especializados, capazes de orientar os frequentadores sobre tecnologia, jogos e informática.",
     heading: "Aprendizagem e trabalho",
   },
   {
-    body: "Além do acesso à internet, estabelecimentos vendiam alimentos e bebidas, faziam manutenção de computadores e ofereciam outros serviços. Essa diversificação ajudava os negócios e fazia das lan houses espaços de lazer e convivência, para além da tecnologia.",
+    body: "Além do acesso à internet, estabelecimentos vendiam alimentos e bebidas, faziam manutenção de computadores e ofereciam outros serviços. Essa diversificação ajudava os negócios e fazia das Lan Houses espaços de lazer e convivência, para além da tecnologia.",
     heading: "Serviços e economia local",
   },
   {
-    body: "Fábio Mariano Borges mostra que não é possível compreender a sociabilidade nas lan houses olhando apenas para o uso da internet. Moradia, privacidade, violência, desigualdade e pertencimento influenciavam a experiência. Esses locais ofereciam acesso à tecnologia, amizades, troca de conhecimentos e construção de identidade. O mundo virtual não estava separado do cotidiano presencial.",
+    body: "Fábio Mariano Borges mostra que não é possível compreender a sociabilidade nas Lan Houses olhando apenas para o uso da internet. Moradia, privacidade, violência, desigualdade e pertencimento influenciavam a experiência. Esses locais ofereciam acesso à tecnologia, amizades, troca de conhecimentos e construção de identidade. O mundo virtual não estava separado do cotidiano presencial.",
     heading: "Conclusão",
   },
 ];
@@ -2141,7 +2141,7 @@ const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
     {
       author: "Frequentador de 2005",
       avatar: "encicloweb-lan-house-author.jpg",
-      body: "Na minha rua, a lan house era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador.",
+      body: "Na minha rua, a Lan House era onde a gente pesquisava para a escola e se encontrava depois da aula. O tempo passava muito rápido diante do computador.",
       time: "18 de outubro de 2005, 21h34min (UTC)",
     },
     {
@@ -2161,22 +2161,22 @@ const wikiDiscussions: Record<string, WikiDiscussionComment[]> = {
     {
       author: "cleidedograu",
       avatar: "encicloweb-anime.jpg",
-      body: "Na minha opinião, as lan houses foram muito importantes para os jovens das periferias. Esses lugares permitiam acessar a internet, jogar e conversar com os amigos. Além disso, ajudavam os jovens a conhecer novas pessoas e fazer amizades. Achei interessante perceber que eles frequentavam esses espaços não apenas pela tecnologia. Isso mostra como a convivência social é importante durante a juventude.",
+      body: "Na minha opinião, as Lan Houses foram muito importantes para os jovens das periferias. Esses lugares permitiam acessar a internet, jogar e conversar com os amigos. Além disso, ajudavam os jovens a conhecer novas pessoas e fazer amizades. Achei interessante perceber que eles frequentavam esses espaços não apenas pela tecnologia. Isso mostra como a convivência social é importante durante a juventude.",
       replies: [
         {
           author: "AnnaAmanaruhina",
           avatar: "encicloweb-family.jpg",
-          body: "Achei interessante a parte que fala sobre a falta de privacidade nas casas das periferias. Muitas famílias vivem em espaços pequenos e dividem os cômodos com várias pessoas. Por isso, alguns jovens preferiam passar parte do tempo nas lan houses. Nesses lugares, podiam conversar com os amigos e se divertir. Isso mostra como as condições de moradia influenciam a vida dos jovens.",
+          body: "Achei interessante a parte que fala sobre a falta de privacidade nas casas das periferias. Muitas famílias vivem em espaços pequenos e dividem os cômodos com várias pessoas. Por isso, alguns jovens preferiam passar parte do tempo nas Lan Houses. Nesses lugares, podiam conversar com os amigos e se divertir. Isso mostra como as condições de moradia influenciam a vida dos jovens.",
           replies: [
             {
               author: "EuamokellyKey",
               avatar: "encicloweb-kelly-key.jpg",
-              body: "Na minha opinião, as lan houses também ajudavam os jovens a aprender coisas novas. Eles desenvolviam conhecimentos sobre computadores, jogos e ferramentas da internet. Além disso, compartilhavam informações e ajudavam uns aos outros. Essas habilidades poderiam ser úteis nos estudos e no futuro profissional. Assim, as lan houses também contribuíam para o aprendizado dos frequentadores.",
+              body: "Na minha opinião, as Lan Houses também ajudavam os jovens a aprender coisas novas. Eles desenvolviam conhecimentos sobre computadores, jogos e ferramentas da internet. Além disso, compartilhavam informações e ajudavam uns aos outros. Essas habilidades poderiam ser úteis nos estudos e no futuro profissional. Assim, as Lan Houses também contribuíam para o aprendizado dos frequentadores.",
               replies: [
                 {
                   author: "samantha",
                   avatar: "encicloweb-chris-rock.jpg",
-                  body: "O que mais me chamou a atenção foi a importância das lan houses para as amizades. Esses espaços permitiam que os jovens conversassem e compartilhassem experiências. Com o tempo, muitos criavam vínculos e formavam grupos de amigos. Porém, também existiam situações de exclusão entre alguns frequentadores. Isso mostra que as relações sociais podem ter aspectos positivos e negativos.",
+                  body: "O que mais me chamou a atenção foi a importância das Lan Houses para as amizades. Esses espaços permitiam que os jovens conversassem e compartilhassem experiências. Com o tempo, muitos criavam vínculos e formavam grupos de amigos. Porém, também existiam situações de exclusão entre alguns frequentadores. Isso mostra que as relações sociais podem ter aspectos positivos e negativos.",
                   time: "26 de novembro de 2005, 12h06min (UTC)",
                 },
               ],
@@ -2422,11 +2422,11 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
       path: wikiTechnologyArticlePath,
     },
     {
-      label: "O que são LAN houses e para que veio",
+      label: "O que são Lan Houses e para que veio",
       path: wikiLanHouseArticlePath,
     },
     {
-      label: "Sociabilidade nas lan houses das periferias",
+      label: "Sociabilidade nas Lan Houses das periferias",
       path: wikiSociabilityArticlePath,
     },
   ];
@@ -2568,7 +2568,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
         <>
           <h1>
             {isLanHouseArticle
-              ? "O que são LAN houses e para que veio"
+              ? "O que são Lan Houses e para que veio"
               : article.title}
           </h1>
           {isTechnologyArticle ? (
@@ -2621,8 +2621,8 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     <img
                       alt={
                         isLanHouseArticle
-                          ? "Computadores antigos organizados em uma lan house"
-                          : "Lan house representada em retícula"
+                          ? "Computadores antigos organizados em uma Lan House"
+                          : "Lan House representada em retícula"
                       }
                       src={
                         wikiAssets +
@@ -2634,7 +2634,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     <figcaption>
                       {isLanHouseArticle
                         ? "Um ponto de acesso coletivo à internet e aos jogos em rede."
-                        : "Computadores e frequentadores em uma lan house de periferia."}
+                        : "Computadores e frequentadores em uma Lan House de periferia."}
                     </figcaption>
                   </figure>
                   {(isLanHouseArticle
