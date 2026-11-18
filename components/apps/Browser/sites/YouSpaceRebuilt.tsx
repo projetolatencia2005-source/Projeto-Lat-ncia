@@ -19,7 +19,7 @@ type Video = {
   description: string;
 };
 
-type CommentReply = { author: string; age: string; keywordId?: number; text: string; };
+type CommentReply = { author: string; age: string; color?: string; keywordId?: number; text: string; };
 
 type Comment = {
   id: number;
@@ -45,7 +45,7 @@ const videos: Video[] = [
 
 const categories = ["Todos", "Música", "Vlogs", "Esportes", "Comédia", "Tecnologia"];
 const starterComments: Comment[] = [
-  { id: 1, author: "lu.fernandes", age: "1 semana", text: "Eu assisti até o final, cadê minha palavra-chave???", color: "#74ed55", likes: 12, replies: [{ author: "chumbobagoso", age: "1 semana", keywordId: 6, text: "A palavra piscou bem rápido no vídeo, parecia mensagem subliminar, no minuto 2:31. A palavra é Sinal" }] },
+  { id: 1, author: "lu.fernandes", age: "1 semana", text: "Eu assisti até o final, cadê minha palavra-chave???", color: "#74ed55", likes: 12, replies: [{ author: "Chumbobagoso", age: "1 semana", color: "#6b7392", keywordId: 6, text: "A palavra piscou bem rápido no vídeo, parecia mensagem subliminar, no minuto 2:31. A palavra é Sinal" }] },
   { id: 2, author: "joao.oliveira", age: "1 semana", text: "Não acredito que fui enganado esse tempo todo, obrigado por mostrar a VERDADE. +1 INSCRITO", color: "#214bff", likes: 8 },
   { id: 3, author: "mariana.mp3", age: "2 semanas", text: "Faz um vídeo sobre como os computadores mudaram a nossa vida. Manda um salve!", color: "#ff3333", likes: 5 },
   { id: 4, author: "gui1993", age: "2 semanas", text: "MANO!!! Eu sabia que tinha alguma coisa estranha com essa internet!!!", color: "#ffdf00", likes: 3 },
@@ -56,6 +56,8 @@ const Root = styled.div`
   background: #fff;
   color: #151515;
   font-family: "Pixelify Sans", monospace;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   min-height: 0;
   overflow: auto;
@@ -80,7 +82,7 @@ const Root = styled.div`
   .ry-suggestions button { background: #fff; border: 0; border-bottom: 1px solid #ccc; display: block; padding: 10px; text-align: left; width: 100%; }
   .ry-user { justify-self: end; }
   .ry-user button { background: white; border: 2px solid #222; border-radius: 50%; height: 40px; width: 40px; }
-  .ry-page { margin: 0 auto; max-width: 1760px; padding: clamp(24px, 3.5vw, 64px) clamp(20px, 3.8vw, 72px); }
+  .ry-page { flex: 1 0 auto; margin: 0 auto; max-width: 1760px; padding: clamp(24px, 3.5vw, 64px) clamp(20px, 3.8vw, 72px); }
   .ry-layout { display: grid; gap: clamp(28px, 5vw, 90px); grid-template-columns: minmax(0, 1fr) minmax(260px, 0.32fr); }
   .ry-main { min-width: 0; }
   .ry-heading { align-items: end; border-bottom: 4px solid #ff3038; display: flex; gap: 16px; justify-content: space-between; margin-bottom: 30px; padding-bottom: 14px; }
@@ -114,7 +116,7 @@ const Root = styled.div`
   .ry-load-area { align-items: center; display: flex; flex-direction: column; margin: 42px auto 0; max-width: 680px; }
   .ry-load-area > .ry-button { position: relative; top: 20px; }
   .ry-load-message { margin: 90px 0 0; text-align: center; }
-  .ry-footer { align-items: center; background: #f2f2f2; border-top: 2px solid #222; display: flex; gap: 42px; margin-top: 35px; min-height: 96px; padding: 18px clamp(20px, 3vw, 50px); }
+  .ry-footer { align-items: center; background: #f2f2f2; border-top: 2px solid #222; display: flex; gap: 42px; margin-top: auto; min-height: 96px; padding: 18px clamp(20px, 3vw, 50px); }
   .ry-footer img { height: auto; max-width: 170px; width: 100%; }
   .ry-footer nav { display: flex; gap: 24px; }
   .ry-footer a { color: #647c9b; text-decoration: none; }
@@ -146,16 +148,23 @@ const Root = styled.div`
   .ry-comment-composer textarea { background: transparent; border: 0; min-height: 42px; padding: 10px; resize: vertical; width: 100%; }
   .ry-comment-composer button { align-items: center; background: white; border: 2px solid #111; box-shadow: 2px 2px 0 #111; display: flex; height: 38px; justify-content: center; padding: 0; width: 38px; }
   .ry-comment-composer button img { height: 22px; width: 22px; }
-  .ry-comment-list { display: grid; gap: 14px; }
-  .ry-comment { border: 2px solid #111; box-shadow: 3px 3px 0 #111; display: grid; gap: 12px; grid-template-columns: 32px minmax(0, 1fr); padding: 12px; }
-  .ry-comment-color { height: 28px; width: 28px; }
+  .ry-comment-list { display: grid; gap: 18px; }
+  .ry-comment-thread { display: grid; gap: 0; }
+  .ry-comment { background: #fff; border: 2px solid #111; box-shadow: 4px 4px 0 #111; display: grid; gap: 12px; grid-template-columns: 36px minmax(0, 1fr); padding: 12px; }
+  .ry-comment-color { border: 0; height: 36px; width: 36px; }
   .ry-comment-author { font-size: 12px; }
   .ry-comment-text { margin: 3px 0 8px; }
   .ry-comment-keyword { background: transparent; border: 0; color: #0872d1; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
-  .ry-comment-actions { align-items: center; display: flex; gap: 15px; }
-  .ry-reply { background: transparent; border: 0; font-size: 13px; padding: 0; position: relative; text-decoration: none; top: -3px; }
-  .ry-reply-list { border: 0; box-shadow: none; display: grid; gap: 7px; margin: 8px 0 0 10px; text-decoration: none; }
-  .ry-reply-list > div, .ry-reply-list > div > div { border: 0; box-shadow: none; text-decoration: none; }
+  .ry-comment-actions, .ry-reply-actions { align-items: center; display: flex; gap: 14px; margin: 5px 0 10px; min-height: 24px; }
+  .ry-comment-actions button, .ry-reply-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; justify-content: center; min-height: 24px; padding: 2px; }
+  .ry-comment-actions .ry-comment-like { flex-direction: row; gap: 5px; }
+  .ry-comment-actions .ry-reply { font-size: 13px; padding: 0; position: relative; text-decoration: none; top: 0; }
+  .ry-reply-list { display: grid; gap: 10px; margin: 2px 0 0 34px; }
+  .ry-reply-thread { display: grid; gap: 0; }
+  .ry-comment--reply { min-height: 0; }
+  .ry-reply-actions { gap: 12px; margin: 5px 0 0; }
+  .ry-reply-actions img { height: 18px; width: 18px; }
+  .ry-reply-actions .ry-dislike img { transform: rotate(180deg); }
   .ry-comment-count { position: static; }
   .ry-related { display: grid; gap: 18px; }
   .ry-related-card { display: grid; gap: 12px; grid-template-columns: minmax(130px, 42%) minmax(0, 1fr); }
@@ -220,6 +229,8 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   }));
   const [commentLikes, setCommentLikes] = useState<number[]>([]);
   const [commentDislikes, setCommentDislikes] = useState<number[]>([]);
+  const [replyLikes, setReplyLikes] = useState<string[]>([]);
+  const [replyDislikes, setReplyDislikes] = useState<string[]>([]);
   const visibleVideos = useMemo(() => videos.filter((video) => (category === "Todos" || video.category === category) && `${video.title} ${video.creator} ${video.category}`.toLowerCase().includes(search.toLowerCase())), [category, search]);
   const suggestions = useMemo(() => videos.filter((video) => search.trim() && video.title.toLowerCase().includes(search.toLowerCase())).slice(0, 4), [search]);
 
@@ -345,10 +356,47 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
               <h2>{commentCount} comentários</h2>
               <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><Arrow direction="right" /></button></form>
-              {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{renderCommentText(comment)}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button></div>
-                {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>{reply.author} · {reply.age}</strong><div>{renderCommentText({ id: reply.keywordId ?? 0, text: reply.text })}</div></div>)}</div> : null}
-                {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
-              </div></article>)}</div>}
+              {activeComments.length > 0 && (
+                <div className="ry-comment-list">
+                  {activeComments.map((comment) => (
+                    <div className="ry-comment-thread" key={comment.id}>
+                      <article className="ry-comment">
+                        <span className="ry-comment-color" style={{ backgroundColor: comment.color }} />
+                        <div className="ry-comment-content">
+                          <div className="ry-comment-author">{comment.author} · {comment.age}</div>
+                          <p className="ry-comment-text">{renderCommentText(comment)}</p>
+                        </div>
+                      </article>
+                      <div className="ry-comment-actions">
+                        <button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button>
+                        <button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button>
+                        <button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button>
+                      </div>
+                      {comment.replies?.length ? (
+                        <div className="ry-reply-list">
+                          {comment.replies.map((reply, index) => (
+                            <div className="ry-reply-thread" key={`${comment.id}-${index}`}>
+                              <article className="ry-comment ry-comment--reply">
+                                <span className="ry-comment-color" style={{ backgroundColor: reply.color || "#6b7392" }} />
+                                <div className="ry-comment-content">
+                                  <div className="ry-comment-author">{reply.author} · {reply.age}</div>
+                                  <p className="ry-comment-text">{renderCommentText({ id: reply.keywordId ?? 0, text: reply.text })}</p>
+                                </div>
+                              </article>
+                              <div className="ry-reply-actions">
+                                <button aria-label={`Responder a ${reply.author}`} onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button"><Icon kind="comment" /></button>
+                                <button aria-label={`Curtir resposta de ${reply.author}`} aria-pressed={replyLikes.includes(`${comment.id}-${index}`)} onClick={() => { const id = `${comment.id}-${index}`; setReplyLikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyDislikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon kind="like" /></button>
+                                <button aria-label={`Não gostei da resposta de ${reply.author}`} aria-pressed={replyDislikes.includes(`${comment.id}-${index}`)} className="ry-dislike" onClick={() => { const id = `${comment.id}-${index}`; setReplyDislikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyLikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon kind="like" /></button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : null}
+                      {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
           </main>
           <aside aria-label="Mais vídeos" className="ry-watch-side"><div className="ry-related">{videos.filter((video) => video.id !== activeVideo.id).map((video) => <article className="ry-related-card" key={video.id}><button aria-label={`Assistir ${video.title}`} onClick={() => openVideo(video.id)} type="button"><img alt="" src={`${ASSETS}${video.image}`} /></button><div><a href={`${SITE_URLS.youspace}watch/${video.id}`} onClick={(event) => { event.preventDefault(); openVideo(video.id); }}>{video.title}</a><p>{video.description}</p></div></article>)}</div></aside>
