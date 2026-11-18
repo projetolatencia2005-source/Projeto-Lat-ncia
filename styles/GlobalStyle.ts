@@ -435,48 +435,27 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-splash-screen {
     cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    overflow: hidden;
+  }
+
+  .doors-splash-animation {
+    display: block;
+    height: 100%;
+    inset: 0;
+    object-fit: contain;
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
   }
 
   .doors-splash-stack {
-    align-items: center;
-    animation: doorsSplashFadeZoomOut 1s ease-out both;
-    display: flex;
-    flex-direction: column;
-    transform: translateY(4vh);
-    width: min(928px, 88vw);
+    height: 100%;
+    inset: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
   }
 
-  @keyframes doorsSplashFadeZoomOut {
-    from {
-      opacity: 0;
-      transform: translateY(4vh) scale(1.08);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(4vh) scale(1);
-    }
-  }
-
-  .doors-splash-window {
-    animation: doorsSplashWindowFloat 6s ease-in-out infinite;
-    aspect-ratio: 928 / 395;
-    border: 5px solid #f7edd7;
-    color: #f7edd7;
-    position: relative;
-    width: min(928px, 88vw);
-  }
-
-  @keyframes doorsSplashWindowFloat {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-5px);
-    }
-  }
-
-  .doors-splash-titlebar,
   .doors-tutorial-titlebar {
     align-items: center;
     background: #f7edd7;
@@ -484,35 +463,6 @@ const GlobalStyle = styled.createGlobalStyle`
     display: flex;
     font-size: clamp(11px, 0.83vw, 16px);
     justify-content: space-between;
-  }
-
-  .doors-splash-titlebar {
-    height: 15.5%;
-    justify-content: flex-end;
-    padding-right: 1%;
-  }
-
-  .doors-boot-controls {
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
-    gap: 2px;
-    margin-right: 2px;
-  }
-
-  .doors-splash-brand {
-    align-items: center;
-    display: flex;
-    inset: 15.5% 0 0;
-    justify-content: center;
-    position: absolute;
-  }
-
-  .doors-splash-logo {
-    height: auto;
-    max-height: 75%;
-    object-fit: contain;
-    width: 85%;
   }
 
   .doors-splash-start,
@@ -535,8 +485,13 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-start {
-    margin-top: clamp(18px, 3.7vh, 40px);
-    width: min(534px, 57.5%);
+    bottom: clamp(28px, 8vh, 76px);
+    left: 50%;
+    margin: 0;
+    position: absolute;
+    transform: translateX(-50%);
+    width: min(534px, calc(100% - 32px));
+    z-index: 2;
   }
 
   .doors-tutorial-start {
@@ -1115,12 +1070,8 @@ const GlobalStyle = styled.createGlobalStyle`
       width: 100%;
     }
 
-    .doors-splash-window {
-      width: min(928px, 92vw);
-    }
-
     .doors-splash-stack {
-      width: min(928px, 92vw);
+      width: 100%;
     }
 
     .doors-tutorial-screen {

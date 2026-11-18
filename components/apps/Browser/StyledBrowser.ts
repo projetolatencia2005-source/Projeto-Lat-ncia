@@ -194,6 +194,15 @@ const StyledBrowser = styled.div`
       }
     }
 
+    .navigation-buttons > button,
+    .navigation-buttons > button:hover,
+    .navigation-buttons > button:active,
+    .navigation-buttons > button:disabled {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
     .address-label {
       align-items: center;
       display: flex;

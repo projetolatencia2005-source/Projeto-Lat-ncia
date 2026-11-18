@@ -120,14 +120,6 @@ const REQUESTED_FILES_TO_REMOVE = [
 type BootStage = "loading" | "login" | "splash" | "tutorial";
 type BootDestination = Exclude<BootStage, "loading">;
 
-const WindowControls: FC = () => (
-  <span aria-hidden="true" className="doors-boot-controls">
-    <img alt="" src="/System/Doors/figma/window-control-minimize.svg" />
-    <img alt="" src="/System/Doors/figma/window-control-maximize.svg" />
-    <img alt="" src="/System/Doors/figma/window-control-close.svg" />
-  </span>
-);
-
 const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, startedAt }) => {
   const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
   const [position, setPosition] = useState<null | StatusPosition>(null);
@@ -441,10 +433,10 @@ const Desktop: FC = ({ children }) => {
           // The video can stay at its final frame until the overlay is hidden.
         }
       }
-      setLockedFolderVideoPhase("hidden");
+      resetAndReload();
     }, LOCKED_FOLDER_VIDEO_FADE_MS);
     return () => window.clearTimeout(timeout);
-  }, [lockedFolderVideoPhase]);
+  }, [lockedFolderVideoPhase, resetAndReload]);
 
   useEffect(() => {
     const onKeywordCollected = (event: Event): void => {
@@ -845,19 +837,14 @@ const Desktop: FC = ({ children }) => {
               className="doors-boot-screen doors-intro-screen doors-splash-screen"
               role="dialog"
             >
+              <img
+                alt=""
+                aria-hidden="true"
+                className="doors-splash-animation"
+                draggable={false}
+                src="/System/Doors/Inicio.gif"
+              />
               <div className="doors-splash-stack">
-                <div className="doors-splash-window">
-                  <header className="doors-splash-titlebar">
-                    <WindowControls />
-                  </header>
-                  <div className="doors-splash-brand">
-                    <img
-                      alt="Latência System, Lan House"
-                      className="doors-splash-logo"
-                      src="/System/Doors/latencia-logo.svg"
-                    />
-                  </div>
-                </div>
                 <button
                   ref={splashButtonRef}
                   className="doors-splash-start"
