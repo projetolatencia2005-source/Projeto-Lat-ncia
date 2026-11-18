@@ -162,17 +162,10 @@ const Root = styled.div`
   font-family: "Pixelify Sans", monospace;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  overflow: auto;
-  scrollbar-color: var(--rb-orange) #f7edd7;
-  scrollbar-width: thin;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
   width: 100%;
-
-  &::-webkit-scrollbar { height: 14px; width: 14px; }
-  &::-webkit-scrollbar-track { background: #f7edd7; border-left: 2px solid var(--rb-line); }
-  &::-webkit-scrollbar-thumb { background: var(--rb-orange); border: 2px solid var(--rb-line); border-radius: 0; }
-  &::-webkit-scrollbar-thumb:hover { filter: brightness(.88); }
 
   *, *::before, *::after { box-sizing: border-box; }
   button, input, select, textarea { font: inherit; }
