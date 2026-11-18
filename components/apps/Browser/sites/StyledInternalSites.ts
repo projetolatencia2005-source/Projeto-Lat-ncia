@@ -2790,7 +2790,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .wiki-article-figure {
       background: #eef2f8;
-      border: 1px solid #31302c;
+      border: 2px solid #31302c;
       box-shadow: 2px 2px 0 #31302c;
       margin: 8px 0 15px;
       padding: 5px;
@@ -2920,8 +2920,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       }
     }
 
-        .wiki-discussion-shell {
-      max-width: 1084px;
+         .wiki-discussion-shell {
+      max-width: none;
       min-width: 0;
       width: 100%;
     }
@@ -2956,8 +2956,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 1px solid #31302c;
       box-shadow: 3px 3px 0 #31302c;
       margin-top: 0;
-      max-width: 1084px;
-      min-height: 2114px;
+      max-width: none;
+      min-height: 0;
       padding: clamp(14px, 2.5vw, 25px);
 
       h1 {
@@ -3046,7 +3046,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       gap: 22px;
       grid-template-columns: 36px minmax(0, 1fr);
       max-width: 835px;
-      min-height: 357px;
+      min-height: 0;
       padding: 9px;
 
       img,
@@ -3109,7 +3109,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .wiki-comment-thread--reply > .wiki-comment {
-      min-height: 357px;
+      min-height: 0;
     }
 
     @media (max-width: 740px) {
@@ -3142,7 +3142,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       .wiki-comment {
         gap: 10px;
         grid-template-columns: 32px minmax(0, 1fr);
-        min-height: 220px;
+        min-height: 0;
         padding: 7px;
 
         img,
@@ -3508,13 +3508,13 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       line-height: 1.38; min-width: 0; padding: 18px 20px;
     }
     .wiki-article h1 {
-      border-bottom: 1px solid #aaa; font-size: clamp(22px, 1.65vw, 32px);
+      border-bottom: 2px solid #aaa; font-size: clamp(22px, 1.65vw, 32px);
       font-weight: 500; line-height: 1.2; margin: 0 0 14px; padding: 0 0 8px;
     }
     .wiki-article p { font-size: 13px; line-height: 1.42; margin: 8px 0 12px; }
     .wiki-content-page > h1 { margin-bottom: 12px; }
     .wiki-page-tabs {
-      align-items: end; border-bottom: 1px solid #31302c; display: flex; gap: 4px;
+      align-items: end; border-bottom: 2px solid #31302c; display: flex; gap: 4px;
       margin: -18px -20px 17px; padding: 0 18px;
       button {
         background: #f3f3f3; border: 1px solid #31302c; border-bottom: 0;
@@ -3551,14 +3551,14 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
     .wiki-article-lead { font-size: 13px; font-weight: 400; line-height: 1.4; margin: 0 0 10px; }
     .wiki-article-figure {
-      background: #f2f2f2; border: 1px solid #aaa; box-shadow: 3px 3px 0 #31302c;
+      background: #f2f2f2; border: 2px solid #aaa; box-shadow: 3px 3px 0 #31302c;
       margin: 0 0 14px; max-width: 100%; padding: 6px;
       img { display: block; height: auto; max-height: 330px; object-fit: contain; width: 100%; }
       figcaption { color: #555; font-size: 10px; line-height: 1.35; padding: 5px 2px 1px; }
     }
     .wiki-feature-figure { float: none; margin: 0 0 14px; max-width: 100%; }
     .wiki-disclaimer {
-      background: #f0f0f0; border: 1px solid #999; font-size: 11px; line-height: 1.4;
+      background: #f0f0f0; border: 2px solid #999; font-size: 11px; line-height: 1.4;
       margin: 18px 0 0; padding: 9px 11px;
     }
 
