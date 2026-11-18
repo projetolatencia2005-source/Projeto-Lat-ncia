@@ -26,6 +26,25 @@ const GlobalStyle = styled.createGlobalStyle`
       U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
 
+  /* Silkscreen is used for numerals while the rest of Pixelify Sans stays unchanged. */
+  @font-face {
+    font-display: swap;
+    font-family: "Pixelify Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/System/Doors/fonts/Silkscreen-Regular.ttf") format("truetype");
+    unicode-range: U+0030-0039;
+  }
+
+  @font-face {
+    font-display: swap;
+    font-family: "Pixelify Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/System/Doors/fonts/Silkscreen-Bold.ttf") format("truetype");
+    unicode-range: U+0030-0039;
+  }
+
   *,
   *::before,
   *::after {
@@ -2302,6 +2321,26 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
+
+  /* Numeric-only controls and counters use consistent tracking. */
+  :is(
+    time,
+    output,
+    input[type="number"],
+    [data-numeric],
+    .numeric-value,
+    [class*="number"],
+    [class*="Number"],
+    [class*="count"],
+    [class*="Count"],
+    [class*="counter"],
+    [class*="Counter"],
+    .doors-session-status .metrics strong,
+    .doors-session-status .metrics time
+  ) {
+    font-size: calc(1em - 2pt);
+    letter-spacing: -0.5px;
+  }
 `;
 
 export default GlobalStyle;

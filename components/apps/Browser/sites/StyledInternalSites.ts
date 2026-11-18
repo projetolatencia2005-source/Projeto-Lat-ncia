@@ -2742,8 +2742,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       button {
         background: #e5ebf4;
-        border: 1px solid #31302c;
-        border-bottom: 0;
+        border: 2px solid #31302c;
         color: #31302c;
         cursor: pointer;
         font: inherit;
@@ -2935,8 +2934,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       button {
         background: #e5ebf4;
-        border: 1px solid #31302c;
-        border-bottom: 0;
+        border: 2px solid #31302c;
         color: #31302c;
         cursor: pointer;
         font: inherit;
