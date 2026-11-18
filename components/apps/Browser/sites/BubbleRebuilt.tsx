@@ -160,11 +160,20 @@ const Root = styled.div`
   background: #fff;
   color: var(--rb-ink);
   font-family: "Pixelify Sans", monospace;
-  min-height: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-color: var(--rb-orange) #f7edd7;
+  scrollbar-width: thin;
   width: 100%;
 
+  &::-webkit-scrollbar { height: 14px; width: 14px; }
+  &::-webkit-scrollbar-track { background: #f7edd7; border-left: 2px solid var(--rb-line); }
+  &::-webkit-scrollbar-thumb { background: var(--rb-orange); border: 2px solid var(--rb-line); border-radius: 0; }
+  &::-webkit-scrollbar-thumb:hover { filter: brightness(.88); }
+
   *, *::before, *::after { box-sizing: border-box; }
-  button, input, textarea { font: inherit; }
+  button, input, select, textarea { font: inherit; }
   button { color: inherit; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; }
   a { color: #1768b2; text-decoration: underline; }
 
@@ -237,6 +246,7 @@ const Root = styled.div`
   .rb-birthday-box > .rb-box-title { min-height: 58px; }
   .rb-birthday-box > .rb-box-title h2 { font-size: 32px; }
   .rb-birthday { align-items: center; display: grid; gap: 22px; grid-template-columns: 150px minmax(0, 1fr); min-height: 257px; padding: 24px 22px; }
+  .rb-birthday > .rb-calendar, .rb-birthday > .rb-birthday-copy { transform: translateY(-20px); }
   .rb-calendar { align-items: stretch; background: white; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #171717; display: flex; flex-direction: column; font-size: 58px; font-weight: 700; height: 170px; justify-content: flex-start; line-height: 1; padding: 0; text-align: center; width: 150px; }
   .rb-calendar span { background: var(--rb-orange); color: white; display: block; flex: 0 0 35px; font-size: 24px; line-height: 35px; }
   .rb-calendar strong { font-size: 96px; line-height: .9; margin: auto 0; }
@@ -265,13 +275,18 @@ const Root = styled.div`
   .rb-footer small { margin-left: auto; }
   .rb-search-row { align-items: center; display: flex; gap: 10px; }
   .rb-search-row input { border: 1px solid #999; min-height: 42px; min-width: 0; padding: 8px 12px; width: 100%; }
-  .rb-section-bar { align-items: center; background: var(--rb-orange); border: 2px solid #222; box-shadow: 3px 3px #222; color: #fff; display: flex; gap: 10px; margin-bottom: 20px; min-height: 58px; padding: 8px 16px; }
-  .rb-section-bar button { background: transparent; border: 0; color: white; padding: 8px 12px; }
-  .rb-section-bar button[aria-pressed="true"] { background: #fff; color: #222; text-decoration: underline; }
+  .rb-section-bar { align-items: center; background: var(--rb-orange); border: 2px solid #222; box-shadow: 3px 3px #222; color: #fff; display: flex; gap: 14px; justify-content: space-between; margin-bottom: 20px; min-height: 74px; padding: 10px 16px; }
+  .rb-friend-filters { align-items: center; display: flex; flex: 0 0 auto; gap: 8px; }
+  .rb-section-bar .rb-friend-filters button { background: #fff; border: 2px solid #222; box-shadow: 2px 2px 0 #222; color: #222; min-height: 36px; padding: 5px 12px; white-space: nowrap; }
+  .rb-section-bar .rb-friend-filters button[aria-pressed="true"] { background: #f7edd7; text-decoration: underline; text-underline-offset: 2px; }
+  .rb-friend-search { display: flex; flex: 0 1 515px; height: 40px; margin-left: auto; min-width: 220px; }
+  .rb-friend-search input { background: #fff; border: 2px solid #222; border-right: 0; color: #222; min-width: 0; padding: 0 10px; width: 100%; }
+  .rb-friend-search button { align-items: center; background: #f7edd7; border: 2px solid #222; display: grid; flex: 0 0 39px; height: 40px; justify-items: center; padding: 0; width: 39px; }
+  .rb-friend-search button img { height: 19px; object-fit: contain; width: 19px; }
   .rb-friends-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rb-profile-aside { align-content: start; }
   .rb-profile-panel--about { min-height: 229px; }
-  .rb-profile-panel--friends, .rb-profile-panel--communities { min-height: 295px; }
+  .rb-profile-panel--friends, .rb-profile-panel--communities { min-height: 325px; }
   .rb-profile-panel--about > .rb-box-title, .rb-profile-panel--friends > .rb-box-title, .rb-profile-panel--communities > .rb-box-title { min-height: 57px; }
   .rb-profile-about-content { font-size: 16px; line-height: 1.25; padding: 14px 16px; }
   .rb-profile-about-content p { margin: 0; }
@@ -281,13 +296,13 @@ const Root = styled.div`
   .rb-profile-about-content dt { color: #777; }
   .rb-profile-about-content dd { font-weight: 700; margin: 0; text-align: right; }
   .rb-profile-about-content dt:nth-last-child(2), .rb-profile-about-content dd:last-child { border-bottom: 0; }
-  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 100px); padding: 14px; }
+  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 100px); justify-content: end; padding: 14px 20px; }
   .rb-friends-photo-grid img { aspect-ratio: 1; border: 2px solid #222; box-shadow: 3px 3px 0 #222; display: block; height: auto; object-fit: cover; width: 100%; }
   .rb-profile-community-list { display: grid; gap: 0; padding: 8px 14px; }
   .rb-profile-community-row { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 72px; padding: 8px 0; }
   .rb-profile-community-row:last-child { border-bottom: 0; }
   .rb-profile-community-row img { border: 2px solid #222; box-shadow: 2px 2px 0 #222; flex: 0 0 50px; height: 50px; object-fit: cover; width: 50px; }
-  .rb-profile-community-row a { font-size: 16px; line-height: 1.15; }
+  .rb-profile-community-row a { color: #111; font-size: 16px; line-height: 1.15; }
   .rb-friend-card { display: grid; grid-template-columns: 120px minmax(0, 1fr); min-height: 150px; }
   .rb-friend-card > img { border-right: 2px solid #222; height: 100%; min-height: 150px; object-fit: cover; width: 120px; }
   .rb-friend-info { align-content: center; display: grid; gap: 8px; padding: 16px; }
@@ -299,23 +314,25 @@ const Root = styled.div`
   .rb-profile-bio { flex: 1; min-width: 0; }
   .rb-profile-bio h2 { font-size: clamp(26px, 2vw, 38px); margin: 0 0 4px; }
   .rb-profile-bio p { margin: 5px 0; }
-  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 40%) minmax(0, 1fr); margin-bottom: 28px; min-height: 300px; }
-  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: 300px; object-fit: cover; width: 100%; }
-  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: 16px; padding: clamp(24px, 4vw, 72px); }
-  .rb-community-feature-copy h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.05; margin: 0; }
-  .rb-community-feature-copy p { font-size: clamp(16px, 1.2vw, 22px); margin: 0; }
-  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 40%) minmax(0, 1fr); margin-bottom: 28px; min-height: 300px; }
-  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: 300px; object-fit: cover; width: 100%; }
-  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: 16px; padding: clamp(24px, 4vw, 72px); }
-  .rb-community-feature-copy h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.05; margin: 0; }
-  .rb-community-feature-copy p { font-size: clamp(16px, 1.2vw, 22px); margin: 0; }
+  .rb-community-page-heading { margin-bottom: clamp(20px, 2.1vw, 40px); min-height: 171px; padding: clamp(22px, 1.72vw, 33px); }
+  .rb-community-page-heading h1 { font-size: clamp(30px, 3.34vw, 64px); margin-bottom: 8px; }
+  .rb-community-page-heading p { font-size: clamp(16px, 1.56vw, 30px); }
+  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 38.2%) minmax(0, 1fr); margin-bottom: 28px; min-height: clamp(360px, 37.55vw, 700px); }
+  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: clamp(360px, 37.55vw, 700px); object-fit: cover; width: 100%; }
+  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: clamp(12px, 1.1vw, 20px); padding: clamp(24px, 2.5vw, 48px); }
+  .rb-community-feature-copy > small { font-size: clamp(17px, 1.67vw, 32px); }
+  .rb-community-feature-copy h2 { font-size: clamp(34px, 3.75vw, 72px); line-height: 1.05; margin: 0; }
+  .rb-community-feature-copy > p { font-size: clamp(18px, 1.67vw, 32px); line-height: 1.1; margin: 0; }
+  .rb-community-feature-meta { display: flex; flex-wrap: wrap; gap: 22px; }
+  .rb-community-feature-meta span { font-size: clamp(14px, 1.25vw, 24px); }
+  .rb-community-feature-join { background: #fff; color: #222; font-size: clamp(16px, 1.45vw, 28px); min-height: 64px; width: min(343px, 100%); }
   .rb-communities-layout { display: grid; gap: 24px; grid-template-columns: minmax(0, 3.4fr) minmax(300px, 1fr); }
   .rb-communities-main, .rb-community-sidebar { align-content: start; display: grid; gap: 18px; min-width: 0; }
   .rb-community-discovery { align-items: center; background: var(--rb-orange); border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #fff; display: flex; flex-wrap: wrap; gap: 12px; min-height: 74px; padding: 10px 16px; }
   .rb-community-discovery > strong { font-size: 32px; margin-right: auto; white-space: nowrap; }
-  .rb-community-discovery label { font-size: 20px; }
-  .rb-community-discovery label { align-items: center; display: flex; gap: 6px; }
-  .rb-community-discovery select, .rb-community-discovery input { background: #fff; border: 1px solid #222; color: #222; min-height: 30px; padding: 4px 8px; }
+  .rb-community-discovery label { align-items: center; display: flex; font-size: 20px; gap: 6px; }
+  .rb-community-discovery select, .rb-community-discovery input { background: #fff; border: 2px solid #222; box-shadow: 2px 2px 0 #222; color: #222; font-size: 16px; min-height: 36px; padding: 4px 10px; }
+  .rb-community-discovery select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #222 50%), linear-gradient(135deg, #222 50%, transparent 50%); background-position: calc(100% - 11px) 15px, calc(100% - 6px) 15px; background-repeat: no-repeat; background-size: 5px 5px, 5px 5px; min-width: 126px; padding-right: 26px; }
   .rb-community-discovery input { min-width: 150px; width: min(220px, 22vw); }
   .rb-community-card { display: grid; grid-template-columns: 227px minmax(0, 1fr); min-height: 227px; }
   .rb-community-card > img { border-right: 2px solid #222; height: 100%; min-height: 227px; object-fit: cover; width: 227px; }
@@ -325,7 +342,7 @@ const Root = styled.div`
   .rb-community-details h3 { font-size: clamp(30px, 2.15vw, 40px); line-height: 1.03; margin: 0; }
   .rb-community-details p { font-size: clamp(20px, 1.5vw, 28px); line-height: 1.08; margin: 0; }
   .rb-community-details > small:last-of-type { font-size: 24px; }
-  .rb-community-details .rb-community-join { min-height: 53px; width: min(189px, 100%); }
+  .rb-community-details .rb-community-join { font-size: 14px; min-height: 53px; padding: 6px 5px; white-space: nowrap; width: min(189px, 100%); }
   .rb-community-sidebar > .rb-box { min-width: 0; }
   .rb-community-sidebar > .rb-box:first-child { min-height: 539px; }
   .rb-community-sidebar > .rb-box:nth-child(2) { min-height: 279px; }
@@ -338,10 +355,14 @@ const Root = styled.div`
   .rb-community-list-item strong, .rb-community-list-item small { display: block; }
   .rb-community-list-item strong { font-size: 28px; line-height: 1.05; }
   .rb-community-list-item small { color: #666; font-size: 20px; margin-top: 3px; }
-  .rb-community-categories { display: grid; gap: 6px 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px 18px; }
-  .rb-community-categories button { background: transparent; border: 0; color: #222; display: flex; font-size: 24px; justify-content: space-between; padding: 2px 0; text-align: left; }
-  .rb-community-categories button span:last-child { color: var(--rb-orange); }
-  .rb-community-categories button[aria-pressed="true"] { text-decoration: underline; }
+  .rb-community-categories { padding: 14px 18px; }
+  .rb-community-category-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-height: 48px; }
+  .rb-community-category-row:not(:last-child) { border-bottom: 1px solid #777; }
+  .rb-community-category-cell { min-width: 0; padding: 0 14px 0 0; }
+  .rb-community-category-cell + .rb-community-category-cell { border-left: 1px solid #777; padding: 0 0 0 20px; }
+  .rb-community-category-cell button { align-items: center; background: transparent; border: 0; color: #111; display: flex; font-size: 24px; justify-content: space-between; min-height: 48px; padding: 4px 0; text-align: left; width: 100%; }
+  .rb-community-category-cell button span:last-child { color: var(--rb-orange); }
+  .rb-community-category-cell button[aria-pressed="true"] span:first-child { text-decoration: underline; text-underline-offset: 3px; }
   .rb-community-sidebar > .rb-community-create { background: var(--rb-orange); border: 2px solid #222; box-shadow: 4px 4px 0 #222; color: #fff; min-height: 294px; padding: 24px; }
   .rb-community-create-icon { height: 36px; margin-bottom: 12px; width: 36px; }
   .rb-community-create-icon img { display: block; height: 100%; object-fit: cover; width: 100%; }
@@ -352,7 +373,7 @@ const Root = styled.div`
   .rb-community-create .rb-community-create-start { background: #fff; color: #222; height: 53px; min-height: 53px; width: min(284px, 100%); }
   .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); height: min(77vh, 920px); min-height: min(520px, 77vh); }
   .rb-inbox { border-right: 2px solid #222; display: flex; flex-direction: column; min-height: 0; }
-  .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; flex: 0 0 78px; font-size: clamp(21px, 1.7vw, 32px); height: 78px; margin: 0; min-height: 78px; padding: 16px 24px; }
+  .rb-inbox > h2 { align-items: center; background: var(--rb-orange); border-bottom: 2px solid #222; color: white; display: flex; flex: 0 0 78px; font-size: clamp(21px, 1.7vw, 32px); height: 78px; margin: 0; min-height: 78px; padding: 16px 24px; }
   .rb-inbox-search-panel { align-items: center; background: #f7faff; border: 1px solid #9da7b5; box-sizing: border-box; display: flex; flex: 0 0 75px; height: 75px; margin: 0; padding: 10px; }
   .rb-inbox-search { align-items: stretch; background: #fff; border: 1px solid #7f8792; box-sizing: border-box; display: flex; flex: 1 1 auto; gap: 0; height: 36px; margin: 0; min-width: 0; padding: 0; width: 100%; }
   .rb-inbox-search input { border: 0; height: 100%; min-width: 0; padding: 6px 10px; width: 100%; }
@@ -366,7 +387,7 @@ const Root = styled.div`
   .rb-contact-copy small { display: block; line-height: 1.25; margin-top: 4px; }
   .rb-contact-time { align-self: flex-end; font-size: 12px; margin-left: auto; }
   .rb-conversation { display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
-  .rb-conversation-header { align-items: center; background: var(--rb-orange); color: white; display: flex; flex: 0 0 78px; gap: 12px; height: 78px; min-height: 78px; padding: 8px 16px; }
+  .rb-conversation-header { align-items: center; background: var(--rb-orange); border-bottom: 2px solid #222; color: white; display: flex; flex: 0 0 78px; gap: 12px; height: 78px; min-height: 78px; padding: 8px 16px; }
   .rb-conversation-header > img { border: 2px solid #222; height: 58px; object-fit: cover; width: 58px; }
   .rb-conversation-title { flex: 1; }
   .rb-conversation-title strong { display: block; font-size: clamp(19px, 1.45vw, 28px); }
@@ -420,15 +441,24 @@ const Root = styled.div`
     .rb-footer nav { flex-wrap: wrap; gap: 8px 16px; }
     .rb-footer small { flex: 1 0 100%; margin-left: 0; }
     .rb-friends-grid { grid-template-columns: 1fr; }
+    .rb-section-bar { align-items: stretch; flex-direction: column; }
+    .rb-friend-filters { flex-wrap: wrap; }
+    .rb-friend-search { flex-basis: auto; margin-left: 0; min-width: 0; width: 100%; }
+    .rb-friend-search input { width: 100%; }
     .rb-friend-card { grid-template-columns: 95px minmax(0, 1fr); min-height: 125px; }
     .rb-friend-card > img { min-height: 125px; width: 95px; }
     .rb-profile-summary { align-items: flex-start; flex-wrap: wrap; gap: 14px; padding: 16px; }
     .rb-profile-avatar { height: 110px; margin-top: -50px; width: 110px; }
     .rb-profile-bio { flex: 1 1 calc(100% - 130px); }
     .rb-profile-summary > .rb-button { margin-left: auto; }
+    .rb-community-page-heading { min-height: auto; }
     .rb-community-feature { grid-template-columns: 1fr; min-height: 0; }
-    .rb-community-feature > img { border-bottom: 2px solid #222; border-right: 0; min-height: 240px; }
+    .rb-community-feature > img { aspect-ratio: 1 / 1; border-bottom: 2px solid #222; border-right: 0; height: auto; min-height: 0; }
     .rb-community-feature-copy { padding: 24px; }
+    .rb-community-feature-copy h2 { font-size: clamp(28px, 8vw, 42px); }
+    .rb-community-feature-copy > p { font-size: 17px; }
+    .rb-community-feature-meta span { font-size: 14px; }
+    .rb-community-feature-join { min-height: 48px; }
     .rb-communities-layout { grid-template-columns: 1fr; }
     .rb-community-sidebar { grid-template-columns: 1fr; }
     .rb-community-card { grid-template-columns: 110px minmax(0, 1fr); min-height: 155px; }
@@ -692,21 +722,32 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
         <div className="rb-shell">
           <header className="rb-page-heading"><h1>Amigos</h1><p>Gente que compartilha conversas, fotos e tardes na lan house.</p></header>
           <div className="rb-columns"><main>
-            <div className="rb-section-bar">{["Todos", "Online", "Solicitações"].map((item) => <button aria-pressed={filter === item} key={item} onClick={() => setFilter(item)} type="button">{item}{item === "Solicitações" ? " · 3" : ""}</button>)}<form className="rb-search-row" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar amigos" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar amigos..." value={search} /></form></div>
-            <div className="rb-friends-grid">{friends.filter((friend) => `${friend.name} ${friend.handle}`.toLowerCase().includes(search.toLowerCase())).filter((friend) => filter !== "Online" || friend.online).map((friend) => <article className="rb-box rb-friend-card" key={friend.handle}><img alt={friend.name} src={bubbleImage(friend.avatar)} /><div className="rb-friend-info"><h2>{friend.name} {friend.online && <span className="rb-online">●</span>}</h2><span>{friend.handle}</span><small>{friend.mutual} amigos em comum</small><button className="rb-button rb-button--orange" onClick={() => setAdded((value) => value.includes(friend.handle) ? value : [...value, friend.handle])} type="button">{added.includes(friend.handle) ? "Solicitação enviada" : "+ Amigo"}</button></div></article>)}</div>
+            <div className="rb-section-bar"><div aria-label="Filtrar amigos" className="rb-friend-filters">{["Todos", "Online", "Solicitações"].map((item) => <button aria-pressed={filter === item} key={item} onClick={() => setFilter(item)} type="button">{item}{item === "Solicitações" ? " · 3" : ""}</button>)}</div><form className="rb-friend-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar amigos" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Procure na sua lista..." value={search} /><button aria-label="Pesquisar amigos" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div>
+            <div className="rb-friends-grid">{friends.filter((friend) => `${friend.name} ${friend.handle}`.toLowerCase().includes(search.toLowerCase())).filter((friend) => filter !== "Online" || friend.online).map((friend) => <article className="rb-box rb-friend-card" key={friend.handle}><img alt={friend.name} src={bubbleImage(friend.avatar)} /><div className="rb-friend-info"><h2>{friend.name} {friend.online && <span className="rb-online">●</span>}</h2><span>{friend.handle}</span><small>{friend.mutual} amigos em comum</small></div></article>)}</div>
           </main><aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Solicitações de amizade</h2></header><div className="rb-panel-content">{["Cris Francisco", "Jamal Neves", "Elias Martins"].map((name, index) => <div className="rb-suggestion" key={name}><img alt="" src={bubbleImage(friends[index].avatar)} /><div className="rb-suggestion-copy"><strong>{name}</strong><small>14 amigos em comum</small></div><button className="rb-button" onClick={() => setAdded((value) => value.includes(name) ? value : [...value, name])} type="button">{added.includes(name) ? "Aceito" : "Aceitar"}</button></div>)}</div></section><section className="rb-box"><header className="rb-box-title"><h2>Amigos online</h2></header><div className="rb-panel-content">{friends.filter((friend) => friend.online).map((friend) => <p key={friend.handle}>● {friend.name}</p>)}</div></section></aside></div>
         </div>
       )}
       {section === "comunidades" && (
         <div className="rb-shell">
+          <header className="rb-page-heading rb-community-page-heading"><h1>Comunidades</h1><p>Entre em grupos, descubra assuntos novos e encontre pessoas que também não sabem a hora de sair da internet.</p></header>
+          <section className="rb-box rb-community-feature">
+            <img alt="Cachorro da comunidade da semana" src={bubbleImage("community-dog.jpg")} />
+            <div className="rb-community-feature-copy">
+              <small>COMUNIDADE DA SEMANA</small>
+              <h2>Quero reclamar sobre a vida</h2>
+              <p>Uma comunidade feita com o propósito de dispersar a raiva da sua semana e entreter a rapaziada!</p>
+              <div className="rb-community-feature-meta"><span>2.842 pessoas</span><span>138 tópicos ativos</span></div>
+              <button aria-pressed={joined.includes("Quero reclamar sobre a vida")} className="rb-button rb-community-feature-join" onClick={() => setJoined((value) => value.includes("Quero reclamar sobre a vida") ? value.filter((item) => item !== "Quero reclamar sobre a vida") : [...value, "Quero reclamar sobre a vida"])} type="button">{joined.includes("Quero reclamar sobre a vida") ? "Sair da comunidade" : "Entrar na comunidade"}</button>
+            </div>
+          </section>
           <div className="rb-communities-layout">
             <main className="rb-communities-main">
               <div className="rb-community-discovery"><strong>Descobrir comunidades</strong><label>Categoria: <select aria-label="Filtrar comunidades" onChange={(event) => setCommunityCategory(event.currentTarget.value)} value={communityCategory}><option value="Todas">Todas</option>{communityCategories.map(({ name }) => <option key={name} value={name}>{name}</option>)}</select></label><input aria-label="Buscar comunidades" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar comunidades" value={search} /></div>
               {[...communities, ...createdCommunities].filter((community) => `${community.title} ${community.description}`.toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))).filter((community) => communityCategory === "Todas" || community.category.toLocaleLowerCase("pt-BR").includes(communityCategory.toLocaleLowerCase("pt-BR"))).map((community) => <article className="rb-box rb-community-card" key={community.title}><img alt="" src={bubbleImage(community.image)} /><div className="rb-community-details"><small>{community.category}</small><h3>{community.title}</h3><p>{community.description}</p><small>{community.count}</small><button className="rb-button rb-button--orange rb-community-join" onClick={() => setJoined((value) => value.includes(community.title) ? value.filter((item) => item !== community.title) : [...value, community.title])} type="button">{joined.includes(community.title) ? "Sair da comunidade" : "Entrar na comunidade"}</button></div></article>)}
             </main>
             <aside className="rb-community-sidebar">
-              <section className="rb-box"><header className="rb-box-title"><h2>Minhas comunidades</h2></header><div className="rb-community-list">{[...initialMyCommunities, ...communities.filter((community) => joined.includes(community.title)).map((community) => ({ ...community, image: community.image }))].map((community) => <div className="rb-community-list-item" key={community.title}><img alt="" src={bubbleImage(community.image)} /><span><strong>{community.title}</strong><small>{community.count}</small></span></div>)}</div></section>
-              <section className="rb-box"><header className="rb-box-title"><h2>Categorias</h2></header><div className="rb-community-categories">{communityCategories.map(({ name, count }) => <button aria-pressed={communityCategory === name} key={name} onClick={() => setCommunityCategory(communityCategory === name ? "Todas" : name)} type="button"><span>{name}</span><span>{count}</span></button>)}</div></section>
+              <section className="rb-box"><header className="rb-box-title"><h2>Minhas comunidades</h2></header><div className="rb-community-list">{[...initialMyCommunities, ...(joined.includes("Quero reclamar sobre a vida") ? [{ title: "Quero reclamar sobre a vida", count: "2.842 pessoas", image: "community-dog.jpg" }] : []), ...communities.filter((community) => joined.includes(community.title)).map((community) => ({ ...community, image: community.image }))].map((community) => <div className="rb-community-list-item" key={community.title}><img alt="" src={bubbleImage(community.image)} /><span><strong>{community.title}</strong><small>{community.count}</small></span></div>)}</div></section>
+              <section className="rb-box"><header className="rb-box-title"><h2>Categorias</h2></header><div aria-label="Categorias de comunidades" className="rb-community-categories" role="table">{Array.from({ length: Math.ceil(communityCategories.length / 2) }, (_, rowIndex) => communityCategories.slice(rowIndex * 2, rowIndex * 2 + 2)).map((row) => <div className="rb-community-category-row" key={row[0].name} role="row">{row.map(({ name, count }) => <div className="rb-community-category-cell" key={name} role="cell"><button aria-pressed={communityCategory === name} onClick={() => setCommunityCategory(communityCategory === name ? "Todas" : name)} type="button"><span>{name}</span><span>{count}</span></button></div>)}</div>)}</div></section>
               <section className="rb-community-create"><div aria-hidden="true" className="rb-community-create-icon"><img alt="" src={bubbleImage("bubble-community-globe.png")} /></div><h2>Não achou sua turma?</h2><p className="rb-community-create-copy">Crie um espaço novo e convide gente que entende do assunto.</p>{communityCreateOpen ? <form className="rb-community-create-form" onSubmit={(event) => { event.preventDefault(); const title = communityName.trim(); if (!title) return; const created = { title, description: "Uma comunidade nova do Bubble.", count: "1 pessoa", category: "Cotidiano", image: "community-garfield.jpg" }; setCreatedCommunities((current) => [...current, created]); setJoined((value) => value.includes(title) ? value : [...value, title]); setCommunityName(""); setCommunityCreateOpen(false); }}><input aria-label="Nome da comunidade" onChange={(event) => setCommunityName(event.currentTarget.value)} placeholder="Nome da comunidade" value={communityName} /><button className="rb-button rb-button--orange" type="submit">Criar comunidade</button></form> : <button className="rb-button rb-community-create-start" onClick={() => setCommunityCreateOpen(true)} type="button">Começar agora</button>}</section>
               </aside>
           </div>
