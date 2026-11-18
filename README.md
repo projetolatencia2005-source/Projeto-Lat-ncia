@@ -1,6 +1,6 @@
 # Latência System
 
-O **Latência System** é um desktop interativo que simula a experiência de uma lan house brasileira. O site traz uma interface retrô em pixel art, com área de trabalho, janelas e aplicativos acessíveis pelo navegador.
+O **Latência System** é um desktop interativo que simula a experiência de uma Lan House brasileira. O site traz uma interface retrô em pixel art, com área de trabalho, janelas e aplicativos acessíveis pelo navegador.
 
 **Acesse o site:** [projetolatencia.vercel.app](https://projetolatencia.vercel.app)
 
