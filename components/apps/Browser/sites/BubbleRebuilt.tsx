@@ -121,13 +121,35 @@ const initialPosts: FeedPost[] = [
 ];
 
 const communities = [
-  { title: "Eu Odeio Acordar Cedo", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", count: "2.848 pessoas", category: "Relacionamentos & amizades", image: "community-garfield.jpg" },
-  { title: "Deus me disse: desce e acro…", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", count: "684 pessoas", category: "Cotidiano", image: "community-cat.jpg" },
-  { title: "Te incomodo? Que pena!", description: "Entre para conversar com quem não tem hora para sair da internet.", count: "1.120 pessoas", category: "Amizades", image: "community-dog.jpg" },
-  { title: "Eu amo chocolate!", description: "Um cantinho para quem não vive sem um docinho.", count: "980 pessoas", category: "Culinária", image: "community-chocolate.jpg" },
-  { title: "Internet lenta, papo bom", description: "A internet cai, mas a conversa continua.", count: "1.344 pessoas", category: "Tecnologia", image: "community-dog.jpg" },
-  { title: "Clube dos noturnos", description: "A turma que só aparece depois que a lan house esvazia.", count: "816 pessoas", category: "Cotidiano", image: "community-cat.jpg" },
-  { title: "Bandas de garagem", description: "Músicos, bandas e histórias de ensaio.", count: "420 pessoas", category: "Música", image: "community-garfield.jpg" },
+  { title: "Eu Odeio Acordar Cedo", description: "Comunidade feita para todos aqueles que odeiam acordar cedo.", count: "2.842 pessoas", category: "Relacionamentos & Amizades", image: "community-garfield.jpg" },
+  { title: "Deus me disse: desce e arrasa!", description: "Comunidade para pessoas que NÃO estão na terra à passeio.", count: "684 pessoas", category: "Cotidiano", image: "bubble-community-daydream.png" },
+  { title: "Te incomodo? Que peeena!", description: "Tem gente que se incomoda com pessoas felizes e bem resolvidos.", count: "938 pessoas", category: "Vida Cotidiana", image: "community-cat.jpg" },
+  { title: "Eu amo chocolate!", description: "Comunidade criada para os chocolatras de montão!", count: "2.842 pessoas", category: "Culinária, Bebidas e Vinhos", image: "community-chocolate.jpg" },
+];
+
+const homeCommunities = [
+  { title: "Internet lenta, papo bom", image: "post-lan-house.png" },
+  { title: "Clube dos norturnos", image: "bubble-home-night.png" },
+  { title: "Bandas de garagem", image: "bubble-home-bands.png" },
+];
+
+const profileCommunities = [
+  { title: "Eu colho flores e TONY RAMOS!!!", image: "bubble-community-tony.png" },
+  { title: "Tinha medo da Gina Palitos", image: "bubble-community-gina.png" },
+  { title: "Queria sorvete, mas era feijão", image: "bubble-community-beans.png" },
+];
+
+const communityCategories = [
+  { name: "Música", count: 438 }, { name: "Arte", count: 308 },
+  { name: "Filmes", count: 174 }, { name: "Culinária", count: 692 },
+  { name: "Jogos", count: 308 }, { name: "Tecnologia", count: 72 },
+  { name: "Amizades", count: 93 }, { name: "Cotidiano", count: 216 },
+];
+
+const initialMyCommunities = [
+  { title: "Eu colho Flores e TONY RAMOS!!!", count: "1.344 pessoas", image: "bubble-community-tony.png" },
+  { title: "Tinha medo da Gina Palitos", count: "816 pessoas", image: "bubble-community-gina.png" },
+  { title: "Queria sorvete, mas era Feijão", count: "4.603 pessoas", image: "bubble-community-beans.png" },
 ];
 
 const Root = styled.div`
@@ -149,6 +171,7 @@ const Root = styled.div`
   .rb-nav {
     align-items: center;
     background: var(--rb-orange);
+    border-bottom: 2px solid #222;
     color: #fff;
     display: flex;
     gap: clamp(14px, 2.1vw, 44px);
@@ -210,10 +233,26 @@ const Root = styled.div`
   .rb-mini-profile-copy { display: flex; flex-direction: column; justify-content: space-between; padding: 20px 16px; }
   .rb-mini-profile-copy strong { font-size: clamp(17px, 1.2vw, 23px); }
   .rb-mini-profile-copy a { color: white; font-size: 14px; }
-  .rb-birthday { align-items: center; display: grid; gap: 16px; grid-template-columns: 110px minmax(0, 1fr); }
-  .rb-calendar { background: white; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #171717; font-size: 37px; font-weight: 700; line-height: 1; padding: 12px; text-align: center; }
-  .rb-calendar span { background: var(--rb-orange); color: white; display: block; font-size: 15px; margin: -12px -12px 10px; padding: 7px; }
+  .rb-birthday-box { min-height: 317px; }
+  .rb-birthday-box > .rb-box-title { min-height: 58px; }
+  .rb-birthday-box > .rb-box-title h2 { font-size: 32px; }
+  .rb-birthday { align-items: center; display: grid; gap: 22px; grid-template-columns: 150px minmax(0, 1fr); min-height: 257px; padding: 24px 22px; }
+  .rb-calendar { align-items: stretch; background: white; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #171717; display: flex; flex-direction: column; font-size: 58px; font-weight: 700; height: 170px; justify-content: flex-start; line-height: 1; padding: 0; text-align: center; width: 150px; }
+  .rb-calendar span { background: var(--rb-orange); color: white; display: block; flex: 0 0 35px; font-size: 24px; line-height: 35px; }
+  .rb-calendar strong { font-size: 96px; line-height: .9; margin: auto 0; }
+  .rb-birthday-copy { align-self: center; min-width: 0; }
+  .rb-birthday-copy strong { display: block; font-size: 32px; line-height: 1.05; }
+  .rb-birthday-copy p { color: #777; font-size: 16px; line-height: 1.3; margin: 3px 0 10px; }
+  .rb-birthday-copy p:first-of-type { color: #171717; margin-bottom: 14px; }
+  .rb-birthday-copy .rb-button { height: 35px; min-height: 35px; white-space: nowrap; width: 176px; }
   .rb-birthday p, .rb-suggestion p { margin: 4px 0 12px; }
+  .rb-home-communities > .rb-box-title { min-height: 65px; }
+  .rb-home-community-list { padding: 0 18px; }
+  .rb-home-community-row { align-items: center; border-bottom: 1px solid #ccc; display: grid; gap: 18px; grid-template-columns: 100px minmax(0, 1fr) 95px; min-height: 154px; }
+  .rb-home-community-row:last-child { border-bottom: 0; }
+  .rb-home-community-row img { border: 2px solid #222; box-shadow: 3px 3px 0 #222; height: 100px; object-fit: cover; width: 100px; }
+  .rb-home-community-row h3 { font-size: clamp(23px, 1.67vw, 32px); line-height: 1.05; margin: 0; }
+  .rb-home-community-row .rb-button { background: var(--rb-orange); color: #fff; height: 35px; min-height: 35px; padding: 3px 5px; width: 95px; }
   .rb-suggestion { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 12px; padding: 12px 0; }
   .rb-suggestion:last-child { border-bottom: 0; }
   .rb-suggestion img { border: 2px solid #222; height: 58px; object-fit: cover; width: 58px; }
@@ -230,8 +269,25 @@ const Root = styled.div`
   .rb-section-bar button { background: transparent; border: 0; color: white; padding: 8px 12px; }
   .rb-section-bar button[aria-pressed="true"] { background: #fff; color: #222; text-decoration: underline; }
   .rb-friends-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px; }
+  .rb-profile-aside { align-content: start; }
+  .rb-profile-panel--about { min-height: 229px; }
+  .rb-profile-panel--friends, .rb-profile-panel--communities { min-height: 295px; }
+  .rb-profile-panel--about > .rb-box-title, .rb-profile-panel--friends > .rb-box-title, .rb-profile-panel--communities > .rb-box-title { min-height: 57px; }
+  .rb-profile-about-content { font-size: 16px; line-height: 1.25; padding: 14px 16px; }
+  .rb-profile-about-content p { margin: 0; }
+  .rb-profile-about-content p:first-child { border-bottom: 1px solid #ccc; margin-bottom: 10px; padding-bottom: 12px; }
+  .rb-profile-about-content dl { display: grid; gap: 0; grid-template-columns: 1fr auto; margin: 0; }
+  .rb-profile-about-content dt, .rb-profile-about-content dd { border-bottom: 1px solid #ccc; padding: 5px 0; }
+  .rb-profile-about-content dt { color: #777; }
+  .rb-profile-about-content dd { font-weight: 700; margin: 0; text-align: right; }
+  .rb-profile-about-content dt:nth-last-child(2), .rb-profile-about-content dd:last-child { border-bottom: 0; }
+  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 100px); padding: 14px; }
   .rb-friends-photo-grid img { aspect-ratio: 1; border: 2px solid #222; box-shadow: 3px 3px 0 #222; display: block; height: auto; object-fit: cover; width: 100%; }
+  .rb-profile-community-list { display: grid; gap: 0; padding: 8px 14px; }
+  .rb-profile-community-row { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 72px; padding: 8px 0; }
+  .rb-profile-community-row:last-child { border-bottom: 0; }
+  .rb-profile-community-row img { border: 2px solid #222; box-shadow: 2px 2px 0 #222; flex: 0 0 50px; height: 50px; object-fit: cover; width: 50px; }
+  .rb-profile-community-row a { font-size: 16px; line-height: 1.15; }
   .rb-friend-card { display: grid; grid-template-columns: 120px minmax(0, 1fr); min-height: 150px; }
   .rb-friend-card > img { border-right: 2px solid #222; height: 100%; min-height: 150px; object-fit: cover; width: 120px; }
   .rb-friend-info { align-content: center; display: grid; gap: 8px; padding: 16px; }
@@ -248,15 +304,56 @@ const Root = styled.div`
   .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: 16px; padding: clamp(24px, 4vw, 72px); }
   .rb-community-feature-copy h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.05; margin: 0; }
   .rb-community-feature-copy p { font-size: clamp(16px, 1.2vw, 22px); margin: 0; }
-  .rb-community-card { display: grid; grid-template-columns: 230px 1fr; min-height: 210px; }
-  .rb-community-card > img { border-right: 2px solid #222; height: 100%; min-height: 210px; object-fit: cover; width: 230px; }
-  .rb-community-details { align-content: center; display: grid; gap: 8px; padding: 20px; }
-  .rb-community-details h3 { font-size: clamp(21px, 1.55vw, 30px); margin: 0; }
-  .rb-community-details p { margin: 0; }
-  .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); min-height: min(77vh, 920px); }
+  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 40%) minmax(0, 1fr); margin-bottom: 28px; min-height: 300px; }
+  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: 300px; object-fit: cover; width: 100%; }
+  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: 16px; padding: clamp(24px, 4vw, 72px); }
+  .rb-community-feature-copy h2 { font-size: clamp(28px, 3vw, 54px); line-height: 1.05; margin: 0; }
+  .rb-community-feature-copy p { font-size: clamp(16px, 1.2vw, 22px); margin: 0; }
+  .rb-communities-layout { display: grid; gap: 24px; grid-template-columns: minmax(0, 3.4fr) minmax(300px, 1fr); }
+  .rb-communities-main, .rb-community-sidebar { align-content: start; display: grid; gap: 18px; min-width: 0; }
+  .rb-community-discovery { align-items: center; background: var(--rb-orange); border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #fff; display: flex; flex-wrap: wrap; gap: 12px; min-height: 74px; padding: 10px 16px; }
+  .rb-community-discovery > strong { font-size: 32px; margin-right: auto; white-space: nowrap; }
+  .rb-community-discovery label { font-size: 20px; }
+  .rb-community-discovery label { align-items: center; display: flex; gap: 6px; }
+  .rb-community-discovery select, .rb-community-discovery input { background: #fff; border: 1px solid #222; color: #222; min-height: 30px; padding: 4px 8px; }
+  .rb-community-discovery input { min-width: 150px; width: min(220px, 22vw); }
+  .rb-community-card { display: grid; grid-template-columns: 227px minmax(0, 1fr); min-height: 227px; }
+  .rb-community-card > img { border-right: 2px solid #222; height: 100%; min-height: 227px; object-fit: cover; width: 227px; }
+  .rb-community-details { align-content: center; display: grid; gap: 3px; padding: 15px 28px; }
+  .rb-community-details > small { color: #222; font-size: 24px; }
+  .rb-community-details > small:first-child { color: var(--rb-orange); }
+  .rb-community-details h3 { font-size: clamp(30px, 2.15vw, 40px); line-height: 1.03; margin: 0; }
+  .rb-community-details p { font-size: clamp(20px, 1.5vw, 28px); line-height: 1.08; margin: 0; }
+  .rb-community-details > small:last-of-type { font-size: 24px; }
+  .rb-community-details .rb-community-join { min-height: 53px; width: min(189px, 100%); }
+  .rb-community-sidebar > .rb-box { min-width: 0; }
+  .rb-community-sidebar > .rb-box:first-child { min-height: 539px; }
+  .rb-community-sidebar > .rb-box:nth-child(2) { min-height: 279px; }
+  .rb-community-sidebar .rb-box-title { min-height: 65px; }
+  .rb-community-sidebar .rb-box-title h2 { font-size: 32px; }
+  .rb-community-list { display: grid; gap: 0; padding: 8px 18px; }
+  .rb-community-list-item { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 14px; min-height: 145px; padding: 8px 0; }
+  .rb-community-list-item:last-child { border-bottom: 0; }
+  .rb-community-list-item img { border: 2px solid #222; height: 100px; object-fit: cover; width: 100px; }
+  .rb-community-list-item strong, .rb-community-list-item small { display: block; }
+  .rb-community-list-item strong { font-size: 28px; line-height: 1.05; }
+  .rb-community-list-item small { color: #666; font-size: 20px; margin-top: 3px; }
+  .rb-community-categories { display: grid; gap: 6px 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 14px 18px; }
+  .rb-community-categories button { background: transparent; border: 0; color: #222; display: flex; font-size: 24px; justify-content: space-between; padding: 2px 0; text-align: left; }
+  .rb-community-categories button span:last-child { color: var(--rb-orange); }
+  .rb-community-categories button[aria-pressed="true"] { text-decoration: underline; }
+  .rb-community-sidebar > .rb-community-create { background: var(--rb-orange); border: 2px solid #222; box-shadow: 4px 4px 0 #222; color: #fff; min-height: 294px; padding: 24px; }
+  .rb-community-create-icon { height: 36px; margin-bottom: 12px; width: 36px; }
+  .rb-community-create-icon img { display: block; height: 100%; object-fit: cover; width: 100%; }
+  .rb-community-create h2 { font-size: 32px; line-height: 1.05; margin: 0 0 12px; }
+  .rb-community-create-copy { font-size: 24px; line-height: 1.15; margin: 0 0 18px; }
+  .rb-community-create .rb-community-create-form { display: grid; gap: 10px; }
+  .rb-community-create-form input { border: 1px solid #888; min-height: 34px; padding: 7px 9px; width: 100%; }
+  .rb-community-create .rb-community-create-start { background: #fff; color: #222; height: 53px; min-height: 53px; width: min(284px, 100%); }
+  .rb-chat-layout { border: 2px solid #222; box-shadow: 4px 4px #222; display: grid; grid-template-columns: minmax(260px, 24%) minmax(0, 1fr); height: min(77vh, 920px); min-height: min(520px, 77vh); }
   .rb-inbox { border-right: 2px solid #222; display: flex; flex-direction: column; min-height: 0; }
-  .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; font-size: clamp(21px, 1.7vw, 32px); margin: 0; min-height: 78px; padding: 16px 24px; }
-  .rb-inbox-search-panel { align-items: center; background: #f7faff; border: 1px solid #9da7b5; box-sizing: border-box; display: flex; flex: 0 0 150px; height: 150px; margin: 0; padding: 16px; }
+  .rb-inbox > h2 { align-items: center; background: var(--rb-orange); color: white; display: flex; flex: 0 0 78px; font-size: clamp(21px, 1.7vw, 32px); height: 78px; margin: 0; min-height: 78px; padding: 16px 24px; }
+  .rb-inbox-search-panel { align-items: center; background: #f7faff; border: 1px solid #9da7b5; box-sizing: border-box; display: flex; flex: 0 0 75px; height: 75px; margin: 0; padding: 10px; }
   .rb-inbox-search { align-items: stretch; background: #fff; border: 1px solid #7f8792; box-sizing: border-box; display: flex; flex: 1 1 auto; gap: 0; height: 36px; margin: 0; min-width: 0; padding: 0; width: 100%; }
   .rb-inbox-search input { border: 0; height: 100%; min-width: 0; padding: 6px 10px; width: 100%; }
   .rb-inbox-search button { align-items: center; background: #f7faff; border: 0; display: grid; flex: 0 0 36px; height: 100%; justify-items: center; padding: 0; width: 36px; }
@@ -268,14 +365,14 @@ const Root = styled.div`
   .rb-contact-copy strong { display: block; font-size: clamp(16px, 1.2vw, 23px); }
   .rb-contact-copy small { display: block; line-height: 1.25; margin-top: 4px; }
   .rb-contact-time { align-self: flex-end; font-size: 12px; margin-left: auto; }
-  .rb-conversation { display: flex; flex-direction: column; min-width: 0; }
-  .rb-conversation-header { align-items: center; background: var(--rb-orange); color: white; display: flex; gap: 14px; min-height: 92px; padding: 12px 20px; }
-  .rb-conversation-header > img { border: 2px solid #222; height: 78px; object-fit: cover; width: 78px; }
+  .rb-conversation { display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
+  .rb-conversation-header { align-items: center; background: var(--rb-orange); color: white; display: flex; flex: 0 0 78px; gap: 12px; height: 78px; min-height: 78px; padding: 8px 16px; }
+  .rb-conversation-header > img { border: 2px solid #222; height: 58px; object-fit: cover; width: 58px; }
   .rb-conversation-title { flex: 1; }
   .rb-conversation-title strong { display: block; font-size: clamp(19px, 1.45vw, 28px); }
   .rb-conversation-title small { display: block; margin-top: 3px; }
   .rb-view-profile { background: white; border: 2px solid #222; box-shadow: 3px 3px #222; color: #222; font-size: clamp(12px, .9vw, 16px); min-height: 40px; min-width: 96px; padding: 5px 12px; white-space: nowrap; }
-  .rb-message-list { background: #f2f2f2; display: flex; flex: 1; flex-direction: column; gap: 20px; min-height: 260px; overflow: auto; padding: clamp(20px, 2vw, 36px); }
+  .rb-message-list { background: #f2f2f2; display: flex; flex: 1 1 auto; flex-direction: column; gap: 20px; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding: clamp(20px, 2vw, 36px); }
   .rb-day { align-items: center; color: #999; display: flex; gap: 16px; justify-content: center; margin: 10px 0; }
   .rb-day::before, .rb-day::after { border-top: 1px solid #bbb; content: ""; flex: 1; }
   .rb-message-row { align-items: flex-end; display: flex; gap: 12px; max-width: min(82%, 680px); }
@@ -290,7 +387,7 @@ const Root = styled.div`
   .rb-key-icon svg { height: 18px; width: 24px; }
   .rb-message time { bottom: 5px; font-size: 11px; position: absolute; right: 8px; }
   .rb-message-compose { align-items: flex-end; border-top: 1px solid #aaa; display: flex; gap: 12px; padding: 12px; }
-  .rb-message-compose textarea { border: 1px solid #999; min-height: 56px; padding: 10px; resize: vertical; width: 100%; }
+  .rb-message-compose textarea { border: 1px solid #999; height: 56px; max-height: 56px; min-height: 56px; padding: 10px; resize: none; width: 100%; }
   .rb-message-compose button { background: var(--rb-orange); border: 2px solid #222; box-shadow: 2px 2px #222; color: white; min-height: 40px; padding: 7px 14px; }
   .rb-empty { color: #666; margin: auto; text-align: center; }
   .rb-notice { background: #f8ead1; border: 1px solid #333; margin: 10px 0; padding: 10px; }
@@ -301,8 +398,10 @@ const Root = styled.div`
     .rb-columns { grid-template-columns: minmax(0, 1fr) minmax(230px, .42fr); }
     .rb-chat-layout { grid-template-columns: minmax(220px, 30%) minmax(0, 1fr); }
     .rb-message-avatar { height: 38px; width: 38px; }
-    .rb-community-card { grid-template-columns: 170px minmax(0, 1fr); }
-    .rb-community-card > img { width: 170px; }
+    .rb-community-card { grid-template-columns: 180px minmax(0, 1fr); }
+    .rb-community-card > img { width: 180px; }
+    .rb-communities-layout { gap: 18px; grid-template-columns: minmax(0, 2.7fr) minmax(250px, 1fr); }
+    .rb-community-details { padding: 18px; }
   }
   @media (max-width: 760px) {
     .rb-nav { align-items: flex-start; padding: 12px; }
@@ -330,18 +429,39 @@ const Root = styled.div`
     .rb-community-feature { grid-template-columns: 1fr; min-height: 0; }
     .rb-community-feature > img { border-bottom: 2px solid #222; border-right: 0; min-height: 240px; }
     .rb-community-feature-copy { padding: 24px; }
+    .rb-communities-layout { grid-template-columns: 1fr; }
+    .rb-community-sidebar { grid-template-columns: 1fr; }
     .rb-community-card { grid-template-columns: 110px minmax(0, 1fr); min-height: 155px; }
     .rb-community-card > img { min-height: 155px; width: 110px; }
-    .rb-chat-layout { grid-template-columns: 1fr; min-height: auto; }
+    .rb-community-details { gap: 4px; padding: 10px; }
+    .rb-community-details > small, .rb-community-details > small:last-of-type { font-size: 13px; }
+    .rb-community-details h3 { font-size: 19px; }
+    .rb-community-details p { font-size: 14px; }
+    .rb-community-details .rb-community-join { min-height: 36px; }
+    .rb-community-discovery { align-items: flex-start; flex-direction: column; }
+    .rb-community-discovery input { width: 100%; }
+    .rb-home-community-list { padding: 0 12px; }
+    .rb-home-community-row { gap: 10px; grid-template-columns: 76px minmax(0, 1fr) 78px; min-height: 118px; }
+    .rb-home-community-row img { height: 76px; width: 76px; }
+    .rb-home-community-row .rb-button { width: 78px; }
+    .rb-birthday { gap: 14px; grid-template-columns: 112px minmax(0, 1fr); padding: 18px 14px; }
+    .rb-calendar { height: 145px; width: 112px; }
+    .rb-calendar strong { font-size: 50px; }
+    .rb-birthday-copy strong { font-size: 18px; }
+    .rb-birthday-copy p { font-size: 14px; }
+    .rb-profile-about-content { font-size: 14px; }
+    .rb-profile-community-row a { font-size: 14px; }
+    .rb-chat-layout { grid-template-columns: 1fr; height: auto; min-height: 0; }
     .rb-inbox { border-bottom: 2px solid #222; border-right: 0; max-height: 360px; }
     .rb-inbox > h2 { min-height: 58px; }
     .rb-contact-list { max-height: 145px; }
     .rb-contact { min-height: 86px; }
     .rb-contact img { height: 54px; width: 54px; }
-    .rb-conversation { min-height: 540px; }
-    .rb-conversation-header { min-height: 72px; }
+    .rb-conversation { height: min(68vh, 620px); min-height: 420px; }
+    .rb-conversation-header { flex-basis: 72px; height: 72px; min-height: 72px; }
+    .rb-inbox > h2 { flex-basis: 72px; height: 72px; min-height: 72px; }
     .rb-conversation-header > img { height: 54px; width: 54px; }
-    .rb-message-list { min-height: 410px; padding: 16px 10px; }
+    .rb-message-list { min-height: 0; padding: 16px 10px; }
     .rb-message-row { max-width: 94%; }
     .rb-message-avatar { height: 30px; width: 30px; }
     .rb-message { padding: 9px 10px 21px; }
@@ -429,10 +549,19 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
   const [profileEditing, setProfileEditing] = useState(false);
   const [bio, setBio] = useState("“Por aí, com uma câmera na bolsa e uma música na cabeça.”");
   const [communityName, setCommunityName] = useState("");
+  const [communityCategory, setCommunityCategory] = useState("Todas");
+  const [createdCommunities, setCreatedCommunities] = useState<typeof communities>([]);
+  const [communityCreateOpen, setCommunityCreateOpen] = useState(false);
+  const messageListRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setSelectedConversation(selectedId);
   }, [selectedId]);
+
+  useEffect(() => {
+    const list = messageListRef.current;
+    if (list) list.scrollTop = list.scrollHeight;
+  }, [messages, selectedConversation]);
 
   useEffect(() => {
     const onKeywordCollected = (event: Event): void => {
@@ -534,9 +663,9 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
             <section className="rb-box rb-mini-profile rb-home-mini-profile"><img alt="Ana Paula na lan house" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
-            <section className="rb-box"><header className="rb-box-title"><h2>Aniversariantes</h2></header><div className="rb-panel-content rb-birthday"><div className="rb-calendar"><span>NOV</span>24</div><div><strong>Malu Souza</strong><p>Faz aniversário hoje! Mande uma mensagem antes que seja tarde!</p><button className="rb-button rb-button--orange" onClick={() => nav("mensagens/malu")} type="button">Enviar mensagem</button></div></div></section>
-            <section className="rb-box"><header className="rb-box-title"><h2>Sugestões de Amigos</h2></header><div className="rb-panel-content">{friends.filter((friend) => ["Jorge Roberto", "Gustavo Ribeiro", "Bárbara Guedes"].includes(friend.name)).map((friend) => <div className="rb-suggestion" key={friend.handle}><img alt="" src={bubbleImage(friend.avatar)} /><div className="rb-suggestion-copy"><strong>{friend.name}</strong><small>{friend.mutual} amigos em comum</small></div><button className="rb-button" onClick={() => setAdded((value) => value.includes(friend.handle) ? value : [...value, friend.handle])} type="button">{added.includes(friend.handle) ? "Enviado" : "+ Add"}</button></div>)}</div></section>
-            <section className="rb-box"><header className="rb-box-title"><h2>Comunidades</h2></header><div className="rb-panel-content">{communities.slice(0, 3).map((community) => <p key={community.title}><a href={`${SITE_URLS.bubble}comunidades`} onClick={(event) => { event.preventDefault(); nav("comunidades"); }}>{community.title}</a></p>)}</div></section>
+            <section className="rb-box rb-birthday-box"><header className="rb-box-title"><h2>Aniversariantes</h2></header><div className="rb-panel-content rb-birthday"><div className="rb-calendar"><span>NOV</span><strong>24</strong></div><div className="rb-birthday-copy"><strong>Malu Souza</strong><p>Faz aniversário hoje!</p><p>Mande uma mensagem antes que seja tarde!</p><button className="rb-button rb-button--orange" onClick={() => nav("mensagens/malu")} type="button">Enviar mensagem</button></div></div></section>
+            <section className="rb-box"><header className="rb-box-title"><h2>Sugestões de Amigos</h2></header><div className="rb-panel-content">{friends.filter((friend) => ["Jorge Roberto", "Gustavo Ribeiro", "Bárbara Guedes"].includes(friend.name)).map((friend) => <div className="rb-suggestion" key={friend.handle}><img alt="" src={bubbleImage(friend.avatar)} /><div className="rb-suggestion-copy"><strong>{friend.name}</strong><small>{friend.mutual} amigos em comum</small></div><button className="rb-button rb-button--orange" onClick={() => setAdded((value) => value.includes(friend.handle) ? value : [...value, friend.handle])} type="button">{added.includes(friend.handle) ? "Enviado" : "+ Amigo"}</button></div>)}</div></section>
+            <section className="rb-box rb-home-communities"><header className="rb-box-title"><h2>Comunidades</h2><button className="rb-button rb-button--orange" onClick={() => nav("comunidades")} type="button">ver todos →</button></header><div className="rb-home-community-list">{homeCommunities.map((community) => <article className="rb-home-community-row" key={community.title}><img alt="" src={bubbleImage(community.image)} /><h3>{community.title}</h3><button className="rb-button" onClick={() => setJoined((value) => value.includes(community.title) ? value : [...value, community.title])} type="button">{joined.includes(community.title) ? "Entrou" : "+ Entrar"}</button></article>)}</div></section>
           </aside>
         </div>
       )}
@@ -551,7 +680,11 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           </section>
           <div className="rb-columns">
             <main className="rb-stack"><section className="rb-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.slice(0, 4).map((post, index) => <BubblePostCard key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}</main>
-            <aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Sobre mim</h2><button onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno.</p><hr /><p>mora em <strong>São Paulo, SP</strong></p><p>aniversário <strong>12 de maio</strong></p><p>no Bubble desde <strong>março de 2001</strong></p></div></section><section className="rb-box"><header className="rb-box-title"><h2>Amigos</h2><button onClick={() => nav("amigos")} type="button">ver todos →</button></header><div className="rb-friends-photo-grid">{friends.slice(0, 6).map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section></aside>
+            <aside className="rb-stack rb-profile-aside">
+              <section className="rb-box rb-profile-panel--about"><header className="rb-box-title"><h2>Sobre mim</h2><button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content rb-profile-about-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno</p><dl><dt>mora em</dt><dd>São Paulo, SP</dd><dt>aniversário</dt><dd>12 de maio</dd><dt>no Bubble desde</dt><dd>março de 2004</dd></dl></div></section>
+              <section className="rb-box rb-profile-panel--friends"><header className="rb-box-title"><h2>Amigos</h2><button className="rb-button rb-button--orange" onClick={() => nav("amigos")} type="button">ver todas</button></header><div className="rb-friends-photo-grid">{[friends[0], friends[1], friends[2], friends[4], friends[5], friends[6]].map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section>
+              <section className="rb-box rb-profile-panel--communities"><header className="rb-box-title"><h2>Comunidades</h2><button className="rb-button rb-button--orange" onClick={() => nav("comunidades")} type="button">ver todos</button></header><div className="rb-profile-community-list">{profileCommunities.map((community) => <div className="rb-profile-community-row" key={community.title}><img alt="" src={bubbleImage(community.image)} /><a href={`${SITE_URLS.bubble}comunidades`} onClick={(event) => { event.preventDefault(); nav("comunidades"); }}>{community.title}</a></div>)}</div></section>
+            </aside>
           </div>
         </div>
       )}
@@ -566,9 +699,16 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
       )}
       {section === "comunidades" && (
         <div className="rb-shell">
-          <header className="rb-page-heading"><h1>Comunidades</h1><p>Entre em grupos, descubra assuntos novos e encontre pessoas que também não sabem a hora de sair da internet.</p></header>
-          <section className="rb-box rb-community-feature"><img alt="Cachorro em destaque da comunidade da semana" src={bubbleImage("community-dog.jpg")} /><div className="rb-community-feature-copy"><small>COMUNIDADE DA SEMANA</small><h2>Quero reclamar sobre a vida</h2><p>Uma comunidade feita com o propósito de dissertar sobre a raiva da sua semana e entreter a rapaziada!</p><span>2.848 pessoas · 138 tópicos ativos</span><button className="rb-button" onClick={() => setJoined((value) => value.includes("Quero reclamar sobre a vida") ? value : [...value, "Quero reclamar sobre a vida"])} type="button">{joined.includes("Quero reclamar sobre a vida") ? "Você entrou" : "Entrar na comunidade"}</button></div></section>
-          <div className="rb-columns"><main className="rb-stack"><div className="rb-section-bar"><strong>Descobrir comunidades</strong><label>Categoria: <select aria-label="Filtrar comunidades" onChange={(event) => setFilter(event.currentTarget.value)} value={filter}><option>Todas</option>{[...new Set(communities.map(({ category }) => category))].map((category) => <option key={category}>{category}</option>)}</select></label><input aria-label="Buscar comunidades" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar comunidades" value={search} /></div>{communities.filter((community) => `${community.title} ${community.description}`.toLowerCase().includes(search.toLowerCase())).filter((community) => filter === "Todas" || community.category === filter).map((community) => <article className="rb-box rb-community-card" key={community.title}><img alt="" src={bubbleImage(community.image)} /><div className="rb-community-details"><small>{community.category}</small><h3>{community.title}</h3><p>{community.description}</p><small>{community.count}</small><button className="rb-button rb-button--orange" onClick={() => setJoined((value) => value.includes(community.title) ? value.filter((item) => item !== community.title) : [...value, community.title])} type="button">{joined.includes(community.title) ? "Sair da comunidade" : "Entrar na comunidade"}</button></div></article>)}</main><aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Minhas comunidades</h2></header><div className="rb-panel-content">{communities.filter((community) => joined.includes(community.title)).map((community) => <p key={community.title}>{community.title} · {community.count}</p>)}{joined.length === 0 && <p>Suas comunidades aparecerão aqui.</p>}</div></section><section className="rb-box"><header className="rb-box-title"><h2>Categorias</h2></header><div className="rb-panel-content">{["Música", "Filmes", "Jogos", "Amizades", "Arte", "Culinária", "Tecnologia", "Cotidiano"].map((category) => <button key={category} onClick={() => setFilter(category)} type="button">{category}　<span>{Math.floor(18 + category.length * 17)}</span></button>)}</div></section><section className="rb-box"><header className="rb-box-title"><h2>Criar comunidade</h2></header><div className="rb-panel-content"><form className="rb-stack" onSubmit={(event) => { event.preventDefault(); if (communityName.trim()) { setJoined((value) => [...value, communityName.trim()]); setCommunityName(""); } }}><input aria-label="Nome da comunidade" onChange={(event) => setCommunityName(event.currentTarget.value)} placeholder="Nome da comunidade" value={communityName} /><button className="rb-button rb-button--orange" type="submit">Criar comunidade</button></form></div></section></aside></div>
+          <div className="rb-communities-layout">
+            <main className="rb-communities-main">
+              <div className="rb-community-discovery"><strong>Descobrir comunidades</strong><label>Categoria: <select aria-label="Filtrar comunidades" onChange={(event) => setCommunityCategory(event.currentTarget.value)} value={communityCategory}><option value="Todas">Todas</option>{communityCategories.map(({ name }) => <option key={name} value={name}>{name}</option>)}</select></label><input aria-label="Buscar comunidades" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar comunidades" value={search} /></div>
+              {[...communities, ...createdCommunities].filter((community) => `${community.title} ${community.description}`.toLocaleLowerCase("pt-BR").includes(search.toLocaleLowerCase("pt-BR"))).filter((community) => communityCategory === "Todas" || community.category.toLocaleLowerCase("pt-BR").includes(communityCategory.toLocaleLowerCase("pt-BR"))).map((community) => <article className="rb-box rb-community-card" key={community.title}><img alt="" src={bubbleImage(community.image)} /><div className="rb-community-details"><small>{community.category}</small><h3>{community.title}</h3><p>{community.description}</p><small>{community.count}</small><button className="rb-button rb-button--orange rb-community-join" onClick={() => setJoined((value) => value.includes(community.title) ? value.filter((item) => item !== community.title) : [...value, community.title])} type="button">{joined.includes(community.title) ? "Sair da comunidade" : "Entrar na comunidade"}</button></div></article>)}
+            </main>
+            <aside className="rb-community-sidebar">
+              <section className="rb-box"><header className="rb-box-title"><h2>Minhas comunidades</h2></header><div className="rb-community-list">{[...initialMyCommunities, ...communities.filter((community) => joined.includes(community.title)).map((community) => ({ ...community, image: community.image }))].map((community) => <div className="rb-community-list-item" key={community.title}><img alt="" src={bubbleImage(community.image)} /><span><strong>{community.title}</strong><small>{community.count}</small></span></div>)}</div></section>
+              <section className="rb-box"><header className="rb-box-title"><h2>Categorias</h2></header><div className="rb-community-categories">{communityCategories.map(({ name, count }) => <button aria-pressed={communityCategory === name} key={name} onClick={() => setCommunityCategory(communityCategory === name ? "Todas" : name)} type="button"><span>{name}</span><span>{count}</span></button>)}</div></section>
+              <section className="rb-community-create"><div aria-hidden="true" className="rb-community-create-icon"><img alt="" src={bubbleImage("bubble-community-globe.png")} /></div><h2>Não achou sua turma?</h2><p className="rb-community-create-copy">Crie um espaço novo e convide gente que entende do assunto.</p>{communityCreateOpen ? <form className="rb-community-create-form" onSubmit={(event) => { event.preventDefault(); const title = communityName.trim(); if (!title) return; const created = { title, description: "Uma comunidade nova do Bubble.", count: "1 pessoa", category: "Cotidiano", image: "community-garfield.jpg" }; setCreatedCommunities((current) => [...current, created]); setJoined((value) => value.includes(title) ? value : [...value, title]); setCommunityName(""); setCommunityCreateOpen(false); }}><input aria-label="Nome da comunidade" onChange={(event) => setCommunityName(event.currentTarget.value)} placeholder="Nome da comunidade" value={communityName} /><button className="rb-button rb-button--orange" type="submit">Criar comunidade</button></form> : <button className="rb-button rb-community-create-start" onClick={() => setCommunityCreateOpen(true)} type="button">Começar agora</button>}</section>
+          </div>
         </div>
       )}
       {section === "mensagens" && (
@@ -578,7 +718,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             <aside className="rb-inbox"><h2>Caixa de entrada</h2><div className="rb-inbox-search-panel"><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => { setSelectedConversation(conversation.handle.slice(1)); nav(`mensagens/${conversation.handle.slice(1)}`); }} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
             <section aria-label={`Conversa com ${selected.name}`} className="rb-conversation">
               <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.status || (selected.online ? "online agora" : "online recentemente")}</small></div><button className="rb-button rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
-              <div className="rb-message-list" key={selectedConversation}>
+              <div className="rb-message-list" key={selectedConversation} ref={messageListRef}>
                 {(messages[selected.handle.slice(1)] || []).map((message, index) => <div className="rb-message-entry" key={`${message.time}-${index}`}>
                   {message.day && <div className="rb-day"><span>{message.day}</span></div>}
                   <div className={`rb-message-row ${message.from === "me" ? "rb-message-row--me" : ""}`}>
