@@ -2987,10 +2987,13 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         color: #31302c;
         font: inherit;
         font-size: clamp(15px, 1.1vw, 20px);
+        flex: 1 1 auto;
         height: 100%;
         min-height: 0;
+        min-width: 0;
         padding: 8px 4px;
         resize: none;
+        width: 100%;
       }
 
       textarea:focus {
