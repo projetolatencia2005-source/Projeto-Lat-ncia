@@ -114,6 +114,9 @@ const conversations: Conversation[] = [
 
 const initialPosts: FeedPost[] = [
   { author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: "ba da bim, ba da bum", time: "há 6min", likes: 0, comments: 0 },
+  { author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: "que domingo cansativo né gente nossa", time: "ontem", likes: 3, comments: 10 },
+  { author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: "será que no futuro nós vamos ter carros voadores?", time: "há 3 dias", likes: 6, comments: 4 },
+  { author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: "(∪.∪ )...zzz", time: "quinta-feira", likes: 4, comments: 1 },
   { author: "Jorge Roberto", handle: "@jorgeberto", avatar: "avatar-jorge.png", message: "Aniversário da Dona Odete hoje! Te amo mãe ♡♡♡", image: "post-cooking.png", time: "há 23min", likes: 9, comments: 3 },
   { author: "Gabriela Rosa", handle: "@rosagabi", avatar: "avatar-gabriela.png", message: "descobri uma banda nova e agora esse é o único assunto que eu tenho!!!", time: "há 49min", likes: 6, comments: 1 },
   { author: "Gustavo Ribeiro", handle: "@guguribeiro", avatar: "avatar-gustavo.png", message: "lançaaaaa, lança perfume ♪♪♪", time: "há 1h", likes: 4, comments: 1 },
@@ -263,6 +266,19 @@ const Root = styled.div`
   .rb-suggestion img { border: 2px solid #222; height: 58px; object-fit: cover; width: 58px; }
   .rb-suggestion-copy { flex: 1; min-width: 0; }
   .rb-suggestion-copy small { display: block; margin-top: 2px; }
+  .rb-friends-aside { align-content: start; min-width: 0; }
+  .rb-friends-aside .rb-box-title { min-height: 58px; }
+  .rb-friends-summary-grid, .rb-friend-list-content { padding: 8px 18px; }
+  .rb-friends-summary-row, .rb-friend-list-row { align-items: center; border-bottom: 1px solid #aaa; display: flex; justify-content: space-between; min-height: 42px; }
+  .rb-friends-summary-row:last-child, .rb-friend-list-row:last-of-type { border-bottom: 0; }
+  .rb-friends-summary-row strong, .rb-friend-list-row strong { color: var(--rb-orange); font-size: 20px; }
+  .rb-friends-suggestions .rb-panel-content { padding: 4px 18px; }
+  .rb-friends-suggestions .rb-suggestion { gap: 10px; padding: 10px 0; }
+  .rb-friends-suggestions .rb-suggestion img { flex: 0 0 52px; height: 52px; width: 52px; }
+  .rb-friends-suggestions .rb-suggestion-copy strong { display: block; font-size: 16px; }
+  .rb-friends-suggestions .rb-suggestion button { flex: 0 0 auto; min-height: 32px; padding: 4px 8px; white-space: nowrap; }
+  .rb-friend-list-row { min-height: 39px; }
+  .rb-new-friend-list { background: #fff; border: 2px solid #222; box-shadow: 2px 2px #222; display: block; margin: 12px 0 5px; padding: 7px 10px; text-align: center; }
   .rb-footer { align-items: center; background: #f6f4f4; border-top: 1px solid #888; color: #5e5e5e; display: flex; gap: clamp(20px, 3vw, 56px); margin-top: auto; min-height: 105px; padding: 18px clamp(20px, 2.3vw, 44px); }
   .rb-footer img { height: 44px; object-fit: contain; width: 130px; }
   .rb-footer nav { display: flex; gap: 24px; }
@@ -276,13 +292,14 @@ const Root = styled.div`
   .rb-section-bar .rb-friend-filters button[aria-pressed="true"] { background: #f7edd7; text-decoration: underline; text-underline-offset: 2px; }
   .rb-friend-search { display: flex; flex: 0 1 515px; height: 40px; margin-left: auto; min-width: 220px; }
   .rb-friend-search input { background: #fff; border: 2px solid #222; border-right: 0; color: #222; min-width: 0; padding: 0 10px; width: 100%; }
-  .rb-friend-search button { align-items: center; background: #f7edd7; border: 2px solid #222; display: grid; flex: 0 0 39px; height: 40px; justify-items: center; padding: 0; width: 39px; }
+  .rb-friend-search button { align-items: center; background: #fff; border: 2px solid #222; display: grid; flex: 0 0 39px; height: 40px; justify-items: center; padding: 0; width: 39px; }
   .rb-friend-search button img { height: 19px; object-fit: contain; width: 19px; }
   .rb-friends-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rb-profile-aside { align-content: start; }
   .rb-profile-panel--about { min-height: 0; }
   .rb-profile-composer, .rb-profile-panel--about { box-sizing: border-box; height: 276px; }
   .rb-profile-panel--friends, .rb-profile-panel--communities { min-height: 325px; }
+  .rb-profile-panel--friends { min-height: 355px; }
   .rb-profile-panel--about > .rb-box-title, .rb-profile-panel--friends > .rb-box-title, .rb-profile-panel--communities > .rb-box-title { min-height: 57px; }
   .rb-profile-about-content { font-size: 16px; line-height: 1.25; padding: 14px 16px; }
   .rb-profile-about-content p { margin: 0; }
@@ -294,7 +311,7 @@ const Root = styled.div`
   .rb-profile-about-content dt:nth-last-child(2), .rb-profile-about-content dd:last-child { border-bottom: 0; }
   .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: stretch; padding: 14px 20px; }
   .rb-friends-photo-grid img { aspect-ratio: 1; border: 2px solid #222; box-shadow: 3px 3px 0 #222; display: block; height: auto; object-fit: cover; width: 100%; }
-  .rb-profile-community-list { display: grid; gap: 0; padding: 1px 14px 8px; }
+  .rb-profile-community-list { display: grid; gap: 0; padding: 1px 14px 8px; transform: translateY(-8px); }
   .rb-profile-community-row { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 72px; padding: 8px 0; }
   .rb-profile-community-row:last-child { border-bottom: 0; }
   .rb-profile-community-row img { border: 2px solid #222; box-shadow: 2px 2px 0 #222; flex: 0 0 50px; height: 50px; object-fit: cover; width: 50px; }
@@ -313,14 +330,14 @@ const Root = styled.div`
   .rb-community-page-heading { margin-bottom: clamp(20px, 2.1vw, 40px); min-height: 171px; padding: clamp(22px, 1.72vw, 33px); }
   .rb-community-page-heading h1 { font-size: clamp(30px, 3.34vw, 64px); margin-bottom: 8px; }
   .rb-community-page-heading p { font-size: clamp(16px, 1.56vw, 30px); }
-  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 38.2%) minmax(0, 1fr); margin-bottom: 28px; min-height: clamp(360px, 37.55vw, 700px); }
-  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: clamp(360px, 37.55vw, 700px); object-fit: cover; width: 100%; }
-  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: clamp(12px, 1.1vw, 20px); padding: clamp(24px, 2.5vw, 48px); }
-  .rb-community-feature-copy > small { font-size: clamp(17px, 1.67vw, 32px); }
-  .rb-community-feature-copy h2 { font-size: clamp(34px, 3.75vw, 72px); line-height: 1.05; margin: 0; }
-  .rb-community-feature-copy > p { font-size: clamp(18px, 1.67vw, 32px); line-height: 1.1; margin: 0; }
+  .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 38.2%) minmax(0, 1fr); margin-bottom: 28px; min-height: clamp(180px, 18.775vw, 350px); }
+  .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: clamp(180px, 18.775vw, 350px); object-fit: cover; width: 100%; }
+  .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: clamp(6px, .65vw, 12px); padding: clamp(12px, 1.25vw, 24px); }
+  .rb-community-feature-copy > small { font-size: clamp(12px, .84vw, 16px); }
+  .rb-community-feature-copy h2 { font-size: clamp(24px, 1.9vw, 36px); line-height: 1.05; margin: 0; }
+  .rb-community-feature-copy > p { font-size: clamp(14px, .94vw, 18px); line-height: 1.1; margin: 0; }
   .rb-community-feature-meta { display: flex; flex-wrap: wrap; gap: 22px; }
-  .rb-community-feature-meta span { font-size: clamp(14px, 1.25vw, 24px); }
+  .rb-community-feature-meta span { font-size: clamp(11px, .73vw, 14px); }
   .rb-community-feature-join { background: #fff; color: #222; font-size: clamp(16px, 1.45vw, 28px); min-height: 64px; width: min(343px, 100%); }
   .rb-communities-layout { display: grid; gap: 24px; grid-template-columns: minmax(0, 3.4fr) minmax(300px, 1fr); }
   .rb-communities-main, .rb-community-sidebar { align-content: start; display: grid; gap: 18px; min-width: 0; }
@@ -338,7 +355,7 @@ const Root = styled.div`
   .rb-community-details h3 { font-size: clamp(30px, 2.15vw, 40px); line-height: 1.03; margin: 0; }
   .rb-community-details p { font-size: clamp(20px, 1.5vw, 28px); line-height: 1.08; margin: 0; }
   .rb-community-details > small:last-of-type { font-size: 24px; }
-  .rb-community-details .rb-community-join { font-size: 14px; min-height: 53px; padding: 6px 5px; white-space: nowrap; width: min(189px, 100%); }
+  .rb-community-details .rb-community-join { font-size: 14px; height: 27px; min-height: 27px; padding: 3px 5px; white-space: nowrap; width: min(189px, 100%); }
   .rb-community-sidebar > .rb-box { min-width: 0; }
   .rb-community-sidebar > .rb-box:first-child { min-height: 539px; }
   .rb-community-sidebar > .rb-box:nth-child(2) { min-height: 279px; }
@@ -449,7 +466,7 @@ const Root = styled.div`
     .rb-profile-summary > .rb-button { margin-left: auto; }
     .rb-community-page-heading { min-height: auto; }
     .rb-community-feature { grid-template-columns: 1fr; min-height: 0; }
-    .rb-community-feature > img { aspect-ratio: 1 / 1; border-bottom: 2px solid #222; border-right: 0; height: auto; min-height: 0; }
+    .rb-community-feature > img { aspect-ratio: 16 / 9; border-bottom: 2px solid #222; border-right: 0; height: auto; min-height: 0; }
     .rb-community-feature-copy { padding: 24px; }
     .rb-community-feature-copy h2 { font-size: clamp(28px, 8vw, 42px); }
     .rb-community-feature-copy > p { font-size: 17px; }
@@ -702,7 +719,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           <section className="rb-cover" aria-label="Foto de capa do perfil" />
           <section className="rb-profile-summary">
             <img alt="Foto de perfil de Ana Paula" className="rb-profile-avatar" src={bubbleImage("ana-paula.png")} />
-            <div className="rb-profile-bio"><h2>Ana Paula <span className="rb-online">●</span></h2><p>@anaa_paula93 · São Paulo, SP</p>{profileEditing ? <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); setProfileEditing(false); }}><input aria-label="Editar biografia" onChange={(event) => setBio(event.currentTarget.value)} value={bio} /><button className="rb-button" type="submit">Salvar</button></form> : <p>{bio}</p>}</div>
+            <div className="rb-profile-bio"><h2>Ana Paula <span className="rb-online">online</span></h2><p>@anaa_paula93 · São Paulo, SP</p>{profileEditing ? <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); setProfileEditing(false); }}><input aria-label="Editar biografia" onChange={(event) => setBio(event.currentTarget.value)} value={bio} /><button className="rb-button" type="submit">Salvar</button></form> : <p>{bio}</p>}</div>
             <button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">{profileEditing ? "Cancelar" : "Editar perfil"}</button>
           </section>
           <div className="rb-columns">
@@ -721,7 +738,11 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
           <div className="rb-columns"><main>
             <div className="rb-section-bar"><div aria-label="Filtrar amigos" className="rb-friend-filters">{["Todos", "Online", "Solicitações"].map((item) => <button aria-pressed={filter === item} key={item} onClick={() => setFilter(item)} type="button">{item}{item === "Solicitações" ? " · 3" : ""}</button>)}</div><form className="rb-friend-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar amigos" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Procure na sua lista..." value={search} /><button aria-label="Pesquisar amigos" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div>
             <div className="rb-friends-grid">{friends.filter((friend) => `${friend.name} ${friend.handle}`.toLowerCase().includes(search.toLowerCase())).filter((friend) => filter !== "Online" || friend.online).map((friend) => <article className="rb-box rb-friend-card" key={friend.handle}><img alt={friend.name} src={bubbleImage(friend.avatar)} /><div className="rb-friend-info"><h2>{friend.name} {friend.online && <span className="rb-online">●</span>}</h2><span>{friend.handle}</span><small>{friend.mutual} amigos em comum</small></div></article>)}</div>
-          </main><aside className="rb-stack"><section className="rb-box"><header className="rb-box-title"><h2>Solicitações de amizade</h2></header><div className="rb-panel-content">{["Cris Francisco", "Jamal Neves", "Elias Martins"].map((name, index) => <div className="rb-suggestion" key={name}><img alt="" src={bubbleImage(friends[index].avatar)} /><div className="rb-suggestion-copy"><strong>{name}</strong><small>14 amigos em comum</small></div><button className="rb-button" onClick={() => setAdded((value) => value.includes(name) ? value : [...value, name])} type="button">{added.includes(name) ? "Aceito" : "Aceitar"}</button></div>)}</div></section><section className="rb-box"><header className="rb-box-title"><h2>Amigos online</h2></header><div className="rb-panel-content">{friends.filter((friend) => friend.online).map((friend) => <p key={friend.handle}>● {friend.name}</p>)}</div></section></aside></div>
+          </main><aside className="rb-stack rb-friends-aside">
+            <section className="rb-box rb-friends-summary"><header className="rb-box-title"><h2>Resumo</h2></header><div className="rb-friends-summary-grid"><div className="rb-friends-summary-row"><span>Todos os amigos</span><strong>126</strong></div><div className="rb-friends-summary-row"><span>Online agora</span><strong>4</strong></div><div className="rb-friends-summary-row"><span>Novos este mês</span><strong>9</strong></div></div></section>
+            <section className="rb-box rb-friends-suggestions"><header className="rb-box-title"><h2>Talvez você conheça</h2></header><div className="rb-panel-content">{[["Cris Francisco", 14], ["Jamal Neves", 4], ["Elias Martins", 7]].map(([name, mutual], index) => <div className="rb-suggestion" key={name}><img alt="" src={bubbleImage(friends[index].avatar)} /><div className="rb-suggestion-copy"><strong>{name}</strong><small>{mutual} amigos em comum</small></div><button aria-pressed={added.includes(String(name))} className="rb-button rb-button--orange" onClick={() => setAdded((value) => value.includes(String(name)) ? value : [...value, String(name)])} type="button">{added.includes(String(name)) ? "Adicionado" : "+ Amigo"}</button></div>)}</div></section>
+            <section className="rb-box rb-friends-lists"><header className="rb-box-title"><h2>Listas</h2></header><div className="rb-friend-list-content"><div className="rb-friend-list-row"><span>Melhores amigos</span><strong>12</strong></div><div className="rb-friend-list-row"><span>Escola</span><strong>38</strong></div><div className="rb-friend-list-row"><span>Trabalho</span><strong>4</strong></div><span className="rb-new-friend-list">+ Nova lista</span></div></section>
+          </aside></div>
         </div>
       )}
       {section === "comunidades" && (
