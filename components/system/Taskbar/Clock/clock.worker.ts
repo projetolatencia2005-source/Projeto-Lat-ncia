@@ -104,7 +104,7 @@ const loadSilkscreenNumeralsFont = async (): Promise<void> => {
 };
 
 // oxlint-disable-next-line unicorn/prefer-top-level-await -- Keep worker startup responsive while the optional font loads.
-void loadPixelifySansFont();
+void loadSilkscreenNumeralsFont();
 
 let initialized = false;
 
