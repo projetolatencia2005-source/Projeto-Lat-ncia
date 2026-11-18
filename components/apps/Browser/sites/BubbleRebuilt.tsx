@@ -333,12 +333,12 @@ const Root = styled.div`
   .rb-community-feature { display: grid; grid-template-columns: minmax(280px, 38.2%) minmax(0, 1fr); margin-bottom: 28px; min-height: clamp(180px, 18.775vw, 350px); }
   .rb-community-feature > img { border-right: 2px solid #222; height: 100%; min-height: clamp(180px, 18.775vw, 350px); object-fit: cover; width: 100%; }
   .rb-community-feature-copy { align-content: center; background: var(--rb-orange); color: white; display: grid; gap: clamp(6px, .65vw, 12px); padding: clamp(12px, 1.25vw, 24px); }
-  .rb-community-feature-copy > small { font-size: clamp(12px, .84vw, 16px); }
-  .rb-community-feature-copy h2 { font-size: clamp(24px, 1.9vw, 36px); line-height: 1.05; margin: 0; }
-  .rb-community-feature-copy > p { font-size: clamp(14px, .94vw, 18px); line-height: 1.1; margin: 0; }
+  .rb-community-feature-copy > small { font-size: clamp(20px, calc(.84vw + 8px), 24px); }
+  .rb-community-feature-copy h2 { font-size: clamp(32px, calc(1.9vw + 8px), 44px); line-height: 1.05; margin: 0; }
+  .rb-community-feature-copy > p { font-size: clamp(22px, calc(.94vw + 8px), 26px); line-height: 1.1; margin: 0; }
   .rb-community-feature-meta { display: flex; flex-wrap: wrap; gap: 22px; }
-  .rb-community-feature-meta span { font-size: clamp(11px, .73vw, 14px); }
-  .rb-community-feature-join { background: #fff; color: #222; font-size: clamp(16px, 1.45vw, 28px); min-height: 64px; width: min(343px, 100%); }
+  .rb-community-feature-meta span { font-size: clamp(19px, calc(.73vw + 8px), 22px); }
+  .rb-community-feature-join { background: #fff; color: #222; font-size: clamp(8px, .725vw, 14px); min-height: 32px; padding: 3px 6px; width: min(171.5px, 100%); }
   .rb-communities-layout { display: grid; gap: 24px; grid-template-columns: minmax(0, 3.4fr) minmax(300px, 1fr); }
   .rb-communities-main, .rb-community-sidebar { align-content: start; display: grid; gap: 18px; min-width: 0; }
   .rb-community-discovery { align-items: center; background: var(--rb-orange); border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #fff; display: flex; flex-wrap: wrap; gap: 12px; min-height: 74px; padding: 10px 16px; }
@@ -350,11 +350,11 @@ const Root = styled.div`
   .rb-community-card { display: grid; grid-template-columns: 227px minmax(0, 1fr); min-height: 227px; }
   .rb-community-card > img { border-right: 2px solid #222; height: 100%; min-height: 227px; object-fit: cover; width: 227px; }
   .rb-community-details { align-content: center; display: grid; gap: 3px; padding: 15px 28px; }
-  .rb-community-details > small { color: #222; font-size: 24px; }
+  .rb-community-details > small { color: #222; font-size: 20px; }
   .rb-community-details > small:first-child { color: var(--rb-orange); }
-  .rb-community-details h3 { font-size: clamp(30px, 2.15vw, 40px); line-height: 1.03; margin: 0; }
-  .rb-community-details p { font-size: clamp(20px, 1.5vw, 28px); line-height: 1.08; margin: 0; }
-  .rb-community-details > small:last-of-type { font-size: 24px; }
+  .rb-community-details h3 { font-size: clamp(26px, calc(2.15vw - 4px), 36px); line-height: 1.03; margin: 0; }
+  .rb-community-details p { font-size: clamp(16px, calc(1.5vw - 4px), 24px); line-height: 1.08; margin: 0; }
+  .rb-community-details > small:last-of-type { font-size: 20px; }
   .rb-community-details .rb-community-join { font-size: 14px; height: 27px; min-height: 27px; padding: 3px 5px; white-space: nowrap; width: min(189px, 100%); }
   .rb-community-sidebar > .rb-box { min-width: 0; }
   .rb-community-sidebar > .rb-box:first-child { min-height: 539px; }
@@ -366,8 +366,8 @@ const Root = styled.div`
   .rb-community-list-item:last-child { border-bottom: 0; }
   .rb-community-list-item img { border: 2px solid #222; height: 100px; object-fit: cover; width: 100px; }
   .rb-community-list-item strong, .rb-community-list-item small { display: block; }
-  .rb-community-list-item strong { font-size: 28px; line-height: 1.05; }
-  .rb-community-list-item small { color: #666; font-size: 20px; margin-top: 3px; }
+  .rb-community-list-item strong { font-size: 24px; line-height: 1.05; }
+  .rb-community-list-item small { color: #666; font-size: 16px; margin-top: 3px; }
   .rb-community-categories { padding: 14px 18px; }
   .rb-community-category-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); min-height: 48px; }
   .rb-community-category-row:not(:last-child) { border-bottom: 1px solid #777; }
@@ -468,18 +468,18 @@ const Root = styled.div`
     .rb-community-feature { grid-template-columns: 1fr; min-height: 0; }
     .rb-community-feature > img { aspect-ratio: 16 / 9; border-bottom: 2px solid #222; border-right: 0; height: auto; min-height: 0; }
     .rb-community-feature-copy { padding: 24px; }
-    .rb-community-feature-copy h2 { font-size: clamp(28px, 8vw, 42px); }
-    .rb-community-feature-copy > p { font-size: 17px; }
-    .rb-community-feature-meta span { font-size: 14px; }
-    .rb-community-feature-join { min-height: 48px; }
+    .rb-community-feature-copy h2 { font-size: clamp(36px, calc(8vw + 8px), 50px); }
+    .rb-community-feature-copy > p { font-size: 25px; }
+    .rb-community-feature-meta span { font-size: 22px; }
+    .rb-community-feature-join { min-height: 32px; }
     .rb-communities-layout { grid-template-columns: 1fr; }
     .rb-community-sidebar { grid-template-columns: 1fr; }
     .rb-community-card { grid-template-columns: 110px minmax(0, 1fr); min-height: 155px; }
     .rb-community-card > img { min-height: 155px; width: 110px; }
     .rb-community-details { gap: 4px; padding: 10px; }
-    .rb-community-details > small, .rb-community-details > small:last-of-type { font-size: 13px; }
-    .rb-community-details h3 { font-size: 19px; }
-    .rb-community-details p { font-size: 14px; }
+    .rb-community-details > small, .rb-community-details > small:last-of-type { font-size: 9px; }
+    .rb-community-details h3 { font-size: 15px; }
+    .rb-community-details p { font-size: 10px; }
     .rb-community-details .rb-community-join { min-height: 36px; }
     .rb-community-discovery { align-items: flex-start; flex-direction: column; }
     .rb-community-discovery input { width: 100%; }
