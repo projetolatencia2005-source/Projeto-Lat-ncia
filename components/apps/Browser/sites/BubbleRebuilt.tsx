@@ -78,7 +78,7 @@ const conversations: Conversation[] = [
   {
     ...friends[0],
     messages: [
-      { from: "me", text: "ta bom tchou, vê se você leva dinheiro a mais para a lan house", time: "14:29" },
+      { from: "me", text: "ta bom tchou, vê se você leva dinheiro a mais para a Lan House", time: "14:29" },
       { from: "friend", text: "ana, acabei de voltar do encontro com a Stella.", time: "19:18", day: "Ontem" },
       { from: "me", text: "Eai como Foi ??", time: "19:18" },
       { from: "friend", text: "Foi muito bom ela é perfeita e eu achei ela tão fofa e engraçada, acho que to apaixonado", time: "19:19" },
@@ -90,11 +90,11 @@ const conversations: Conversation[] = [
     ...friends[2],
     messages: [
       { from: "me", text: "Ba você vai estar na sua casa no dia 11", time: "14:29" },
-      { from: "friend", text: "oi eu sai mais cedo da lan houses ontem", time: "19:18", day: "Ontem" },
+      { from: "friend", text: "oi eu sai mais cedo da Lan House ontem", time: "19:18", day: "Ontem" },
       { from: "me", text: "você ??? por que ??", time: "19:18" },
-      { from: "friend", text: "Meu pai ta Falando que eu to gastando muito dinheiro na lan house", time: "19:19" },
+      { from: "friend", text: "Meu pai ta Falando que eu to gastando muito dinheiro na Lan House", time: "19:19" },
       { from: "friend", text: "aquele velho", time: "19:23" },
-      { from: "me", text: "mas também vc fica a semana toda na lan house", time: "19:20" },
+      { from: "me", text: "mas também vc fica a semana toda na Lan House", time: "19:20" },
       { from: "friend", text: "não mos isso Foi muito injusto", time: "19:23" },
     ],
   },
@@ -102,7 +102,7 @@ const conversations: Conversation[] = [
     ...friends[5],
     messages: [
       { from: "friend", text: "oi, tudo bem ? rs", time: "12:06" },
-      { from: "friend", text: "oi eu saí mais cedo da lan houses ontem", time: "19:18", day: "11/11" },
+      { from: "friend", text: "oi eu saí mais cedo da Lan House ontem", time: "19:18", day: "11/11" },
       { from: "friend", text: "oi, linda, vamos sair por Favor", time: "19:18" },
       { from: "friend", text: "olá gata, te achei mó bonita, me responde para a gente marcar de ir na praça.", time: "14:14", day: "12/11" },
       { from: "friend", text: "eu sou um cara legal confia", time: "14:16" },
@@ -355,6 +355,7 @@ const Root = styled.div`
   .rb-community-details h3 { font-size: clamp(26px, calc(2.15vw - 4px), 36px); line-height: 1.03; margin: 0; }
   .rb-community-details p { font-size: clamp(16px, calc(1.5vw - 4px), 24px); line-height: 1.08; margin: 0; }
   .rb-community-details > small:last-of-type { font-size: 20px; }
+  .rb-community-card .rb-community-details > button { transform: translateY(6px); }
   .rb-community-details .rb-community-join { font-size: 14px; height: 27px; min-height: 27px; padding: 3px 5px; white-space: nowrap; width: min(189px, 100%); }
   .rb-community-sidebar > .rb-box { min-width: 0; }
   .rb-community-sidebar > .rb-box:first-child { min-height: 539px; }
@@ -706,7 +707,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
            </div>
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
-            <section className="rb-box rb-mini-profile rb-home-mini-profile"><img alt="Ana Paula na lan house" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
+            <section className="rb-box rb-mini-profile rb-home-mini-profile"><img alt="Ana Paula na Lan House" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
             <section className="rb-box rb-birthday-box"><header className="rb-box-title"><h2>Aniversariantes</h2></header><div className="rb-panel-content rb-birthday"><div className="rb-calendar"><span>NOV</span><strong>24</strong></div><div className="rb-birthday-copy"><strong>Malu Souza</strong><p>Faz aniversário hoje!</p><p>Mande uma mensagem antes que seja tarde!</p><button className="rb-button rb-button--orange" onClick={() => nav("mensagens/malu")} type="button">Enviar mensagem</button></div></div></section>
             <section className="rb-box"><header className="rb-box-title"><h2>Sugestões de Amigos</h2></header><div className="rb-panel-content">{friends.filter((friend) => ["Jorge Roberto", "Gustavo Ribeiro", "Bárbara Guedes"].includes(friend.name)).map((friend) => <div className="rb-suggestion" key={friend.handle}><img alt="" src={bubbleImage(friend.avatar)} /><div className="rb-suggestion-copy"><strong>{friend.name}</strong><small>{friend.mutual} amigos em comum</small></div><button className="rb-button rb-button--orange" onClick={() => setAdded((value) => value.includes(friend.handle) ? value : [...value, friend.handle])} type="button">{added.includes(friend.handle) ? "Enviado" : "+ Amigo"}</button></div>)}</div></section>
             <section className="rb-box rb-home-communities"><header className="rb-box-title"><h2>Comunidades</h2><button className="rb-button rb-button--orange" onClick={() => nav("comunidades")} type="button">ver todos →</button></header><div className="rb-home-community-list">{homeCommunities.map((community) => <article className="rb-home-community-row" key={community.title}><img alt="" src={bubbleImage(community.image)} /><h3>{community.title}</h3><button className="rb-button" onClick={() => setJoined((value) => value.includes(community.title) ? value : [...value, community.title])} type="button">{joined.includes(community.title) ? "Entrou" : "+ Entrar"}</button></article>)}</div></section>
@@ -734,7 +735,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
       )}
       {section === "amigos" && (
         <div className="rb-shell">
-          <header className="rb-page-heading"><h1>Amigos</h1><p>Gente que compartilha conversas, fotos e tardes na lan house.</p></header>
+          <header className="rb-page-heading"><h1>Amigos</h1><p>Gente que compartilha conversas, fotos e tardes na Lan House.</p></header>
           <div className="rb-columns"><main>
             <div className="rb-section-bar"><div aria-label="Filtrar amigos" className="rb-friend-filters">{["Todos", "Online", "Solicitações"].map((item) => <button aria-pressed={filter === item} key={item} onClick={() => setFilter(item)} type="button">{item}{item === "Solicitações" ? " · 3" : ""}</button>)}</div><form className="rb-friend-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar amigos" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Procure na sua lista..." value={search} /><button aria-label="Pesquisar amigos" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div>
             <div className="rb-friends-grid">{friends.filter((friend) => `${friend.name} ${friend.handle}`.toLowerCase().includes(search.toLowerCase())).filter((friend) => filter !== "Online" || friend.online).map((friend) => <article className="rb-box rb-friend-card" key={friend.handle}><img alt={friend.name} src={bubbleImage(friend.avatar)} /><div className="rb-friend-info"><h2>{friend.name} {friend.online && <span className="rb-online">●</span>}</h2><span>{friend.handle}</span><small>{friend.mutual} amigos em comum</small></div></article>)}</div>
