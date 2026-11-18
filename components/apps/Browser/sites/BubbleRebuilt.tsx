@@ -659,7 +659,8 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             </form>
             <div className="rb-stack">
               {posts.map((post, index) => <BubblePostCard key={`${post.handle}-${post.time}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}
-            </div>
+                </aside>
+           </div>
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
             <section className="rb-box rb-mini-profile rb-home-mini-profile"><img alt="Ana Paula na lan house" src={bubbleImage("ana-paula.png")} /><div className="rb-mini-profile-copy"><div><strong>Ana Paula</strong><div>@anaa_paula93</div></div><a href={`${SITE_URLS.bubble}perfil`} onClick={(event) => { event.preventDefault(); nav("perfil"); }}>Ver perfil completo →</a></div></section>
@@ -708,6 +709,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
               <section className="rb-box"><header className="rb-box-title"><h2>Minhas comunidades</h2></header><div className="rb-community-list">{[...initialMyCommunities, ...communities.filter((community) => joined.includes(community.title)).map((community) => ({ ...community, image: community.image }))].map((community) => <div className="rb-community-list-item" key={community.title}><img alt="" src={bubbleImage(community.image)} /><span><strong>{community.title}</strong><small>{community.count}</small></span></div>)}</div></section>
               <section className="rb-box"><header className="rb-box-title"><h2>Categorias</h2></header><div className="rb-community-categories">{communityCategories.map(({ name, count }) => <button aria-pressed={communityCategory === name} key={name} onClick={() => setCommunityCategory(communityCategory === name ? "Todas" : name)} type="button"><span>{name}</span><span>{count}</span></button>)}</div></section>
               <section className="rb-community-create"><div aria-hidden="true" className="rb-community-create-icon"><img alt="" src={bubbleImage("bubble-community-globe.png")} /></div><h2>Não achou sua turma?</h2><p className="rb-community-create-copy">Crie um espaço novo e convide gente que entende do assunto.</p>{communityCreateOpen ? <form className="rb-community-create-form" onSubmit={(event) => { event.preventDefault(); const title = communityName.trim(); if (!title) return; const created = { title, description: "Uma comunidade nova do Bubble.", count: "1 pessoa", category: "Cotidiano", image: "community-garfield.jpg" }; setCreatedCommunities((current) => [...current, created]); setJoined((value) => value.includes(title) ? value : [...value, title]); setCommunityName(""); setCommunityCreateOpen(false); }}><input aria-label="Nome da comunidade" onChange={(event) => setCommunityName(event.currentTarget.value)} placeholder="Nome da comunidade" value={communityName} /><button className="rb-button rb-button--orange" type="submit">Criar comunidade</button></form> : <button className="rb-button rb-community-create-start" onClick={() => setCommunityCreateOpen(true)} type="button">Começar agora</button>}</section>
+              </aside>
           </div>
         </div>
       )}
