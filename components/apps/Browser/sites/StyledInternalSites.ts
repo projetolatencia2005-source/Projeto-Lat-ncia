@@ -2742,7 +2742,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       button {
         background: #e5ebf4;
-        border: 1px solid #31302c;
+        border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
         cursor: pointer;
@@ -2935,7 +2935,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       button {
         background: #e5ebf4;
-        border: 1px solid #31302c;
+        border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
         cursor: pointer;
@@ -3517,7 +3517,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: end; border-bottom: 2px solid #31302c; display: flex; gap: 4px;
       margin: -18px -20px 17px; padding: 0 18px;
       button {
-        background: #f3f3f3; border: 1px solid #31302c; border-bottom: 0;
+        background: #f3f3f3; border: 2px solid #31302c; border-bottom: 0;
         color: #292929; cursor: pointer; font: inherit; font-size: 12px; line-height: 1;
         padding: 6px 14px 7px;
       }
@@ -3570,8 +3570,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         font-size: 12px; line-height: 1.2; min-height: 24px; outline: 0; padding: 5px; resize: vertical;
       }
       button {
-        background: #e9e9e9; border: 1px solid #31302c; box-shadow: 1px 1px 0 #31302c;
-        color: #31302c; font-size: 13px; min-width: 24px; padding: 2px 5px;
+        align-items: center; background: #e9e9e9; border: 1px solid #31302c; box-shadow: 1px 1px 0 #31302c;
+        color: #31302c; display: grid; font-size: 13px; height: 28px; justify-items: center; min-width: 28px; padding: 0; width: 28px;
+        img { height: 20px; width: 22px; }
       }
     }
     .wiki-visually-hidden {

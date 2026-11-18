@@ -49,6 +49,7 @@ const StyledBrowser = styled.div`
       justify-content: flex-start;
       padding: 1px 8px;
       text-align: left;
+      transform: translateY(4px);
 
       &:hover,
       &[aria-expanded="true"] {
@@ -282,7 +283,7 @@ const StyledBrowser = styled.div`
     width: 27px;
   }
 
-  .browser-toolbar .navigation-buttons > button:not(.arrow-button) svg {
+  .browser-toolbar .navigation-buttons > button img {
     height: 20px;
     width: 20px;
   }

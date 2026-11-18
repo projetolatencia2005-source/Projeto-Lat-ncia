@@ -784,7 +784,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               <img
                 alt=""
                 aria-hidden="true"
-                src="/System/Doors/sites/bubble/icons/thumbsup.svg"
+                src={isLiked ? "/System/Doors/sites/bubble/icons/like_on.svg" : "/System/Doors/sites/bubble/icons/thumbsup.svg"}
               />{" "}
               gostei · {post.likes + Number(isLiked)}
             </button>
@@ -801,7 +801,7 @@ const BubblePage: FC<{ url: string }> = ({ url }) => {
               <img
                 alt=""
                 aria-hidden="true"
-                src="/System/Doors/sites/bubble/icons/comments.svg"
+                src="/System/Doors/sites/bubble/icons/pixel-icon-library_comment-dots-solid.svg"
               />{" "}
               comentar · {post.comments + comments.length}
             </button>
@@ -2469,7 +2469,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
               disabled={!commentDraft.trim()}
               type="submit"
             >
-              ↵
+              <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/branco.svg" />
             </button>
           </form>
           <div className="wiki-comment-list">
@@ -2848,6 +2848,7 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
     "eles-sabem": youSpaceInitialComments,
   });
   const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const query = new URL(url).searchParams.get("q") || "";
   const pathParts = new URL(url).pathname.split("/").filter(Boolean);
@@ -2950,9 +2951,9 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                   </button>
                 </div>
                 <div className="you-watch-actions">
-                  <button aria-label="Curtir" aria-pressed={liked} onClick={() => setLiked((value) => !value)} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{liked ? "67" : "66"}</span></button>
-                  <button aria-label="Não gostei" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>12</span></button>
-                  <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" /><span>{commentCount}</span></button>
+                  <button aria-label="Curtir" aria-pressed={liked} onClick={() => { setLiked((value) => !value); setDisliked(false); }} type="button"><img alt="" src={liked ? "/System/Doors/sites/bubble/icons/like_on.svg" : "/System/Doors/sites/bubble/icons/thumbsup.svg"} /><span>{liked ? "67" : "66"}</span></button>
+                  <button aria-label="Não gostei" aria-pressed={disliked} onClick={() => { setDisliked((value) => !value); setLiked(false); }} type="button"><img alt="" src={disliked ? "/System/Doors/sites/bubble/icons/unlike_on.svg" : "/System/Doors/sites/bubble/icons/thumbsup.svg"} /><span>{disliked ? "13" : "12"}</span></button>
+                  <button aria-label="Ver comentários" onClick={() => document.querySelector(".you-comments-panel")?.scrollIntoView({ behavior: "smooth", block: "start" })} type="button"><img alt="" src="/System/Doors/sites/bubble/icons/pixel-icon-library_comment-dots-solid.svg" /><span>{commentCount}</span></button>
                 </div>
               </div>
             </section>
@@ -2972,9 +2973,9 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                   setCommentDraft("");
                 }}
               >
-                <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/comments.svg" />
+                <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/pixel-icon-library_comment-dots-solid.svg" />
                 <input aria-label="Deixe seu comentário" onChange={(event) => setCommentDraft(event.target.value)} placeholder="Deixe seu comentário..." value={commentDraft} />
-                <button aria-label="Publicar comentário" type="submit">›</button>
+                <button aria-label="Publicar comentário" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/branco.svg" /></button>
               </form>
               <ol>
                 {comments.map((comment) => {
@@ -2995,7 +2996,6 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
                             }}
                             type="button"
                           >
-                            <img alt="" src="/System/Doors/sites/bubble/icons/comments.svg" />
                             <span>Responder</span>
                           </button>
                           <button aria-label="Curtir comentário" type="button"><img alt="" src="/System/Doors/sites/bubble/icons/thumbsup.svg" /><span>{comment.likes}</span></button>

@@ -5,7 +5,6 @@ import {
   INTERNAL_SITES,
   normalizeInternalUrl,
 } from "components/apps/Browser/config";
-import { Arrow, Refresh } from "components/apps/Browser/NavigationIcons";
 import InternalSites from "components/apps/Browser/sites";
 import StyledBrowser from "components/apps/Browser/StyledBrowser";
 import { type ComponentProcessProps } from "components/system/Apps/RenderComponent";
@@ -229,7 +228,7 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
             {...label("Voltar", "Voltar")}
             type="button"
           >
-            <Arrow direction="left" />
+            <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/Esquerda.svg" />
           </Button>
           <Button
             className="cancel arrow-button"
@@ -238,7 +237,7 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
             {...label("Avançar", "Avançar")}
             type="button"
           >
-            <Arrow direction="right" />
+            <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/Direita.svg" />
           </Button>
           <Button
             className="cancel"
@@ -246,7 +245,7 @@ const Browser: FC<ComponentProcessProps> = ({ id }) => {
             {...label("Atualizar página", "Atualizar")}
             type="button"
           >
-            <Refresh />
+            <img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/att.svg" />
           </Button>
         </div>
         <label className="address-label">

@@ -541,12 +541,14 @@ const BubbleHeader = ({ active, onNavigate }: { active: string; onNavigate: (pat
 
 const BubblePostCard = ({
   post,
+  isLiked,
   onComment,
   onLike,
 }: {
   post: FeedPost;
+  isLiked: boolean;
   onComment: (value: string) => void;
-  onLike: () => void;
+  onLike: (active: boolean) => void;
 }): ReactElement => {
   const [commenting, setCommenting] = useState(false);
   const [draft, setDraft] = useState("");
@@ -562,8 +564,8 @@ const BubblePostCard = ({
         {post.image && <img alt="Foto da publicação" className="rb-post-image" src={bubbleImage(post.image)} />}
         {commenting && <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); if (draft.trim()) { onComment(draft.trim()); setDraft(""); } }}><input aria-label="Escreva um comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Escreva um comentário..." value={draft} /><button className="rb-button" type="submit">Comentar</button></form>}
         <div className="rb-post-actions">
-          <button aria-label="Gostei" className="rb-inline-action" onClick={onLike} type="button"><img alt="" src={bubbleImage("icons/thumbsup.svg")} /> gostei · {post.likes}</button>
-          <button aria-label="Comentar" className="rb-inline-action" onClick={() => setCommenting((value) => !value)} type="button"><img alt="" src={bubbleImage("icons/comments.svg")} /> comentar · {post.comments}</button>
+          <button aria-label="Gostei" aria-pressed={isLiked} className="rb-inline-action" onClick={() => onLike(!isLiked)} type="button"><img alt="" src={bubbleImage(isLiked ? "icons/like_on.svg" : "icons/thumbsup.svg")} /> gostei · {post.likes}</button>
+          <button aria-label="Comentar" className="rb-inline-action" onClick={() => setCommenting((value) => !value)} type="button"><img alt="" src={bubbleImage("icons/pixel-icon-library_comment-dots-solid.svg")} /> comentar · {post.comments}</button>
           <span className="rb-visibility">visível para amigos</span>
         </div>
       </div>
@@ -581,6 +583,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
   const routeConversationId = pathname.split("/")[1] || "maluzinhaaaa";
   const selectedId = routeConversationId === "malu" ? "maluzinhaaaa" : routeConversationId;
   const [posts, setPosts] = useState(initialPosts);
+  const [likedPostKeys, setLikedPostKeys] = useState<string[]>([]);
   const [composerText, setComposerText] = useState("");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("Todos");
@@ -686,7 +689,15 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
     setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText.trim(), time: "agora", likes: 0, comments: 0 }, ...current]);
     setComposerText("");
   };
-  const toggleLike = (index: number): void => setPosts((current) => current.map((post, i) => i === index ? { ...post, likes: post.likes + 1 } : post));
+  const postKey = (post: FeedPost): string => `${post.handle}|${post.time}|${post.message}`;
+  const toggleLike = (key: string, active: boolean): void => {
+    setLikedPostKeys((current) => active
+      ? current.includes(key) ? current : [...current, key]
+      : current.filter((item) => item !== key));
+    setPosts((current) => current.map((post) => postKey(post) === key
+      ? { ...post, likes: Math.max(0, post.likes + (active ? 1 : -1)) }
+      : post));
+  };
   const addPostComment = (index: number): ((value: string) => void) => (value) => setPosts((current) => current.map((post, i) => i === index ? { ...post, comments: post.comments + 1 } : post));
 
   const title = section === "perfil" ? "Perfil" : section === "amigos" ? "Amigos" : section === "comunidades" ? "Comunidades" : section === "mensagens" ? "Mensagens" : "";
@@ -703,7 +714,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
               <div className="rb-composer-actions"><label className="rb-button rb-attach"><img alt="" src={bubbleImage("icons/link.svg")} /> Anexar Foto<input accept="image/*" aria-label="Anexar foto" hidden type="file" /></label><span>{composerText.length}/240</span><button className="rb-button" type="submit">Publicar</button></div>
             </form>
             <div className="rb-stack">
-              {posts.map((post, index) => <BubblePostCard key={`${post.handle}-${post.time}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}
+              {posts.map((post, index) => <BubblePostCard isLiked={likedPostKeys.includes(postKey(post))} key={`${post.handle}-${post.time}-${index}`} onComment={addPostComment(index)} onLike={(active) => toggleLike(postKey(post), active)} post={post} />)}
            </div>
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
@@ -724,7 +735,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             <button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">{profileEditing ? "Cancelar" : "Editar perfil"}</button>
           </section>
           <div className="rb-columns">
-            <main className="rb-stack"><section className="rb-composer rb-profile-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.map((post, index) => ({ post, index })).filter(({ post }) => post.handle === "@anaa_paula93").map(({ post, index }) => <BubblePostCard key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}</main>
+            <main className="rb-stack"><section className="rb-composer rb-profile-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.map((post, index) => ({ post, index })).filter(({ post }) => post.handle === "@anaa_paula93").map(({ post, index }) => <BubblePostCard isLiked={likedPostKeys.includes(postKey(post))} key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={(active) => toggleLike(postKey(post), active)} post={post} />)}</main>
             <aside className="rb-stack rb-profile-aside">
               <section className="rb-box rb-profile-panel--about"><header className="rb-box-title"><h2>Sobre mim</h2><button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content rb-profile-about-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno</p><dl><dt>mora em</dt><dd>São Paulo, SP</dd><dt>aniversário</dt><dd>12 de maio</dd><dt>no Bubble desde</dt><dd>março de 2004</dd></dl></div></section>
               <section className="rb-box rb-profile-panel--friends"><header className="rb-box-title"><h2>Amigos</h2><button className="rb-button rb-button--orange" onClick={() => nav("amigos")} type="button">ver todas</button></header><div className="rb-friends-photo-grid">{[friends[0], friends[1], friends[2], friends[4], friends[5], friends[6]].map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section>

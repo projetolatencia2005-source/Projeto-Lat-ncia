@@ -2,7 +2,6 @@ import { type FormEvent, type ReactElement, type ReactNode, useCallback, useEffe
 import styled from "styled-components";
 import useBrowserTabs from "components/apps/Browser/BrowserTabsContext";
 import { SITE_URLS } from "components/apps/Browser/config";
-import { Arrow } from "components/apps/Browser/NavigationIcons";
 import { recordDoorsKeyword } from "utils/doorsKeywords";
 
 const ASSETS = "/System/Doors/sites/youspace/";
@@ -136,6 +135,7 @@ const Root = styled.div`
   .ry-comment-actions .ry-comment-like { flex-direction: row; gap: 5px; }
   .ry-watch-actions img, .ry-comment-actions img { height: 22px; width: 22px; }
   .ry-watch-actions .ry-dislike img, .ry-comment-actions .ry-dislike img { transform: rotate(180deg); }
+  .ry-watch-actions .ry-dislike[aria-pressed="true"] img, .ry-comment-actions .ry-dislike[aria-pressed="true"] img, .ry-reply-actions .ry-dislike[aria-pressed="true"] img { transform: none; }
   .ry-comments { border: 2px solid #111; box-shadow: 4px 4px 0 #111; margin-top: 22px; padding: 18px; }
   .ry-comments h2 { font-size: 22px; margin: 0 0 16px; }
   .ry-comment-composer { align-items: center; background: #f6f6f6; border: 2px solid #111; box-shadow: 3px 3px 0 #111; display: flex; gap: 8px; margin-bottom: 20px; padding: 8px; }
@@ -195,8 +195,11 @@ const Root = styled.div`
   }
 `;
 
-const Icon = ({ kind }: { kind: "like" | "comment" }): ReactElement => (
-  <img alt="" src={`/System/Doors/sites/bubble/icons/${kind === "like" ? "thumbsup.svg" : "comments.svg"}`} />
+const Icon = ({ kind, active = false }: { kind: "like" | "dislike" | "comment"; active?: boolean }): ReactElement => (
+  <img
+    alt=""
+    src={`/System/Doors/sites/bubble/icons/${kind === "comment" ? "pixel-icon-library_comment-dots-solid.svg" : active ? kind === "like" ? "like_on.svg" : "unlike_on.svg" : "thumbsup.svg"}`}
+  />
 );
 
 const YouSpacePage = ({ url }: { url: string }): ReactElement => {
@@ -345,11 +348,11 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
               <img alt="Canal" className="ry-channel-avatar" src={`${ASSETS}verdade.png`} />
               <div><strong>{activeVideo.creator}</strong><div>{activeVideo.views} visualizações</div></div>
               <button aria-pressed={subscribed} className={`ry-subscribe${subscribed ? " is-subscribed" : ""}`} onClick={() => setSubscribed((current) => !current)} type="button">{subscribed ? "INSCRITO" : "INSCREVA-SE"}</button>
-              <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon kind="like" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{commentCount}</button></div>
+              <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon active={liked} kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon active={disliked} kind="dislike" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{commentCount}</button></div>
             </section>
             <section aria-label="Comentários do vídeo" className="ry-comments" id="ry-comments">
               <h2>{commentCount} comentários</h2>
-              <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><Arrow direction="right" /></button></form>
+              <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/branco.svg" /></button></form>
               {activeComments.length > 0 && (
                 <div className="ry-comment-list">
                   {activeComments.map((comment) => (
@@ -363,8 +366,8 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
                       </article>
                       <div className="ry-comment-actions">
                         <button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button>
-                        <button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button>
-                        <button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button>
+                        <button aria-label={`Curtir comentário de ${comment.author}`} aria-pressed={commentLikes.includes(comment.id)} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon active={commentLikes.includes(comment.id)} kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button>
+                        <button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon active={commentDislikes.includes(comment.id)} kind="dislike" /></button>
                       </div>
                       {comment.replies?.length ? (
                         <div className="ry-reply-list">
@@ -378,15 +381,15 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
                                 </div>
                               </article>
                               <div className="ry-reply-actions">
-                                <button aria-label={`Responder a ${reply.author}`} onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button"><Icon kind="comment" /></button>
-                                <button aria-label={`Curtir resposta de ${reply.author}`} aria-pressed={replyLikes.includes(`${comment.id}-${index}`)} onClick={() => { const id = `${comment.id}-${index}`; setReplyLikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyDislikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon kind="like" /></button>
-                                <button aria-label={`Não gostei da resposta de ${reply.author}`} aria-pressed={replyDislikes.includes(`${comment.id}-${index}`)} className="ry-dislike" onClick={() => { const id = `${comment.id}-${index}`; setReplyDislikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyLikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon kind="like" /></button>
+                                <button aria-label={`Responder a ${reply.author}`} className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button>
+                                <button aria-label={`Curtir resposta de ${reply.author}`} aria-pressed={replyLikes.includes(`${comment.id}-${index}`)} onClick={() => { const id = `${comment.id}-${index}`; setReplyLikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyDislikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon active={replyLikes.includes(`${comment.id}-${index}`)} kind="like" /></button>
+                                <button aria-label={`Não gostei da resposta de ${reply.author}`} aria-pressed={replyDislikes.includes(`${comment.id}-${index}`)} className="ry-dislike" onClick={() => { const id = `${comment.id}-${index}`; setReplyDislikes((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]); setReplyLikes((current) => current.filter((item) => item !== id)); }} type="button"><Icon active={replyDislikes.includes(`${comment.id}-${index}`)} kind="dislike" /></button>
                               </div>
                             </div>
                           ))}
                         </div>
                       ) : null}
-                      {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
+                      {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><img alt="" aria-hidden="true" src="/System/Doors/sites/bubble/icons/branco.svg" /></button></form>}
                     </div>
                   ))}
                 </div>
