@@ -2495,7 +2495,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     );
   };
 
-  const renderArticle = (): ReactNode => (
+  const renderArticleContent = (): ReactNode => (
     <article
       className={`wiki-article ${isHome ? "wiki-home-page" : "wiki-content-page"}`}
     >
@@ -2566,7 +2566,6 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
         </>
       ) : (
         <>
-          {hasDiscussion && renderTabs()}
           <h1>
             {isLanHouseArticle
               ? "O que são LAN houses e para que veio"
@@ -2667,6 +2666,16 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
       )}
     </article>
   );
+
+  const renderArticle = (): ReactNode =>
+    hasDiscussion ? (
+      <div className="wiki-discussion-shell">
+        {renderTabs()}
+        {renderArticleContent()}
+      </div>
+    ) : (
+      renderArticleContent()
+    );
 
   return (
     <section
@@ -2773,6 +2782,19 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
           renderArticle()
         )}
       </div>
+      <footer className="wiki-footer">
+        <div className="wiki-footer-brand">
+          <img alt="" src="/System/Doors/sites/encicloweb-mark.svg" />
+          <strong>EncicloWeb</strong>
+        </div>
+        <nav aria-label="Links do EncicloWeb">
+          <span>sobre</span>
+          <span>segurança</span>
+          <span>privacidade</span>
+          <span>ajuda</span>
+        </nav>
+        <small>© EncicloWeb, 2007. Todos os direitos reservados</small>
+      </footer>
     </section>
   );
 };
