@@ -2735,7 +2735,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .wiki-page-tabs {
-      border-bottom: 1px solid #9aa5b4;
+      border-bottom: 2px solid #9aa5b4;
       display: flex;
       gap: 4px;
       margin: -2px 0 17px;
@@ -2927,7 +2927,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .wiki-discussion-shell > .wiki-page-tabs {
-      border-bottom: 1px solid #9aa5b4;
+      border-bottom: 2px solid #9aa5b4;
       gap: 4px;
       margin: -2px 0 17px;
       position: relative;
