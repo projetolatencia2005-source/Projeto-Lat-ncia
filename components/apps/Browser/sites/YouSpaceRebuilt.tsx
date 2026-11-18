@@ -58,16 +58,10 @@ const Root = styled.div`
   font-family: "Pixelify Sans", monospace;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
-  overflow: auto;
-  scrollbar-color: #ff3038 #f7edd7;
-  scrollbar-width: thin;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
   width: 100%;
-  &::-webkit-scrollbar { height: 14px; width: 14px; }
-  &::-webkit-scrollbar-track { background: #f7edd7; border-left: 2px solid #111; }
-  &::-webkit-scrollbar-thumb { background: #ff3038; border: 2px solid #111; border-radius: 0; }
-  &::-webkit-scrollbar-thumb:hover { filter: brightness(.88); }
   *, *::before, *::after { box-sizing: border-box; }
   button, input, textarea { font: inherit; }
   button { cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; }
