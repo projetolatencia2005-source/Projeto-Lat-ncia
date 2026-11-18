@@ -17,30 +17,30 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   min-height: 0;
   overflow: auto;
   position: relative;
-  scrollbar-color: #7d94b8 #f7edd7;
-  scrollbar-width: none;
+  scrollbar-color: ${({ $site }) =>
+    $site === "youspace" ? "#ff3038 #f7edd7" : $site === "bubble" ? "#f37319 #f7edd7" : "#7d94b8 #f7edd7"};
+  scrollbar-width: thin;
   width: 100%;
 
   &::-webkit-scrollbar {
-    display: none;
-    height: 0;
-    width: 0;
+    height: 14px;
+    width: 14px;
   }
 
   &::-webkit-scrollbar-track {
-    background: #d7e4f7;
+    background: #f7edd7;
     border-left: 2px solid #31302c;
     border-radius: 0;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #7d94b8;
+    background: ${({ $site }) => $site === "youspace" ? "#ff3038" : $site === "bubble" ? "#f37319" : "#7d94b8"};
     border: 2px solid #31302c;
     border-radius: 0;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: #536b8c;
+    filter: brightness(.88);
   }
 
   button,
