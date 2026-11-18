@@ -659,7 +659,6 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             </form>
             <div className="rb-stack">
               {posts.map((post, index) => <BubblePostCard key={`${post.handle}-${post.time}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}
-                </aside>
            </div>
           </main>
           <aside className="rb-stack" aria-label="Painel do Bubble">
