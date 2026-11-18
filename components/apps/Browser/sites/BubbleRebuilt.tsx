@@ -160,6 +160,8 @@ const Root = styled.div`
   background: #fff;
   color: var(--rb-ink);
   font-family: "Pixelify Sans", monospace;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   min-height: 0;
   overflow: auto;
@@ -202,7 +204,7 @@ const Root = styled.div`
   .rb-search button { align-items: center; background: #f6f4f4; border: 2px solid #292929; display: flex; flex: 0 0 44px; justify-content: center; }
   .rb-search img { height: 20px; width: 20px; }
   .rb-signout { border-left: 1px solid rgb(255 255 255 / 60%); padding: 8px 0 8px 24px; }
-  .rb-shell { margin: 0 auto; max-width: 1920px; padding: clamp(20px, 2.3vw, 44px); width: 100%; }
+  .rb-shell { flex: 1 0 auto; margin: 0 auto; max-width: 1920px; padding: clamp(20px, 2.3vw, 44px); width: 100%; }
   .rb-page-heading { background: var(--rb-orange); border: 2px solid var(--rb-line); box-shadow: 4px 4px 0 var(--rb-line); color: white; margin: 0 0 clamp(28px, 3vw, 54px); min-height: 145px; padding: clamp(22px, 2.4vw, 42px); }
   .rb-page-heading h1 { font-size: clamp(26px, 2.5vw, 46px); line-height: 1; margin: 0 0 10px; }
   .rb-page-heading p { font-size: clamp(15px, 1vw, 20px); margin: 0; }
@@ -268,7 +270,7 @@ const Root = styled.div`
   .rb-suggestion img { border: 2px solid #222; height: 58px; object-fit: cover; width: 58px; }
   .rb-suggestion-copy { flex: 1; min-width: 0; }
   .rb-suggestion-copy small { display: block; margin-top: 2px; }
-  .rb-footer { align-items: center; background: #f6f4f4; border-top: 1px solid #888; color: #5e5e5e; display: flex; gap: clamp(20px, 3vw, 56px); margin-top: 54px; min-height: 105px; padding: 18px clamp(20px, 2.3vw, 44px); }
+  .rb-footer { align-items: center; background: #f6f4f4; border-top: 1px solid #888; color: #5e5e5e; display: flex; gap: clamp(20px, 3vw, 56px); margin-top: auto; min-height: 105px; padding: 18px clamp(20px, 2.3vw, 44px); }
   .rb-footer img { height: 44px; object-fit: contain; width: 130px; }
   .rb-footer nav { display: flex; gap: 24px; }
   .rb-footer nav button { background: none; border: 0; color: inherit; padding: 6px 0; }
@@ -285,7 +287,8 @@ const Root = styled.div`
   .rb-friend-search button img { height: 19px; object-fit: contain; width: 19px; }
   .rb-friends-grid { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rb-profile-aside { align-content: start; }
-  .rb-profile-panel--about { min-height: 229px; }
+  .rb-profile-panel--about { min-height: 0; }
+  .rb-profile-composer, .rb-profile-panel--about { box-sizing: border-box; height: 276px; }
   .rb-profile-panel--friends, .rb-profile-panel--communities { min-height: 325px; }
   .rb-profile-panel--about > .rb-box-title, .rb-profile-panel--friends > .rb-box-title, .rb-profile-panel--communities > .rb-box-title { min-height: 57px; }
   .rb-profile-about-content { font-size: 16px; line-height: 1.25; padding: 14px 16px; }
@@ -296,9 +299,9 @@ const Root = styled.div`
   .rb-profile-about-content dt { color: #777; }
   .rb-profile-about-content dd { font-weight: 700; margin: 0; text-align: right; }
   .rb-profile-about-content dt:nth-last-child(2), .rb-profile-about-content dd:last-child { border-bottom: 0; }
-  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, 100px); justify-content: end; padding: 14px 20px; }
+  .rb-friends-photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: stretch; padding: 14px 20px; }
   .rb-friends-photo-grid img { aspect-ratio: 1; border: 2px solid #222; box-shadow: 3px 3px 0 #222; display: block; height: auto; object-fit: cover; width: 100%; }
-  .rb-profile-community-list { display: grid; gap: 0; padding: 8px 14px; }
+  .rb-profile-community-list { display: grid; gap: 0; padding: 1px 14px 8px; }
   .rb-profile-community-row { align-items: center; border-bottom: 1px solid #ccc; display: flex; gap: 12px; min-height: 72px; padding: 8px 0; }
   .rb-profile-community-row:last-child { border-bottom: 0; }
   .rb-profile-community-row img { border: 2px solid #222; box-shadow: 2px 2px 0 #222; flex: 0 0 50px; height: 50px; object-fit: cover; width: 50px; }
@@ -480,6 +483,7 @@ const Root = styled.div`
     .rb-birthday-copy strong { font-size: 18px; }
     .rb-birthday-copy p { font-size: 14px; }
     .rb-profile-about-content { font-size: 14px; }
+    .rb-profile-composer, .rb-profile-panel--about { height: 252px; }
     .rb-profile-community-row a { font-size: 14px; }
     .rb-chat-layout { grid-template-columns: 1fr; height: auto; min-height: 0; }
     .rb-inbox { border-bottom: 2px solid #222; border-right: 0; max-height: 360px; }
@@ -709,7 +713,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
             <button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">{profileEditing ? "Cancelar" : "Editar perfil"}</button>
           </section>
           <div className="rb-columns">
-            <main className="rb-stack"><section className="rb-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.slice(0, 4).map((post, index) => <BubblePostCard key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}</main>
+            <main className="rb-stack"><section className="rb-composer rb-profile-composer"><h2>Escrever no seu mural ▣</h2><textarea aria-label="Escreva no mural" maxLength={240} onChange={(event) => setComposerText(event.currentTarget.value)} placeholder="Escreve aí..." value={composerText} /><div className="rb-composer-actions"><span>{composerText.length}/240</span><button className="rb-button" onClick={() => { if (composerText.trim()) { setPosts((current) => [{ author: "Ana Paula ^0^", handle: "@anaa_paula93", avatar: "avatar-ana.png", message: composerText, time: "agora", likes: 0, comments: 0 }, ...current]); setComposerText(""); } }} type="button">Publicar</button></div></section>{posts.map((post, index) => ({ post, index })).filter(({ post }) => post.handle === "@anaa_paula93").map(({ post, index }) => <BubblePostCard key={`${post.handle}-${index}`} onComment={addPostComment(index)} onLike={() => toggleLike(index)} post={post} />)}</main>
             <aside className="rb-stack rb-profile-aside">
               <section className="rb-box rb-profile-panel--about"><header className="rb-box-title"><h2>Sobre mim</h2><button className="rb-button rb-button--orange" onClick={() => setProfileEditing((value) => !value)} type="button">editar</button></header><div className="rb-panel-content rb-profile-about-content"><p>Fotógrafa nas horas vagas, colecionadora de fitas e sempre procurando um show pequeno</p><dl><dt>mora em</dt><dd>São Paulo, SP</dd><dt>aniversário</dt><dd>12 de maio</dd><dt>no Bubble desde</dt><dd>março de 2004</dd></dl></div></section>
               <section className="rb-box rb-profile-panel--friends"><header className="rb-box-title"><h2>Amigos</h2><button className="rb-button rb-button--orange" onClick={() => nav("amigos")} type="button">ver todas</button></header><div className="rb-friends-photo-grid">{[friends[0], friends[1], friends[2], friends[4], friends[5], friends[6]].map((friend) => <img alt={friend.name} key={friend.handle} src={bubbleImage(friend.avatar)} />)}</div></section>
@@ -757,7 +761,7 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
         <div className="rb-shell">
           <header className="rb-page-heading"><h1>Mensagens</h1><p>Conversas privadas, planos de última hora e links que você vai abrir só depois.</p></header>
           <section aria-label="Conversas do Bubble" className="rb-chat-layout">
-            <aside className="rb-inbox"><h2>Caixa de entrada</h2><div className="rb-inbox-search-panel"><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => { setSelectedConversation(conversation.handle.slice(1)); nav(`mensagens/${conversation.handle.slice(1)}`); }} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
+            <aside className="rb-inbox"><h2>Caixa de entrada</h2><div className="rb-inbox-search-panel"><form className="rb-inbox-search" onSubmit={(event) => event.preventDefault()}><input aria-label="Buscar conversas" onChange={(event) => setSearch(event.currentTarget.value)} placeholder="Buscar conversas" value={search} /><button aria-label="Pesquisar conversas" type="submit"><img alt="" src={bubbleImage("search.svg")} /></button></form></div><div className="rb-contact-list">{filteredConversations.map((conversation) => <button aria-current={selectedConversation === conversation.handle.slice(1)} className="rb-contact" key={conversation.handle} onClick={() => setSelectedConversation(conversation.handle.slice(1))} type="button"><img alt="" src={bubbleImage(conversation.avatar)} /><span className="rb-contact-copy"><strong>{conversation.name} {conversation.online && <span className="rb-online">●</span>}</strong><small>{conversation.preview}</small></span><span className="rb-contact-time">{conversation.handle === "@maluzinhaaaa" ? "11:39" : conversation.handle === "@odalorissa" ? "10:34" : "ontem"}</span></button>)}</div></aside>
             <section aria-label={`Conversa com ${selected.name}`} className="rb-conversation">
               <header className="rb-conversation-header"><img alt="" src={bubbleImage(selected.avatar)} /><div className="rb-conversation-title"><strong>{selected.name}</strong><small>{selected.status || (selected.online ? "online agora" : "online recentemente")}</small></div><button className="rb-button rb-view-profile" onClick={() => nav("perfil")} type="button">Ver perfil</button></header>
               <div className="rb-message-list" key={selectedConversation} ref={messageListRef}>
