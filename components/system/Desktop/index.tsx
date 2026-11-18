@@ -64,6 +64,17 @@ const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = 
       { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares. Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
     ],
   ],
+  sinal: [
+    [
+      { text: "Você sabia que as Lan Houses ajudaram a popularizar o YouTube no Brasil?" },
+    ],
+    [
+      { text: "Para quem não tinha internet em casa, esses espaços permitiam assistir a vídeos, descobrir músicas e compartilhar conteúdos, e era ali que o sinal chegava para muita gente." },
+    ],
+    [
+      { text: "Antes dos celulares e da internet em casa, as Lan Houses eram uma das principais formas de explorar o mundo dos vídeos online, descobrir novidades e se divertir." },
+    ],
+  ],
 };
 const getKeywordNoticeText = (paragraphs: KeywordNoticePart[][]): string =>
   paragraphs.map((paragraph) => paragraph.map((part) => part.text).join("")).join("\n\n");
@@ -842,7 +853,7 @@ const Desktop: FC = ({ children }) => {
                 aria-hidden="true"
                 className="doors-splash-animation"
                 draggable={false}
-                src="/System/Doors/Inicio.gif"
+                src="/System/Doors/Comeco.gif"
               />
               <div className="doors-splash-stack">
                 <button

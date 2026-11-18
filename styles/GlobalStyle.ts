@@ -443,6 +443,7 @@ const GlobalStyle = styled.createGlobalStyle`
     height: 100%;
     inset: 0;
     object-fit: contain;
+    object-position: center;
     pointer-events: none;
     position: absolute;
     width: 100%;
@@ -485,7 +486,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-start {
-    bottom: clamp(28px, 8vh, 76px);
+    bottom: calc(clamp(28px, 8vh, 76px) + 60px);
     left: 50%;
     margin: 0;
     position: absolute;

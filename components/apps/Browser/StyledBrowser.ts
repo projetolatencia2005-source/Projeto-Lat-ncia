@@ -288,8 +288,8 @@ const StyledBrowser = styled.div`
   }
 
   .browser-toolbar .navigation-buttons > button img {
-    height: 20px;
-    width: 20px;
+    height: 26px;
+    width: 26px;
   }
 
 `;
