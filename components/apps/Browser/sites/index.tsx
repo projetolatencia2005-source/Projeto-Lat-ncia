@@ -2229,21 +2229,25 @@ const renderWikiComment = (
   comment: WikiDiscussionComment,
   depth = 0
 ): ReactNode => (
-  <section
-    key={`${comment.author}-${comment.time ?? comment.body.slice(0, 32)}`}
-    className={depth === 0 ? "wiki-comment" : "wiki-comment wiki-comment-reply"}
-    style={depth > 0 ? { marginLeft: depth * 16 } : undefined}
-  >
-    <img alt="" src={wikiAssets + comment.avatar} />
-    <div>
-      <strong>{comment.author}</strong>
-      {comment.time && (
-        <small className="wiki-comment-time">· {comment.time}</small>
-      )}
-      <p>{comment.body}</p>
-      {comment.replies?.map((reply) => renderWikiComment(reply, depth + 1))}
-    </div>
-  </section>
+  <div className={depth === 0 ? "wiki-comment-thread" : "wiki-comment-thread wiki-comment-thread--reply"} key={`${comment.author}-${comment.time ?? comment.body.slice(0, 32)}`}>
+    <section className="wiki-comment">
+      <img alt="" src={wikiAssets + comment.avatar} />
+      <div className="wiki-comment-copy">
+        <div className="wiki-comment-author">
+          <strong>{comment.author}</strong>
+          {comment.time && (
+            <small className="wiki-comment-time">· {comment.time}</small>
+          )}
+        </div>
+        <p>{comment.body}</p>
+      </div>
+    </section>
+    {comment.replies?.length ? (
+      <div className="wiki-comment-nested">
+        {comment.replies.map((reply) => renderWikiComment(reply, depth + 1))}
+      </div>
+    ) : null}
+  </div>
 );
 
 const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
@@ -2431,57 +2435,63 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     const comments = wikiDiscussions[article.path] || [];
 
     return (
-      <article className="wiki-article wiki-discussion-page">
+      <div className="wiki-discussion-shell">
         {renderTabs()}
-        <h1>Veja a opinião dos usuários</h1>
-        <form
-          className="wiki-comment-form"
-          onSubmit={(event) => {
-            event.preventDefault();
-            const message = commentDraft.trim();
-            if (!message) return;
-            const submittedComment = {
-              body: message,
-              id: window.crypto.randomUUID(),
-            };
-            setSubmittedComments((current) => [...current, submittedComment]);
-            setCommentDraft("");
-          }}
-        >
-          <label className="wiki-visually-hidden" htmlFor="wiki-comment">
-            Deixe seu comentário
-          </label>
-          <textarea
-            id="wiki-comment"
-            onChange={({ currentTarget }) =>
-              setCommentDraft(currentTarget.value)
-            }
-            placeholder="Deixe seu comentário..."
-            value={commentDraft}
-          />
-          <button
-            aria-label="Publicar comentário"
-            disabled={!commentDraft.trim()}
-            type="submit"
+        <article className="wiki-article wiki-discussion-page">
+          <h1>Veja a opinião dos usuários</h1>
+          <form
+            className="wiki-comment-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const message = commentDraft.trim();
+              if (!message) return;
+              const submittedComment = {
+                body: message,
+                id: window.crypto.randomUUID(),
+              };
+              setSubmittedComments((current) => [...current, submittedComment]);
+              setCommentDraft("");
+            }}
           >
-            ↵
-          </button>
-        </form>
-        <div className="wiki-comment-list">
-          {comments.map((comment) => renderWikiComment(comment))}
-          {submittedComments.map(({ body, id }) => (
-            <section key={id} className="wiki-comment">
-              <span aria-hidden="true" className="wiki-default-avatar">
-                ?
-              </span>
-              <div>
-                <strong>Você</strong>
-                <p>{body}</p>
+            <label className="wiki-visually-hidden" htmlFor="wiki-comment">
+              Deixe seu comentário
+            </label>
+            <textarea
+              id="wiki-comment"
+              onChange={({ currentTarget }) =>
+                setCommentDraft(currentTarget.value)
+              }
+              placeholder="Deixe seu comentário..."
+              value={commentDraft}
+            />
+            <button
+              aria-label="Publicar comentário"
+              disabled={!commentDraft.trim()}
+              type="submit"
+            >
+              ↵
+            </button>
+          </form>
+          <div className="wiki-comment-list">
+            {comments.map((comment) => renderWikiComment(comment))}
+            {submittedComments.map(({ body, id }) => (
+              <div className="wiki-comment-thread" key={id}>
+                <section className="wiki-comment">
+                  <span aria-hidden="true" className="wiki-default-avatar">
+                    ?
+                  </span>
+                  <div className="wiki-comment-copy">
+                    <div className="wiki-comment-author">
+                      <strong>Você</strong>
+                    </div>
+                    <p>{body}</p>
+                  </div>
+                </section>
               </div>
-            </section>
-          ))}
-        </div>
-      </article>
+            ))}
+          </div>
+        </article>
+      </div>
     );
   };
 
@@ -2595,11 +2605,9 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                 <div className="wiki-essay-column">
                   <p className="wiki-article-lead">{renderArticleBody()}</p>
                   {(isLanHouseArticle
-                    ? wikiLanHouseSections
+                    ? wikiLanHouseSections.slice(0, 3)
                     : wikiSociabilitySections
-                  )
-                    .slice(0, isLanHouseArticle ? 3 : 2)
-                    .map((section) => (
+                  ).map((section) => (
                       <section
                         key={section.heading}
                         className="wiki-essay-section"
@@ -2631,11 +2639,9 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
                     </figcaption>
                   </figure>
                   {(isLanHouseArticle
-                    ? wikiLanHouseSections
-                    : wikiSociabilitySections
-                  )
-                    .slice(isLanHouseArticle ? 3 : 2)
-                    .map((section) => (
+                    ? wikiLanHouseSections.slice(3)
+                    : []
+                  ).map((section) => (
                       <section
                         key={section.heading}
                         className="wiki-essay-section"
