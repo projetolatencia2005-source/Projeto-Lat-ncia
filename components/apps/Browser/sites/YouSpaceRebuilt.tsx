@@ -19,6 +19,8 @@ type Video = {
   description: string;
 };
 
+type CommentReply = { author: string; age: string; keywordId?: number; text: string; };
+
 type Comment = {
   id: number;
   author: string;
@@ -26,7 +28,7 @@ type Comment = {
   text: string;
   color: string;
   likes: number;
-  replies?: string[];
+  replies?: CommentReply[];
 };
 
 const videos: Video[] = [
@@ -43,12 +45,11 @@ const videos: Video[] = [
 
 const categories = ["Todos", "Música", "Vlogs", "Esportes", "Comédia", "Tecnologia"];
 const starterComments: Comment[] = [
-  { id: 1, author: "lu.fernandes", age: "1 semana", text: "Eu assisti até o final, cadê minha palavra-chave???", color: "#74ed55", likes: 12 },
+  { id: 1, author: "lu.fernandes", age: "1 semana", text: "Eu assisti até o final, cadê minha palavra-chave???", color: "#74ed55", likes: 12, replies: [{ author: "chumbobagoso", age: "1 semana", keywordId: 6, text: "A palavra piscou bem rápido no vídeo, parecia mensagem subliminar, no minuto 2:31. A palavra é Sinal" }] },
   { id: 2, author: "joao.oliveira", age: "1 semana", text: "Não acredito que fui enganado esse tempo todo, obrigado por mostrar a VERDADE. +1 INSCRITO", color: "#214bff", likes: 8 },
   { id: 3, author: "mariana.mp3", age: "2 semanas", text: "Faz um vídeo sobre como os computadores mudaram a nossa vida. Manda um salve!", color: "#ff3333", likes: 5 },
   { id: 4, author: "gui1993", age: "2 semanas", text: "MANO!!! Eu sabia que tinha alguma coisa estranha com essa internet!!!", color: "#ffdf00", likes: 3 },
   { id: 5, author: "eliaszinho", age: "1 mês", text: "O vídeo é muito bom. Só add com som, quer ter?", color: "#00bdd4", likes: 1 },
-  { id: 6, author: "chumbobagoso", age: "1 semana", text: "A palavra piscou bem rápido no vídeo, parecia mensagem subliminar, no minuto 2:31. A palavra é Sinal", color: "#68739b", likes: 0 },
 ];
 
 const Root = styled.div`
@@ -250,7 +251,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
     const videoId = activeVideo.id;
     setCommentsByVideo((current) => ({
       ...current,
-      [videoId]: (current[videoId] || []).map((comment) => comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), replyDraft.trim()] } : comment),
+      [videoId]: (current[videoId] || []).map((comment) => comment.id === commentId ? { ...comment, replies: [...(comment.replies || []), { author: "Você", age: "agora", text: replyDraft.trim() }] } : comment),
     }));
     setReplyDraft("");
     setReplyingTo(null);
@@ -261,7 +262,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const commentCount = activeVideo
     ? (seededVideo ? 34 : 0) + Math.max(0, activeComments.length - (seededVideo ? starterComments.length : 0))
     : 0;
-  const renderCommentText = (comment: Comment): ReactNode => {
+  const renderCommentText = (comment: Pick<Comment, "id" | "text">): ReactNode => {
     if (comment.id !== 6) return comment.text;
     return comment.text.split(/(Sinal)/g).map((part, index) =>
       part === "Sinal" ? (
@@ -337,7 +338,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
               <h2>{commentCount} comentários</h2>
               <form className="ry-comment-composer" onSubmit={submitComment}><textarea aria-label="Deixe seu comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Deixe seu comentário..." value={draft} /><button aria-label="Publicar comentário" type="submit"><Arrow direction="right" /></button></form>
               {activeComments.length > 0 && <div className="ry-comment-list">{activeComments.map((comment) => <article className="ry-comment" key={comment.id}><span className="ry-comment-color" style={{ backgroundColor: comment.color }} /><div><div className="ry-comment-author">{comment.author} · {comment.age}</div><p className="ry-comment-text">{renderCommentText(comment)}</p><div className="ry-comment-actions"><button className="ry-reply" onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)} type="button">Responder</button><button aria-label={`Curtir comentário de ${comment.author}`} className="ry-comment-like" onClick={() => setCommentLikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /><span className="ry-comment-count">{comment.likes + (commentLikes.includes(comment.id) ? 1 : 0)}</span></button><button aria-label="Não gostei do comentário" aria-pressed={commentDislikes.includes(comment.id)} className="ry-dislike" onClick={() => setCommentDislikes((current) => current.includes(comment.id) ? current.filter((id) => id !== comment.id) : [...current, comment.id])} type="button"><Icon kind="like" /></button></div>
-                {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>Você · agora</strong><div>{reply}</div></div>)}</div> : null}
+                {comment.replies?.length ? <div className="ry-reply-list">{comment.replies.map((reply, index) => <div key={`${comment.id}-${index}`}><strong>{reply.author} · {reply.age}</strong><div>{renderCommentText({ id: reply.keywordId ?? 0, text: reply.text })}</div></div>)}</div> : null}
                 {replyingTo === comment.id && <form className="ry-comment-composer" onSubmit={(event) => submitReply(event, comment.id)}><textarea aria-label={`Responder a ${comment.author}`} onChange={(event) => setReplyDraft(event.currentTarget.value)} placeholder={`Responder a ${comment.author}...`} value={replyDraft} /><button aria-label="Enviar resposta" type="submit"><Arrow direction="right" /></button></form>}
               </div></article>)}</div>}
             </section>
