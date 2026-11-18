@@ -41,9 +41,8 @@ const StyledClock = styled.button.attrs({
   .doors-clock-date {
     color: #302e2a;
     font-family: "Pixelify Sans", monospace;
-    font-size: calc(16px - 2pt);
+    font-size: 16px;
     font-weight: 400;
-    letter-spacing: -0.5px;
     line-height: 16px;
     max-width: 100%;
     overflow: hidden;

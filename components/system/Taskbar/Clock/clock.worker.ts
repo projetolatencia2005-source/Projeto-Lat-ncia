@@ -10,7 +10,7 @@ import formats from "styles/defaultTheme/formats";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
-const fontSize = "13.3333px";
+const fontSize = "16px";
 const textColor = "#31302c";
 
 let mode: ClockSource;
@@ -29,10 +29,6 @@ const styleClock = (): void => {
   offscreenContext.scale(global.devicePixelRatio, global.devicePixelRatio);
   offscreenContext.fillStyle = textColor;
   offscreenContext.font = `400 ${fontSize} ${formats.systemFont}`;
-  const trackedContext = offscreenContext as OffscreenCanvasRenderingContext2D & {
-    letterSpacing?: string;
-  };
-  if ("letterSpacing" in trackedContext) trackedContext.letterSpacing = "-0.5px";
   offscreenContext.textAlign = "right";
   offscreenContext.textBaseline = "middle";
 
@@ -71,7 +67,7 @@ const sendTick = (): void => {
   if (offscreenCanvas) drawClockText(dateTime);
 };
 
-const loadSilkscreenNumeralsFont = async (): Promise<void> => {
+const loadPixelifySansFont = async (): Promise<void> => {
   const workerFonts = (
     globalThis as typeof globalThis & {
       fonts?: FontFaceSet;
@@ -81,14 +77,13 @@ const loadSilkscreenNumeralsFont = async (): Promise<void> => {
   if (!workerFonts || typeof FontFace === "undefined") return;
 
   try {
-    const fontDescriptors: FontFaceDescriptors = {
-      unicodeRange: "U+0030-0039",
-      weight: "400",
-    };
     const font = new FontFace(
       "Pixelify Sans",
-      'url("/System/Doors/fonts/Silkscreen-Regular.ttf")',
-      fontDescriptors
+      'url("/System/Doors/figma/PixelifySans-Latin.woff2")',
+      {
+        unicodeRange: "U+0030-0039",
+        weight: "400 700",
+      }
     );
 
     await font.load();
@@ -99,12 +94,12 @@ const loadSilkscreenNumeralsFont = async (): Promise<void> => {
       sendTick();
     }
   } catch {
-    // Keep the clock available if the optional Silkscreen numerals cannot be loaded.
+    // Keep the clock available if the optional pixel font cannot be loaded.
   }
 };
 
 // oxlint-disable-next-line unicorn/prefer-top-level-await -- Keep worker startup responsive while the optional font loads.
-void loadSilkscreenNumeralsFont();
+void loadPixelifySansFont();
 
 let initialized = false;
 
