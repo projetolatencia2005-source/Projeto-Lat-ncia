@@ -113,13 +113,9 @@ const StyledBrowser = styled.div`
 
     .navigation-buttons {
       align-items: center;
-      border-right: 2px solid #31302c;
       display: flex;
       flex: 0 0 auto;
       gap: 3px;
-      height: 100%;
-      margin-right: 1px;
-      padding: 0 6px 0 1px;
 
       > button {
         box-sizing: border-box;
@@ -262,7 +258,6 @@ const StyledBrowser = styled.div`
 
       .navigation-buttons {
         gap: 2px;
-        padding-right: 4px;
       }
 
       .address-label {
