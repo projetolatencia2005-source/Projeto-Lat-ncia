@@ -17,7 +17,7 @@ const StyledBrowser = styled.div`
     border-top: 2px solid #31302c;
     box-sizing: border-box;
     display: flex;
-    flex: 0 0 32px;
+    flex: 0 0 42px;
     gap: 2px;
     justify-content: flex-start;
     padding: 2px 6px 1px;
