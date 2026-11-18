@@ -2470,6 +2470,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   .site-encicloweb {
     background: #f3f3f3;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     min-height: 100%;
     padding: 18px;
 
@@ -2513,6 +2516,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
     .wiki-layout {
       display: grid;
+      flex: 1 0 auto;
       gap: 14px;
       grid-template-columns: minmax(145px, 0.23fr) minmax(0, 1fr);
     }
@@ -2923,44 +2927,45 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .wiki-discussion-shell > .wiki-page-tabs {
-      border-bottom: 0;
-      gap: 10px;
-      height: 33px;
-      margin: 0 0 0 10px;
+      border-bottom: 1px solid #9aa5b4;
+      gap: 4px;
+      margin: -2px 0 17px;
       position: relative;
       z-index: 1;
 
       button {
         background: #e5ebf4;
-        border: 2px solid #31302c;
+        border: 1px solid #31302c;
         border-bottom: 0;
-        height: 33px;
-        min-width: 150px;
-        padding: 5px 14px;
+        color: #31302c;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        padding: 6px 14px;
       }
 
       button[aria-current="page"] {
         background: #f8faff;
-        border-bottom: 2px solid #f8faff;
-        margin-bottom: -2px;
+        font-weight: 700;
+        margin-bottom: -1px;
       }
     }
 
     .wiki-discussion-page {
-      background: #f8faff;
-      border: 2px solid #31302c;
+      background: #fff;
+      border: 1px solid #31302c;
       box-shadow: 3px 3px 0 #31302c;
-      margin-top: -1px;
+      margin-top: 0;
       max-width: 1084px;
       min-height: 2114px;
-      padding: 28px 40px 42px;
+      padding: clamp(14px, 2.5vw, 25px);
 
       h1 {
-        border-bottom: 1px solid #b8bfca;
-        font-size: clamp(24px, 1.9vw, 30px);
+        border-bottom: 0;
+        font-size: clamp(21px, 3vw, 29px);
         line-height: 1.2;
-        margin: 0;
-        padding: 0 0 14px;
+        margin: 0 0 13px;
+        padding: 0;
       }
     }
 
@@ -3153,6 +3158,75 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       .wiki-comment-nested::before {
         left: -17px;
+      }
+    }
+
+    .wiki-footer {
+      align-items: center;
+      background: #f6f4f4;
+      border-top: 1px solid #b8bfca;
+      box-sizing: border-box;
+      color: #596372;
+      display: flex;
+      flex: 0 0 113px;
+      gap: clamp(20px, 3vw, 56px);
+      margin: 18px -18px -18px;
+      min-height: 113px;
+      padding: 20px clamp(24px, 3vw, 58px);
+
+      .wiki-footer-brand {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+        white-space: nowrap;
+
+        img {
+          height: 44px;
+          object-fit: contain;
+          width: 42px;
+        }
+
+        strong {
+          color: #4c5563;
+          font-size: clamp(20px, 2vw, 30px);
+        }
+      }
+
+      nav {
+        display: flex;
+        gap: 24px;
+      }
+
+      nav span {
+        color: inherit;
+        font-size: 14px;
+      }
+
+      > small {
+        font-size: 12px;
+        margin-left: auto;
+        text-align: right;
+      }
+    }
+
+    @media (max-width: 740px) {
+      .wiki-footer {
+        align-items: flex-start;
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 18px;
+
+        nav {
+          flex: 1 1 100%;
+          flex-wrap: wrap;
+          gap: 12px 20px;
+        }
+
+        > small {
+          margin-left: 0;
+          text-align: left;
+        }
       }
     }
 
