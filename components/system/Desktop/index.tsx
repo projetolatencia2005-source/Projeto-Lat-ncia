@@ -104,7 +104,13 @@ const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
   ...BOOT_LOADING_FRAME_SEQUENCE,
 ]).flat();
 
-type SessionStatusProps = { bonusSeconds: number; keysCollected: number; startedAt: number };
+type SessionStatusProps = {
+  bonusSeconds: number;
+  keysCollected: number;
+  onTimeExpired: () => void;
+  onTimeWarning: () => void;
+  startedAt: number;
+};
 
 type StatusPosition = { x: number; y: number };
 
@@ -132,8 +138,16 @@ const REQUESTED_FILES_TO_REMOVE = [
 type BootStage = "loading" | "login" | "splash" | "tutorial";
 type BootDestination = Exclude<BootStage, "loading">;
 
-const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, startedAt }) => {
+const SessionStatus: FC<SessionStatusProps> = ({
+  bonusSeconds,
+  keysCollected,
+  onTimeExpired,
+  onTimeWarning,
+  startedAt,
+}) => {
   const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
+  const timeWarningShownRef = useRef(false);
+  const timeExpiredRef = useRef(false);
   const [position, setPosition] = useState<null | StatusPosition>(null);
   const statusRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<{
@@ -200,12 +214,28 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
   useEffect(() => {
     const updateTime = (): void => {
       const elapsed = Math.floor((Date.now() - startedAt) / 1000);
-      setRemainingSeconds(Math.max(0, SESSION_DURATION_SECONDS + bonusSeconds - elapsed));
+      const nextRemainingSeconds = Math.max(
+        0,
+        SESSION_DURATION_SECONDS + bonusSeconds - elapsed,
+      );
+      setRemainingSeconds(nextRemainingSeconds);
+
+      if (nextRemainingSeconds > 90) {
+        timeWarningShownRef.current = false;
+      } else if (nextRemainingSeconds > 0 && !timeWarningShownRef.current) {
+        timeWarningShownRef.current = true;
+        onTimeWarning();
+      }
+
+      if (nextRemainingSeconds === 0 && !timeExpiredRef.current) {
+        timeExpiredRef.current = true;
+        onTimeExpired();
+      }
     };
     updateTime();
     const timer = window.setInterval(updateTime, 1000);
     return () => window.clearInterval(timer);
-  }, [bonusSeconds, startedAt]);
+  }, [bonusSeconds, onTimeExpired, onTimeWarning, startedAt]);
 
   const time = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
   const savePosition = (nextPosition: StatusPosition): void => {
@@ -351,6 +381,9 @@ const Desktop: FC = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [startedAt, setStartedAt] = useState<null | number>(null);
   const [bonusSeconds, setBonusSeconds] = useState(0);
+  const [sessionNotice, setSessionNotice] = useState<
+    null | "warning" | "expired"
+  >(null);
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
   const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
@@ -377,6 +410,36 @@ const Desktop: FC = ({ children }) => {
       .catch(console.error)
       .finally(() => window.location.reload());
   }, [rootFs]);
+
+  const handleTimeWarning = useCallback((): void => {
+    setSessionNotice("warning");
+  }, []);
+  const handleTimeExpired = useCallback((): void => {
+    setSessionNotice("expired");
+    setKeywordOverlayPhase("hidden");
+    if (keywordGifTimeoutRef.current !== null) {
+      window.clearTimeout(keywordGifTimeoutRef.current);
+      keywordGifTimeoutRef.current = null;
+    }
+    lockedFolderVideoRef.current?.pause();
+    setLockedFolderVideoPhase("hidden");
+  }, []);
+
+  useEffect(() => {
+    if (sessionNotice !== "warning") return;
+    const timeout = window.setTimeout(() => {
+      setSessionNotice((current) =>
+        current === "warning" ? null : current,
+      );
+    }, 5000);
+    return () => window.clearTimeout(timeout);
+  }, [sessionNotice]);
+
+  useEffect(() => {
+    if (sessionNotice !== "expired") return;
+    const timeout = window.setTimeout(resetAndReload, 5000);
+    return () => window.clearTimeout(timeout);
+  }, [resetAndReload, sessionNotice]);
 
   useEffect(() => {
     try {
@@ -666,7 +729,7 @@ const Desktop: FC = ({ children }) => {
 
     postItOpenedForSessionRef.current = true;
     openProcess("TinyMCE", {
-      initialRelativePosition: { right: 71, top: 45 },
+      initialRelativePosition: { right: 171, top: 89 },
       url: "/Users/Public/Post-it.whtml",
     });
   }, [openProcess, startedAt]);
@@ -824,7 +887,36 @@ const Desktop: FC = ({ children }) => {
           </div>
         )}
       </div>
-      {startedAt !== null && <SessionStatus bonusSeconds={bonusSeconds} keysCollected={Math.min(collectedKeywordsRef.current.size, LOCKED_FOLDER_KEY_COUNT)} startedAt={startedAt} />}
+      {startedAt !== null && (
+        <SessionStatus
+          bonusSeconds={bonusSeconds}
+          keysCollected={Math.min(
+            collectedKeywordsRef.current.size,
+            LOCKED_FOLDER_KEY_COUNT,
+          )}
+          onTimeExpired={handleTimeExpired}
+          onTimeWarning={handleTimeWarning}
+          startedAt={startedAt}
+        />
+      )}
+      {sessionNotice !== null && (
+        <div
+          aria-live={sessionNotice === "expired" ? "assertive" : "polite"}
+          className="doors-session-notice"
+          role={sessionNotice === "expired" ? "alert" : "status"}
+        >
+          <section className="doors-session-notice-window">
+            <header>
+              {sessionNotice === "expired" ? "Tempo esgotado" : "Atenção"}
+            </header>
+            <p>
+              {sessionNotice === "expired"
+                ? "O tempo acabou, tente novamente!"
+                : "Está acabando o tempo, faltam 90 segundos, continue procurando as chaves!"}
+            </p>
+          </section>
+        </div>
+      )}
       {startedAt === null && (
         <>
           {bootStage === "loading" && (

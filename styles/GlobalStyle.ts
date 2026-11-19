@@ -1175,6 +1175,41 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
+  .doors-session-notice {
+    align-items: flex-start;
+    display: flex;
+    inset: calc(20vh + 50px) 0 auto;
+    justify-content: center;
+    padding: 0 16px;
+    pointer-events: none;
+    position: absolute;
+    z-index: 100004;
+  }
+
+  .doors-session-notice-window {
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    box-shadow: 4px 4px 0 #31302c;
+    color: #31302c;
+    font-family: "Pixelify Sans", monospace;
+    max-width: calc(100vw - 32px);
+  }
+
+  .doors-session-notice-window header {
+    background: #526889;
+    border-bottom: 2px solid #31302c;
+    color: #fff;
+    font-size: 14px;
+    padding: 7px 12px;
+  }
+
+  .doors-session-notice-window p {
+    font-size: 15px;
+    margin: 0;
+    padding: 12px 16px;
+    white-space: nowrap;
+  }
+
   .doors-session-status {
     background: #dbd0ba;
     border: 2px solid #31302c;
