@@ -2513,6 +2513,12 @@ const GlobalStyle = styled.createGlobalStyle`
       transform: scale(0.69);
     }
   }
+  /* Tighter intro-to-button spacing for the 1514 × 883 desktop layout. */
+  @media (min-width: 1450px) and (max-width: 1560px) and (min-height: 850px) and (max-height: 910px) {
+    .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 256px;
+    }
+  }
 `;
 
 export default GlobalStyle;
