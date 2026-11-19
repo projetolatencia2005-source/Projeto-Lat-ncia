@@ -238,8 +238,9 @@ const TaskbarEntries: FC<TaskbarEntriesProps> = ({ clockWidth, hasAI }) => {
 
           if (item.kind === "browser") {
             return (
-              <li className="doors-taskbar-pinned" key={item.key} {...dragProps}>
+              <li className="doors-taskbar-pinned" key={item.key}>
                 <button
+                  {...dragProps}
                   aria-label="Abrir Internet Expandida"
                   onClick={() => open("Browser")}
                   title="Internet Expandida"
@@ -253,8 +254,9 @@ const TaskbarEntries: FC<TaskbarEntriesProps> = ({ clockWidth, hasAI }) => {
 
           if (item.kind === "folders") {
             return (
-              <li className="doors-taskbar-pinned" key={item.key} {...dragProps}>
+              <li className="doors-taskbar-pinned" key={item.key}>
                 <button
+                  {...dragProps}
                   aria-label="Abrir Pastas"
                   onClick={() => open("FileExplorer", { url: "/Users/Public/Documents" })}
                   title="Pastas"

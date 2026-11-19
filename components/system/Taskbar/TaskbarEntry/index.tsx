@@ -30,12 +30,12 @@ export type TaskbarEntryDragProps = {
   draggable: boolean;
   "data-taskbar-dragging"?: string;
   "data-taskbar-drop-target"?: string;
-  onClickCapture: React.MouseEventHandler<HTMLLIElement>;
-  onDragEnd: React.DragEventHandler<HTMLLIElement>;
-  onDragOver: React.DragEventHandler<HTMLLIElement>;
-  onDragStart: React.DragEventHandler<HTMLLIElement>;
-  onDrop: React.DragEventHandler<HTMLLIElement>;
-  onKeyDownCapture: React.KeyboardEventHandler<HTMLLIElement>;
+  onClickCapture: React.MouseEventHandler<HTMLButtonElement>;
+  onDragEnd: React.DragEventHandler<HTMLButtonElement>;
+  onDragOver: React.DragEventHandler<HTMLButtonElement>;
+  onDragStart: React.DragEventHandler<HTMLButtonElement>;
+  onDrop: React.DragEventHandler<HTMLButtonElement>;
+  onKeyDownCapture: React.KeyboardEventHandler<HTMLButtonElement>;
 };
 
 type TaskbarEntryProps = {
@@ -130,7 +130,6 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ dragProps, icon, id, title }) => 
 
   return (
     <StyledTaskbarEntry
-      {...dragProps}
       $foreground={isForeground}
       $progress={progress}
       onClick={hidePeek}
@@ -146,6 +145,7 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ dragProps, icon, id, title }) => 
         </AnimatePresence>
       )}
       <Button
+        {...dragProps}
         ref={linkTaskbarEntry}
         aria-pressed={isForeground}
         onBlur={({ currentTarget, relatedTarget }) => {
