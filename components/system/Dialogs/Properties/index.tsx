@@ -10,7 +10,7 @@ import useCloseOnEscape from "components/system/Dialogs/useCloseOnEscape";
 import useFileInfo from "components/system/Files/FileEntry/useFileInfo";
 import useTitle from "components/system/Window/useTitle";
 import { useProcess, useProcessesActions } from "contexts/process";
-import { PREVENT_SCROLL } from "utils/constants";
+import { IMAGE_FILE_EXTENSIONS, PREVENT_SCROLL } from "utils/constants";
 import { haltEvent } from "utils/functions";
 
 const DetailsTab = dynamic(
@@ -26,6 +26,7 @@ const MEDIA_APPS = new Set([
 ]);
 
 const EXIF_TYPES = new Set([".jpeg", ".jpg", ".tif", ".tiff"]);
+const PHOTOS_ICON = "/System/Doors/Explorer/fotos.svg";
 
 export type MetaData = Record<string, Record<string, number | string>>;
 
@@ -80,9 +81,12 @@ const Properties: FC<ComponentProcessProps> = ({ id }) => {
     }
   };
   const extension = extname(generalUrl);
+  const propertyIcon = IMAGE_FILE_EXTENSIONS.has(extension.toLowerCase())
+    ? PHOTOS_ICON
+    : icon;
 
   useEffect(() => {
-    setIcon(id, icon);
+    setIcon(id, propertyIcon);
 
     if (typeof getIcon === "function" && extension.toLowerCase() === ".exe") {
       getIconAbortController.current = new AbortController();
@@ -100,7 +104,7 @@ const Properties: FC<ComponentProcessProps> = ({ id }) => {
     extension,
     generalUrl,
     getIcon,
-    icon,
+    propertyIcon,
     id,
     prependFileToTitle,
     setIcon,
@@ -156,7 +160,7 @@ const Properties: FC<ComponentProcessProps> = ({ id }) => {
       </div>
       {onGeneral && (
         <GeneralTab
-          icon={icon}
+          icon={propertyIcon}
           id={id}
           isShortcut={isShortcut}
           pid={pid}

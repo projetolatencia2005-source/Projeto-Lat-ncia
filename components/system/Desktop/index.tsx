@@ -665,7 +665,10 @@ const Desktop: FC = ({ children }) => {
     if (startedAt === null || postItOpenedForSessionRef.current) return;
 
     postItOpenedForSessionRef.current = true;
-    openProcess("TinyMCE", { url: "/Users/Public/Post-it.whtml" });
+    openProcess("TinyMCE", {
+      initialRelativePosition: { right: 71, top: 45 },
+      url: "/Users/Public/Post-it.whtml",
+    });
   }, [openProcess, startedAt]);
 
   const continueFromKeywordNotice = (): void => {

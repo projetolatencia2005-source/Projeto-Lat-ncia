@@ -181,7 +181,7 @@ const StyledProperties = styled.div`
   }
 
   .tabs button {
-    background: #f47a12;
+    background: #526889;
     border: 2px solid #31302c;
     color: #fff;
     font-family: "Pixelify Sans", monospace;

@@ -13,7 +13,7 @@ const directory: Processes = {
     icon: "/System/Icons/accessibility.svg",
     isLightBg: true,
     title: "Acessibilidade",
-    titlebarColor: "#f47a12",
+    titlebarColor: "#526889",
   },
   BoxedWine: {
     allowResizing: false,
