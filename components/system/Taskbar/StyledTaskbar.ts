@@ -43,7 +43,7 @@ const StyledTaskbar = styled.nav`
   .doors-system-tray {
     align-items: center;
     display: flex;
-    gap: 4px;
+    gap: 5px;
     height: 100%;
     position: absolute;
     right: 150px;
@@ -58,7 +58,7 @@ const StyledTaskbar = styled.nav`
     font-family: "Pixelify Sans", monospace;
     font-size: 12px;
     height: calc(100% - 2px);
-    max-width: 230px;
+    max-width: 190px;
     overflow: hidden;
     padding: 0 6px;
     position: absolute;
@@ -66,7 +66,7 @@ const StyledTaskbar = styled.nav`
     top: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 230px;
+    width: 190px;
     z-index: 2;
 
     &:hover {

@@ -99,14 +99,8 @@ const Clock: FC<ClockProps> = ({
     if (data === "source") {
       (clockWorker as Worker).postMessage(clockSource);
     } else {
-      // The offscreen canvas path skips re-rendering on time changes, so
-      // the accessible name must be kept current imperatively
       clockButtonRef.current?.setAttribute("aria-label", clockLabel(data.time));
-      setNow((currentNow) =>
-        !offScreenClockCanvas.current || currentNow.date !== data.date
-          ? data
-          : currentNow
-      );
+      setNow(data);
     }
   };
   const clockContextMenu = useClockContextMenu(toggleCalendar);
@@ -151,7 +145,10 @@ const Clock: FC<ClockProps> = ({
       const clockDate = clockContainer.querySelector(".doors-clock-date");
 
       [...clockContainer.children]
-        .filter((element) => element !== clockDate)
+        .filter(
+          (element) =>
+            element !== clockDate && !element.matches(".doors-clock-time")
+        )
         .forEach((element) => element.remove());
 
       clockSize.current.width = getMeasuredWidth();
@@ -226,7 +223,9 @@ const Clock: FC<ClockProps> = ({
       {...clockContextMenu}
       {...menuPreloadHandler}
     >
-      {supportsOffscreenCanvas ? undefined : time}
+      <span aria-hidden="true" className="doors-clock-time">
+        {time}
+      </span>
       <span aria-hidden="true" className="doors-clock-date">
         {date}
       </span>

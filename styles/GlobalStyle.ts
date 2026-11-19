@@ -2245,7 +2245,7 @@ const GlobalStyle = styled.createGlobalStyle`
     align-items: flex-start;
     background: transparent;
     display: flex;
-    inset: 50px 0 auto;
+    inset: 100px 0 auto;
     justify-content: center;
     padding: 0 18px;
     pointer-events: none;
@@ -2277,10 +2277,17 @@ const GlobalStyle = styled.createGlobalStyle`
     margin: 0 -18px 18px;
     min-height: 38px;
     padding: 6px 10px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   .doors-first-visit-window p {
-    font-size: 11px;
+    font-size: 15px;
     line-height: 1.35;
     margin: 0 0 18px;
     overflow-x: auto;
@@ -2317,6 +2324,7 @@ const GlobalStyle = styled.createGlobalStyle`
     padding: 0 8px;
     text-align: left;
     text-overflow: clip;
+    transform: translateX(4px);
     white-space: nowrap;
   }
 

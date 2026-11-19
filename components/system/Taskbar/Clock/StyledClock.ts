@@ -36,7 +36,16 @@ const StyledClock = styled.button.attrs({
   gap: 2px;
 
   canvas {
+    display: none;
     height: 22px;
+  }
+
+  .doors-clock-time {
+    color: #302e2a;
+    font-family: "Silkscreen", "Pixelify Sans", monospace !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
   }
 
   .doors-clock-date {
