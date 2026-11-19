@@ -419,11 +419,27 @@ export const getWindowViewport = (): Position => ({
 });
 
 export const calcInitialPosition = (
-  { offsetHeight }: HTMLElement,
-  { bottom = 0, left = 0, right = 0, top = 0 } = {},
+  { offsetHeight, offsetWidth }: HTMLElement,
+  {
+    bottom = 0,
+    centered = false,
+    left = 0,
+    right = 0,
+    top = 0,
+  } = {},
   { height = 0, width = 0 }: Size = {} as Size
 ): Position => {
   const [vh, vw] = [viewHeight(), viewWidth()];
+
+  if (centered) {
+    const centeredWidth = offsetWidth || pxToNum(width) || 0;
+    const centeredHeight = offsetHeight || pxToNum(height) || 0;
+
+    return {
+      x: Math.max(0, Math.round((vw - centeredWidth) / 2)),
+      y: Math.max(0, Math.round((vh - TASKBAR_HEIGHT - centeredHeight) / 2)),
+    };
+  }
 
   return {
     x: pxToNum(width) >= vw ? 0 : left || vw - right,

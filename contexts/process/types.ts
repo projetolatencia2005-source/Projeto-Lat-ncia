@@ -41,6 +41,7 @@ type PdfProcessArguments = {
 
 type RelativePosition = {
   bottom?: number;
+  centered?: boolean;
   left?: number;
   right?: number;
   top?: number;

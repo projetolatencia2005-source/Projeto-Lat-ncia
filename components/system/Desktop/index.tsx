@@ -1,1191 +1,1191 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import StyledDesktop from "components/system/Desktop/StyledDesktop";
-import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
-import FileManager from "components/system/Files/FileManager";
-import LockedFolderProvider from "components/system/Files/LockedFolder";
-import { useProcessesActions } from "contexts/process";
-import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
-import { resetStorage } from "contexts/fileSystem/functions";
-import { LOCKED_FOLDER_KEY_COUNT } from "components/system/Files/LockedFolder/constants";
-import {
-  applyAccessibilityPreferences,
-  readAccessibilityPreferences,
-} from "utils/accessibility";
-import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
-
-const SESSION_DURATION_SECONDS = 7 * 60 + 30;
-const BOOT_LOADING_DURATION_MS = 4000;
-const KEYWORD_GIF_DURATION_MS = 8000;
-const KEYWORD_OVERLAY_FADE_MS = 500;
-const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
-const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
-const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
-const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
-type KeywordNoticePart = { text: string; strong?: boolean };
-const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
-  [
-    { text: "Você sabia que: ", strong: true },
-    { text: "as Lan Houses foram, para muita gente, o primeiro contato com ferramentas de edição de imagem e vídeo?" },
-  ],
-  [
-    { text: "Em um tempo em que produzir conteúdo parecia restrito a grandes emissoras e a quem tinha muito dinheiro, era ali que fragmentos do dia a dia ganhavam cortes, cores e efeitos pela primeira vez." },
-  ],
-  [
-    { text: "Muita gente se apaixonou por criar e foi atrás de aprender a editar e publicar o próprio conteúdo, e esses espaços se tornaram a porta de entrada para o início de muitas trajetórias criativas." },
-  ],
-];
-const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
-  alfabetizacao: [
-    [
-      { text: "Você sabia que as Lan Houses tiveram um papel importante na alfabetização digital?" },
-    ],
-    [
-      { text: "Para quem não tinha acesso à tecnologia em casa, esses espaços representavam uma oportunidade de desenvolver novas habilidades e conquistar mais autonomia." },
-    ],
-    [
-      { text: "Mais do que acessar a internet, era aprender a utilizar a tecnologia para estudar, trabalhar e se comunicar." },
-    ],
-  ],
-  conexao: [
-    [
-      { text: "Você sabia que as Lan Houses ajudaram a popularizar o Orkut no Brasil?" },
-    ],
-    [
-      { text: "Para quem não tinha internet em casa, esses espaços eram uma oportunidade de criar perfis, postar fotos, deixar recados e participar de comunidades." },
-    ],
-    [
-      { text: "Assim, muitas pessoas puderam se expressar, fazer amizades e manter contato com outras, transformando o Orkut em um importante espaço de comunicação e conexão." },
-    ],
-  ],
-  informacao: [
-    [
-      { text: "Você sabia que a Wikipedia foi criada em 2001 e se tornou uma das maiores enciclopédias livres da internet?" },
-    ],
-    [
-      { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares. Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
-    ],
-  ],
-  sinal: [
-    [
-      { text: "Você sabia que as Lan Houses ajudaram a popularizar o YouTube no Brasil?" },
-    ],
-    [
-      { text: "Para quem não tinha internet em casa, esses espaços permitiam assistir a vídeos, descobrir músicas e compartilhar conteúdos, e era ali que o sinal chegava para muita gente." },
-    ],
-    [
-      { text: "Antes dos celulares e da internet em casa, as Lan Houses eram uma das principais formas de explorar o mundo dos vídeos online, descobrir novidades e se divertir." },
-    ],
-  ],
-};
-const getKeywordNoticeText = (paragraphs: KeywordNoticePart[][]): string =>
-  paragraphs.map((paragraph) => paragraph.map((part) => part.text).join("")).join("\n\n");
-const getKeywordNoticeLength = (paragraphs: KeywordNoticePart[][]): number =>
-  paragraphs.reduce(
-    (total, paragraph) =>
-      total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
-    0,
-  );
-type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "confirmation" | "dismissing";
-const BOOT_LOADING_FRAME_SEQUENCE = [
-  "/System/Doors/loading/01.svg",
-  "/System/Doors/loading/02.svg",
-  "/System/Doors/loading/03.svg",
-  "/System/Doors/loading/04.svg",
-  "/System/Doors/loading/05.svg",
-  "/System/Doors/loading/06.svg",
-  "/System/Doors/loading/07.svg",
-  "/System/Doors/loading/08.svg",
-  "/System/Doors/loading/09.svg",
-  "/System/Doors/loading/10.svg",
-  "/System/Doors/loading/11.svg",
-  "/System/Doors/loading/12.svg",
-] as const;
-const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
-  ...BOOT_LOADING_FRAME_SEQUENCE,
-]).flat();
-
-type SessionStatusProps = {
-  bonusSeconds: number;
-  keysCollected: number;
-  onTimeExpired: () => void;
-  onTimeWarning: () => void;
-  startedAt: number;
-};
-
-type StatusPosition = { x: number; y: number };
-
-const STATUS_POSITION_KEY = "doors-session-status-position-v2";
-const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
-const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v3";
-const REQUESTED_FILES_TO_REMOVE = [
-  ["/Users/Public/Desktop/image.png", "/Users/Public/Desktop"],
-  ["/Users/Public/Documents/Post-it.whtml", "/Users/Public/Documents"],
-  [
-    "/Users/Public/Documents/Post-it (1).whtml",
-    "/Users/Public/Documents",
-  ],
-  ["/Users/Public/Documents/Abrir porta.url", "/Users/Public/Documents"],
-  ["/Users/Public/Documents/Modelo currículo.whtml", "/Users/Public/Documents"],
-  [
-    "/Users/Public/Documents/Modelo currículo (1).whtml",
-    "/Users/Public/Documents",
-  ],
-  ["/Users/Public/Pasta trancada/Chave - Alfabetização.txt", "/Users/Public/Pasta trancada"],
-  ["/Users/Public/Pasta trancada/Chave - Informação.txt", "/Users/Public/Pasta trancada"],
-  ["/Users/Public/Pasta trancada/Chave - Ta chave essa.txt", "/Users/Public/Pasta trancada"],
-] as const;
-
-type BootStage = "loading" | "login" | "splash" | "tutorial";
-type BootDestination = Exclude<BootStage, "loading">;
-
-const SessionStatus: FC<SessionStatusProps> = ({
-  bonusSeconds,
-  keysCollected,
-  onTimeExpired,
-  onTimeWarning,
-  startedAt,
-}) => {
-  const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
-  const timeWarningShownRef = useRef(false);
-  const timeExpiredRef = useRef(false);
-  const [position, setPosition] = useState<null | StatusPosition>(null);
-  const statusRef = useRef<HTMLElement | null>(null);
-  const dragRef = useRef<{
-    originX: number;
-    originY: number;
-    pointerId: number;
-    startX: number;
-    startY: number;
-  } | null>(null);
-
-  useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(STATUS_POSITION_KEY);
-      const parsed = saved ? (JSON.parse(saved) as StatusPosition) : null;
-
-      if (
-        parsed &&
-        Number.isFinite(parsed.x) &&
-        Number.isFinite(parsed.y)
-      ) {
-        const bounds = statusRef.current?.getBoundingClientRect();
-        const maxX = Math.max(0, window.innerWidth - (bounds?.width ?? 0));
-        const maxY = Math.max(
-          0,
-          window.innerHeight - TASKBAR_HEIGHT - (bounds?.height ?? 0)
-        );
-
-        setPosition({
-          x: Math.max(0, Math.min(maxX, parsed.x)),
-          y: Math.max(0, Math.min(maxY, parsed.y)),
-        });
-      }
-    } catch {
-      // Fall back to the default corner if saved position data is invalid.
-    }
-  }, []);
-
-  useEffect(() => {
-    const keepPositionVisible = (): void => {
-      const bounds = statusRef.current?.getBoundingClientRect();
-
-      if (!bounds) return;
-
-      const maxX = Math.max(0, window.innerWidth - bounds.width);
-      const maxY = Math.max(
-        0,
-        window.innerHeight - TASKBAR_HEIGHT - bounds.height
-      );
-
-      setPosition((current) =>
-        current
-          ? {
-              x: Math.max(0, Math.min(maxX, current.x)),
-              y: Math.max(0, Math.min(maxY, current.y)),
-            }
-          : current
-      );
-    };
-
-    window.addEventListener("resize", keepPositionVisible);
-    return () => window.removeEventListener("resize", keepPositionVisible);
-  }, []);
-
-  useEffect(() => {
-    const updateTime = (): void => {
-      const elapsed = Math.floor((Date.now() - startedAt) / 1000);
-      const nextRemainingSeconds = Math.max(
-        0,
-        SESSION_DURATION_SECONDS + bonusSeconds - elapsed,
-      );
-      setRemainingSeconds(nextRemainingSeconds);
-
-      if (nextRemainingSeconds > 90) {
-        timeWarningShownRef.current = false;
-      } else if (nextRemainingSeconds > 0 && !timeWarningShownRef.current) {
-        timeWarningShownRef.current = true;
-        onTimeWarning();
-      }
-
-      if (nextRemainingSeconds === 0 && !timeExpiredRef.current) {
-        timeExpiredRef.current = true;
-        onTimeExpired();
-      }
-    };
-    updateTime();
-    const timer = window.setInterval(updateTime, 1000);
-    return () => window.clearInterval(timer);
-  }, [bonusSeconds, onTimeExpired, onTimeWarning, startedAt]);
-
-  const time = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
-  const savePosition = (nextPosition: StatusPosition): void => {
-    setPosition(nextPosition);
-
-    try {
-      window.localStorage.setItem(
-        STATUS_POSITION_KEY,
-        JSON.stringify(nextPosition)
-      );
-    } catch {
-      // The counter remains movable for this session if storage is unavailable.
-    }
-  };
-  const startDrag: React.PointerEventHandler<HTMLElement> = (event) => {
-    if (event.button !== 0 || !statusRef.current) return;
-
-    const { left, top } = statusRef.current.getBoundingClientRect();
-    dragRef.current = {
-      originX: left,
-      originY: top,
-      pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
-    };
-    event.currentTarget.setPointerCapture(event.pointerId);
-    event.preventDefault();
-  };
-  const moveDrag: React.PointerEventHandler<HTMLElement> = (event) => {
-    const drag = dragRef.current;
-
-    if (!drag || drag.pointerId !== event.pointerId || !statusRef.current) return;
-
-    const { height, width } = statusRef.current.getBoundingClientRect();
-    savePosition({
-      x: Math.max(
-        0,
-        Math.min(
-          window.innerWidth - width,
-          drag.originX + event.clientX - drag.startX
-        )
-      ),
-      y: Math.max(
-        0,
-        Math.min(
-          window.innerHeight - TASKBAR_HEIGHT - height,
-          drag.originY + event.clientY - drag.startY
-        )
-      ),
-    });
-  };
-  const endDrag: React.PointerEventHandler<HTMLElement> = () => {
-    dragRef.current = null;
-  };
-  const moveByKeyboard: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
-    const offsets: Record<string, StatusPosition> = {
-      ArrowDown: { x: 0, y: 10 },
-      ArrowLeft: { x: -10, y: 0 },
-      ArrowRight: { x: 10, y: 0 },
-      ArrowUp: { x: 0, y: -10 },
-    };
-    const offset = offsets[event.key];
-    const element = statusRef.current;
-
-    if (!offset || !element) return;
-
-    event.preventDefault();
-    const bounds = element.getBoundingClientRect();
-    const current = position ?? { x: bounds.left, y: bounds.top };
-    savePosition({
-      x: Math.max(
-        0,
-        Math.min(window.innerWidth - bounds.width, current.x + offset.x)
-      ),
-      y: Math.max(
-        0,
-        Math.min(
-          window.innerHeight - TASKBAR_HEIGHT - bounds.height,
-          current.y + offset.y
-        )
-      ),
-    });
-  };
-
-  return (
-    <aside
-      ref={statusRef}
-      aria-label={
-        `Latência System. Tempo restante ${time}. ${keysCollected} de ${LOCKED_FOLDER_KEY_COUNT} chaves resgatadas. Valor R$ 4,00.`
-      }
-      className={`doors-session-status ${position ? "doors-session-status--movable" : "doors-session-status--centered"}`}
-      onPointerCancel={endDrag}
-      onPointerDown={startDrag}
-      onPointerMove={moveDrag}
-      onPointerUp={endDrag}
-      style={
-        position
-          ? { left: position.x, right: "auto", top: position.y, transform: "none" }
-          : undefined
-      }
-    >
-      <div
-        aria-label="Arraste para mover o contador. Use as setas do teclado para movê-lo."
-        className="metrics"
-        onKeyDown={moveByKeyboard}
-        role="button"
-        tabIndex={0}
-      >
-        <span>
-          <strong>Tempo:</strong> <time className="doors-silkscreen-number">{time}</time>
-        </span>
-        <span className="brand">Latência System</span>
-        <span>
-          <strong>Valor:</strong>{" "}<span className="doors-silkscreen-number">R$4,00</span>
-        </span>
-      </div>
-      <p className="notice">
-        <span>
-          Você já pegou{" "}
-          <span className="doors-silkscreen-number">{keysCollected}</span>{" "}
-          de{" "}
-          <span className="doors-silkscreen-number">
-            {LOCKED_FOLDER_KEY_COUNT}
-          </span>{" "}
-          chaves
-        </span>
-      </p>
-    </aside>
-  );
-};
-
-const Desktop: FC = ({ children }) => {
-  const desktopRef = useRef<HTMLElement | null>(null);
-  const lockedFolderVideoRef = useRef<HTMLVideoElement | null>(null);
-  const requestedFilesCleanupRef = useRef(false);
-  const loginButtonRef = useRef<HTMLButtonElement | null>(null);
-  const splashButtonRef = useRef<HTMLButtonElement | null>(null);
-  const tutorialButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [bootStage, setBootStage] = useState<BootStage>("splash");
-  const [tutorialPage, setTutorialPage] = useState(0);
-  const [bootDestination, setBootDestination] =
-    useState<BootDestination | null>(null);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [startedAt, setStartedAt] = useState<null | number>(null);
-  const [bonusSeconds, setBonusSeconds] = useState(0);
-  const [sessionNotice, setSessionNotice] = useState<
-    null | "warning" | "expired"
-  >(null);
-  const [keywordOverlayPhase, setKeywordOverlayPhase] =
-    useState<KeywordOverlayPhase>("hidden");
-  const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
-    "hidden" | "fading-in" | "playing" | "fading-out" | "blocked"
-  >("hidden");
-  const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
-  const [activeKeyword, setActiveKeyword] = useState("");
-  const noticeParagraphs = KEYWORD_NOTICE_PARAGRAPHS_BY_KEY[activeKeyword] ?? DEFAULT_KEYWORD_NOTICE_PARAGRAPHS;
-  const noticeAccessibleText = getKeywordNoticeText(noticeParagraphs);
-  const noticeTotalCharacters = getKeywordNoticeLength(noticeParagraphs);
-  const [keywordGifSequence, setKeywordGifSequence] = useState(0);
-  const keywordGifSequenceRef = useRef(0);
-  const keywordGifTimeoutRef = useRef<null | number>(null);
-  const collectedKeywordsRef = useRef(new Set<string>());
-  const { exists, unlink, updateFolder } = useFileSystemActions();
-  const { open: openProcess } = useProcessesActions();
-  const postItOpenedForSessionRef = useRef(false);
-  const rootFs = useRootFs();
-  const resetInProgressRef = useRef(false);
-  const resetAndReload = useCallback((): void => {
-    if (resetInProgressRef.current) return;
-    resetInProgressRef.current = true;
-    void resetStorage(rootFs)
-      .catch(console.error)
-      .finally(() => window.location.reload());
-  }, [rootFs]);
-
-  const handleTimeWarning = useCallback((): void => {
-    setSessionNotice("warning");
-  }, []);
-  const handleTimeExpired = useCallback((): void => {
-    setSessionNotice("expired");
-    setKeywordOverlayPhase("hidden");
-    if (keywordGifTimeoutRef.current !== null) {
-      window.clearTimeout(keywordGifTimeoutRef.current);
-      keywordGifTimeoutRef.current = null;
-    }
-    lockedFolderVideoRef.current?.pause();
-    setLockedFolderVideoPhase("hidden");
-  }, []);
-
-  useEffect(() => {
-    if (sessionNotice !== "warning") return;
-    const timeout = window.setTimeout(() => {
-      setSessionNotice((current) =>
-        current === "warning" ? null : current,
-      );
-    }, 5000);
-    return () => window.clearTimeout(timeout);
-  }, [sessionNotice]);
-
-  useEffect(() => {
-    if (sessionNotice !== "expired") return;
-    const timeout = window.setTimeout(resetAndReload, 5000);
-    return () => window.clearTimeout(timeout);
-  }, [resetAndReload, sessionNotice]);
-
-  useEffect(() => {
-    try {
-      if (window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true") {
-        desktopRef.current?.style.setProperty("visibility", "hidden");
-        resetAndReload();
-      }
-    } catch {
-      // Keep the session usable when browser storage is unavailable.
-    }
-  }, [resetAndReload]);
-
-  useEffect(() => {
-    const onPageHide = (): void => {
-      if (resetInProgressRef.current) return;
-      const cleanup = resetStorage(rootFs);
-      try {
-        window.localStorage.setItem(RESET_ON_NEXT_LOAD_KEY, "true");
-      } catch {
-        // Reset as much of the session as browser storage permits.
-      }
-      void cleanup.catch(console.error);
-    };
-    const onResetStarting = (): void => {
-      resetInProgressRef.current = true;
-    };
-    const onPageShow = (event: PageTransitionEvent): void => {
-      if (!event.persisted || resetInProgressRef.current) return;
-      resetInProgressRef.current = true;
-      window.location.reload();
-    };
-    window.addEventListener("pagehide", onPageHide);
-    window.addEventListener("pageshow", onPageShow);
-    window.addEventListener("doors-session-reset-starting", onResetStarting);
-    return () => {
-      window.removeEventListener("pagehide", onPageHide);
-      window.removeEventListener("pageshow", onPageShow);
-      window.removeEventListener("doors-session-reset-starting", onResetStarting);
-    };
-  }, [rootFs]);
-
-  const startLockedFolderVideo = useCallback((): void => {
-    const video = lockedFolderVideoRef.current;
-    if (!video) return;
-    try {
-      video.currentTime = 0;
-    } catch {
-      // Continue playback if seeking isn't available yet.
-    }
-    setLockedFolderVideoPhase("fading-in");
-    void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
-    return () =>
-      window.removeEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
-  }, [startLockedFolderVideo]);
-
-  useEffect(() => {
-    if (lockedFolderVideoPhase !== "fading-in") return;
-    const timeout = window.setTimeout(
-      () => setLockedFolderVideoPhase("playing"),
-      LOCKED_FOLDER_VIDEO_FADE_MS,
-    );
-    return () => window.clearTimeout(timeout);
-  }, [lockedFolderVideoPhase]);
-
-  useEffect(() => {
-    if (lockedFolderVideoPhase !== "fading-out") return;
-    const timeout = window.setTimeout(() => {
-      const video = lockedFolderVideoRef.current;
-      video?.pause();
-      if (video) {
-        try {
-          video.currentTime = 0;
-        } catch {
-          // The video can stay at its final frame until the overlay is hidden.
-        }
-      }
-      resetAndReload();
-    }, LOCKED_FOLDER_VIDEO_FADE_MS);
-    return () => window.clearTimeout(timeout);
-  }, [lockedFolderVideoPhase, resetAndReload]);
-
-  useEffect(() => {
-    const onKeywordCollected = (event: Event): void => {
-      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
-      if (!keyword) return;
-      const normalized = keyword
-        .normalize("NFD")
-        .replace(/[\u0300-\u036F]/g, "")
-        .toLocaleLowerCase("pt-BR");
-      if (collectedKeywordsRef.current.has(normalized)) return;
-
-      collectedKeywordsRef.current.add(normalized);
-      setActiveKeyword(normalized);
-      setBonusSeconds((current) => current + 90);
-      const nextSequence = keywordGifSequenceRef.current + 1;
-      keywordGifSequenceRef.current = nextSequence;
-      setKeywordGifSequence(nextSequence);
-      setTypedNoticeCharacters(0);
-      setKeywordOverlayPhase("playing");
-
-      if (keywordGifTimeoutRef.current !== null) {
-        window.clearTimeout(keywordGifTimeoutRef.current);
-        keywordGifTimeoutRef.current = null;
-      }
-    };
-
-    window.addEventListener("doors-keyword-collected", onKeywordCollected);
-    return () => {
-      window.removeEventListener("doors-keyword-collected", onKeywordCollected);
-      if (keywordGifTimeoutRef.current !== null) {
-        window.clearTimeout(keywordGifTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (keywordOverlayPhase !== "notice") return;
-
-    let currentCharacters = 0;
-    const typingInterval = window.setInterval(() => {
-      currentCharacters = Math.min(
-        currentCharacters + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
-        noticeTotalCharacters,
-      );
-      setTypedNoticeCharacters(currentCharacters);
-      if (currentCharacters >= noticeTotalCharacters) {
-        window.clearInterval(typingInterval);
-      }
-    }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
-
-    return () => window.clearInterval(typingInterval);
-  }, [keywordOverlayPhase, noticeTotalCharacters]);
-
-  useEffect(() => {
-    if (keywordOverlayPhase !== "confirmation") return;
-
-    const timeout = window.setTimeout(
-      () => setKeywordOverlayPhase("dismissing"),
-      KEYWORD_CONFIRMATION_DURATION_MS,
-    );
-    return () => window.clearTimeout(timeout);
-  }, [keywordOverlayPhase]);
-
-  useEffect(() => {
-    if (keywordOverlayPhase !== "dismissing") return;
-
-    const timeout = window.setTimeout(
-      () => setKeywordOverlayPhase("hidden"),
-      KEYWORD_OVERLAY_FADE_MS,
-    );
-    return () => window.clearTimeout(timeout);
-  }, [keywordOverlayPhase]);
-
-  useWallpaper(desktopRef);
-
-  const beginBootLoading = useCallback(
-    (destination: BootDestination): void => {
-      if (bootStage === "loading") return;
-
-      setBootDestination(destination);
-      setLoadingProgress(0);
-      setBootStage("loading");
-    },
-    [bootStage]
-  );
-
-  useEffect(() => {
-    if (bootStage !== "loading" || !bootDestination) return;
-
-    const bootStartedAt = Date.now();
-    const interval = window.setInterval(() => {
-      const progress = Math.min(
-        100,
-        ((Date.now() - bootStartedAt) / BOOT_LOADING_DURATION_MS) * 100
-      );
-      setLoadingProgress(progress);
-
-      if (progress === 100) {
-        window.clearInterval(interval);
-        setBootStage(bootDestination);
-        setBootDestination(null);
-      }
-    }, 40);
-
-    return () => window.clearInterval(interval);
-  }, [bootDestination, bootStage]);
-
-  useEffect(() => {
-    if (!rootFs || requestedFilesCleanupRef.current) return;
-
-    requestedFilesCleanupRef.current = true;
-
-    const removeRequestedFiles = async (): Promise<void> => {
-      try {
-        if (
-          window.localStorage.getItem(REQUESTED_FILES_CLEANUP_KEY) === "done"
-        ) {
-          return;
-        }
-      } catch {
-        // Continue with this one-time cleanup if storage is unavailable.
-      }
-
-      const foldersToRefresh = new Set<string>();
-      let cleanupCompleted = true;
-
-      await Promise.all(
-        REQUESTED_FILES_TO_REMOVE.map(async ([path, folder]) => {
-          try {
-            if (await exists(path) && (await unlink(path))) {
-              foldersToRefresh.add(folder);
-            }
-          } catch {
-            cleanupCompleted = false;
-          }
-        })
-      );
-      try {
-        await Promise.all(
-          [...foldersToRefresh].map((folder) => updateFolder(folder))
-        );
-      } catch {
-        cleanupCompleted = false;
-      }
-
-      if (cleanupCompleted) {
-        try {
-          window.localStorage.setItem(REQUESTED_FILES_CLEANUP_KEY, "done");
-        } catch {
-          // The files stay removed for this session if storage is unavailable.
-        }
-      }
-    };
-
-    void removeRequestedFiles();
-  }, [exists, rootFs, unlink, updateFolder]);
-
-  useEffect(() => {
-    applyAccessibilityPreferences(readAccessibilityPreferences());
-  }, []);
-
-  useEffect(() => {
-    if (startedAt !== null) return;
-
-    if (bootStage === "splash") splashButtonRef.current?.focus();
-    if (bootStage === "tutorial") tutorialButtonRef.current?.focus();
-    if (bootStage === "login") loginButtonRef.current?.focus();
-  }, [bootStage, startedAt]);
-
-  useEffect(() => {
-    const isSplashActive = startedAt === null && bootStage === "splash";
-    const startTutorial = (event: KeyboardEvent): void => {
-      if (
-        event.key === "Tab" ||
-        event.key === "Shift" ||
-        event.key === "Control" ||
-        event.key === "Alt" ||
-        event.key === "Meta"
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-      setTutorialPage(0);
-      beginBootLoading("tutorial");
-    };
-
-    if (isSplashActive) {
-      window.addEventListener("keydown", startTutorial, true);
-    }
-
-    const cleanup = isSplashActive
-      ? () => window.removeEventListener("keydown", startTutorial, true)
-      : undefined;
-    return cleanup;
-  }, [beginBootLoading, bootStage, startedAt]);
-
-  const startSession = (): void =>
-    setStartedAt((current) => current ?? Date.now());
-
-  useEffect(() => {
-    if (startedAt === null || postItOpenedForSessionRef.current) return;
-
-    postItOpenedForSessionRef.current = true;
-    openProcess("TinyMCE", {
-      initialRelativePosition: { right: 312, top: 167 },
-      url: "/Users/Public/Post-it.whtml",
-    });
-  }, [openProcess, startedAt]);
-
-  const continueFromKeywordNotice = (): void => {
-    if (typedNoticeCharacters < noticeTotalCharacters) return;
-    setKeywordOverlayPhase("confirmation");
-  };
-
-  return (
-    <StyledDesktop
-      ref={desktopRef}
-      aria-label="Área de trabalho do Doors"
-    >
-      <LockedFolderProvider>
-        <FileManager
-          url={DESKTOP_PATH}
-          allowMovingDraggableEntries
-          hideLoading
-          hideScrolling
-          isDesktop
-          loadIconsImmediately
-        />
-        {children}
-      </LockedFolderProvider>
-      {keywordOverlayPhase !== "hidden" && (
-        <div
-          className={"doors-keyword-gif-overlay doors-keyword-gif-overlay--" + keywordOverlayPhase}
-          key={keywordGifSequence}
-        >
-          {keywordOverlayPhase === "playing" ? (
-            <img
-              alt=""
-              draggable={false}
-              onError={() => {
-                if (keywordGifSequenceRef.current === keywordGifSequence) {
-                  setKeywordOverlayPhase("hidden");
-                }
-              }}
-              onLoad={() => {
-                if (keywordGifSequenceRef.current !== keywordGifSequence) return;
-                if (keywordGifTimeoutRef.current !== null) {
-                  window.clearTimeout(keywordGifTimeoutRef.current);
-                }
-                keywordGifTimeoutRef.current = window.setTimeout(() => {
-                  setKeywordOverlayPhase("notice");
-                  keywordGifTimeoutRef.current = null;
-                }, KEYWORD_GIF_DURATION_MS);
-              }}
-              src="/System/Doors/Chave_1.gif"
-            />
-          ) : keywordOverlayPhase === "notice" ? (
-            <section
-              aria-describedby="doors-keyword-notice-description"
-              aria-labelledby="doors-keyword-notice-title"
-              aria-modal="true"
-              className="doors-keyword-notice"
-              role="dialog"
-            >
-              <h2
-                className="doors-keyword-notice-sr-only"
-                id="doors-keyword-notice-title"
-              >
-                Informação sobre a palavra-chave
-              </h2>
-              <p
-                className="doors-keyword-notice-sr-only"
-                id="doors-keyword-notice-description"
-              >
-                {noticeAccessibleText}
-              </p>
-              <div aria-hidden="true" className="doors-keyword-notice-copy">
-                {(() => {
-                  let paragraphStart = 0;
-                  return noticeParagraphs.map((paragraph, paragraphIndex) => {
-                    const paragraphLength = paragraph.reduce(
-                      (total, part) => total + part.text.length,
-                      0,
-                    );
-                    const paragraphEnd = paragraphStart + paragraphLength;
-                    let partStart = paragraphStart;
-                    const isTypingParagraph =
-                      typedNoticeCharacters > paragraphStart &&
-                      typedNoticeCharacters <= paragraphEnd;
-                    const renderedParagraph = (
-                      <p key={paragraphIndex}>
-                        {paragraph.map((part, partIndex) => {
-                          const visibleCharacters = Math.max(
-                            0,
-                            Math.min(part.text.length, typedNoticeCharacters - partStart),
-                          );
-                          partStart += part.text.length;
-                          const content = part.text.slice(0, visibleCharacters);
-                          return part.strong ? (
-                            <strong key={partIndex}>{content}</strong>
-                          ) : (
-                            <span key={partIndex}>{content}</span>
-                          );
-                        })}
-                        {isTypingParagraph && (
-                          <span className="doors-keyword-notice-caret" />
-                        )}
-                      </p>
-                    );
-                    paragraphStart = paragraphEnd;
-                    return renderedParagraph;
-                  });
-                })()}
-              </div>
-              {typedNoticeCharacters >= noticeTotalCharacters && (
-                <button
-                  className="doors-keyword-notice-continue"
-                  onClick={continueFromKeywordNotice}
-                  type="button"
-                >
-                  Continuar
-                </button>
-              )}
-            </section>
-          ) : (
-            <p aria-live="polite" className="doors-keyword-confirmation" role="status">
-              A palavra-chave foi enviada para a pasta trancada.
-            </p>
-          )}
-        </div>
-      )}
-      <div
-        aria-hidden={lockedFolderVideoPhase === "hidden"}
-        className={`doors-unlock-video-overlay doors-unlock-video-overlay--${lockedFolderVideoPhase}`}
-        role={lockedFolderVideoPhase === "blocked" ? "alert" : undefined}
-      >
-        <video
-          ref={lockedFolderVideoRef}
-          aria-label="Vídeo exibido após desbloquear a pasta trancada"
-          onEnded={() => setLockedFolderVideoPhase("fading-out")}
-          onError={() => {
-            if (lockedFolderVideoPhase !== "hidden") {
-              setLockedFolderVideoPhase("blocked");
-            }
-          }}
-          playsInline
-          preload="metadata"
-          src="/System/Doors/locked-folder-unlocked.mp4"
-        />
-        {lockedFolderVideoPhase === "blocked" && (
-          <div className="doors-unlock-video-error">
-            <p>Não foi possível iniciar o vídeo.</p>
-            <button
-              className="doors-unlock-video-retry"
-              onClick={startLockedFolderVideo}
-              type="button"
-            >
-              Reproduzir vídeo
-            </button>
-          </div>
-        )}
-      </div>
-      {startedAt !== null && (
-        <SessionStatus
-          bonusSeconds={bonusSeconds}
-          keysCollected={Math.min(
-            collectedKeywordsRef.current.size,
-            LOCKED_FOLDER_KEY_COUNT,
-          )}
-          onTimeExpired={handleTimeExpired}
-          onTimeWarning={handleTimeWarning}
-          startedAt={startedAt}
-        />
-      )}
-      {sessionNotice !== null && (
-        <div
-          aria-live={sessionNotice === "expired" ? "assertive" : "polite"}
-          className="doors-session-notice"
-          role={sessionNotice === "expired" ? "alert" : "status"}
-        >
-          <section className="doors-session-notice-window">
-            <header>
-              {sessionNotice === "expired" ? "Tempo esgotado" : "Atenção"}
-            </header>
-            <p>
-              {sessionNotice === "expired"
-                ? "O tempo acabou, tente novamente!"
-                : "Está acabando o tempo, faltam 90 segundos, continue procurando as chaves!"}
-            </p>
-          </section>
-        </div>
-      )}
-      {startedAt === null && (
-        <>
-          {bootStage === "loading" && (
-            <section
-              aria-busy="true"
-              aria-label="Carregando"
-              className="doors-boot-screen doors-intro-screen doors-loading-screen"
-              role="status"
-            >
-              <div className="doors-loading-content">
-                <div
-                  aria-label="Progresso do carregamento"
-                  aria-valuemax={100}
-                  aria-valuemin={0}
-                  aria-valuenow={Math.round(loadingProgress)}
-                  className="doors-loading-progress"
-                  role="progressbar"
-                >
-                  <img
-                    alt=""
-                    className="doors-loading-image"
-                    draggable={false}
-                    src={
-                      BOOT_LOADING_FRAMES[
-                        Math.min(
-                          BOOT_LOADING_FRAMES.length - 1,
-                          Math.floor(
-                            (loadingProgress * BOOT_LOADING_FRAMES.length) / 100
-                          )
-                        )
-                      ]
-                    }
-                  />
-                </div>
-                <span>Carregando...</span>
-              </div>
-            </section>
-          )}
-
-          {bootStage === "splash" && (
-            <section
-              aria-label="Tela inicial Latência System"
-              aria-modal="true"
-              className="doors-boot-screen doors-intro-screen doors-splash-screen"
-              role="dialog"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                className="doors-splash-animation"
-                draggable={false}
-                src="/System/Doors/Comeco.gif"
-              />
-              <div className="doors-splash-stack">
-                <button
-                  ref={splashButtonRef}
-                  className="doors-splash-start"
-                  onClick={() => {
-                    setTutorialPage(0);
-                    beginBootLoading("tutorial");
-                  }}
-                  type="button"
-                >
-                  aperte qualquer tecla para iniciar
-                </button>
-              </div>
-            </section>
-          )}
-
-          {bootStage === "tutorial" && (
-            <section
-              aria-label="Tutorial do jogo"
-              aria-modal="true"
-              className="doors-boot-screen doors-intro-screen doors-tutorial-screen"
-              role="dialog"
-            >
-              <div className="doors-tutorial-window">
-                <div className="doors-tutorial-content doors-tutorial-content-multipage">
-                {tutorialPage === 0 ? (
-                  <article
-                    key="intro"
-                    aria-live="polite"
-                    className="doors-tutorial-slide doors-tutorial-slide-intro"
-                  >
-                    <div className="doors-tutorial-intro-top">
-                      <img
-                        alt=""
-                        className="doors-tutorial-question"
-                        src="/System/Doors/figma/tutorial-question.png"
-                      />
-                      <div className="doors-tutorial-intro-copy">
-                        <h1>O QUE É ESTE SITE?</h1>
-                        <p>
-                          Esta experiência simula como eram as Lan Houses,
-                          espaços que, entre o fim dos anos{" "}
-                          <span className="doors-silkscreen-number">1990</span>{" "}
-                          e o início dos anos{" "}
-                          <span className="doors-silkscreen-number">2010</span>.
-                        </p>
-                      </div>
-                    </div>
-                    <p className="doors-tutorial-intro-summary">
-                      Os espaços que democratizaram o acesso à internet nas
-                      periferias brasileiras, conectando uma geração ao mundo
-                      digital por meio de jogos, descobertas e trocas coletivas.
-                    </p>
-                  </article>
-                ) : (
-                  <article
-                    key={`step-${tutorialPage}`}
-                    aria-live="polite"
-                    className={`doors-tutorial-slide doors-tutorial-slide-step-${tutorialPage}`}
-                  >
-                    <div className="doors-tutorial-step-copy">
-                      <span
-                        aria-label={`Etapa ${tutorialPage} de 3`}
-                        className="doors-tutorial-step-number"
-                      >
-                        {tutorialPage}
-                      </span>
-                      {tutorialPage === 1 && (
-                        <>
-                          <p>
-                            Acesse os diferentes sites e programas da Lan House,
-                            e procure pelas <span>palavras-chaves.</span>
-                          </p>
-                          <p>
-                            A dica da onde estão as palavras chaves está no{" "}
-                            <span>post-it</span>.
-                          </p>
-                        </>
-                      )}
-                      {tutorialPage === 2 && (
-                        <>
-                          <p>
-                            Cada <span>palavras-chave</span> está escondida no
-                            conteúdo de cada site ou programa.
-                          </p>
-                          <p>
-                            Leia, assista, pesquise e <span>fique atento</span>{" "}
-                            aos textos e às imagens.
-                          </p>
-                        </>
-                      )}
-                      {tutorialPage === 3 && (
-                        <>
-                          <p>
-                            Encontre as{" "}
-                            <span className="doors-silkscreen-number">5</span>{" "}
-                            <span>palavras</span> em até{" "}
-                            <span className="doors-silkscreen-number">5</span>{" "}
-                            minutos. Cada palavra achada você ganha 1 minuto e
-                            30 segundos.
-                          </p>
-                          <p>
-                            Com todas as chaves, a <span>pasta trancada</span>{" "}
-                            será desbloqueada.
-                          </p>
-                        </>
-                      )}
-                    </div>
-                    <div
-                      aria-label="Prévia da área de trabalho do Doors"
-                      className="doors-tutorial-desktop-preview"
-                      role="img"
-                    >
-                      <img
-                        alt=""
-                        className="doors-tutorial-wallpaper"
-                        src="/System/Doors/figma/tutorial-desktop-reference.png"
-                      />
-                      <span
-                        aria-hidden="true"
-                        className="doors-tutorial-gif-slot"
-                      >
-                        gif
-                      </span>
-                    </div>
-                  </article>
-                )}
-                <nav aria-label="Navegação do tutorial" className="doors-tutorial-actions">
-                  <button
-                    ref={tutorialButtonRef}
-                    className={`doors-tutorial-start${
-                      tutorialPage === 3 ? " doors-tutorial-start-final" : ""
-                    }`}
-                    onClick={() => {
-                      if (tutorialPage < 3) {
-                        setTutorialPage((page) => page + 1);
-                        return;
-                      }
-
-                      beginBootLoading("login");
-                    }}
-                    type="button"
-                  >
-                    {tutorialPage === 3
-                      ? "Entendi, começar o jogo!"
-                      : "Continuar"}
-                  </button>
-                </nav>
-              </div>
-            
-              </div>
-            </section>
-          )}{bootStage === "login" && (
-            <section
-              aria-label="Tela de login do Doors"
-              aria-modal="true"
-              className="doors-boot-screen doors-login-screen"
-              role="dialog"
-            >
-              <div aria-hidden="true" className="doors-login-top" />
-              <div className="doors-login-content">
-                <div className="doors-login-intro">
-                  <img
-                    alt="Doors — Sistema operacional"
-                    className="doors-login-wordmark"
-                    src="/System/Doors/figma/login-door-wordmark.png"
-                  />
-                  <p>Para começar, escolha um usuário</p>
-                </div>
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  className="doors-login-divider"
-                  src="/System/Doors/figma/login-divider.svg"
-                />
-                <button
-                  ref={loginButtonRef}
-                  aria-label="Entrar como Administrador"
-                  className="doors-login-user"
-                  onClick={startSession}
-                  type="button"
-                >
-                  <img
-                    alt=""
-                    className="doors-login-avatar"
-                    src="/System/Doors/figma/login-avatar-tree.png"
-                  />
-                  <span className="doors-login-user-name">Administrador</span>
-                  <span aria-hidden="true" className="doors-login-next">
-                    <img
-                      alt=""
-                      src="/System/Doors/figma/tutorial-right-arrow.svg"
-                    />
-                  </span>
-                </button>
-              </div>
-              <div aria-hidden="true" className="doors-login-bottom" />
-              <button
-                aria-label="Desligar o computador e voltar à tela de login"
-                className="doors-shutdown"
-                onClick={resetAndReload}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="/System/Doors/figma/desligar.svg"
-                />
-              </button>
-            </section>
-          )}
-        </>
-      )}
-    </StyledDesktop>
-  );
-};
-
-export default Desktop;
-
+import { useCallback, useEffect, useRef, useState } from "react";
+import StyledDesktop from "components/system/Desktop/StyledDesktop";
+import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
+import FileManager from "components/system/Files/FileManager";
+import LockedFolderProvider from "components/system/Files/LockedFolder";
+import { useProcessesActions } from "contexts/process";
+import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
+import { resetStorage } from "contexts/fileSystem/functions";
+import { LOCKED_FOLDER_KEY_COUNT } from "components/system/Files/LockedFolder/constants";
+import {
+  applyAccessibilityPreferences,
+  readAccessibilityPreferences,
+} from "utils/accessibility";
+import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
+
+const SESSION_DURATION_SECONDS = 7 * 60 + 30;
+const BOOT_LOADING_DURATION_MS = 4000;
+const KEYWORD_GIF_DURATION_MS = 8000;
+const KEYWORD_OVERLAY_FADE_MS = 500;
+const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
+const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
+const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
+const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
+type KeywordNoticePart = { text: string; strong?: boolean };
+const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
+  [
+    { text: "Você sabia que: ", strong: true },
+    { text: "as Lan Houses foram, para muita gente, o primeiro contato com ferramentas de edição de imagem e vídeo?" },
+  ],
+  [
+    { text: "Em um tempo em que produzir conteúdo parecia restrito a grandes emissoras e a quem tinha muito dinheiro, era ali que fragmentos do dia a dia ganhavam cortes, cores e efeitos pela primeira vez." },
+  ],
+  [
+    { text: "Muita gente se apaixonou por criar e foi atrás de aprender a editar e publicar o próprio conteúdo, e esses espaços se tornaram a porta de entrada para o início de muitas trajetórias criativas." },
+  ],
+];
+const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = {
+  alfabetizacao: [
+    [
+      { text: "Você sabia que as Lan Houses tiveram um papel importante na alfabetização digital?" },
+    ],
+    [
+      { text: "Para quem não tinha acesso à tecnologia em casa, esses espaços representavam uma oportunidade de desenvolver novas habilidades e conquistar mais autonomia." },
+    ],
+    [
+      { text: "Mais do que acessar a internet, era aprender a utilizar a tecnologia para estudar, trabalhar e se comunicar." },
+    ],
+  ],
+  conexao: [
+    [
+      { text: "Você sabia que as Lan Houses ajudaram a popularizar o Orkut no Brasil?" },
+    ],
+    [
+      { text: "Para quem não tinha internet em casa, esses espaços eram uma oportunidade de criar perfis, postar fotos, deixar recados e participar de comunidades." },
+    ],
+    [
+      { text: "Assim, muitas pessoas puderam se expressar, fazer amizades e manter contato com outras, transformando o Orkut em um importante espaço de comunicação e conexão." },
+    ],
+  ],
+  informacao: [
+    [
+      { text: "Você sabia que a Wikipedia foi criada em 2001 e se tornou uma das maiores enciclopédias livres da internet?" },
+    ],
+    [
+      { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares. Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
+    ],
+  ],
+  sinal: [
+    [
+      { text: "Você sabia que as Lan Houses ajudaram a popularizar o YouTube no Brasil?" },
+    ],
+    [
+      { text: "Para quem não tinha internet em casa, esses espaços permitiam assistir a vídeos, descobrir músicas e compartilhar conteúdos, e era ali que o sinal chegava para muita gente." },
+    ],
+    [
+      { text: "Antes dos celulares e da internet em casa, as Lan Houses eram uma das principais formas de explorar o mundo dos vídeos online, descobrir novidades e se divertir." },
+    ],
+  ],
+};
+const getKeywordNoticeText = (paragraphs: KeywordNoticePart[][]): string =>
+  paragraphs.map((paragraph) => paragraph.map((part) => part.text).join("")).join("\n\n");
+const getKeywordNoticeLength = (paragraphs: KeywordNoticePart[][]): number =>
+  paragraphs.reduce(
+    (total, paragraph) =>
+      total + paragraph.reduce((paragraphTotal, part) => paragraphTotal + part.text.length, 0),
+    0,
+  );
+type KeywordOverlayPhase = "hidden" | "playing" | "notice" | "confirmation" | "dismissing";
+const BOOT_LOADING_FRAME_SEQUENCE = [
+  "/System/Doors/loading/01.svg",
+  "/System/Doors/loading/02.svg",
+  "/System/Doors/loading/03.svg",
+  "/System/Doors/loading/04.svg",
+  "/System/Doors/loading/05.svg",
+  "/System/Doors/loading/06.svg",
+  "/System/Doors/loading/07.svg",
+  "/System/Doors/loading/08.svg",
+  "/System/Doors/loading/09.svg",
+  "/System/Doors/loading/10.svg",
+  "/System/Doors/loading/11.svg",
+  "/System/Doors/loading/12.svg",
+] as const;
+const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
+  ...BOOT_LOADING_FRAME_SEQUENCE,
+]).flat();
+
+type SessionStatusProps = {
+  bonusSeconds: number;
+  keysCollected: number;
+  onTimeExpired: () => void;
+  onTimeWarning: () => void;
+  startedAt: number;
+};
+
+type StatusPosition = { x: number; y: number };
+
+const STATUS_POSITION_KEY = "doors-session-status-position-v2";
+const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
+const REQUESTED_FILES_CLEANUP_KEY = "doors-requested-files-cleanup-v3";
+const REQUESTED_FILES_TO_REMOVE = [
+  ["/Users/Public/Desktop/image.png", "/Users/Public/Desktop"],
+  ["/Users/Public/Documents/Post-it.whtml", "/Users/Public/Documents"],
+  [
+    "/Users/Public/Documents/Post-it (1).whtml",
+    "/Users/Public/Documents",
+  ],
+  ["/Users/Public/Documents/Abrir porta.url", "/Users/Public/Documents"],
+  ["/Users/Public/Documents/Modelo currículo.whtml", "/Users/Public/Documents"],
+  [
+    "/Users/Public/Documents/Modelo currículo (1).whtml",
+    "/Users/Public/Documents",
+  ],
+  ["/Users/Public/Pasta trancada/Chave - Alfabetização.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Informação.txt", "/Users/Public/Pasta trancada"],
+  ["/Users/Public/Pasta trancada/Chave - Ta chave essa.txt", "/Users/Public/Pasta trancada"],
+] as const;
+
+type BootStage = "loading" | "login" | "splash" | "tutorial";
+type BootDestination = Exclude<BootStage, "loading">;
+
+const SessionStatus: FC<SessionStatusProps> = ({
+  bonusSeconds,
+  keysCollected,
+  onTimeExpired,
+  onTimeWarning,
+  startedAt,
+}) => {
+  const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
+  const timeWarningShownRef = useRef(false);
+  const timeExpiredRef = useRef(false);
+  const [position, setPosition] = useState<null | StatusPosition>(null);
+  const statusRef = useRef<HTMLElement | null>(null);
+  const dragRef = useRef<{
+    originX: number;
+    originY: number;
+    pointerId: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem(STATUS_POSITION_KEY);
+      const parsed = saved ? (JSON.parse(saved) as StatusPosition) : null;
+
+      if (
+        parsed &&
+        Number.isFinite(parsed.x) &&
+        Number.isFinite(parsed.y)
+      ) {
+        const bounds = statusRef.current?.getBoundingClientRect();
+        const maxX = Math.max(0, window.innerWidth - (bounds?.width ?? 0));
+        const maxY = Math.max(
+          0,
+          window.innerHeight - TASKBAR_HEIGHT - (bounds?.height ?? 0)
+        );
+
+        setPosition({
+          x: Math.max(0, Math.min(maxX, parsed.x)),
+          y: Math.max(0, Math.min(maxY, parsed.y)),
+        });
+      }
+    } catch {
+      // Fall back to the default corner if saved position data is invalid.
+    }
+  }, []);
+
+  useEffect(() => {
+    const keepPositionVisible = (): void => {
+      const bounds = statusRef.current?.getBoundingClientRect();
+
+      if (!bounds) return;
+
+      const maxX = Math.max(0, window.innerWidth - bounds.width);
+      const maxY = Math.max(
+        0,
+        window.innerHeight - TASKBAR_HEIGHT - bounds.height
+      );
+
+      setPosition((current) =>
+        current
+          ? {
+              x: Math.max(0, Math.min(maxX, current.x)),
+              y: Math.max(0, Math.min(maxY, current.y)),
+            }
+          : current
+      );
+    };
+
+    window.addEventListener("resize", keepPositionVisible);
+    return () => window.removeEventListener("resize", keepPositionVisible);
+  }, []);
+
+  useEffect(() => {
+    const updateTime = (): void => {
+      const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+      const nextRemainingSeconds = Math.max(
+        0,
+        SESSION_DURATION_SECONDS + bonusSeconds - elapsed,
+      );
+      setRemainingSeconds(nextRemainingSeconds);
+
+      if (nextRemainingSeconds > 90) {
+        timeWarningShownRef.current = false;
+      } else if (nextRemainingSeconds > 0 && !timeWarningShownRef.current) {
+        timeWarningShownRef.current = true;
+        onTimeWarning();
+      }
+
+      if (nextRemainingSeconds === 0 && !timeExpiredRef.current) {
+        timeExpiredRef.current = true;
+        onTimeExpired();
+      }
+    };
+    updateTime();
+    const timer = window.setInterval(updateTime, 1000);
+    return () => window.clearInterval(timer);
+  }, [bonusSeconds, onTimeExpired, onTimeWarning, startedAt]);
+
+  const time = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
+  const savePosition = (nextPosition: StatusPosition): void => {
+    setPosition(nextPosition);
+
+    try {
+      window.localStorage.setItem(
+        STATUS_POSITION_KEY,
+        JSON.stringify(nextPosition)
+      );
+    } catch {
+      // The counter remains movable for this session if storage is unavailable.
+    }
+  };
+  const startDrag: React.PointerEventHandler<HTMLElement> = (event) => {
+    if (event.button !== 0 || !statusRef.current) return;
+
+    const { left, top } = statusRef.current.getBoundingClientRect();
+    dragRef.current = {
+      originX: left,
+      originY: top,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+  const moveDrag: React.PointerEventHandler<HTMLElement> = (event) => {
+    const drag = dragRef.current;
+
+    if (!drag || drag.pointerId !== event.pointerId || !statusRef.current) return;
+
+    const { height, width } = statusRef.current.getBoundingClientRect();
+    savePosition({
+      x: Math.max(
+        0,
+        Math.min(
+          window.innerWidth - width,
+          drag.originX + event.clientX - drag.startX
+        )
+      ),
+      y: Math.max(
+        0,
+        Math.min(
+          window.innerHeight - TASKBAR_HEIGHT - height,
+          drag.originY + event.clientY - drag.startY
+        )
+      ),
+    });
+  };
+  const endDrag: React.PointerEventHandler<HTMLElement> = () => {
+    dragRef.current = null;
+  };
+  const moveByKeyboard: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
+    const offsets: Record<string, StatusPosition> = {
+      ArrowDown: { x: 0, y: 10 },
+      ArrowLeft: { x: -10, y: 0 },
+      ArrowRight: { x: 10, y: 0 },
+      ArrowUp: { x: 0, y: -10 },
+    };
+    const offset = offsets[event.key];
+    const element = statusRef.current;
+
+    if (!offset || !element) return;
+
+    event.preventDefault();
+    const bounds = element.getBoundingClientRect();
+    const current = position ?? { x: bounds.left, y: bounds.top };
+    savePosition({
+      x: Math.max(
+        0,
+        Math.min(window.innerWidth - bounds.width, current.x + offset.x)
+      ),
+      y: Math.max(
+        0,
+        Math.min(
+          window.innerHeight - TASKBAR_HEIGHT - bounds.height,
+          current.y + offset.y
+        )
+      ),
+    });
+  };
+
+  return (
+    <aside
+      ref={statusRef}
+      aria-label={
+        `Latência System. Tempo restante ${time}. ${keysCollected} de ${LOCKED_FOLDER_KEY_COUNT} chaves resgatadas. Valor R$ 4,00.`
+      }
+      className={`doors-session-status ${position ? "doors-session-status--movable" : "doors-session-status--centered"}`}
+      onPointerCancel={endDrag}
+      onPointerDown={startDrag}
+      onPointerMove={moveDrag}
+      onPointerUp={endDrag}
+      style={
+        position
+          ? { left: position.x, right: "auto", top: position.y, transform: "none" }
+          : undefined
+      }
+    >
+      <div
+        aria-label="Arraste para mover o contador. Use as setas do teclado para movê-lo."
+        className="metrics"
+        onKeyDown={moveByKeyboard}
+        role="button"
+        tabIndex={0}
+      >
+        <span>
+          <strong>Tempo:</strong> <time className="doors-silkscreen-number">{time}</time>
+        </span>
+        <span className="brand">Latência System</span>
+        <span>
+          <strong>Valor:</strong>{" "}<span className="doors-silkscreen-number">R$4,00</span>
+        </span>
+      </div>
+      <p className="notice">
+        <span>
+          Você já pegou{" "}
+          <span className="doors-silkscreen-number">{keysCollected}</span>{" "}
+          de{" "}
+          <span className="doors-silkscreen-number">
+            {LOCKED_FOLDER_KEY_COUNT}
+          </span>{" "}
+          chaves
+        </span>
+      </p>
+    </aside>
+  );
+};
+
+const Desktop: FC = ({ children }) => {
+  const desktopRef = useRef<HTMLElement | null>(null);
+  const lockedFolderVideoRef = useRef<HTMLVideoElement | null>(null);
+  const requestedFilesCleanupRef = useRef(false);
+  const loginButtonRef = useRef<HTMLButtonElement | null>(null);
+  const splashButtonRef = useRef<HTMLButtonElement | null>(null);
+  const tutorialButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [bootStage, setBootStage] = useState<BootStage>("splash");
+  const [tutorialPage, setTutorialPage] = useState(0);
+  const [bootDestination, setBootDestination] =
+    useState<BootDestination | null>(null);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [startedAt, setStartedAt] = useState<null | number>(null);
+  const [bonusSeconds, setBonusSeconds] = useState(0);
+  const [sessionNotice, setSessionNotice] = useState<
+    null | "warning" | "expired"
+  >(null);
+  const [keywordOverlayPhase, setKeywordOverlayPhase] =
+    useState<KeywordOverlayPhase>("hidden");
+  const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
+    "hidden" | "fading-in" | "playing" | "fading-out" | "blocked"
+  >("hidden");
+  const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
+  const [activeKeyword, setActiveKeyword] = useState("");
+  const noticeParagraphs = KEYWORD_NOTICE_PARAGRAPHS_BY_KEY[activeKeyword] ?? DEFAULT_KEYWORD_NOTICE_PARAGRAPHS;
+  const noticeAccessibleText = getKeywordNoticeText(noticeParagraphs);
+  const noticeTotalCharacters = getKeywordNoticeLength(noticeParagraphs);
+  const [keywordGifSequence, setKeywordGifSequence] = useState(0);
+  const keywordGifSequenceRef = useRef(0);
+  const keywordGifTimeoutRef = useRef<null | number>(null);
+  const collectedKeywordsRef = useRef(new Set<string>());
+  const { exists, unlink, updateFolder } = useFileSystemActions();
+  const { open: openProcess } = useProcessesActions();
+  const postItOpenedForSessionRef = useRef(false);
+  const rootFs = useRootFs();
+  const resetInProgressRef = useRef(false);
+  const resetAndReload = useCallback((): void => {
+    if (resetInProgressRef.current) return;
+    resetInProgressRef.current = true;
+    void resetStorage(rootFs)
+      .catch(console.error)
+      .finally(() => window.location.reload());
+  }, [rootFs]);
+
+  const handleTimeWarning = useCallback((): void => {
+    setSessionNotice("warning");
+  }, []);
+  const handleTimeExpired = useCallback((): void => {
+    setSessionNotice("expired");
+    setKeywordOverlayPhase("hidden");
+    if (keywordGifTimeoutRef.current !== null) {
+      window.clearTimeout(keywordGifTimeoutRef.current);
+      keywordGifTimeoutRef.current = null;
+    }
+    lockedFolderVideoRef.current?.pause();
+    setLockedFolderVideoPhase("hidden");
+  }, []);
+
+  useEffect(() => {
+    if (sessionNotice !== "warning") return;
+    const timeout = window.setTimeout(() => {
+      setSessionNotice((current) =>
+        current === "warning" ? null : current,
+      );
+    }, 5000);
+    return () => window.clearTimeout(timeout);
+  }, [sessionNotice]);
+
+  useEffect(() => {
+    if (sessionNotice !== "expired") return;
+    const timeout = window.setTimeout(resetAndReload, 5000);
+    return () => window.clearTimeout(timeout);
+  }, [resetAndReload, sessionNotice]);
+
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(RESET_ON_NEXT_LOAD_KEY) === "true") {
+        desktopRef.current?.style.setProperty("visibility", "hidden");
+        resetAndReload();
+      }
+    } catch {
+      // Keep the session usable when browser storage is unavailable.
+    }
+  }, [resetAndReload]);
+
+  useEffect(() => {
+    const onPageHide = (): void => {
+      if (resetInProgressRef.current) return;
+      const cleanup = resetStorage(rootFs);
+      try {
+        window.localStorage.setItem(RESET_ON_NEXT_LOAD_KEY, "true");
+      } catch {
+        // Reset as much of the session as browser storage permits.
+      }
+      void cleanup.catch(console.error);
+    };
+    const onResetStarting = (): void => {
+      resetInProgressRef.current = true;
+    };
+    const onPageShow = (event: PageTransitionEvent): void => {
+      if (!event.persisted || resetInProgressRef.current) return;
+      resetInProgressRef.current = true;
+      window.location.reload();
+    };
+    window.addEventListener("pagehide", onPageHide);
+    window.addEventListener("pageshow", onPageShow);
+    window.addEventListener("doors-session-reset-starting", onResetStarting);
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      window.removeEventListener("pageshow", onPageShow);
+      window.removeEventListener("doors-session-reset-starting", onResetStarting);
+    };
+  }, [rootFs]);
+
+  const startLockedFolderVideo = useCallback((): void => {
+    const video = lockedFolderVideoRef.current;
+    if (!video) return;
+    try {
+      video.currentTime = 0;
+    } catch {
+      // Continue playback if seeking isn't available yet.
+    }
+    setLockedFolderVideoPhase("fading-in");
+    void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
+    return () =>
+      window.removeEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
+  }, [startLockedFolderVideo]);
+
+  useEffect(() => {
+    if (lockedFolderVideoPhase !== "fading-in") return;
+    const timeout = window.setTimeout(
+      () => setLockedFolderVideoPhase("playing"),
+      LOCKED_FOLDER_VIDEO_FADE_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [lockedFolderVideoPhase]);
+
+  useEffect(() => {
+    if (lockedFolderVideoPhase !== "fading-out") return;
+    const timeout = window.setTimeout(() => {
+      const video = lockedFolderVideoRef.current;
+      video?.pause();
+      if (video) {
+        try {
+          video.currentTime = 0;
+        } catch {
+          // The video can stay at its final frame until the overlay is hidden.
+        }
+      }
+      resetAndReload();
+    }, LOCKED_FOLDER_VIDEO_FADE_MS);
+    return () => window.clearTimeout(timeout);
+  }, [lockedFolderVideoPhase, resetAndReload]);
+
+  useEffect(() => {
+    const onKeywordCollected = (event: Event): void => {
+      const keyword = (event as CustomEvent<{ keyword?: string }>).detail?.keyword?.trim();
+      if (!keyword) return;
+      const normalized = keyword
+        .normalize("NFD")
+        .replace(/[\u0300-\u036F]/g, "")
+        .toLocaleLowerCase("pt-BR");
+      if (collectedKeywordsRef.current.has(normalized)) return;
+
+      collectedKeywordsRef.current.add(normalized);
+      setActiveKeyword(normalized);
+      setBonusSeconds((current) => current + 90);
+      const nextSequence = keywordGifSequenceRef.current + 1;
+      keywordGifSequenceRef.current = nextSequence;
+      setKeywordGifSequence(nextSequence);
+      setTypedNoticeCharacters(0);
+      setKeywordOverlayPhase("playing");
+
+      if (keywordGifTimeoutRef.current !== null) {
+        window.clearTimeout(keywordGifTimeoutRef.current);
+        keywordGifTimeoutRef.current = null;
+      }
+    };
+
+    window.addEventListener("doors-keyword-collected", onKeywordCollected);
+    return () => {
+      window.removeEventListener("doors-keyword-collected", onKeywordCollected);
+      if (keywordGifTimeoutRef.current !== null) {
+        window.clearTimeout(keywordGifTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "notice") return;
+
+    let currentCharacters = 0;
+    const typingInterval = window.setInterval(() => {
+      currentCharacters = Math.min(
+        currentCharacters + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
+        noticeTotalCharacters,
+      );
+      setTypedNoticeCharacters(currentCharacters);
+      if (currentCharacters >= noticeTotalCharacters) {
+        window.clearInterval(typingInterval);
+      }
+    }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
+
+    return () => window.clearInterval(typingInterval);
+  }, [keywordOverlayPhase, noticeTotalCharacters]);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "confirmation") return;
+
+    const timeout = window.setTimeout(
+      () => setKeywordOverlayPhase("dismissing"),
+      KEYWORD_CONFIRMATION_DURATION_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [keywordOverlayPhase]);
+
+  useEffect(() => {
+    if (keywordOverlayPhase !== "dismissing") return;
+
+    const timeout = window.setTimeout(
+      () => setKeywordOverlayPhase("hidden"),
+      KEYWORD_OVERLAY_FADE_MS,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [keywordOverlayPhase]);
+
+  useWallpaper(desktopRef);
+
+  const beginBootLoading = useCallback(
+    (destination: BootDestination): void => {
+      if (bootStage === "loading") return;
+
+      setBootDestination(destination);
+      setLoadingProgress(0);
+      setBootStage("loading");
+    },
+    [bootStage]
+  );
+
+  useEffect(() => {
+    if (bootStage !== "loading" || !bootDestination) return;
+
+    const bootStartedAt = Date.now();
+    const interval = window.setInterval(() => {
+      const progress = Math.min(
+        100,
+        ((Date.now() - bootStartedAt) / BOOT_LOADING_DURATION_MS) * 100
+      );
+      setLoadingProgress(progress);
+
+      if (progress === 100) {
+        window.clearInterval(interval);
+        setBootStage(bootDestination);
+        setBootDestination(null);
+      }
+    }, 40);
+
+    return () => window.clearInterval(interval);
+  }, [bootDestination, bootStage]);
+
+  useEffect(() => {
+    if (!rootFs || requestedFilesCleanupRef.current) return;
+
+    requestedFilesCleanupRef.current = true;
+
+    const removeRequestedFiles = async (): Promise<void> => {
+      try {
+        if (
+          window.localStorage.getItem(REQUESTED_FILES_CLEANUP_KEY) === "done"
+        ) {
+          return;
+        }
+      } catch {
+        // Continue with this one-time cleanup if storage is unavailable.
+      }
+
+      const foldersToRefresh = new Set<string>();
+      let cleanupCompleted = true;
+
+      await Promise.all(
+        REQUESTED_FILES_TO_REMOVE.map(async ([path, folder]) => {
+          try {
+            if (await exists(path) && (await unlink(path))) {
+              foldersToRefresh.add(folder);
+            }
+          } catch {
+            cleanupCompleted = false;
+          }
+        })
+      );
+      try {
+        await Promise.all(
+          [...foldersToRefresh].map((folder) => updateFolder(folder))
+        );
+      } catch {
+        cleanupCompleted = false;
+      }
+
+      if (cleanupCompleted) {
+        try {
+          window.localStorage.setItem(REQUESTED_FILES_CLEANUP_KEY, "done");
+        } catch {
+          // The files stay removed for this session if storage is unavailable.
+        }
+      }
+    };
+
+    void removeRequestedFiles();
+  }, [exists, rootFs, unlink, updateFolder]);
+
+  useEffect(() => {
+    applyAccessibilityPreferences(readAccessibilityPreferences());
+  }, []);
+
+  useEffect(() => {
+    if (startedAt !== null) return;
+
+    if (bootStage === "splash") splashButtonRef.current?.focus();
+    if (bootStage === "tutorial") tutorialButtonRef.current?.focus();
+    if (bootStage === "login") loginButtonRef.current?.focus();
+  }, [bootStage, startedAt]);
+
+  useEffect(() => {
+    const isSplashActive = startedAt === null && bootStage === "splash";
+    const startTutorial = (event: KeyboardEvent): void => {
+      if (
+        event.key === "Tab" ||
+        event.key === "Shift" ||
+        event.key === "Control" ||
+        event.key === "Alt" ||
+        event.key === "Meta"
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      setTutorialPage(0);
+      beginBootLoading("tutorial");
+    };
+
+    if (isSplashActive) {
+      window.addEventListener("keydown", startTutorial, true);
+    }
+
+    const cleanup = isSplashActive
+      ? () => window.removeEventListener("keydown", startTutorial, true)
+      : undefined;
+    return cleanup;
+  }, [beginBootLoading, bootStage, startedAt]);
+
+  const startSession = (): void =>
+    setStartedAt((current) => current ?? Date.now());
+
+  useEffect(() => {
+    if (startedAt === null || postItOpenedForSessionRef.current) return;
+
+    postItOpenedForSessionRef.current = true;
+    openProcess("TinyMCE", {
+      initialRelativePosition: { centered: true },
+      url: "/Users/Public/Post-it.whtml",
+    });
+  }, [openProcess, startedAt]);
+
+  const continueFromKeywordNotice = (): void => {
+    if (typedNoticeCharacters < noticeTotalCharacters) return;
+    setKeywordOverlayPhase("confirmation");
+  };
+
+  return (
+    <StyledDesktop
+      ref={desktopRef}
+      aria-label="Área de trabalho do Doors"
+    >
+      <LockedFolderProvider>
+        <FileManager
+          url={DESKTOP_PATH}
+          allowMovingDraggableEntries
+          hideLoading
+          hideScrolling
+          isDesktop
+          loadIconsImmediately
+        />
+        {children}
+      </LockedFolderProvider>
+      {keywordOverlayPhase !== "hidden" && (
+        <div
+          className={"doors-keyword-gif-overlay doors-keyword-gif-overlay--" + keywordOverlayPhase}
+          key={keywordGifSequence}
+        >
+          {keywordOverlayPhase === "playing" ? (
+            <img
+              alt=""
+              draggable={false}
+              onError={() => {
+                if (keywordGifSequenceRef.current === keywordGifSequence) {
+                  setKeywordOverlayPhase("hidden");
+                }
+              }}
+              onLoad={() => {
+                if (keywordGifSequenceRef.current !== keywordGifSequence) return;
+                if (keywordGifTimeoutRef.current !== null) {
+                  window.clearTimeout(keywordGifTimeoutRef.current);
+                }
+                keywordGifTimeoutRef.current = window.setTimeout(() => {
+                  setKeywordOverlayPhase("notice");
+                  keywordGifTimeoutRef.current = null;
+                }, KEYWORD_GIF_DURATION_MS);
+              }}
+              src="/System/Doors/Chave_1.gif"
+            />
+          ) : keywordOverlayPhase === "notice" ? (
+            <section
+              aria-describedby="doors-keyword-notice-description"
+              aria-labelledby="doors-keyword-notice-title"
+              aria-modal="true"
+              className="doors-keyword-notice"
+              role="dialog"
+            >
+              <h2
+                className="doors-keyword-notice-sr-only"
+                id="doors-keyword-notice-title"
+              >
+                Informação sobre a palavra-chave
+              </h2>
+              <p
+                className="doors-keyword-notice-sr-only"
+                id="doors-keyword-notice-description"
+              >
+                {noticeAccessibleText}
+              </p>
+              <div aria-hidden="true" className="doors-keyword-notice-copy">
+                {(() => {
+                  let paragraphStart = 0;
+                  return noticeParagraphs.map((paragraph, paragraphIndex) => {
+                    const paragraphLength = paragraph.reduce(
+                      (total, part) => total + part.text.length,
+                      0,
+                    );
+                    const paragraphEnd = paragraphStart + paragraphLength;
+                    let partStart = paragraphStart;
+                    const isTypingParagraph =
+                      typedNoticeCharacters > paragraphStart &&
+                      typedNoticeCharacters <= paragraphEnd;
+                    const renderedParagraph = (
+                      <p key={paragraphIndex}>
+                        {paragraph.map((part, partIndex) => {
+                          const visibleCharacters = Math.max(
+                            0,
+                            Math.min(part.text.length, typedNoticeCharacters - partStart),
+                          );
+                          partStart += part.text.length;
+                          const content = part.text.slice(0, visibleCharacters);
+                          return part.strong ? (
+                            <strong key={partIndex}>{content}</strong>
+                          ) : (
+                            <span key={partIndex}>{content}</span>
+                          );
+                        })}
+                        {isTypingParagraph && (
+                          <span className="doors-keyword-notice-caret" />
+                        )}
+                      </p>
+                    );
+                    paragraphStart = paragraphEnd;
+                    return renderedParagraph;
+                  });
+                })()}
+              </div>
+              {typedNoticeCharacters >= noticeTotalCharacters && (
+                <button
+                  className="doors-keyword-notice-continue"
+                  onClick={continueFromKeywordNotice}
+                  type="button"
+                >
+                  Continuar
+                </button>
+              )}
+            </section>
+          ) : (
+            <p aria-live="polite" className="doors-keyword-confirmation" role="status">
+              A palavra-chave foi enviada para a pasta trancada.
+            </p>
+          )}
+        </div>
+      )}
+      <div
+        aria-hidden={lockedFolderVideoPhase === "hidden"}
+        className={`doors-unlock-video-overlay doors-unlock-video-overlay--${lockedFolderVideoPhase}`}
+        role={lockedFolderVideoPhase === "blocked" ? "alert" : undefined}
+      >
+        <video
+          ref={lockedFolderVideoRef}
+          aria-label="Vídeo exibido após desbloquear a pasta trancada"
+          onEnded={() => setLockedFolderVideoPhase("fading-out")}
+          onError={() => {
+            if (lockedFolderVideoPhase !== "hidden") {
+              setLockedFolderVideoPhase("blocked");
+            }
+          }}
+          playsInline
+          preload="metadata"
+          src="/System/Doors/locked-folder-unlocked.mp4"
+        />
+        {lockedFolderVideoPhase === "blocked" && (
+          <div className="doors-unlock-video-error">
+            <p>Não foi possível iniciar o vídeo.</p>
+            <button
+              className="doors-unlock-video-retry"
+              onClick={startLockedFolderVideo}
+              type="button"
+            >
+              Reproduzir vídeo
+            </button>
+          </div>
+        )}
+      </div>
+      {startedAt !== null && (
+        <SessionStatus
+          bonusSeconds={bonusSeconds}
+          keysCollected={Math.min(
+            collectedKeywordsRef.current.size,
+            LOCKED_FOLDER_KEY_COUNT,
+          )}
+          onTimeExpired={handleTimeExpired}
+          onTimeWarning={handleTimeWarning}
+          startedAt={startedAt}
+        />
+      )}
+      {sessionNotice !== null && (
+        <div
+          aria-live={sessionNotice === "expired" ? "assertive" : "polite"}
+          className="doors-session-notice"
+          role={sessionNotice === "expired" ? "alert" : "status"}
+        >
+          <section className="doors-session-notice-window">
+            <header>
+              {sessionNotice === "expired" ? "Tempo esgotado" : "Atenção"}
+            </header>
+            <p>
+              {sessionNotice === "expired"
+                ? "O tempo acabou, tente novamente!"
+                : "Está acabando o tempo, faltam 90 segundos, continue procurando as chaves!"}
+            </p>
+          </section>
+        </div>
+      )}
+      {startedAt === null && (
+        <>
+          {bootStage === "loading" && (
+            <section
+              aria-busy="true"
+              aria-label="Carregando"
+              className="doors-boot-screen doors-intro-screen doors-loading-screen"
+              role="status"
+            >
+              <div className="doors-loading-content">
+                <div
+                  aria-label="Progresso do carregamento"
+                  aria-valuemax={100}
+                  aria-valuemin={0}
+                  aria-valuenow={Math.round(loadingProgress)}
+                  className="doors-loading-progress"
+                  role="progressbar"
+                >
+                  <img
+                    alt=""
+                    className="doors-loading-image"
+                    draggable={false}
+                    src={
+                      BOOT_LOADING_FRAMES[
+                        Math.min(
+                          BOOT_LOADING_FRAMES.length - 1,
+                          Math.floor(
+                            (loadingProgress * BOOT_LOADING_FRAMES.length) / 100
+                          )
+                        )
+                      ]
+                    }
+                  />
+                </div>
+                <span>Carregando...</span>
+              </div>
+            </section>
+          )}
+
+          {bootStage === "splash" && (
+            <section
+              aria-label="Tela inicial Latência System"
+              aria-modal="true"
+              className="doors-boot-screen doors-intro-screen doors-splash-screen"
+              role="dialog"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                className="doors-splash-animation"
+                draggable={false}
+                src="/System/Doors/Comeco.gif"
+              />
+              <div className="doors-splash-stack">
+                <button
+                  ref={splashButtonRef}
+                  className="doors-splash-start"
+                  onClick={() => {
+                    setTutorialPage(0);
+                    beginBootLoading("tutorial");
+                  }}
+                  type="button"
+                >
+                  aperte qualquer tecla para iniciar
+                </button>
+              </div>
+            </section>
+          )}
+
+          {bootStage === "tutorial" && (
+            <section
+              aria-label="Tutorial do jogo"
+              aria-modal="true"
+              className="doors-boot-screen doors-intro-screen doors-tutorial-screen"
+              role="dialog"
+            >
+              <div className="doors-tutorial-window">
+                <div className="doors-tutorial-content doors-tutorial-content-multipage">
+                {tutorialPage === 0 ? (
+                  <article
+                    key="intro"
+                    aria-live="polite"
+                    className="doors-tutorial-slide doors-tutorial-slide-intro"
+                  >
+                    <div className="doors-tutorial-intro-top">
+                      <img
+                        alt=""
+                        className="doors-tutorial-question"
+                        src="/System/Doors/figma/tutorial-question.png"
+                      />
+                      <div className="doors-tutorial-intro-copy">
+                        <h1>O QUE É ESTE SITE?</h1>
+                        <p>
+                          Esta experiência simula como eram as Lan Houses,
+                          espaços que, entre o fim dos anos{" "}
+                          <span className="doors-silkscreen-number">1990</span>{" "}
+                          e o início dos anos{" "}
+                          <span className="doors-silkscreen-number">2010</span>.
+                        </p>
+                      </div>
+                    </div>
+                    <p className="doors-tutorial-intro-summary">
+                      Os espaços que democratizaram o acesso à internet nas
+                      periferias brasileiras, conectando uma geração ao mundo
+                      digital por meio de jogos, descobertas e trocas coletivas.
+                    </p>
+                  </article>
+                ) : (
+                  <article
+                    key={`step-${tutorialPage}`}
+                    aria-live="polite"
+                    className={`doors-tutorial-slide doors-tutorial-slide-step-${tutorialPage}`}
+                  >
+                    <div className="doors-tutorial-step-copy">
+                      <span
+                        aria-label={`Etapa ${tutorialPage} de 3`}
+                        className="doors-tutorial-step-number"
+                      >
+                        {tutorialPage}
+                      </span>
+                      {tutorialPage === 1 && (
+                        <>
+                          <p>
+                            Acesse os diferentes sites e programas da Lan House,
+                            e procure pelas <span>palavras-chaves.</span>
+                          </p>
+                          <p>
+                            A dica da onde estão as palavras chaves está no{" "}
+                            <span>post-it</span>.
+                          </p>
+                        </>
+                      )}
+                      {tutorialPage === 2 && (
+                        <>
+                          <p>
+                            Cada <span>palavras-chave</span> está escondida no
+                            conteúdo de cada site ou programa.
+                          </p>
+                          <p>
+                            Leia, assista, pesquise e <span>fique atento</span>{" "}
+                            aos textos e às imagens.
+                          </p>
+                        </>
+                      )}
+                      {tutorialPage === 3 && (
+                        <>
+                          <p>
+                            Encontre as{" "}
+                            <span className="doors-silkscreen-number">5</span>{" "}
+                            <span>palavras</span> em até{" "}
+                            <span className="doors-silkscreen-number">5</span>{" "}
+                            minutos. Cada palavra achada você ganha 1 minuto e
+                            30 segundos.
+                          </p>
+                          <p>
+                            Com todas as chaves, a <span>pasta trancada</span>{" "}
+                            será desbloqueada.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <div
+                      aria-label="Prévia da área de trabalho do Doors"
+                      className="doors-tutorial-desktop-preview"
+                      role="img"
+                    >
+                      <img
+                        alt=""
+                        className="doors-tutorial-wallpaper"
+                        src="/System/Doors/figma/tutorial-desktop-reference.png"
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="doors-tutorial-gif-slot"
+                      >
+                        gif
+                      </span>
+                    </div>
+                  </article>
+                )}
+                <nav aria-label="Navegação do tutorial" className="doors-tutorial-actions">
+                  <button
+                    ref={tutorialButtonRef}
+                    className={`doors-tutorial-start${
+                      tutorialPage === 3 ? " doors-tutorial-start-final" : ""
+                    }`}
+                    onClick={() => {
+                      if (tutorialPage < 3) {
+                        setTutorialPage((page) => page + 1);
+                        return;
+                      }
+
+                      beginBootLoading("login");
+                    }}
+                    type="button"
+                  >
+                    {tutorialPage === 3
+                      ? "Entendi, começar o jogo!"
+                      : "Continuar"}
+                  </button>
+                </nav>
+              </div>
+            
+              </div>
+            </section>
+          )}{bootStage === "login" && (
+            <section
+              aria-label="Tela de login do Doors"
+              aria-modal="true"
+              className="doors-boot-screen doors-login-screen"
+              role="dialog"
+            >
+              <div aria-hidden="true" className="doors-login-top" />
+              <div className="doors-login-content">
+                <div className="doors-login-intro">
+                  <img
+                    alt="Doors — Sistema operacional"
+                    className="doors-login-wordmark"
+                    src="/System/Doors/figma/login-door-wordmark.png"
+                  />
+                  <p>Para começar, escolha um usuário</p>
+                </div>
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  className="doors-login-divider"
+                  src="/System/Doors/figma/login-divider.svg"
+                />
+                <button
+                  ref={loginButtonRef}
+                  aria-label="Entrar como Administrador"
+                  className="doors-login-user"
+                  onClick={startSession}
+                  type="button"
+                >
+                  <img
+                    alt=""
+                    className="doors-login-avatar"
+                    src="/System/Doors/figma/login-avatar-tree.png"
+                  />
+                  <span className="doors-login-user-name">Administrador</span>
+                  <span aria-hidden="true" className="doors-login-next">
+                    <img
+                      alt=""
+                      src="/System/Doors/figma/tutorial-right-arrow.svg"
+                    />
+                  </span>
+                </button>
+              </div>
+              <div aria-hidden="true" className="doors-login-bottom" />
+              <button
+                aria-label="Desligar o computador e voltar à tela de login"
+                className="doors-shutdown"
+                onClick={resetAndReload}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="/System/Doors/figma/desligar.svg"
+                />
+              </button>
+            </section>
+          )}
+        </>
+      )}
+    </StyledDesktop>
+  );
+};
+
+export default Desktop;
+

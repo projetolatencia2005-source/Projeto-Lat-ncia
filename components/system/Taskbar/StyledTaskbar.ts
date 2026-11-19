@@ -54,7 +54,7 @@ const StyledTaskbar = styled.nav`
   .doors-show-desktop {
     background: transparent;
     border: 0;
-    color: #f7edd7;
+    color: #D7E4F7;
     font-family: "Pixelify Sans", monospace;
     font-size: 12px;
     height: calc(100% - 2px);
