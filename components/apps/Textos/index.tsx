@@ -365,7 +365,7 @@ const updateLegacyTemplates = (content: string, url: string): string => {
 const templates = [
   {
     content: SCHOOL_TEST_TEMPLATE_CONTENT,
-    name: "Trabalho de escola",
+    name: "Prova/Trabalho de escola",
     preview: "lines",
   },
   {
@@ -968,10 +968,15 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
           const baseName = fileName
             .replace(/\.whtml$/i, "")
             .replace(/ \(\d+\)$/, "");
-          const template = templates.find(
-            ({ name }) =>
-              name.toLocaleLowerCase() === baseName.toLocaleLowerCase()
-          );
+          const normalizedBaseName = baseName.toLocaleLowerCase();
+          const template = templates.find(({ name }) => {
+            const normalizedName = name.toLocaleLowerCase();
+            return (
+              normalizedName === normalizedBaseName ||
+              (normalizedName === "prova/trabalho de escola" &&
+                normalizedBaseName === "trabalho de escola")
+            );
+          });
 
           if (template) {
             const sourcePath = `${DOCUMENTS_PATH}/${fileName}`;
@@ -984,18 +989,26 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
             }
 
             if (contents) {
+              const templatePathParts = template.name.split("/").filter(Boolean);
+              const templateFileName = templatePathParts.pop();
+
+              if (!templateFileName) continue;
+
+              const templateDirectory = templatePathParts.length
+                ? `${INTERNAL_DOCUMENTS_PATH}/${templatePathParts.join("/")}`
+                : INTERNAL_DOCUMENTS_PATH;
               const hiddenName = await createPath(
-                fileName,
-                INTERNAL_DOCUMENTS_PATH,
+                `${templateFileName}.whtml`,
+                templateDirectory,
                 contents
               );
 
               if (hiddenName) {
                 if (await unlink(sourcePath)) {
                   await updateFolder(DOCUMENTS_PATH, undefined, fileName);
-                  await updateFolder(INTERNAL_DOCUMENTS_PATH, hiddenName);
+                  await updateFolder(templateDirectory, hiddenName);
                 } else {
-                  await unlink(`${INTERNAL_DOCUMENTS_PATH}/${hiddenName}`);
+                  await unlink(`${templateDirectory}/${hiddenName}`);
                 }
               }
             }
@@ -1016,16 +1029,24 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
     name: string,
     content: string
   ): Promise<void> => {
+    const nameParts = name.split("/").filter(Boolean);
+    const fileBaseName = nameParts.pop();
+
+    if (!fileBaseName) return;
+
+    const targetDirectory = nameParts.length
+      ? `${INTERNAL_DOCUMENTS_PATH}/${nameParts.join("/")}`
+      : INTERNAL_DOCUMENTS_PATH;
     const fileName = await createPath(
-      `${name}.whtml`,
-      INTERNAL_DOCUMENTS_PATH,
+      `${fileBaseName}.whtml`,
+      targetDirectory,
       Buffer.from(content)
     );
 
     if (!fileName) return;
 
-    updateFolder(INTERNAL_DOCUMENTS_PATH, fileName);
-    setProcessUrl(id, `${INTERNAL_DOCUMENTS_PATH}/${fileName}`);
+    updateFolder(targetDirectory, fileName);
+    setProcessUrl(id, `${targetDirectory}/${fileName}`);
   };
 
   const openLibrary = (): void => open("FileExplorer", { url: DOCUMENTS_PATH });

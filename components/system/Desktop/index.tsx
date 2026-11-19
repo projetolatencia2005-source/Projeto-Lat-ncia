@@ -729,7 +729,7 @@ const Desktop: FC = ({ children }) => {
 
     postItOpenedForSessionRef.current = true;
     openProcess("TinyMCE", {
-      initialRelativePosition: { right: 171, top: 89 },
+      initialRelativePosition: { right: 312, top: 167 },
       url: "/Users/Public/Post-it.whtml",
     });
   }, [openProcess, startedAt]);

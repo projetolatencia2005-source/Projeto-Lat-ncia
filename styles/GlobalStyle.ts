@@ -1278,6 +1278,7 @@ const GlobalStyle = styled.createGlobalStyle`
       gap: 1px;
     }
 
+    .metrics span:first-child .doors-silkscreen-number,
     .metrics span:last-child .doors-silkscreen-number {
       letter-spacing: -0.5px;
     }
