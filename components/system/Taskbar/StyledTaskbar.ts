@@ -43,7 +43,7 @@ const StyledTaskbar = styled.nav`
   .doors-system-tray {
     align-items: center;
     display: flex;
-    gap: 5px;
+    gap: 10px;
     height: 100%;
     position: absolute;
     right: 150px;
@@ -62,7 +62,7 @@ const StyledTaskbar = styled.nav`
     overflow: hidden;
     padding: 0 6px;
     position: absolute;
-    right: calc(275px - 2px);
+    right: calc(275px + 3px);
     top: 0;
     text-overflow: ellipsis;
     white-space: nowrap;

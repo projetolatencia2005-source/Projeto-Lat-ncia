@@ -30,6 +30,7 @@ type BrowserTabsContextValue = {
   moveHistory: (step: number) => void;
   navigate: (url: string, newTab?: boolean) => void;
   selectTab: (id: string) => void;
+  reorderTabs: (sourceId: string, targetId: string, afterTarget: boolean) => void;
   tabs: BrowserTab[];
 };
 
@@ -124,6 +125,29 @@ export const BrowserTabsProvider: FC<{
   );
 
   const selectTab = useCallback((id: string): void => setActiveTabId(id), []);
+  const reorderTabs = useCallback(
+    (sourceId: string, targetId: string, afterTarget: boolean): void => {
+      if (sourceId === targetId) return;
+
+      setTabs((currentTabs) => {
+        const sourceIndex = currentTabs.findIndex(({ id }) => id === sourceId);
+        const targetIndex = currentTabs.findIndex(({ id }) => id === targetId);
+
+        if (sourceIndex < 0 || targetIndex < 0) return currentTabs;
+
+        const nextTabs = [...currentTabs];
+        const [movedTab] = nextTabs.splice(sourceIndex, 1);
+        const adjustedTargetIndex = nextTabs.findIndex(
+          ({ id }) => id === targetId
+        );
+
+        nextTabs.splice(adjustedTargetIndex + (afterTarget ? 1 : 0), 0, movedTab);
+
+        return nextTabs;
+      });
+    },
+    []
+  );
 
   const moveHistory = useCallback(
     (step: number): void => {
@@ -178,6 +202,7 @@ export const BrowserTabsProvider: FC<{
       goToHistory,
       moveHistory,
       navigate,
+      reorderTabs,
       selectTab,
       tabs,
     }),
@@ -188,6 +213,7 @@ export const BrowserTabsProvider: FC<{
       goToHistory,
       moveHistory,
       navigate,
+      reorderTabs,
       selectTab,
       tabs,
     ]

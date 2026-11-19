@@ -70,6 +70,8 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
   const { setMenu } = useMenuActions();
   const resetMenu = (): void => setMenu(Object.create(null) as MenuState);
   const menuIsOpenRef = useRef<boolean>(false);
+  const draggedBrowserTabRef = useRef<string | null>(null);
+  const suppressBrowserTabClickRef = useRef(false);
   const clickCloseCallback = (): void => {
     if (menuIsOpenRef.current) resetMenu();
     onClose();
@@ -134,6 +136,60 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
 
     onMaximize();
   };
+  const onBrowserTabDragStart = (
+    tabId: string,
+    event: React.DragEvent<HTMLDivElement>
+  ): void => {
+    draggedBrowserTabRef.current = tabId;
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", tabId);
+    event.stopPropagation();
+  };
+  const onBrowserTabDragOver: React.DragEventHandler<HTMLDivElement> = (
+    event
+  ) => {
+    if (!draggedBrowserTabRef.current) return;
+
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    event.stopPropagation();
+  };
+  const onBrowserTabDrop = (
+    tabId: string,
+    event: React.DragEvent<HTMLDivElement>
+  ): void => {
+    const sourceId =
+      draggedBrowserTabRef.current || event.dataTransfer.getData("text/plain");
+    if (!sourceId || !browserTabs) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    const { left, width } = event.currentTarget.getBoundingClientRect();
+    browserTabs.reorderTabs(
+      sourceId,
+      tabId,
+      event.clientX >= left + width / 2
+    );
+  };
+  const onBrowserTabDragEnd: React.DragEventHandler<HTMLDivElement> = (
+    event
+  ) => {
+    draggedBrowserTabRef.current = null;
+    suppressBrowserTabClickRef.current = true;
+    window.setTimeout(() => {
+      suppressBrowserTabClickRef.current = false;
+    }, 150);
+    event.stopPropagation();
+  };
+  const onBrowserTabClickCapture: React.MouseEventHandler<HTMLDivElement> = (
+    event
+  ) => {
+    if (!suppressBrowserTabClickRef.current) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    suppressBrowserTabClickRef.current = false;
+  };
   const onIconMouseDownCapture: React.MouseEventHandler<
     HTMLImageElement
   > = () => {
@@ -193,7 +249,13 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
             {browserTabs.tabs.map((tab) => (
               <div
                 key={tab.id}
-                className={`browser-tab${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
+                className={`browser-tab cancel${tab.id === browserTabs.activeTab.id ? " active" : ""}`}
+                draggable
+                onClickCapture={onBrowserTabClickCapture}
+                onDragEnd={onBrowserTabDragEnd}
+                onDragOver={onBrowserTabDragOver}
+                onDragStart={(event) => onBrowserTabDragStart(tab.id, event)}
+                onDrop={(event) => onBrowserTabDrop(tab.id, event)}
               >
                 <Button
                   aria-selected={tab.id === browserTabs.activeTab.id}

@@ -679,7 +679,7 @@ const useFileSystemContextState = (): {
       const postItPath = "/Users/Public/Post-it.whtml";
       const legacyWelcomeText =
         "Bem-vindo ao Post-it! Use este espaço para anotar suas ideias e lembretes durante a navegação.";
-      const initialPostItContent = "<p>Faça uma prova</p><p>Veja uma Foto</p><p>Leia um artigo</p><p>Leia uma conversa</p><p>Veja um vídeo</p>";
+      const initialPostItContent = "<p>Faça uma prova</p><p>Veja uma Foto</p><p>Leia um artigo</p><p>Participe de uma conversa</p><p>Veja um vídeo</p>";
       const seedPostIt = async (): Promise<void> => {
         await writeFile(postItPath, Buffer.from(initialPostItContent), true);
         await updateFolder(dirname(postItPath), basename(postItPath));
@@ -687,6 +687,20 @@ const useFileSystemContextState = (): {
 
       if (await exists(postItPath)) {
         const currentPostIt = (await readFile(postItPath)).toString();
+        const updatedConversationHint = currentPostIt.replace(
+          /Leia uma conversa/gi,
+          "Participe de uma conversa"
+        );
+
+        if (updatedConversationHint !== currentPostIt) {
+          await writeFile(
+            postItPath,
+            Buffer.from(updatedConversationHint),
+            true
+          );
+          await updateFolder(dirname(postItPath), basename(postItPath));
+        }
+
         const visibleText = currentPostIt
           .replace(/<[^>]*>/g, "")
           .replace(/&nbsp;|&#160;/gi, " ")

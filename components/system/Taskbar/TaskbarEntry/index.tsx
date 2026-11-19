@@ -26,13 +26,26 @@ const PeekWindow = dynamic(
   () => import("components/system/Taskbar/TaskbarEntry/Peek/PeekWindow")
 );
 
+export type TaskbarEntryDragProps = {
+  draggable: boolean;
+  "data-taskbar-dragging"?: string;
+  "data-taskbar-drop-target"?: string;
+  onClickCapture: React.MouseEventHandler<HTMLLIElement>;
+  onDragEnd: React.DragEventHandler<HTMLLIElement>;
+  onDragOver: React.DragEventHandler<HTMLLIElement>;
+  onDragStart: React.DragEventHandler<HTMLLIElement>;
+  onDrop: React.DragEventHandler<HTMLLIElement>;
+  onKeyDownCapture: React.KeyboardEventHandler<HTMLLIElement>;
+};
+
 type TaskbarEntryProps = {
+  dragProps: TaskbarEntryDragProps;
   icon: string;
   id: string;
   title: string;
 };
 
-const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
+const TaskbarEntry: FC<TaskbarEntryProps> = ({ dragProps, icon, id, title }) => {
   const nextFocusableId = useNextFocusable(id);
   const { setForegroundId } = useSessionActions();
   const foregroundId = useForegroundId();
@@ -117,6 +130,7 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
 
   return (
     <StyledTaskbarEntry
+      {...dragProps}
       $foreground={isForeground}
       $progress={progress}
       onClick={hidePeek}

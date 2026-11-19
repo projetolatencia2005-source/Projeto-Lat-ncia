@@ -7,6 +7,19 @@ type StyledTaskbarEntriesProps = {
 
 const StyledTaskbarEntries = styled.ol<StyledTaskbarEntriesProps>`
   column-gap: 1px;
+
+  > li[draggable="true"] {
+    cursor: grab;
+  }
+
+  > li[data-taskbar-dragging="true"] {
+    opacity: 0.5;
+  }
+
+  > li[data-taskbar-drop-target="true"] {
+    outline: 2px dashed #0872d1;
+    outline-offset: -2px;
+  }
   display: flex;
   height: 100%;
   margin: 0 3px;

@@ -131,6 +131,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
   .browser-tab {
     align-items: center;
+    cursor: grab;
     background: #d7e4f7;
     border: 2px solid #31302c;
     border-bottom: 0;
@@ -142,6 +143,10 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     min-width: clamp(120px, 9.1vw, 175px);
     overflow: hidden;
     padding: 0 3px 0 0;
+
+    &:active {
+      cursor: grabbing;
+    }
 
     &.active {
       background: #f7edd7;

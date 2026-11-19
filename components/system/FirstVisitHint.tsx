@@ -135,7 +135,7 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
           onClick={() => setVisible(false)}
           type="button"
         >
-          Entendi
+          Continuar
         </button>
       </section>
     </div>,

@@ -2259,10 +2259,10 @@ const GlobalStyle = styled.createGlobalStyle`
     box-shadow: 6px 6px 0 #111;
     color: #20232a;
     font-family: "Pixelify Sans", monospace;
-    max-width: 380px;
+    max-width: min(560px, calc(100vw - 36px));
     padding: 0 18px 18px;
     pointer-events: auto;
-    width: min(calc(100vw - 36px), 380px);
+    width: max-content;
   }
 
   .doors-first-visit-titlebar {
@@ -2290,7 +2290,7 @@ const GlobalStyle = styled.createGlobalStyle`
     font-size: 15px;
     line-height: 1.35;
     margin: 0 0 18px;
-    overflow-x: auto;
+    overflow: visible;
     scrollbar-width: none;
     white-space: nowrap;
   }
@@ -2302,15 +2302,27 @@ const GlobalStyle = styled.createGlobalStyle`
     color: #20232a;
     display: block;
     font-family: "Pixelify Sans", monospace;
-    font-size: 15px;
+    font-size: 13px;
     margin-left: auto;
-    min-height: 36px;
-    padding: 4px 14px;
+    min-height: 30px;
+    padding: 2px 10px;
   }
 
   .doors-first-visit-window button:focus-visible {
     outline: 2px solid #0872d1;
     outline-offset: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .doors-first-visit-window {
+      max-width: calc(100vw - 36px);
+      width: calc(100vw - 36px);
+    }
+
+    .doors-first-visit-window p {
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
   }
 
   .doors-post-it-window-title {
@@ -2324,7 +2336,7 @@ const GlobalStyle = styled.createGlobalStyle`
     padding: 0 8px;
     text-align: left;
     text-overflow: clip;
-    transform: translateX(4px);
+    transform: translateX(9px);
     white-space: nowrap;
   }
 
