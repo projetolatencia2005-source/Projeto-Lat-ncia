@@ -48,6 +48,7 @@ const SystemTray: FC = () => {
     Math.round(getSystemVolume() * 100)
   );
   const [volumeControlOpen, setVolumeControlOpen] = useState(false);
+  const [networkInfoOpen, setNetworkInfoOpen] = useState(false);
   const trayRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -170,7 +171,7 @@ const SystemTray: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!volumeControlOpen) return;
+    if (!volumeControlOpen && !networkInfoOpen) return;
 
     const closeOnOutsideClick = (event: PointerEvent): void => {
       if (
@@ -178,10 +179,14 @@ const SystemTray: FC = () => {
         !trayRef.current?.contains(event.target)
       ) {
         setVolumeControlOpen(false);
+        setNetworkInfoOpen(false);
       }
     };
     const closeOnEscape = (event: KeyboardEvent): void => {
-      if (event.key === "Escape") setVolumeControlOpen(false);
+      if (event.key === "Escape") {
+        setVolumeControlOpen(false);
+        setNetworkInfoOpen(false);
+      }
     };
 
     document.addEventListener("pointerdown", closeOnOutsideClick);
@@ -190,7 +195,7 @@ const SystemTray: FC = () => {
       document.removeEventListener("pointerdown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
     };
-  }, [volumeControlOpen]);
+  }, [networkInfoOpen, volumeControlOpen]);
 
   const changeVolume = (nextVolume: number): void => {
     const next = Math.max(0, Math.min(100, nextVolume));
@@ -213,17 +218,37 @@ const SystemTray: FC = () => {
         aria-hidden="true"
         src="/System/Doors/figma/icon-tray-alert.svg"
       />
-      <img
-        alt=""
-        aria-hidden="true"
-        src="/System/Doors/figma/icon-tray-network.svg"
-      />
+      <button
+        aria-expanded={networkInfoOpen}
+        aria-haspopup="dialog"
+        aria-label="Status da rede: conectado"
+        className="doors-system-network-toggle"
+        onClick={() => {
+          setNetworkInfoOpen((currentlyOpen) => !currentlyOpen);
+          setVolumeControlOpen(false);
+        }}
+        type="button"
+      >
+        <img alt="" aria-hidden="true" src="/System/Doors/figma/icon-tray-network.svg" />
+      </button>
+      {networkInfoOpen && (
+        <div aria-label="Status da conexão" className="doors-network-info" role="dialog">
+          <strong>
+            Status: <span className="doors-network-info-status">Conectado</span>
+            <span aria-label="Sinal forte" className="doors-network-info-signal" role="img">▮▮▮</span>
+          </strong>
+          <span>IP: <span className="doors-silkscreen-number">40.028.9-82</span></span>
+        </div>
+      )}
       <button
         aria-expanded={volumeControlOpen}
         aria-haspopup="dialog"
         aria-label={`Volume: ${volume}%`}
         className="doors-system-volume-toggle"
-        onClick={() => setVolumeControlOpen((currentlyOpen) => !currentlyOpen)}
+        onClick={() => {
+          setVolumeControlOpen((currentlyOpen) => !currentlyOpen);
+          setNetworkInfoOpen(false);
+        }}
         type="button"
       >
         <img

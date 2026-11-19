@@ -17,8 +17,14 @@ const timeFormatter = new Intl.DateTimeFormat(DEFAULT_LOCALE, {
   minute: "2-digit",
 });
 
+export const getSimulatedSystemDate = (now: Date = new Date()): Date => {
+  const date = new Date(now.getTime());
+  date.setFullYear(2007);
+  return date;
+};
+
 export const formatLocaleDateTime = (now: Date): LocaleTimeDate => {
-  const date = dateFormatter.format(now);
+  const date = dateFormatter.format(getSimulatedSystemDate(now));
   const time = timeFormatter.format(now);
 
   return {

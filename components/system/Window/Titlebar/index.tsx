@@ -176,6 +176,9 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
           <span aria-hidden="true">+</span>
         </Button>
       )}
+      {isPostIt && (
+        <span className="doors-post-it-window-title">Dicas Palavras-Chaves</span>
+      )}
       {isBrowser && browserTabs ? (
         <div className="browser-tab-strip">
           <div

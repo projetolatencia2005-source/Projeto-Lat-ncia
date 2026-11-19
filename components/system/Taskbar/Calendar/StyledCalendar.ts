@@ -34,6 +34,7 @@ const StyledCalendar = styled(motion.section)`
     }
 
     tbody td {
+      font-family: "Silkscreen", monospace;
       border: 2px solid #31302c;
       background-color: #f7edd7;
       box-shadow: 3px 3px 0 #31302c;
@@ -54,6 +55,7 @@ const StyledCalendar = styled(motion.section)`
 
           header {
             color: #31302c;
+            font-family: "Silkscreen", monospace;
 
             &:hover {
               color: #000;

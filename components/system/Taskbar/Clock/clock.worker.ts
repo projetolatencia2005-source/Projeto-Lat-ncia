@@ -6,7 +6,6 @@ import {
 } from "components/system/Taskbar/Clock/functions";
 import { getNtpAdjustedTime } from "components/system/Taskbar/Clock/ntp";
 import { type ClockSource } from "contexts/session/types";
-import formats from "styles/defaultTheme/formats";
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -28,7 +27,7 @@ const textPosition = {
 const styleClock = (): void => {
   offscreenContext.scale(global.devicePixelRatio, global.devicePixelRatio);
   offscreenContext.fillStyle = textColor;
-  offscreenContext.font = `400 ${fontSize} ${formats.systemFont}`;
+  offscreenContext.font = `400 ${fontSize} "Silkscreen", monospace`;
   offscreenContext.textAlign = "right";
   offscreenContext.textBaseline = "middle";
 
@@ -67,7 +66,7 @@ const sendTick = (): void => {
   if (offscreenCanvas) drawClockText(dateTime);
 };
 
-const loadPixelifySansFont = async (): Promise<void> => {
+const loadSilkscreenFont = async (): Promise<void> => {
   const workerFonts = (
     globalThis as typeof globalThis & {
       fonts?: FontFaceSet;
@@ -78,12 +77,9 @@ const loadPixelifySansFont = async (): Promise<void> => {
 
   try {
     const font = new FontFace(
-      "Pixelify Sans",
-      'url("/System/Doors/figma/PixelifySans-Latin.woff2")',
-      {
-        unicodeRange: "U+0030-0039",
-        weight: "400 700",
-      }
+      "Silkscreen",
+      'url("/System/Doors/fonts/Silkscreen-Regular.ttf")',
+      { weight: "400" }
     );
 
     await font.load();
@@ -99,7 +95,7 @@ const loadPixelifySansFont = async (): Promise<void> => {
 };
 
 // oxlint-disable-next-line unicorn/prefer-top-level-await -- Keep worker startup responsive while the optional font loads.
-void loadPixelifySansFont();
+void loadSilkscreenFont();
 
 let initialized = false;
 

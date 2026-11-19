@@ -3,6 +3,7 @@ import { type CursorEffectResult, fairyDustCursor } from "cursor-effects";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Editor } from "tinymce";
 import StyledTextos from "components/apps/Textos/StyledTextos";
+import FirstVisitHint from "components/system/FirstVisitHint";
 import useTinyMCE from "components/apps/TinyMCE/useTinyMCE";
 import AppContainer, {
   useAppContainer,
@@ -1717,7 +1718,23 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
 const Textos: FC<ComponentProcessProps> = ({ id }) => {
   const { url = "" } = useProcess(id);
 
-  return url ? <TextosDocument id={id} /> : <TextosModels id={id} />;
+  const isSchoolWorksheet = url.toLocaleLowerCase("pt-BR").includes("trabalho de escola");
+
+  return (
+    <>
+      {url ? <TextosDocument id={id} /> : <TextosModels id={id} />}
+      <FirstVisitHint
+        active={!url}
+        eventKey="textos-home"
+        message="Você está perto de uma palavra-chave, faça uma prova!"
+      />
+      <FirstVisitHint
+        active={isSchoolWorksheet}
+        eventKey="textos-school-worksheet"
+        message="Tem uma palavra-chave nesta página, responda as questões!"
+      />
+    </>
+  );
 };
 
 export default Textos;

@@ -679,7 +679,7 @@ const useFileSystemContextState = (): {
       const postItPath = "/Users/Public/Post-it.whtml";
       const legacyWelcomeText =
         "Bem-vindo ao Post-it! Use este espaço para anotar suas ideias e lembretes durante a navegação.";
-      const initialPostItContent = "<p>Anote alguma coisa aqui...</p>";
+      const initialPostItContent = "<p>Faça uma prova</p><p>Veja uma Foto</p><p>Leia um artigo</p><p>Leia uma conversa</p><p>Veja um vídeo</p>";
       const seedPostIt = async (): Promise<void> => {
         await writeFile(postItPath, Buffer.from(initialPostItContent), true);
         await updateFolder(dirname(postItPath), basename(postItPath));
@@ -698,7 +698,7 @@ const useFileSystemContextState = (): {
 
         if (
           !hasMedia &&
-          (!visibleText || visibleText === legacyWelcomeText)
+          (!visibleText || visibleText === legacyWelcomeText || visibleText === "Anote alguma coisa aqui...")
         ) {
           await seedPostIt();
         }

@@ -8,6 +8,7 @@ import {
   SITE_URLS,
 } from "components/apps/Browser/config";
 import StyledInternalSites from "components/apps/Browser/sites/StyledInternalSites";
+import FirstVisitHint from "components/system/FirstVisitHint";
 import YouSpaceRebuilt from "components/apps/Browser/sites/YouSpaceRebuilt";
 import { attachDoorsKeywordCursorEffect } from "utils/doorsKeywordCursor";
 import {
@@ -3120,6 +3121,12 @@ const YouSpacePage: FC<{ url: string }> = ({ url }) => {
 const InternalSites: FC<InternalSitesProps> = ({ url }) => {
   const site = getInternalSite(url);
   const siteId: InternalSiteId = site?.id || "gluugli";
+  let pathname = "/";
+  try {
+    pathname = new URL(url).pathname.toLocaleLowerCase("pt-BR").replace(/\/+$/, "") || "/";
+  } catch {
+    // The normalized internal URL normally makes this branch unnecessary.
+  }
 
   return (
     <StyledInternalSites key={url} $site={siteId}>
@@ -3127,6 +3134,36 @@ const InternalSites: FC<InternalSitesProps> = ({ url }) => {
       {siteId === "bubble" && <BubbleRebuilt url={url} />}
       {siteId === "encicloweb" && <EncicloWebPage url={url} />}
       {siteId === "youspace" && <YouSpaceRebuilt url={url} />}
+      <FirstVisitHint
+        active={siteId === "bubble" && (pathname === "/" || pathname === "/inicio")}
+        eventKey="bubble-home"
+        message="Você está perto de uma palavra-chave!"
+      />
+      <FirstVisitHint
+        active={siteId === "bubble" && (pathname === "/mensagens" || pathname.startsWith("/mensagens/"))}
+        eventKey="bubble-messages"
+        message="Existe uma palavra-chave nesta página, você está perto!"
+      />
+      <FirstVisitHint
+        active={siteId === "encicloweb" && pathname === "/"}
+        eventKey="encicloweb-home"
+        message="Existe uma palavra-chave por perto, leia um dos artigos!"
+      />
+      <FirstVisitHint
+        active={siteId === "encicloweb" && pathname.startsWith("/artigo/lan-house")}
+        eventKey="encicloweb-lan-house"
+        message="Existe uma palavra-chave nesta página, você está perto!"
+      />
+      <FirstVisitHint
+        active={siteId === "youspace" && (pathname === "/" || pathname === "/videos")}
+        eventKey="youspace-home"
+        message="Você está perto de uma palavra-chave, assista um dos vídeos!"
+      />
+      <FirstVisitHint
+        active={siteId === "youspace" && pathname.startsWith("/watch/eles-sabem")}
+        eventKey="youspace-selected-video"
+        message="Existe uma palavra-chave nesta página, você está perto!"
+      />
     </StyledInternalSites>
   );
 };

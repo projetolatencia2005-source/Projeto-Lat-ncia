@@ -4,6 +4,14 @@ import FocusRing from "styles/common/FocusRing";
 const GlobalStyle = styled.createGlobalStyle`
   @font-face {
     font-display: swap;
+    font-family: "Silkscreen";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/System/Doors/fonts/Silkscreen-Regular.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-display: swap;
     font-family: "Pixelify Sans";
     font-style: normal;
     font-weight: 400 700;
@@ -646,7 +654,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-step-number {
     color: #e3f0ff;
     display: block;
-    font-family: "Pixelify Sans", monospace;
+    font-family: "Silkscreen", "Pixelify Sans", monospace;
     font-size: clamp(40px, 4.17vw, 80px);
     font-weight: 400;
     letter-spacing: 0.08em;
@@ -675,6 +683,12 @@ const GlobalStyle = styled.createGlobalStyle`
     color: #d7e4f7;
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  .doors-tutorial-step-copy p .doors-silkscreen-number {
+    color: inherit;
+    font-family: "Silkscreen", "Pixelify Sans", monospace;
+    text-decoration: none;
   }
 
   .doors-tutorial-desktop-preview {
@@ -2254,6 +2268,182 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
+
+  .doors-silkscreen-number {
+    font-family: "Silkscreen", "Pixelify Sans", monospace;
+  }
+
+  .doors-session-status .doors-silkscreen-number,
+  #clock .doors-clock-date {
+    font-family: "Silkscreen", "Pixelify Sans", monospace;
+  }
+
+  .doors-first-visit-overlay {
+    align-items: center;
+    background: rgba(20, 22, 26, 0.58);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 18px;
+    position: fixed;
+    z-index: 1000000;
+  }
+
+  .doors-first-visit-window {
+    background: #d7e4f7;
+    border: 3px solid #31302c;
+    box-shadow: 6px 6px 0 #111;
+    color: #20232a;
+    font-family: "Pixelify Sans", monospace;
+    max-width: 480px;
+    padding: 0 18px 18px;
+    width: min(100%, 480px);
+  }
+
+  .doors-first-visit-titlebar {
+    align-items: center;
+    background: #839abc;
+    border-bottom: 2px solid #31302c;
+    color: #fff;
+    display: flex;
+    font-size: 16px;
+    font-weight: 700;
+    justify-content: space-between;
+    margin: 0 -18px 18px;
+    min-height: 38px;
+    padding: 6px 10px;
+  }
+
+  .doors-first-visit-window p {
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 0 0 18px;
+  }
+
+  .doors-first-visit-window button {
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    box-shadow: 3px 3px 0 #31302c;
+    color: #20232a;
+    display: block;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 15px;
+    margin-left: auto;
+    min-height: 36px;
+    padding: 4px 14px;
+  }
+
+  .doors-first-visit-window button:focus-visible {
+    outline: 2px solid #0872d1;
+    outline-offset: 3px;
+  }
+
+  .doors-post-it-window-title {
+    align-self: center;
+    color: #31302c;
+    flex: 1 1 auto;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 14px;
+    font-weight: 700;
+    overflow: hidden;
+    padding: 0 8px;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .doors-taskbar-pinned {
+    align-items: center;
+    display: flex;
+    flex: 0 0 40px;
+    height: 100%;
+    justify-content: center;
+    min-width: 40px;
+    padding: 3px;
+  }
+
+  .doors-taskbar-pinned button {
+    align-items: center;
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    box-shadow: 2px 2px 0 #31302c;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    padding: 2px;
+    width: 30px;
+  }
+
+  .doors-taskbar-pinned img {
+    height: 23px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    width: 23px;
+  }
+
+  .doors-system-network-toggle img {
+    height: 20px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    width: 20px;
+  }
+
+  .doors-system-network-toggle {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    color: inherit;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    display: flex;
+    flex: 0 0 20px;
+    height: 30px;
+    justify-content: center;
+    padding: 0;
+    width: 20px;
+  }
+
+  .doors-network-info {
+    background: #31302c;
+    border: 2px solid #111;
+    bottom: calc(100% + 8px);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.75);
+    color: #f7edd7;
+    display: grid;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 13px;
+    gap: 4px;
+    min-width: 260px;
+    padding: 8px 10px;
+    position: absolute;
+    right: 0;
+    z-index: 3;
+  }
+
+  .doors-network-info strong {
+    font-weight: 400;
+  }
+
+  .doors-network-info-status {
+    color: #00d18f;
+    font-weight: 700;
+  }
+
+  .doors-network-info-signal {
+    color: #00d18f;
+    letter-spacing: 1px;
+    margin-left: 4px;
+  }
+
+  @media (max-width: 560px) {
+    .doors-first-visit-window {
+      padding: 0 14px 14px;
+    }
+
+    .doors-first-visit-titlebar {
+      margin: 0 -14px 14px;
+    }
+  }
 `;
 
 export default GlobalStyle;

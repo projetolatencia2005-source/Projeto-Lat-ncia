@@ -148,7 +148,8 @@ const Root = styled.div`
   .ry-comment-color { border: 0; height: 36px; width: 36px; }
   .ry-comment-author { font-size: 12px; }
   .ry-comment-text { margin: 3px 0 8px; }
-  .ry-comment-keyword { background: transparent; border: 0; color: #0872d1; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
+  .ry-comment-keyword { align-items: center; background: transparent; border: 0; color: #0872d1; display: inline-flex; gap: 3px; padding: 0; text-decoration: underline; text-underline-offset: 2px; vertical-align: middle; }
+  .ry-comment-key-icon { display: inline-block; flex: 0 0 12px; height: 12px; vertical-align: middle; width: 12px; }
   .ry-comment-actions, .ry-reply-actions { align-items: center; display: flex; gap: 14px; margin: 5px 0 10px; min-height: 24px; }
   .ry-comment-actions button, .ry-reply-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; justify-content: center; min-height: 24px; padding: 2px; }
   .ry-comment-actions .ry-comment-like { flex-direction: row; gap: 5px; }
@@ -289,6 +290,11 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
           onClick={() => recordDoorsKeyword("Sinal")}
           type="button"
         >
+          <svg aria-hidden="true" className="ry-comment-key-icon" viewBox="0 0 32 32">
+            <circle cx="10" cy="12" fill="#f6c344" r="7" stroke="#31302c" strokeWidth="2" />
+            <circle cx="10" cy="12" fill="#fff4d0" r="2.4" stroke="#31302c" strokeWidth="1.5" />
+            <path d="M16 12h14v4h-4v4h-4v-4h-6z" fill="#f6c344" stroke="#31302c" strokeLinejoin="round" strokeWidth="2" />
+          </svg>
           {part}
         </button>
       ) : part

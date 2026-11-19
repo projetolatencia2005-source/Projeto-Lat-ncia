@@ -2,6 +2,7 @@ import { basename, join } from "path";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import StyledLoading from "components/system/Apps/StyledLoading";
+import FirstVisitHint from "components/system/FirstVisitHint";
 import FileEntry from "components/system/Files/FileEntry";
 import Columns from "components/system/Files/FileManager/Columns";
 import {
@@ -358,6 +359,11 @@ const FileManager: FC<FileManagerProps> = ({
           view={view}
         />
       )}
+      <FirstVisitHint
+        active={!isDesktop && !isStartMenu && /^(?:pictures|fotos|photos)$/i.test(basename(url))}
+        eventKey="photos-folder"
+        message="Existe uma palavra-chave nesta página, você está perto!"
+      />
     </>
   );
 };

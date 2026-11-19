@@ -8,6 +8,7 @@ import {
 } from "components/system/Taskbar/Calendar/functions";
 import { Down, Up } from "components/system/Taskbar/Calendar/Icons";
 import StyledCalendar from "components/system/Taskbar/Calendar/StyledCalendar";
+import { getSimulatedSystemDate } from "components/system/Taskbar/Clock/functions";
 import useTaskbarItemTransition from "components/system/Taskbar/useTaskbarItemTransition";
 import Button from "styles/common/Button";
 import { FOCUSABLE_ELEMENT, PREVENT_SCROLL } from "utils/constants";
@@ -22,12 +23,12 @@ type CalendarProps = {
 const CLOCK_SELECTOR = "main>nav #clock";
 
 const Calendar: FC<CalendarProps> = ({ toggleCalendar }) => {
-  const [date, setDate] = useState(() => new Date());
+  const [date, setDate] = useState(() => getSimulatedSystemDate());
   const [calendar, setCalendar] = useState<ICalendar>(() =>
     createCalendar(date)
   );
   // eslint-disable-next-line react/hook-use-state
-  const [today] = useState(() => new Date());
+  const [today] = useState(() => getSimulatedSystemDate());
   const isCurrentDate =
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear();

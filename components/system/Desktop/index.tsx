@@ -3,6 +3,7 @@ import StyledDesktop from "components/system/Desktop/StyledDesktop";
 import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
 import FileManager from "components/system/Files/FileManager";
 import LockedFolderProvider from "components/system/Files/LockedFolder";
+import { useProcessesActions } from "contexts/process";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
 import { resetStorage } from "contexts/fileSystem/functions";
 import { LOCKED_FOLDER_KEY_COUNT } from "components/system/Files/LockedFolder/constants";
@@ -12,7 +13,7 @@ import {
 } from "utils/accessibility";
 import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
 
-const SESSION_DURATION_SECONDS = 5 * 60;
+const SESSION_DURATION_SECONDS = 7 * 60 + 30;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
@@ -314,14 +315,14 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
         tabIndex={0}
       >
         <span>
-          <strong>Tempo:</strong> <time>{time}</time>
+          <strong>Tempo:</strong> <time className="doors-silkscreen-number">{time}</time>
         </span>
         <span className="brand">Latência System</span>
         <span>
-          <strong>Valor:</strong> R$4,00
+          <strong>Valor:</strong>{" "}<span className="doors-silkscreen-number">R$4,00</span>
         </span>
       </div>
-      <p className="notice">Você já pegou {keysCollected} de {LOCKED_FOLDER_KEY_COUNT} chaves</p>
+      <p className="notice">Você já pegou{" "}<span className="doors-silkscreen-number">{keysCollected}</span>{" "}de{" "}<span className="doors-silkscreen-number">{LOCKED_FOLDER_KEY_COUNT}</span>{" "}chaves</p>
     </aside>
   );
 };
@@ -355,6 +356,8 @@ const Desktop: FC = ({ children }) => {
   const keywordGifTimeoutRef = useRef<null | number>(null);
   const collectedKeywordsRef = useRef(new Set<string>());
   const { exists, unlink, updateFolder } = useFileSystemActions();
+  const { open: openProcess } = useProcessesActions();
+  const postItOpenedForSessionRef = useRef(false);
   const rootFs = useRootFs();
   const resetInProgressRef = useRef(false);
   const resetAndReload = useCallback((): void => {
@@ -461,7 +464,7 @@ const Desktop: FC = ({ children }) => {
 
       collectedKeywordsRef.current.add(normalized);
       setActiveKeyword(normalized);
-      setBonusSeconds((current) => current + 2 * 60);
+      setBonusSeconds((current) => current + 90);
       const nextSequence = keywordGifSequenceRef.current + 1;
       keywordGifSequenceRef.current = nextSequence;
       setKeywordGifSequence(nextSequence);
@@ -647,6 +650,13 @@ const Desktop: FC = ({ children }) => {
 
   const startSession = (): void =>
     setStartedAt((current) => current ?? Date.now());
+
+  useEffect(() => {
+    if (startedAt === null || postItOpenedForSessionRef.current) return;
+
+    postItOpenedForSessionRef.current = true;
+    openProcess("TinyMCE", { url: "/Users/Public/Post-it.whtml" });
+  }, [openProcess, startedAt]);
 
   const continueFromKeywordNotice = (): void => {
     if (typedNoticeCharacters < noticeTotalCharacters) return;
@@ -896,8 +906,10 @@ const Desktop: FC = ({ children }) => {
                         <h1>O QUE É ESTE SITE?</h1>
                         <p>
                           Esta experiência simula como eram as Lan Houses,
-                          espaços que, entre o fim dos anos 1990 e o início dos
-                          anos 2010.
+                          espaços que, entre o fim dos anos{" "}
+                          <span className="doors-silkscreen-number">1990</span>{" "}
+                          e o início dos anos{" "}
+                          <span className="doors-silkscreen-number">2010</span>.
                         </p>
                       </div>
                     </div>
@@ -947,9 +959,12 @@ const Desktop: FC = ({ children }) => {
                       {tutorialPage === 3 && (
                         <>
                           <p>
-                            Encontre as <span>5</span> <span>palavras</span> em
-                            até <span>5</span> minutos. Cada palavra achada você
-                            ganha <span>2</span> minutos.
+                            Encontre as{" "}
+                            <span className="doors-silkscreen-number">5</span>{" "}
+                            <span>palavras</span> em até{" "}
+                            <span className="doors-silkscreen-number">5</span>{" "}
+                            minutos. Cada palavra achada você ganha 1 minuto e
+                            30 segundos.
                           </p>
                           <p>
                             Com todas as chaves, a <span>pasta trancada</span>{" "}
