@@ -970,7 +970,7 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
             .replace(/ \(\d+\)$/, "");
           const normalizedBaseName = baseName.toLocaleLowerCase();
           const template = templates.find(({ name }) => {
-            const normalizedName = name.toLocaleLowerCase();
+            const normalizedName: string = name.toLocaleLowerCase();
             return (
               normalizedName === normalizedBaseName ||
               (normalizedName === "prova/trabalho de escola" &&
