@@ -1240,6 +1240,11 @@ const GlobalStyle = styled.createGlobalStyle`
     .metrics span:last-child {
       border-right: 0;
       font-family: "Pixelify Sans", monospace;
+      gap: 1px;
+    }
+
+    .metrics span:last-child .doors-silkscreen-number {
+      letter-spacing: -0.5px;
     }
     .metrics strong {
       font-weight: 400;
@@ -1254,13 +1259,22 @@ const GlobalStyle = styled.createGlobalStyle`
       border: 2px solid #31302c;
       align-items: center;
       display: flex;
-      font-size: calc(clamp(10px, 0.83vw, 16px) + 2.67px);
+      font-size: clamp(10px, 0.83vw, 16px);
       line-height: 1.15;
       justify-content: center;
       margin: 0;
       min-height: 0;
       padding: 0 4px;
       text-align: center;
+    }
+
+    .notice > span {
+      white-space: nowrap;
+    }
+
+    .notice .doors-silkscreen-number {
+      letter-spacing: -0.5px;
+      margin-inline: -1px;
     }
 
     @media (max-width: 560px) {
@@ -2228,12 +2242,13 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-first-visit-overlay {
-    align-items: center;
-    background: rgba(20, 22, 26, 0.58);
+    align-items: flex-start;
+    background: transparent;
     display: flex;
-    inset: 0;
+    inset: 50px 0 auto;
     justify-content: center;
-    padding: 18px;
+    padding: 0 18px;
+    pointer-events: none;
     position: fixed;
     z-index: 1000000;
   }
@@ -2244,9 +2259,10 @@ const GlobalStyle = styled.createGlobalStyle`
     box-shadow: 6px 6px 0 #111;
     color: #20232a;
     font-family: "Pixelify Sans", monospace;
-    max-width: 760px;
+    max-width: 380px;
     padding: 0 18px 18px;
-    width: min(calc(100vw - 36px), 760px);
+    pointer-events: auto;
+    width: min(calc(100vw - 36px), 380px);
   }
 
   .doors-first-visit-titlebar {
@@ -2264,7 +2280,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-first-visit-window p {
-    font-size: 15px;
+    font-size: 11px;
     line-height: 1.35;
     margin: 0 0 18px;
     overflow-x: auto;
@@ -2299,7 +2315,7 @@ const GlobalStyle = styled.createGlobalStyle`
     font-weight: 700;
     overflow: visible;
     padding: 0 8px;
-    text-align: center;
+    text-align: left;
     text-overflow: clip;
     white-space: nowrap;
   }

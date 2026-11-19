@@ -655,7 +655,7 @@ const FileEntry: FC<FileEntryProps> = ({
                   : isInternetShortcut
                     ? "/System/Doors/figma/internet.svg"
                     : isRabiscoShortcut
-                      ? "/System/Doors/figma/icon-paint-rabisco.png"
+                      ? "/System/Doors/figma/paintnovo.svg"
                       : icon
             }
             {...(isDesktop

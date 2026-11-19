@@ -23,6 +23,7 @@ const StyledClock = styled.button.attrs({
   padding: ${({ theme }) => `0 ${theme.sizes.clock.padding}px`};
   place-content: center;
   position: absolute;
+  z-index: 3;
   right: ${({ $hasAI, theme }) =>
     `calc(${
       $hasAI ? theme.sizes.taskbar.ai.buttonWidth : "0px"

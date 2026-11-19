@@ -322,7 +322,17 @@ const SessionStatus: FC<SessionStatusProps> = ({ bonusSeconds, keysCollected, st
           <strong>Valor:</strong>{" "}<span className="doors-silkscreen-number">R$4,00</span>
         </span>
       </div>
-      <p className="notice">Você já pegou{" "}<span className="doors-silkscreen-number">{keysCollected}</span>{" "}de{" "}<span className="doors-silkscreen-number">{LOCKED_FOLDER_KEY_COUNT}</span>{" "}chaves</p>
+      <p className="notice">
+        <span>
+          Você já pegou{" "}
+          <span className="doors-silkscreen-number">{keysCollected}</span>{" "}
+          de{" "}
+          <span className="doors-silkscreen-number">
+            {LOCKED_FOLDER_KEY_COUNT}
+          </span>{" "}
+          chaves
+        </span>
+      </p>
     </aside>
   );
 };

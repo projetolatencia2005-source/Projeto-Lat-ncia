@@ -40,6 +40,17 @@ const StyledTaskbar = styled.nav`
   width: 100vw;
   z-index: ${TASKBAR_Z_INDEX};
 
+  .doors-system-tray {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    height: 100%;
+    position: absolute;
+    right: 150px;
+    top: 0;
+    z-index: 3;
+  }
+
   .doors-show-desktop {
     background: transparent;
     border: 0;
@@ -51,7 +62,7 @@ const StyledTaskbar = styled.nav`
     overflow: hidden;
     padding: 0 6px;
     position: absolute;
-    right: calc(275px + 8px);
+    right: calc(275px - 2px);
     top: 0;
     text-overflow: ellipsis;
     white-space: nowrap;

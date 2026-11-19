@@ -14,8 +14,6 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const handledKeyRef = useRef<string | null>(null);
-  const continueRef = useRef<HTMLButtonElement | null>(null);
-
   useEffect(() => {
     if (!active) {
       setVisible(false);
@@ -36,8 +34,6 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
 
   useEffect(() => {
     if (!visible) return;
-    continueRef.current?.focus();
-
     const closeOnEscape = (event: KeyboardEvent): void => {
       if (event.key === "Escape") setVisible(false);
     };
@@ -48,15 +44,10 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
   if (!visible || typeof document === "undefined") return null;
 
   return createPortal(
-    <div
-      className="doors-first-visit-overlay"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) setVisible(false);
-      }}
-    >
+    <div className="doors-first-visit-overlay">
       <section
         aria-label="Dica de palavra-chave"
-        aria-modal="true"
+        aria-modal="false"
         className="doors-first-visit-window"
         role="dialog"
       >
@@ -67,7 +58,6 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
         <p>{message}</p>
         <button
           onClick={() => setVisible(false)}
-          ref={continueRef}
           type="button"
         >
           Entendi
