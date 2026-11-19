@@ -2472,6 +2472,42 @@ const GlobalStyle = styled.createGlobalStyle`
       margin: 0 -14px 14px;
     }
   }
+  /* Keep the intro composition proportional on shorter desktop viewports. */
+  @media (min-width: 901px) and (max-height: 1050px) {
+    .doors-tutorial-window-intro {
+      height: 111.11%;
+      transform: scale(0.9);
+      transform-origin: center top;
+    }
+  }
+
+  @media (min-width: 901px) and (max-height: 950px) {
+    .doors-tutorial-window-intro {
+      height: 117.65%;
+      transform: scale(0.85);
+    }
+  }
+
+  @media (min-width: 901px) and (max-height: 900px) {
+    .doors-tutorial-window-intro {
+      height: 121.95%;
+      transform: scale(0.82);
+    }
+  }
+
+  @media (min-width: 901px) and (max-height: 820px) {
+    .doors-tutorial-window-intro {
+      height: 131.58%;
+      transform: scale(0.76);
+    }
+  }
+
+  @media (min-width: 901px) and (max-height: 740px) {
+    .doors-tutorial-window-intro {
+      height: 144.93%;
+      transform: scale(0.69);
+    }
+  }
 `;
 
 export default GlobalStyle;

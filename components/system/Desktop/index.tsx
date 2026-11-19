@@ -993,7 +993,11 @@ const Desktop: FC = ({ children }) => {
               className="doors-boot-screen doors-intro-screen doors-tutorial-screen"
               role="dialog"
             >
-              <div className="doors-tutorial-window">
+              <div
+                className={`doors-tutorial-window${
+                  tutorialPage === 0 ? " doors-tutorial-window-intro" : ""
+                }`}
+              >
                 <div className="doors-tutorial-content doors-tutorial-content-multipage">
                 {tutorialPage === 0 ? (
                   <article
