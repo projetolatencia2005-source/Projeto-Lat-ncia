@@ -575,7 +575,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-tutorial-slide-intro {
     margin: 0 auto;
-    padding-top: 16.95vh;
+    padding-top: calc(16.95vh + var(--tutorial-intro-shift, 100px));
     width: min(1302px, 84vw);
   }
 
@@ -606,7 +606,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-intro-copy p,
   .doors-tutorial-intro-summary {
     color: #f7ecd6;
-    font-size: clamp(22px, 2.5vw, 48px);
+    font-size: calc(clamp(22px, 2.5vw, 48px) - 2.6667px);
     font-weight: 400;
     letter-spacing: 0.08em;
     line-height: 1.195;
@@ -2475,6 +2475,7 @@ const GlobalStyle = styled.createGlobalStyle`
   /* Keep the intro composition proportional on shorter desktop viewports. */
   @media (min-width: 901px) and (max-height: 1050px) {
     .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 111.11px;
       height: 111.11%;
       transform: scale(0.9);
       transform-origin: center top;
@@ -2483,6 +2484,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   @media (min-width: 901px) and (max-height: 950px) {
     .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 117.65px;
       height: 117.65%;
       transform: scale(0.85);
     }
@@ -2490,6 +2492,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   @media (min-width: 901px) and (max-height: 900px) {
     .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 121.95px;
       height: 121.95%;
       transform: scale(0.82);
     }
@@ -2497,6 +2500,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   @media (min-width: 901px) and (max-height: 820px) {
     .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 131.58px;
       height: 131.58%;
       transform: scale(0.76);
     }
@@ -2504,6 +2508,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   @media (min-width: 901px) and (max-height: 740px) {
     .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 144.93px;
       height: 144.93%;
       transform: scale(0.69);
     }
