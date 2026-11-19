@@ -2336,7 +2336,7 @@ const GlobalStyle = styled.createGlobalStyle`
     padding: 0 8px;
     text-align: left;
     text-overflow: clip;
-    transform: translateX(9px);
+    transform: translateX(-1px);
     white-space: nowrap;
   }
 

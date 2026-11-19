@@ -55,7 +55,7 @@ const StyledCalendar = styled(motion.section)`
 
           header {
             color: #31302c;
-            font-family: "Silkscreen", monospace;
+            font-family: "Pixelify Sans", monospace;
 
             &:hover {
               color: #000;

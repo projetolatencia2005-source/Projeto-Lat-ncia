@@ -15,7 +15,8 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   font-family: "Pixelify Sans", monospace;
   font-size: 16px;
   min-height: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   scrollbar-color: ${({ $site }) =>
     $site === "youspace" ? "#ff3038 #f7edd7" : $site === "bubble" ? "#f37319 #f7edd7" : "#7d94b8 #f7edd7"};
@@ -3007,9 +3008,9 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
       button {
         align-items: center;
-        background: #f7edd7;
-        border: 2px solid #31302c;
-        box-shadow: 2px 2px 0 #31302c;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
         color: #31302c;
         cursor: pointer;
         display: flex;
@@ -3570,7 +3571,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         font-size: 12px; line-height: 1.2; min-height: 24px; outline: 0; padding: 5px; resize: vertical;
       }
       button {
-        align-items: center; background: #e9e9e9; border: 1px solid #31302c; box-shadow: 1px 1px 0 #31302c;
+        align-items: center; background: transparent; border: 0; box-shadow: none;
         color: #31302c; display: grid; font-size: 13px; height: 28px; justify-items: center; min-width: 28px; padding: 0; width: 28px;
         img { height: 20px; width: 22px; }
       }
