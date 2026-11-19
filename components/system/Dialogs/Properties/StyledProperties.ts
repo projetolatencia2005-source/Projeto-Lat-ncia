@@ -150,6 +150,57 @@ const StyledProperties = styled.div`
       }
     }
   }
+
+  background: #d7e4f7;
+  color: #31302c;
+  font-family: "Pixelify Sans", monospace;
+
+  .general > table {
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    box-shadow: 3px 3px 0 #31302c;
+
+    tbody {
+      color: #31302c;
+      font-family: "Pixelify Sans", monospace;
+      font-size: 12px;
+      gap: 9px;
+
+      td.spacer {
+        border-bottom: 2px solid #839abc;
+      }
+
+      input {
+        background: #fff;
+        border: 2px solid #31302c;
+        color: #31302c;
+        font-family: inherit;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .tabs button {
+    background: #f47a12;
+    border: 2px solid #31302c;
+    color: #fff;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 12px;
+
+    &.inactive {
+      background: #f7edd7;
+      border: 2px solid #31302c;
+      color: #31302c;
+    }
+  }
+
+  nav.buttons button {
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    box-shadow: 2px 2px 0 #31302c;
+    color: #31302c;
+    font-family: "Pixelify Sans", monospace;
+  }
 `;
 
 export default StyledProperties;

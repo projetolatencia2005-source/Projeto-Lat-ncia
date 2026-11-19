@@ -14,10 +14,11 @@ import StartButton from "components/system/Taskbar/StartButton";
 import StyledTaskbar from "components/system/Taskbar/StyledTaskbar";
 import TaskbarEntries from "components/system/Taskbar/TaskbarEntries";
 import useTaskbarContextMenu from "components/system/Taskbar/useTaskbarContextMenu";
-import { useProcessesActions } from "contexts/process";
+import { getProcesses, useProcessesActions } from "contexts/process";
+import { useStackOrder } from "contexts/session";
 import { useShowAI } from "hooks/useWindowAI";
 import { CLOCK_CANVAS_BASE_WIDTH, FOCUSABLE_ELEMENT } from "utils/constants";
-import { haltEvent } from "utils/functions";
+import { haltEvent, toggleShowDesktop } from "utils/functions";
 import { focusByKey } from "utils/keyboard";
 import {
   getSystemVolume,
@@ -305,6 +306,10 @@ const Taskbar: FC = () => {
   const [aiVisible, setAIVisible] = useState(false);
   const [clockWidth, setClockWidth] = useState(CLOCK_CANVAS_BASE_WIDTH);
   const hasAI = useShowAI();
+  const { minimize } = useProcessesActions();
+  const stackOrder = useStackOrder();
+  const showDesktop = (): void =>
+    toggleShowDesktop(getProcesses(), stackOrder, minimize);
   const toggleStartMenu = (showMenu?: boolean): void =>
     setStartMenuVisible((currentMenuState) => showMenu ?? !currentMenuState);
   const toggleSearch = (showSearch?: boolean): void =>
@@ -363,6 +368,13 @@ const Taskbar: FC = () => {
           toggleStartMenu={toggleStartMenu}
         />
         <TaskbarEntries clockWidth={clockWidth} hasAI={hasAI} />
+        <button
+          className="doors-show-desktop"
+          onClick={showDesktop}
+          type="button"
+        >
+          Voltar à área de trabalho
+        </button>
         <SystemTray />
         <Clock
           calendarVisible={calendarVisible}

@@ -14,10 +14,12 @@ import Icon from "styles/common/Icon";
 import {
   CLICK_FOCUSABLE_ELEMENT,
   FOLDER_ICON,
+  IMAGE_FILE_EXTENSIONS,
   PEEK_DELAY_MS,
+  PHOTO_ICON,
   PROCESS_DELIMITER,
 } from "utils/constants";
-import { label } from "utils/functions";
+import { getExtension, label } from "utils/functions";
 import { focusWithin, isKeyboardNavigating } from "utils/keyboard";
 
 const PeekWindow = dynamic(
@@ -48,6 +50,11 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
     : isPostItPath(url ?? "")
       ? "Post-it"
       : title;
+  const isPropertiesImage =
+    id.startsWith("Properties") &&
+    IMAGE_FILE_EXTENSIONS.has(
+      getExtension(url || title.replace(/\s+Properties$/i, ""))
+    );
   const isPresent = useIsPresent();
   const linkTaskbarEntry = (taskbarEntry: HTMLButtonElement | null): void => {
     if (taskbarEntry) linkElement(id, "taskbarEntry", taskbarEntry);
@@ -164,9 +171,13 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
             src={
               id.startsWith("Browser")
                 ? "/System/Doors/figma/icon-internet-expanded.png"
-                : /documentos?/i.test(displayTitle)
-                  ? FOLDER_ICON
-                  : icon
+                : isPostItPath(url ?? "")
+                  ? "/System/Doors/postit.svg"
+                  : isPropertiesImage
+                    ? PHOTO_ICON
+                    : /documentos?/i.test(displayTitle)
+                      ? FOLDER_ICON
+                      : icon
             }
           />
           <figcaption>{displayTitle}</figcaption>

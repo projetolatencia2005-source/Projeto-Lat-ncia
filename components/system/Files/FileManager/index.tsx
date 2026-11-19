@@ -11,7 +11,6 @@ import {
 } from "components/system/Files/FileManager/Columns/constants";
 import StyledSelection from "components/system/Files/FileManager/Selection/StyledSelection";
 import useSelection from "components/system/Files/FileManager/Selection/useSelection";
-import StatusBar from "components/system/Files/FileManager/StatusBar";
 import useDraggableEntries from "components/system/Files/FileManager/useDraggableEntries";
 import useFileDrop from "components/system/Files/FileManager/useFileDrop";
 import useFileKeyboardShortcuts from "components/system/Files/FileManager/useFileKeyboardShortcuts";
@@ -75,7 +74,6 @@ const FileManager: FC<FileManagerProps> = ({
   isStartMenu,
   loadIconsImmediately,
   readOnly,
-  showStatusBar,
   skipFsWatcher,
   skipSorting,
   url,
@@ -254,7 +252,15 @@ const FileManager: FC<FileManagerProps> = ({
   // Focusing the desktop must deactivate the foreground window, as no window
   // blur fires when its focused element was already removed by navigation
   const onDesktopFocusCapture = (): void => setForegroundId("");
-  const fileKeys = Object.keys(files);
+  const normalizedUrl = url.replace(/\\/g, "/").replace(/\/+$/, "").toLocaleLowerCase();
+  const isDocumentsFolder = normalizedUrl === "/users/public/documents";
+  const fileKeys = Object.keys(files).filter(
+    (file) =>
+      !(
+        isDocumentsFolder &&
+        /^post-it\.whtml$/i.test(basename(file))
+      )
+  );
   const isEmptyFolder =
     !isDesktop && !isStartMenu && !loading && fileKeys.length === 0;
 
@@ -349,16 +355,6 @@ const FileManager: FC<FileManagerProps> = ({
           </>
         )}
       </StyledFileManager>
-      {showStatusBar && (
-        <StatusBar
-          count={loading ? 0 : fileKeys.length}
-          directory={url}
-          fileDrop={fileDrop}
-          selected={focusedEntries}
-          setView={setView}
-          view={view}
-        />
-      )}
       <FirstVisitHint
         active={!isDesktop && !isStartMenu && /^(?:pictures|fotos|photos)$/i.test(basename(url))}
         eventKey="photos-folder"

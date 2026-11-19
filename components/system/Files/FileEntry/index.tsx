@@ -46,6 +46,7 @@ import { useIsVisible } from "hooks/useIsVisible";
 import Button from "styles/common/Button";
 import Icon from "styles/common/Icon";
 import {
+  DESKTOP_PATH,
   EXTENSIONS_WITH_ICON,
   FOLDER_ICON,
   ICON_CACHE,
@@ -204,7 +205,8 @@ const FileEntry: FC<FileEntryProps> = ({
   const isPastasShortcut =
     isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
   const isRabiscoShortcut =
-    isDesktop && name.trim().toLocaleLowerCase() === "rabisco";
+    name.trim().toLocaleLowerCase() === "rabisco" &&
+    (isDesktop || dirname(path).toLocaleLowerCase() === DESKTOP_PATH.toLocaleLowerCase());
   const isInternetShortcut =
     isDesktop && /^(?:internet|internet expandida)$/i.test(name.trim());
   const directory = isShortcut ? url : path;
@@ -653,7 +655,7 @@ const FileEntry: FC<FileEntryProps> = ({
                   : isInternetShortcut
                     ? "/System/Doors/figma/internet.svg"
                     : isRabiscoShortcut
-                      ? "/System/Doors/figma/paintnovo.svg"
+                      ? "/System/Doors/figma/icon-paint-rabisco.png"
                       : icon
             }
             {...(isDesktop

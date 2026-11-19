@@ -11,7 +11,7 @@ const StyledClock = styled.button.attrs({
   background-color: transparent;
   color: ${({ theme }) => theme.colors.text};
   display: flex;
-  font-family: inherit;
+  font-family: "Silkscreen", "Pixelify Sans", monospace !important;
   font-size: 16px;
   font-weight: 400;
   height: 100%;
@@ -40,7 +40,7 @@ const StyledClock = styled.button.attrs({
 
   .doors-clock-date {
     color: #302e2a;
-    font-family: "Pixelify Sans", monospace;
+    font-family: "Silkscreen", "Pixelify Sans", monospace !important;
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;

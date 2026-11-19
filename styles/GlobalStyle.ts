@@ -1274,37 +1274,51 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-accessibility-panel {
-    background: #f3f7fb;
-    color: #1d3348;
+    background: #d7e4f7;
+    border: 2px solid #31302c;
+    box-shadow: 3px 3px 0 #31302c;
+    color: #31302c;
     cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     display: flex;
     flex-direction: column;
-    font-family: "Pixelify Sans", Tahoma, Verdana, "Segoe UI", sans-serif;
-    gap: 16px;
+    font-family: "Pixelify Sans", monospace;
+    gap: 12px;
     height: 100%;
     overflow: auto;
-    padding: 18px;
+    padding: 16px;
 
+    header {
+      background: #f47a12;
+      border: 2px solid #31302c;
+      color: #fff;
+      margin: -16px -16px 0;
+      padding: 12px 14px;
+    }
     h1 {
-      color: #194f7d;
-      font-size: 20px;
+      color: #fff;
+      font-family: "Silkscreen", "Pixelify Sans", monospace;
+      font-size: 17px;
+      line-height: 1.4;
       margin-bottom: 5px;
     }
     p {
+      color: #31302c;
       font-size: 13px;
       line-height: 1.5;
     }
     h2 {
-      color: #194f7d;
-      font-size: 14px;
+      color: #31302c;
+      font-family: "Silkscreen", "Pixelify Sans", monospace;
+      font-size: 12px;
       margin-bottom: 8px;
     }
     .options {
-      border-top: 1px solid #c4d1dd;
+      background: #f7edd7;
+      border: 2px solid #31302c;
       display: flex;
       flex-direction: column;
-      gap: 13px;
-      padding-top: 14px;
+      gap: 12px;
+      padding: 12px;
     }
     label {
       align-items: center;
@@ -1315,9 +1329,9 @@ const GlobalStyle = styled.createGlobalStyle`
       line-height: 1.4;
     }
     input[type="checkbox"] {
-      accent-color: #2479bd;
+      accent-color: #f47a12;
       appearance: auto;
-      border: 1px solid #55748d;
+      border: 1px solid #31302c;
       cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
       flex: 0 0 18px;
       height: 18px;
@@ -1325,23 +1339,22 @@ const GlobalStyle = styled.createGlobalStyle`
     }
     button {
       align-self: flex-start;
-      background: linear-gradient(180deg, #fff 0%, #e3edf6 100%);
-      border: 1px solid #718ba2;
-      border-radius: 3px;
-      color: #1d3348;
+      background: #f7edd7;
+      border: 2px solid #31302c;
+      box-shadow: 3px 3px 0 #31302c;
+      color: #31302c;
       cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
       font: inherit;
       padding: 7px 12px;
     }
     button:focus-visible,
     input:focus-visible {
-      outline: 3px solid #d39e00;
+      outline: 3px solid #0872d1;
       outline-offset: 2px;
     }
     .shortcuts {
-      background: #e7eef5;
-      border: 1px solid #c4d1dd;
-      border-radius: 4px;
+      background: #f7edd7;
+      border: 2px solid #31302c;
       padding: 12px;
     }
     .shortcuts ul {
@@ -1354,75 +1367,11 @@ const GlobalStyle = styled.createGlobalStyle`
     }
     kbd {
       background: #fff;
-      border: 1px solid #a8b7c5;
-      border-radius: 3px;
+      border: 1px solid #31302c;
+      box-shadow: 1px 1px 0 #31302c;
       font: inherit;
       padding: 1px 4px;
     }
-  }
-
-  .doors-high-contrast body {
-    filter: contrast(1.45);
-  }
-  .doors-large-interface {
-    zoom: 1.12;
-  }
-  .doors-reduced-motion *,
-  .doors-reduced-motion *::before,
-  .doors-reduced-motion *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .doors-boot-screen .prompt {
-      animation: none;
-    }
-
-    .doors-splash-stack,
-    .doors-splash-window,
-    .doors-tutorial-window {
-      animation: none;
-    }
-  }
-
-  main > ol > li button figure > picture img {
-    image-rendering: pixelated;
-  }
-
-  main > ol > li button figure figcaption {
-    font-family: "Pixelify Sans", monospace;
-    line-height: 0.9 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: center;
-  }
-
-  .doors-system-tray > img,
-  .doors-system-tray > button:not(:disabled) {
-    transition: opacity 120ms ease;
-  }
-
-  .doors-system-tray > img:hover {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
-  }
-
-  .doors-system-tray > img:hover,
-  .doors-system-tray > button:hover:not(:disabled) {
-    opacity: 0.75 !important;
-  }
-
-  .doors-system-tray {
-    align-items: center;
-    color: #302e2a;
-    display: flex;
-    gap: 8px;
-    height: 100%;
-    position: absolute;
-    right: 150px;
-    top: 0;
   }
 
   .doors-accessibility-toggle {
@@ -2275,7 +2224,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-session-status .doors-silkscreen-number,
   #clock .doors-clock-date {
-    font-family: "Silkscreen", "Pixelify Sans", monospace;
+    font-family: "Silkscreen", "Pixelify Sans", monospace !important;
   }
 
   .doors-first-visit-overlay {
@@ -2290,14 +2239,14 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-first-visit-window {
-    background: #d7e4f7;
+    background: #f7edd7;
     border: 3px solid #31302c;
     box-shadow: 6px 6px 0 #111;
     color: #20232a;
     font-family: "Pixelify Sans", monospace;
-    max-width: 480px;
+    max-width: 760px;
     padding: 0 18px 18px;
-    width: min(100%, 480px);
+    width: min(calc(100vw - 36px), 760px);
   }
 
   .doors-first-visit-titlebar {
@@ -2315,9 +2264,12 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-first-visit-window p {
-    font-size: 18px;
-    line-height: 1.45;
+    font-size: 15px;
+    line-height: 1.35;
     margin: 0 0 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
   }
 
   .doors-first-visit-window button {
@@ -2345,10 +2297,10 @@ const GlobalStyle = styled.createGlobalStyle`
     font-family: "Pixelify Sans", monospace;
     font-size: 14px;
     font-weight: 700;
-    overflow: hidden;
+    overflow: visible;
     padding: 0 8px;
     text-align: center;
-    text-overflow: ellipsis;
+    text-overflow: clip;
     white-space: nowrap;
   }
 

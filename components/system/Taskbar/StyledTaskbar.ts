@@ -40,6 +40,35 @@ const StyledTaskbar = styled.nav`
   width: 100vw;
   z-index: ${TASKBAR_Z_INDEX};
 
+  .doors-show-desktop {
+    background: transparent;
+    border: 0;
+    color: #f7edd7;
+    font-family: "Pixelify Sans", monospace;
+    font-size: 12px;
+    height: calc(100% - 2px);
+    max-width: 230px;
+    overflow: hidden;
+    padding: 0 6px;
+    position: absolute;
+    right: calc(275px + 8px);
+    top: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+    z-index: 2;
+
+    &:hover {
+      background: #839abc;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .doors-show-desktop {
+      display: none;
+    }
+  }
+
   &::after {
     background: #31302c;
     border-radius: 0;

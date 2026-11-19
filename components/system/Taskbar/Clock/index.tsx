@@ -119,7 +119,6 @@ const Clock: FC<ClockProps> = ({
     width,
   });
   const {
-    formats: { systemFont },
     sizes: {
       clock: { fontSize },
     },
@@ -129,7 +128,7 @@ const Clock: FC<ClockProps> = ({
       Math.max(
         CLOCK_CANVAS_BASE_WIDTH,
         Math.ceil(
-          measureText(LARGEST_CLOCK_TEXT, `400 ${fontSize}`, systemFont)
+          measureText(LARGEST_CLOCK_TEXT, `400 ${fontSize}`, "Silkscreen")
         )
       ),
       CLOCK_CANVAS_BASE_WIDTH * 1.5

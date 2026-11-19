@@ -61,6 +61,9 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
   const browserTabs = useBrowserTabs();
   const isPaint = id.startsWith("Paint");
   const isPostIt = isPostItPath(url ?? "");
+  const isSystemPostIt =
+    url?.replace(/\\/g, "/").toLocaleLowerCase() ===
+    "/users/public/post-it.whtml";
   const { createPath, updateFolder } = useFileSystemActions();
   const { open } = useProcessesActions();
   const { onClose, onMaximize, onMinimize } = useWindowActions(id);
@@ -176,10 +179,11 @@ const Titlebar: FC<TitlebarProps> = ({ id }) => {
           <span aria-hidden="true">+</span>
         </Button>
       )}
-      {isPostIt && (
-        <span className="doors-post-it-window-title">Dicas Palavras-Chaves</span>
-      )}
-      {isBrowser && browserTabs ? (
+      {isPostIt ? (
+        <span className="doors-post-it-window-title">
+          {isSystemPostIt ? "Dicas Palavras-Chaves" : title}
+        </span>
+      ) : isBrowser && browserTabs ? (
         <div className="browser-tab-strip">
           <div
             aria-label="Abas do navegador"

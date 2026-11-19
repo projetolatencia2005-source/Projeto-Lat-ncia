@@ -548,7 +548,21 @@ const useFolderContextMenu = (
                   },
                 ]),
           ]),
-    ];
+    ].filter(
+      (item) =>
+        !(
+          typeof item === "object" &&
+          item !== null &&
+          "label" in item &&
+          ["Adicionar arquivo(s)", "Mapear pasta"].includes(String(item.label))
+        )
+    ).filter(
+      (item, index, items) =>
+        item !== MENU_SEPERATOR ||
+        (index > 0 &&
+          index < items.length - 1 &&
+          items[index - 1] !== MENU_SEPERATOR)
+    );
   });
 };
 

@@ -171,6 +171,12 @@ const useFileContextMenu = (
               ...focusedEntries.map((entry) => join(dirname(path), entry)),
             ]),
           ];
+    const hiddenLabels = new Set([
+      "Adicionar ao arquivo compactado...",
+      "Compartilhar",
+      "Converter para",
+      "Abrir com",
+    ]);
     const menuItems: MenuItem[] = [];
     const pathExtension = getExtension(path);
     const isShortcut = pathExtension === SHORTCUT_EXTENSION;
@@ -667,7 +673,15 @@ const useFileContextMenu = (
       });
     }
 
-    return menuItems[0] === MENU_SEPERATOR ? menuItems.slice(1) : menuItems;
+    const visibleMenuItems = menuItems.filter(
+      (item) =>
+        !(typeof item === "object" && item !== null && "label" in item &&
+          hiddenLabels.has(String(item.label)))
+    );
+
+    return visibleMenuItems[0] === MENU_SEPERATOR
+      ? visibleMenuItems.slice(1)
+      : visibleMenuItems;
   });
 
   return {

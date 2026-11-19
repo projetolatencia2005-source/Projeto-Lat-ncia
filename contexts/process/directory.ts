@@ -4,7 +4,7 @@ import { FOLDER_ICON, PAPER_ICON, TASKBAR_HEIGHT } from "utils/constants";
 
 const directory: Processes = {
   Accessibility: {
-    backgroundColor: "#F3F7FB",
+    backgroundColor: "#d7e4f7",
     Component: dynamic(() => import("components/apps/Accessibility")),
     defaultSize: {
       height: 420,
@@ -13,6 +13,7 @@ const directory: Processes = {
     icon: "/System/Icons/accessibility.svg",
     isLightBg: true,
     title: "Acessibilidade",
+    titlebarColor: "#f47a12",
   },
   BoxedWine: {
     allowResizing: false,
@@ -249,7 +250,7 @@ const directory: Processes = {
   },
   Properties: {
     allowResizing: false,
-    backgroundColor: "rgb(240, 240, 240)",
+    backgroundColor: "#d7e4f7",
     Component: dynamic(() => import("components/system/Dialogs/Properties")),
     defaultSize: {
       height: 412,
@@ -261,6 +262,7 @@ const directory: Processes = {
     icon: "",
     isLightBg: true,
     title: "Properties",
+    titlebarColor: "#f47a12",
   },
   Quake3: {
     backgroundColor: "#000",
