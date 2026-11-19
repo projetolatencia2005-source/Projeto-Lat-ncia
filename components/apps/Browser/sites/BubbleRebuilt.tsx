@@ -7,6 +7,8 @@ import { isDoorsKeywordCollected, recordDoorsKeyword } from "utils/doorsKeywords
 
 const BUBBLE_ASSETS = "/System/Doors/sites/bubble/";
 const bubbleImage = (name: string): string => `${BUBBLE_ASSETS}${name}`;
+const REACTION_ASSETS = "/System/Doors/sites/reactions";
+const reactionImage = (name: string): string => `${REACTION_ASSETS}/${name}`;
 
 type Friend = {
   avatar: string;
@@ -219,6 +221,8 @@ const Root = styled.div`
   .rb-composer-actions { align-items: center; display: flex; gap: 12px; justify-content: flex-end; padding-top: 12px; }
   .rb-composer-actions .rb-attach { margin-right: auto; }
   .rb-button { background: #fff; border: 2px solid #222; box-shadow: 3px 3px 0 #222; color: #222; min-height: 38px; padding: 6px 12px; }
+  .rb-comment-submit { align-items: center; display: inline-flex; justify-content: center; }
+  .rb-comment-submit img { height: 22px; object-fit: contain; width: 22px; }
   .rb-button--orange { background: var(--rb-orange); color: #fff; }
   .rb-button:hover, .rb-icon-button:hover { filter: brightness(.94); }
   .rb-post { overflow: hidden; }
@@ -562,10 +566,10 @@ const BubblePostCard = ({
       <div className="rb-post-body">
         <p className="rb-post-text">{post.message}</p>
         {post.image && <img alt="Foto da publicação" className="rb-post-image" src={bubbleImage(post.image)} />}
-        {commenting && <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); if (draft.trim()) { onComment(draft.trim()); setDraft(""); } }}><input aria-label="Escreva um comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Escreva um comentário..." value={draft} /><button className="rb-button" type="submit">Comentar</button></form>}
+        {commenting && <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); if (draft.trim()) { onComment(draft.trim()); setDraft(""); } }}><input aria-label="Escreva um comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Escreva um comentário..." value={draft} /><button aria-label="Comentar" className="rb-button rb-comment-submit" type="submit"><img alt="" aria-hidden="true" src={reactionImage("comentário.svg")} /></button></form>}
         <div className="rb-post-actions">
-          <button aria-label="Gostei" aria-pressed={isLiked} className="rb-inline-action" onClick={() => onLike(!isLiked)} type="button"><img alt="" src={bubbleImage(isLiked ? "icons/like_on.svg" : "icons/thumbsup.svg")} /> gostei · {post.likes}</button>
-          <button aria-label="Comentar" className="rb-inline-action" onClick={() => setCommenting((value) => !value)} type="button"><img alt="" src={bubbleImage("icons/pixel-icon-library_comment-dots-solid.svg")} /> comentar · {post.comments}</button>
+          <button aria-label="Gostei" aria-pressed={isLiked} className="rb-inline-action" onClick={() => onLike(!isLiked)} type="button"><img alt="" src={reactionImage(isLiked ? "like_confirm.svg" : "like.svg")} /> gostei · {post.likes}</button>
+          <button aria-label="Comentar" className="rb-inline-action" onClick={() => setCommenting((value) => !value)} type="button"><img alt="" src={reactionImage("comentário.svg")} /> comentar · {post.comments}</button>
           <span className="rb-visibility">visível para amigos</span>
         </div>
       </div>

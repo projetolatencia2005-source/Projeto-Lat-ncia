@@ -1250,9 +1250,18 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-comment-form button {
+      align-items: center;
       background: #fff;
       border: 1px solid #31302c;
-      padding: 5px 10px;
+      display: inline-flex;
+      justify-content: center;
+      padding: 5px;
+    }
+
+    .bubble-comment-form button img {
+      height: 22px;
+      object-fit: contain;
+      width: 22px;
     }
 
     .bubble-comment {
@@ -6716,13 +6725,22 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-comment-composer button {
+    align-items: center;
     background: #f7f7f7;
     border: 2px solid #111;
     box-shadow: 2px 2px 0 #111;
-    font-size: 18px;
+    display: inline-flex;
     height: 28px;
-    line-height: 20px;
+    justify-content: center;
+    padding: 0;
     width: 30px;
+  }
+
+  .site-youspace .you-comment-composer button img,
+  .site-youspace .you-comment-reply-form button img {
+    height: 22px;
+    object-fit: contain;
+    width: 22px;
   }
 
   .site-youspace .you-comments-panel ol {
@@ -6799,10 +6817,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   .site-youspace .you-watch-actions button:nth-child(2) img {
     transform: none;
-  }
-
-  .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
-    transform: rotate(180deg);
   }
 
   .site-youspace .you-comment-reply-form {
@@ -7304,11 +7318,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     line-height: 1;
   }
 
-  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
-  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
-    transform: rotate(180deg) !important;
-  }
-
   && .site-bubble .bubble-profile-card > img.bubble-profile-avatar {
     border: 2px solid #31302c !important;
     box-sizing: border-box;
@@ -7711,11 +7720,6 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   && .site-youspace .you-comment-reply-form {
     border-left: 0 !important;
     box-shadow: none !important;
-  }
-
-  && .site-youspace .you-watch-actions button[aria-label="Não gostei"] img,
-  && .site-youspace .you-comment-actions button[aria-label="Não gostei"] img {
-    transform: rotate(180deg) !important;
   }
 
   && .site-youspace .you-watch-layout {
