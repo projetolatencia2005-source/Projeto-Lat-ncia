@@ -2,6 +2,7 @@ import { AnimatePresence, useIsPresent } from "motion/react";
 import dynamic from "next/dynamic";
 // eslint-disable-next-line no-restricted-imports -- TaskbarEntries re-maps every entry on any process change
 import { memo, useEffect, useRef, useState } from "react";
+import { isPostItPath } from "components/apps/TinyMCE/functions";
 import StyledTaskbarEntry from "components/system/Taskbar/TaskbarEntry/StyledTaskbarEntry";
 import useTaskbarTransition from "components/system/Taskbar/TaskbarEntry/useTaskbarTransition";
 import useTitlebarContextMenu from "components/system/Window/Titlebar/useTitlebarContextMenu";
@@ -30,15 +31,23 @@ type TaskbarEntryProps = {
 };
 
 const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
-  const displayTitle = id.startsWith("Browser")
-    ? "Internet Expandida"
-    : title;
   const nextFocusableId = useNextFocusable(id);
   const { setForegroundId } = useSessionActions();
   const foregroundId = useForegroundId();
   const isForeground = id === foregroundId;
   const { linkElement, minimize, open } = useProcessesActions();
-  const { componentWindow, minimized, progress, singleton } = useProcess(id);
+  const {
+    componentWindow,
+    minimized,
+    progress,
+    singleton,
+    url,
+  } = useProcess(id);
+  const displayTitle = id.startsWith("Browser")
+    ? "Internet Expandida"
+    : isPostItPath(url ?? "")
+      ? "Post-it"
+      : title;
   const isPresent = useIsPresent();
   const linkTaskbarEntry = (taskbarEntry: HTMLButtonElement | null): void => {
     if (taskbarEntry) linkElement(id, "taskbarEntry", taskbarEntry);
@@ -168,3 +177,4 @@ const TaskbarEntry: FC<TaskbarEntryProps> = ({ icon, id, title }) => {
 };
 
 export default memo(TaskbarEntry);
+
