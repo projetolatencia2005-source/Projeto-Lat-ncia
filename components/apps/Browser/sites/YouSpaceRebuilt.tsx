@@ -120,7 +120,7 @@ const Root = styled.div`
   .ry-player { aspect-ratio: 16 / 9; background: #101010; border: 5px solid #111; box-shadow: 5px 5px 0 #111; justify-self: stretch; margin-top: 0; overflow: hidden; position: relative; width: 100%; }
   .ry-watch-title, .ry-watch-meta, .ry-comments { width: 100%; }
   .ry-player > img { display: block; height: 100%; object-fit: contain; width: 100%; }
-  .ry-play { align-items: center; background: #ff3038; border: 3px solid white; border-radius: 50%; color: #fff; display: grid; font-size: 28px; height: 66px; left: 50%; place-items: center; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 66px; }
+  .ry-play { align-items: center; background: transparent; border: 0; display: grid; height: 66px; left: 50%; padding: 0; place-items: center; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 66px; }\n  .ry-play img { display: block; height: 100%; image-rendering: pixelated; width: 100%; }
   .ry-player-feedback { align-items: center; background: rgb(0 0 0 / 62%); color: white; display: flex; flex-direction: column; gap: 14px; inset: 0; justify-content: center; padding: 20px; position: absolute; text-align: center; }
   .ry-player-feedback--error { background: rgb(0 0 0 / 72%); }
   .ry-spinner { animation: ry-spin .8s linear infinite; border: 4px solid #fff7; border-radius: 50%; border-top-color: #fff; height: 36px; width: 36px; }
@@ -134,7 +134,7 @@ const Root = styled.div`
   .ry-watch-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: row; gap: 6px; padding: 4px; white-space: nowrap; }
   .ry-comment-actions button { align-items: center; background: transparent; border: 0; display: inline-flex; flex-direction: column; gap: 2px; padding: 4px; }
   .ry-comment-actions .ry-comment-like { flex-direction: row; gap: 5px; }
-  .ry-watch-actions img, .ry-comment-actions img { height: 22px; width: 22px; }
+  .ry-watch-actions img, .ry-comment-actions img { height: 18px; width: 18px; }
   .ry-comments { border: 2px solid #111; box-shadow: 4px 4px 0 #111; margin-top: 22px; padding: 18px; }
   .ry-comments h2 { font-size: 22px; margin: 0 0 16px; }
   .ry-comment-composer { align-items: center; background: #f6f6f6; border: 2px solid #111; box-shadow: 3px 3px 0 #111; display: flex; gap: 8px; margin-bottom: 20px; padding: 8px; }
@@ -352,7 +352,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
           <main className="ry-watch-main">
             <section aria-label="Player de vídeo" className="ry-player">
               <img alt={activeVideo.title} src={`${ASSETS}${activeVideo.image}`} />
-              {playerState === "idle" && <button aria-label="Reproduzir vídeo" className="ry-play" onClick={() => setPlayerState("loading")} type="button">▶</button>}
+              {playerState === "idle" && <button aria-label="Reproduzir vídeo" className="ry-play" onClick={() => setPlayerState("loading")} type="button"><img alt="" aria-hidden="true" src={`${REACTION_ASSETS}/play.svg`} /></button>}
               {playerState === "loading" && <div className="ry-player-feedback"><span className="ry-spinner" /><span>Carregando vídeo...</span></div>}
               {playerState === "error" && <div aria-live="assertive" className="ry-player-feedback ry-player-feedback--error"><strong>Erro</strong><span>Erro ao carregar o vídeo. Voltando ao início do YouSpace.</span></div>}
             </section>
