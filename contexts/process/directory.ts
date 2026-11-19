@@ -226,7 +226,7 @@ const directory: Processes = {
     Component: dynamic(() => import("components/apps/Paint")),
     icon: "/System/Doors/figma/paintnovo.svg",
     libs: ["/jspaint/"],
-    title: "Paint",
+    title: "Rabisco",
   },
   PDF: {
     backgroundColor: "#525659",
@@ -262,7 +262,7 @@ const directory: Processes = {
     icon: "",
     isLightBg: true,
     title: "Properties",
-    titlebarColor: "#f47a12",
+    titlebarColor: "#7D94B8",
   },
   Quake3: {
     backgroundColor: "#000",

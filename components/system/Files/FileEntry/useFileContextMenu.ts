@@ -673,15 +673,14 @@ const useFileContextMenu = (
       });
     }
 
-    const visibleMenuItems = menuItems.filter(
+    return menuItems.filter(
       (item) =>
-        !(typeof item === "object" && item !== null && "label" in item &&
+        item !== MENU_SEPERATOR &&
+        !(typeof item === "object" &&
+          item !== null &&
+          "label" in item &&
           hiddenLabels.has(String(item.label)))
     );
-
-    return visibleMenuItems[0] === MENU_SEPERATOR
-      ? visibleMenuItems.slice(1)
-      : visibleMenuItems;
   });
 
   return {

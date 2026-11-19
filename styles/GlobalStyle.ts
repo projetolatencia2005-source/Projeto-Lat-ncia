@@ -1302,11 +1302,15 @@ const GlobalStyle = styled.createGlobalStyle`
     padding: 16px;
 
     header {
-      background: #f47a12;
+      background: #526889;
       border: 2px solid #31302c;
       color: #fff;
       margin: -16px -16px 0;
       padding: 12px 14px;
+
+      p {
+        color: #fff;
+      }
     }
     h1 {
       color: #fff;

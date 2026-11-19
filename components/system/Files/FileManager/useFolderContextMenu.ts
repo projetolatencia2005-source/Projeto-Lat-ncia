@@ -47,8 +47,6 @@ import {
 } from "utils/functions";
 
 const NEW_FOLDER = "New folder";
-const NEW_TEXT_DOCUMENT = "New Text Document.txt";
-const NEW_RTF_DOCUMENT = "New Rich Text Document.whtml";
 
 const WALLPAPER_MENU_LABELS: Record<string, string> = {
   "Art Institute of Chicago": "Instituto de Arte de Chicago",
@@ -64,6 +62,23 @@ const WALLPAPER_MENU_LABELS: Record<string, string> = {
   "Stable Diffusion (beta)": "Stable Diffusion (beta)",
   "Vanta Waves": "Ondas Vanta",
 };
+
+const HIDDEN_CLOSE_EFFECTS = new Set([
+  "Broken Glass",
+  "Doom",
+  "Energize A",
+  "Energize B",
+  "Fire",
+  "Incinerate",
+  "Paint Brush",
+  "Portal",
+  "Random",
+  "RGB Warp",
+  "Snap",
+  "T-Rex Attack",
+  "TeamRocket",
+  "Wisps",
+]);
 
 const CLOSE_EFFECT_LABELS: Record<string, string> = {
   "Broken Glass": "Vidro quebrado",
@@ -474,7 +489,9 @@ const useFolderContextMenu = (
             },
             {
               label: "Efeito ao fechar a janela",
-              menu: CLOSE_EFFECT_NAMES.map((effectName) => ({
+              menu: CLOSE_EFFECT_NAMES.filter(
+                (effectName) => !HIDDEN_CLOSE_EFFECTS.has(effectName)
+              ).map((effectName) => ({
                 action: () => setCloseEffect(effectName),
                 label: CLOSE_EFFECT_LABELS[effectName] || effectName,
                 toggle: closeEffect === effectName,
@@ -512,19 +529,6 @@ const useFolderContextMenu = (
                   icon: FOLDER_ICON,
                   label: "Pasta",
                 },
-                MENU_SEPERATOR,
-                {
-                  action: () =>
-                    newEntry(NEW_RTF_DOCUMENT, Buffer.from(""), event),
-                  icon: getIconByFileExtension(".whtml"),
-                  label: "Documento de texto formatado",
-                },
-                {
-                  action: () =>
-                    newEntry(NEW_TEXT_DOCUMENT, Buffer.from(""), event),
-                  icon: getIconByFileExtension(".txt"),
-                  label: "Documento de texto",
-                },
               ],
             },
             ...(isDesktop
@@ -554,7 +558,12 @@ const useFolderContextMenu = (
           typeof item === "object" &&
           item !== null &&
           "label" in item &&
-          ["Adicionar arquivo(s)", "Mapear pasta"].includes(String(item.label))
+          [
+            "Adicionar arquivo(s)",
+            "Mapear pasta",
+            "Capturar tela",
+            "Parar captura de tela",
+          ].includes(String(item.label))
         )
     ).filter(
       (item, index, items) =>

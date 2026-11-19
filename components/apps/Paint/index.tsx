@@ -40,6 +40,164 @@ type JsPaint = {
   };
 };
 
+const PAINT_TRANSLATIONS: Record<string, string> = {
+  About: "Sobre",
+  "About Paint": "Sobre o Rabisco",
+  "Add to Custom Colors": "Adicionar às cores personalizadas",
+  Airbrush: "Aerógrafo",
+  Apply: "Aplicar",
+  Attributes: "Atributos",
+  "Attributes...": "Atributos...",
+  Background: "Plano de fundo",
+  "Basic colors": "Cores básicas",
+  Blue: "Azul",
+  Brush: "Pincel",
+  Cancel: "Cancelar",
+  "Clear Image": "Limpar imagem",
+  "Clear Selection": "Limpar seleção",
+  Close: "Fechar",
+  Colors: "Cores",
+  "Color Box": "Paleta de cores",
+  Copy: "Copiar",
+  "Copy To...": "Copiar para...",
+  Cut: "Recortar",
+  Custom: "Personalizado",
+  "Custom...": "Personalizado...",
+  Delete: "Excluir",
+  "Define Custom Colors": "Definir cores personalizadas",
+  "Draw Opaque": "Desenhar opaco",
+  Edit: "Editar",
+  "Edit Colors": "Editar cores",
+  Ellipse: "Elipse",
+  Eraser: "Borracha",
+  Exit: "Sair",
+  Extras: "Extras",
+  File: "Arquivo",
+  Fill: "Preencher",
+  "Fill With Color": "Preencher com cor",
+  "Free-Form Select": "Seleção livre",
+  Green: "Verde",
+  Help: "Ajuda",
+  "Help Topics": "Tópicos de ajuda",
+  Height: "Altura",
+  Hue: "Matiz",
+  Image: "Imagem",
+  "Invert Colors": "Inverter cores",
+  "Large Size": "Tamanho grande",
+  Line: "Linha",
+  Lum: "Luminosidade",
+  Magnifier: "Lupa",
+  "Mouse": "Mouse",
+  Name: "Nome",
+  New: "Novo",
+  "Normal Size": "Tamanho normal",
+  "Open": "Abrir",
+  "Open...": "Abrir...",
+  "Open From...": "Abrir de...",
+  "Page Setup...": "Configurar página...",
+  Paste: "Colar",
+  "Paste From...": "Colar de...",
+  Pencil: "Lápis",
+  "Pick Color": "Selecionar cor",
+  Polygon: "Polígono",
+  Print: "Imprimir",
+  "Print...": "Imprimir...",
+  "Redo": "Refazer",
+  Red: "Vermelho",
+  "Restore Defaults": "Restaurar padrões",
+  "Rounded Rectangle": "Retângulo arredondado",
+  Save: "Salvar",
+  "Save As...": "Salvar como...",
+  "Save Colors": "Salvar cores",
+  "Select": "Selecionar",
+  "Select All": "Selecionar tudo",
+  "Set As Wallpaper (Centered)": "Definir como plano de fundo (centralizado)",
+  "Set As Wallpaper (Tiled)": "Definir como plano de fundo (lado a lado)",
+  "Show Grid": "Exibir grade",
+  "Show Thumbnail": "Exibir miniatura",
+  "Status Bar": "Barra de status",
+  Stretch: "Alongar",
+  "Stretch/Skew...": "Alongar/inclinar...",
+  "Text Toolbar": "Barra de texto",
+  "Tool Box": "Caixa de ferramentas",
+  "Undo": "Desfazer",
+  View: "Exibir",
+  Width: "Largura",
+  "Flip/Rotate...": "Inverter/girar...",
+  "For help, click Help Topics on the Help menu": "Para obter ajuda, clique em Tópicos de ajuda no menu Ajuda",
+  "To Paint": "Para o Rabisco",
+  "Untitled": "Sem título",
+  Paint: "Rabisco",
+};
+
+const translatePaintInterface = (paintDocument: Document): MutationObserver => {
+  const translateText = (node: Node): void => {
+    const value = node.textContent ?? "";
+    const trimmed = value.trim();
+    const translation = PAINT_TRANSLATIONS[trimmed];
+
+    if (translation) node.textContent = value.replace(trimmed, translation);
+  };
+  const translateElement = (element: Element): void => {
+    ["aria-label", "alt", "data-tooltip", "title"].forEach((attribute) => {
+      const value = element.getAttribute(attribute);
+
+      if (!value) return;
+
+      const trimmed = value.trim();
+      const translation = PAINT_TRANSLATIONS[trimmed];
+
+      if (translation) {
+        element.setAttribute(attribute, value.replace(trimmed, translation));
+      }
+    });
+  };
+  const translateNode = (node: Node): void => {
+    if (node.nodeType === 3) {
+      translateText(node);
+      return;
+    }
+
+    if (node.nodeType !== 1) return;
+
+    const element = node as Element;
+
+    translateElement(element);
+    Array.from(element.childNodes).forEach(translateNode);
+  };
+
+  paintDocument.documentElement.lang = "pt-BR";
+  paintDocument.title = "Rabisco";
+
+  if (paintDocument.body) translateNode(paintDocument.body);
+
+  const observer = new MutationObserver((records) => {
+    records.forEach((record) => {
+      if (record.type === "characterData") {
+        translateText(record.target);
+      } else if (record.type === "attributes") {
+        if (record.target.nodeType === 1) {
+          translateElement(record.target as Element);
+        }
+      } else {
+        record.addedNodes.forEach(translateNode);
+      }
+    });
+  });
+
+  if (paintDocument.body) {
+    observer.observe(paintDocument.body, {
+      attributes: true,
+      attributeFilter: ["aria-label", "alt", "data-tooltip", "title"],
+      characterData: true,
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  return observer;
+};
+
 const DOORS_PAINT_STYLES = `
   @font-face {
     font-family: "Pixelify Sans";
@@ -124,6 +282,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
   const { setForegroundId, setWallpaper } = useSessionActions();
   const foregroundId = useForegroundId();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const paintLocalizationObserverRef = useRef<MutationObserver | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [jsPaintInstance, setJsPaintInstance] = useState<JsPaint>();
@@ -156,6 +315,11 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     }
 
     installDoorsCursorStyles(paintDocument || null);
+    if (paintDocument) {
+      paintLocalizationObserverRef.current?.disconnect();
+      paintLocalizationObserverRef.current =
+        translatePaintInterface(paintDocument);
+    }
     setLoadError(false);
     setLoaded(true);
   }, []);
@@ -171,9 +335,10 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
     };
   const { onDragOver, onDrop } = useFileDrop({ id });
 
-  useEffect(() => {
-    prependFileToTitle("Untitled");
-  }, [prependFileToTitle]);
+  useEffect(
+    () => () => paintLocalizationObserverRef.current?.disconnect(),
+    []
+  );
 
   useEffect(() => {
     let cleanup: (() => void) | undefined;
@@ -212,7 +377,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
       setJsPaintInstance(jsPaint);
 
       jsPaint.file_new = () => {
-        prependFileToTitle("Untitled");
+        prependFileToTitle("");
         previousFileNew();
       };
       jsPaint.systemHooks.setWallpaperTiled = setWallpaperFromCanvas("tile");
@@ -288,7 +453,7 @@ const Paint: FC<ComponentProcessProps> = ({ id }) => {
             error?.reason?.message ===
             "either options.data or options.file or options.filePath must be passed"
           ) {
-            prependFileToTitle("Untitled");
+            prependFileToTitle("");
           }
         };
         jsPaintInstance.open_from_file(
