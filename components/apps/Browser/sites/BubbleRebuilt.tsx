@@ -39,6 +39,7 @@ type FeedPost = {
   image?: string;
   likes: number;
   message: string;
+  responses?: Array<{ author: string; text: string; time: string }>;
   time: string;
 };
 
@@ -234,6 +235,14 @@ const Root = styled.div`
   .rb-post-body { padding: 18px 20px 12px; }
   .rb-post-text { font-size: clamp(16px, 1vw, 19px); line-height: 1.45; margin: 0 0 14px; }
   .rb-post-image { border: 0; display: block; height: auto; margin: 12px 0 18px; max-height: 480px; max-width: 100%; object-fit: contain; object-position: left center; }
+  .rb-post-responses { border-top: 1px solid #d5d5d5; display: grid; gap: 8px; margin: 12px 0 4px; padding-top: 12px; }
+  .rb-post-response { align-items: flex-start; background: #f2f6fc; border-left: 3px solid #7d94b8; display: flex; gap: 8px; padding: 8px 10px; }
+  .rb-post-response-avatar { border: 1px solid #222; flex: 0 0 28px; height: 28px; object-fit: cover; width: 28px; }
+  .rb-post-response-content { min-width: 0; }
+  .rb-post-response-header { align-items: center; display: flex; gap: 8px; line-height: 1.2; }
+  .rb-post-response-header strong { font-size: 13px; }
+  .rb-post-response-header time { color: #666; font-size: 11px; }
+  .rb-post-response p { line-height: 1.35; margin: 3px 0 0; overflow-wrap: anywhere; }
   .rb-post-actions { align-items: center; border-top: 1px solid #c9c9c9; display: flex; gap: 20px; margin-top: 18px; min-height: 42px; }
   .rb-inline-action { align-items: center; background: none; border: 0; color: #666; display: inline-flex; gap: 5px; padding: 4px 0; text-decoration: underline; }
   .rb-inline-action img { height: 17px; object-fit: contain; width: 17px; }
@@ -567,6 +576,19 @@ const BubblePostCard = ({
         <p className="rb-post-text">{post.message}</p>
         {post.image && <img alt="Foto da publicação" className="rb-post-image" src={bubbleImage(post.image)} />}
         {commenting && <form className="rb-search-row" onSubmit={(event) => { event.preventDefault(); if (draft.trim()) { onComment(draft.trim()); setDraft(""); } }}><input aria-label="Escreva um comentário" onChange={(event) => setDraft(event.currentTarget.value)} placeholder="Escreva um comentário..." value={draft} /><button aria-label="Comentar" className="rb-button rb-comment-submit" type="submit"><img alt="" aria-hidden="true" src={reactionImage("comentário.svg")} /></button></form>}
+        {post.responses?.length ? (
+          <div aria-label="Respostas à publicação" className="rb-post-responses" role="region">
+            {post.responses.map((response, index) => (
+              <div className="rb-post-response" key={index}>
+                <img alt="" aria-hidden="true" className="rb-post-response-avatar" src={bubbleImage("avatar-ana.png")} />
+                <div className="rb-post-response-content">
+                  <div className="rb-post-response-header"><strong>{response.author}</strong><time>{response.time}</time></div>
+                  <p>{response.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : null}
         <div className="rb-post-actions">
           <button aria-label="Gostei" aria-pressed={isLiked} className="rb-inline-action" onClick={() => onLike(!isLiked)} type="button"><img alt="" src={reactionImage(isLiked ? "like_confirm.svg" : "like.svg")} /> gostei · {post.likes}</button>
           <button aria-label="Comentar" className="rb-inline-action" onClick={() => setCommenting((value) => !value)} type="button"><img alt="" src={reactionImage("comentário.svg")} /> comentar · {post.comments}</button>
@@ -702,7 +724,11 @@ const BubblePage = ({ url }: { url: string }): ReactElement => {
       ? { ...post, likes: Math.max(0, post.likes + (active ? 1 : -1)) }
       : post));
   };
-  const addPostComment = (index: number): ((value: string) => void) => (value) => setPosts((current) => current.map((post, i) => i === index ? { ...post, comments: post.comments + 1 } : post));
+  const addPostComment = (index: number): ((value: string) => void) => (value) => setPosts((current) => current.map((post, i) => i === index ? {
+    ...post,
+    comments: post.comments + 1,
+    responses: [...(post.responses || []), { author: "Você", text: value, time: "agora" }],
+  } : post));
 
   const title = section === "perfil" ? "Perfil" : section === "amigos" ? "Amigos" : section === "comunidades" ? "Comunidades" : section === "mensagens" ? "Mensagens" : "";
 

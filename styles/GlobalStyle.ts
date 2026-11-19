@@ -708,7 +708,7 @@ const GlobalStyle = styled.createGlobalStyle`
     height: 100%;
     image-rendering: pixelated;
     inset: 0;
-    object-fit: cover;
+    object-fit: contain;
     position: absolute;
     width: 100%;
   }
