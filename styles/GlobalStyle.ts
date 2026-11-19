@@ -693,7 +693,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   .doors-tutorial-desktop-preview {
     aspect-ratio: 16 / 9;
-    background: #79a0cf;
+    background: transparent;
     border: 0;
     box-shadow: none;
     margin-top: 1.95vh;
