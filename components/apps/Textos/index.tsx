@@ -1090,7 +1090,7 @@ const TextosModels: FC<TextosModelsProps> = ({ id }) => {
                 key={name}
                 aria-label={`Abrir modelo: ${name}`}
                 className={`textos-template-card${
-                  name === "Trabalho de escola" ? " is-school-test" : ""
+                  name === "Prova/Trabalho de escola" ? " is-school-test" : ""
                 }`}
                 onClick={() => createFromTemplate(name, content)}
                 type="button"
