@@ -20,7 +20,7 @@ const KEYWORD_OVERLAY_FADE_MS = 500;
 const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
 const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
-const KEYWORD_NOTICE_CHARACTERS_PER_TICK = 1;
+const SESSION_SCORE_DURATION_MS = 7000;
 type KeywordNoticePart = { text: string; strong?: boolean };
 const DEFAULT_KEYWORD_NOTICE_PARAGRAPHS: KeywordNoticePart[][] = [
   [
@@ -106,13 +106,23 @@ const BOOT_LOADING_FRAMES = Array.from({ length: 3 }, () => [
 
 type SessionStatusProps = {
   bonusSeconds: number;
+  isPaused: boolean;
   keysCollected: number;
+  onElapsedSecondsChange: (seconds: number) => void;
   onTimeExpired: () => void;
   onTimeWarning: () => void;
   startedAt: number;
 };
 
 type StatusPosition = { x: number; y: number };
+
+const formatElapsedTime = (seconds: number): string => {
+  const elapsed = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(elapsed / 60);
+  const remainder = elapsed % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(remainder).padStart(2, "0")}`;
+};
 
 const STATUS_POSITION_KEY = "doors-session-status-position-v2";
 const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
@@ -140,7 +150,9 @@ type BootDestination = Exclude<BootStage, "loading">;
 
 const SessionStatus: FC<SessionStatusProps> = ({
   bonusSeconds,
+  isPaused,
   keysCollected,
+  onElapsedSecondsChange,
   onTimeExpired,
   onTimeWarning,
   startedAt,
@@ -148,6 +160,8 @@ const SessionStatus: FC<SessionStatusProps> = ({
   const [remainingSeconds, setRemainingSeconds] = useState(SESSION_DURATION_SECONDS);
   const timeWarningShownRef = useRef(false);
   const timeExpiredRef = useRef(false);
+  const pausedDurationMsRef = useRef(0);
+  const pauseStartedAtRef = useRef<null | number>(null);
   const [position, setPosition] = useState<null | StatusPosition>(null);
   const statusRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<{
@@ -212,30 +226,67 @@ const SessionStatus: FC<SessionStatusProps> = ({
   }, []);
 
   useEffect(() => {
+    if (isPaused) {
+      if (pauseStartedAtRef.current === null) {
+        pauseStartedAtRef.current = Date.now();
+      }
+    } else if (pauseStartedAtRef.current !== null) {
+      pausedDurationMsRef.current += Date.now() - pauseStartedAtRef.current;
+      pauseStartedAtRef.current = null;
+    }
+
     const updateTime = (): void => {
-      const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+      const now = Date.now();
+      const livePausedMs =
+        pauseStartedAtRef.current === null
+          ? 0
+          : now - pauseStartedAtRef.current;
+      const elapsed = Math.max(
+        0,
+        Math.floor(
+          (now - startedAt - pausedDurationMsRef.current - livePausedMs) / 1000,
+        ),
+      );
       const nextRemainingSeconds = Math.max(
         0,
         SESSION_DURATION_SECONDS + bonusSeconds - elapsed,
       );
+
+      onElapsedSecondsChange(elapsed);
       setRemainingSeconds(nextRemainingSeconds);
 
       if (nextRemainingSeconds > 90) {
         timeWarningShownRef.current = false;
-      } else if (nextRemainingSeconds > 0 && !timeWarningShownRef.current) {
+      } else if (
+        !isPaused &&
+        nextRemainingSeconds > 0 &&
+        !timeWarningShownRef.current
+      ) {
         timeWarningShownRef.current = true;
         onTimeWarning();
       }
 
-      if (nextRemainingSeconds === 0 && !timeExpiredRef.current) {
+      if (
+        !isPaused &&
+        nextRemainingSeconds === 0 &&
+        !timeExpiredRef.current
+      ) {
         timeExpiredRef.current = true;
         onTimeExpired();
       }
     };
     updateTime();
     const timer = window.setInterval(updateTime, 1000);
+
     return () => window.clearInterval(timer);
-  }, [bonusSeconds, onTimeExpired, onTimeWarning, startedAt]);
+  }, [
+    bonusSeconds,
+    isPaused,
+    onElapsedSecondsChange,
+    onTimeExpired,
+    onTimeWarning,
+    startedAt,
+  ]);
 
   const time = `${String(Math.floor(remainingSeconds / 60)).padStart(2, "0")}:${String(remainingSeconds % 60).padStart(2, "0")}`;
   const savePosition = (nextPosition: StatusPosition): void => {
@@ -381,13 +432,14 @@ const Desktop: FC = ({ children }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [startedAt, setStartedAt] = useState<null | number>(null);
   const [bonusSeconds, setBonusSeconds] = useState(0);
+  const [isSessionPaused, setIsSessionPaused] = useState(false);
   const [sessionNotice, setSessionNotice] = useState<
     null | "warning" | "expired"
   >(null);
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
   const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
-    "hidden" | "fading-in" | "playing" | "fading-out" | "blocked"
+    "hidden" | "fading-in" | "playing" | "fading-out" | "score" | "blocked"
   >("hidden");
   const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
   const [activeKeyword, setActiveKeyword] = useState("");
@@ -398,6 +450,11 @@ const Desktop: FC = ({ children }) => {
   const keywordGifSequenceRef = useRef(0);
   const keywordGifTimeoutRef = useRef<null | number>(null);
   const collectedKeywordsRef = useRef(new Set<string>());
+  const elapsedSecondsRef = useRef(0);
+
+  const recordElapsedSeconds = useCallback((seconds: number): void => {
+    elapsedSecondsRef.current = seconds;
+  }, []);
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const { open: openProcess } = useProcessesActions();
   const postItOpenedForSessionRef = useRef(false);
@@ -482,13 +539,20 @@ const Desktop: FC = ({ children }) => {
   }, [rootFs]);
 
   const startLockedFolderVideo = useCallback((): void => {
+    setIsSessionPaused(true);
     const video = lockedFolderVideoRef.current;
-    if (!video) return;
+
+    if (!video) {
+      setLockedFolderVideoPhase("score");
+      return;
+    }
+
     try {
       video.currentTime = 0;
     } catch {
       // Continue playback if seeking isn't available yet.
     }
+
     setLockedFolderVideoPhase("fading-in");
     void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
   }, []);
@@ -510,9 +574,11 @@ const Desktop: FC = ({ children }) => {
 
   useEffect(() => {
     if (lockedFolderVideoPhase !== "fading-out") return;
+
     const timeout = window.setTimeout(() => {
       const video = lockedFolderVideoRef.current;
       video?.pause();
+
       if (video) {
         try {
           video.currentTime = 0;
@@ -520,8 +586,21 @@ const Desktop: FC = ({ children }) => {
           // The video can stay at its final frame until the overlay is hidden.
         }
       }
-      resetAndReload();
+
+      setLockedFolderVideoPhase("score");
     }, LOCKED_FOLDER_VIDEO_FADE_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [lockedFolderVideoPhase]);
+
+  useEffect(() => {
+    if (lockedFolderVideoPhase !== "score") return;
+
+    const timeout = window.setTimeout(
+      resetAndReload,
+      SESSION_SCORE_DURATION_MS,
+    );
+
     return () => window.clearTimeout(timeout);
   }, [lockedFolderVideoPhase, resetAndReload]);
 
@@ -536,6 +615,7 @@ const Desktop: FC = ({ children }) => {
       if (collectedKeywordsRef.current.has(normalized)) return;
 
       collectedKeywordsRef.current.add(normalized);
+      setIsSessionPaused(true);
       setActiveKeyword(normalized);
       setBonusSeconds((current) => current + 90);
       const nextSequence = keywordGifSequenceRef.current + 1;
@@ -562,19 +642,29 @@ const Desktop: FC = ({ children }) => {
   useEffect(() => {
     if (keywordOverlayPhase !== "notice") return;
 
-    let currentCharacters = 0;
-    const typingInterval = window.setInterval(() => {
-      currentCharacters = Math.min(
-        currentCharacters + KEYWORD_NOTICE_CHARACTERS_PER_TICK,
-        noticeTotalCharacters,
-      );
-      setTypedNoticeCharacters(currentCharacters);
-      if (currentCharacters >= noticeTotalCharacters) {
-        window.clearInterval(typingInterval);
-      }
-    }, KEYWORD_NOTICE_TYPING_INTERVAL_MS);
+    const startedAt = window.performance.now();
+    let animationFrame = 0;
+    let lastRenderedCharacters = -1;
 
-    return () => window.clearInterval(typingInterval);
+    const updateCharacters = (now: number): void => {
+      const nextCharacters = Math.min(
+        noticeTotalCharacters,
+        Math.floor((now - startedAt) / KEYWORD_NOTICE_TYPING_INTERVAL_MS),
+      );
+
+      if (nextCharacters !== lastRenderedCharacters) {
+        lastRenderedCharacters = nextCharacters;
+        setTypedNoticeCharacters(nextCharacters);
+      }
+
+      if (nextCharacters < noticeTotalCharacters) {
+        animationFrame = window.requestAnimationFrame(updateCharacters);
+      }
+    };
+
+    animationFrame = window.requestAnimationFrame(updateCharacters);
+
+    return () => window.cancelAnimationFrame(animationFrame);
   }, [keywordOverlayPhase, noticeTotalCharacters]);
 
   useEffect(() => {
@@ -697,6 +787,10 @@ const Desktop: FC = ({ children }) => {
     const isSplashActive = startedAt === null && bootStage === "splash";
     const startTutorial = (event: KeyboardEvent): void => {
       if (
+        event.key === "F11" ||
+        event.key === "F12" ||
+        event.code === "F11" ||
+        event.code === "F12" ||
         event.key === "Tab" ||
         event.key === "Shift" ||
         event.key === "Control" ||
@@ -736,6 +830,7 @@ const Desktop: FC = ({ children }) => {
 
   const continueFromKeywordNotice = (): void => {
     if (typedNoticeCharacters < noticeTotalCharacters) return;
+    setIsSessionPaused(false);
     setKeywordOverlayPhase("confirmation");
   };
 
@@ -766,7 +861,7 @@ const Desktop: FC = ({ children }) => {
               draggable={false}
               onError={() => {
                 if (keywordGifSequenceRef.current === keywordGifSequence) {
-                  setKeywordOverlayPhase("hidden");
+                  setKeywordOverlayPhase("notice");
                 }
               }}
               onLoad={() => {
@@ -886,14 +981,35 @@ const Desktop: FC = ({ children }) => {
             </button>
           </div>
         )}
+        {lockedFolderVideoPhase === "score" && (
+          <section
+            aria-labelledby="doors-session-score-title"
+            aria-modal="true"
+            className="doors-session-score"
+            role="dialog"
+          >
+            <h2 id="doors-session-score-title">Resultado da sessão</h2>
+            <p>
+              Chaves coletadas: {Math.min(
+                collectedKeywordsRef.current.size,
+                LOCKED_FOLDER_KEY_COUNT,
+              )} de {LOCKED_FOLDER_KEY_COUNT}
+            </p>
+            <p>
+              Tempo levado: <time>{formatElapsedTime(elapsedSecondsRef.current)}</time>
+            </p>
+          </section>
+        )}
       </div>
       {startedAt !== null && (
         <SessionStatus
           bonusSeconds={bonusSeconds}
+          isPaused={isSessionPaused}
           keysCollected={Math.min(
             collectedKeywordsRef.current.size,
             LOCKED_FOLDER_KEY_COUNT,
           )}
+          onElapsedSecondsChange={recordElapsedSeconds}
           onTimeExpired={handleTimeExpired}
           onTimeWarning={handleTimeWarning}
           startedAt={startedAt}
