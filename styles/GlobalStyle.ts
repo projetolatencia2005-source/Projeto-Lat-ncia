@@ -269,6 +269,37 @@ const GlobalStyle = styled.createGlobalStyle`
     position: absolute;
   }
 
+  .doors-unlock-video-overlay--score {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .doors-session-score {
+    background: #31302c;
+    border: 2px solid #f7edd7;
+    box-shadow: 4px 4px 0 #f7edd7;
+    color: #f7edd7;
+    font-family: "Pixelify Sans", monospace;
+    max-width: calc(100% - 36px);
+    padding: clamp(24px, 4vw, 44px);
+    text-align: center;
+    width: min(620px, calc(100% - 36px));
+  }
+
+  .doors-session-score h2 {
+    color: #e3f0ff;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.2;
+    margin: 0 0 20px;
+  }
+
+  .doors-session-score p {
+    font-size: clamp(17px, 1.5vw, 22px);
+    line-height: 1.6;
+    margin: 8px 0 0;
+  }
+
   .doors-keyword-notice {
     box-sizing: border-box;
     color: #ffffff;
