@@ -3,7 +3,7 @@ import { type StyledFileEntryProps } from "components/system/Files/Views";
 
 const StyledFileEntry = styled.li<StyledFileEntryProps>`
   display: ${({ $visible }) => ($visible ? "flex" : "none")};
-  height: ${({ $desktop }) => ($desktop ? "100px" : "min-content")};
+  height: ${({ $desktop }) => ($desktop ? "var(--desktop-file-entry-height, 100px)" : "min-content")};
   outline-offset: -2px;
   margin: ${({ $desktop }) => ($desktop ? "0 10px" : undefined)};
   padding: ${({ $desktop, theme }) =>
@@ -12,7 +12,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
 
   &.doors-computer-file-entry {
     align-self: center;
-    height: 100px;
+    height: var(--desktop-file-entry-height, 100px);
     justify-self: center;
     margin: 0;
     width: 100px;
@@ -37,7 +37,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
       align-items: center;
       display: flex;
       flex-direction: column;
-      gap: ${({ $desktop }) => ($desktop ? "10px" : undefined)};
+      gap: ${({ $desktop }) => ($desktop ? "clamp(3px, 1.3vh, 10px)" : undefined)};
       height: ${({ $desktop }) => ($desktop ? "100%" : undefined)};
       justify-content: ${({ $desktop }) => ($desktop ? "center" : undefined)};
       margin-bottom: ${({ $desktop }) => ($desktop ? "0" : "-2px")};
@@ -48,7 +48,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         color: ${({ $desktop, theme }) =>
           $desktop ? "#31302C" : theme.colors.fileEntry.text};
         font-size: ${({ $desktop, theme }) =>
-          $desktop ? "16px" : theme.sizes.fileEntry.fontSize};
+          $desktop ? "clamp(10px, 2.08vh, 16px)" : theme.sizes.fileEntry.fontSize};
         line-height: 1.2;
         margin: ${({ $desktop }) => ($desktop ? "0" : "1px 0")};
         overflow-wrap: anywhere;
@@ -78,10 +78,10 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
 
       picture {
         height: ${({ $desktop, theme }) =>
-          $desktop ? "40px" : theme.sizes.fileEntry.iconSize};
+          $desktop ? "clamp(28px, 5.2vh, 40px)" : theme.sizes.fileEntry.iconSize};
         transform: ${({ $desktop }) => ($desktop ? "scale(1)" : undefined)};
         width: ${({ $desktop, theme }) =>
-          $desktop ? "40px" : theme.sizes.fileEntry.iconSize};
+          $desktop ? "clamp(28px, 5.2vh, 40px)" : theme.sizes.fileEntry.iconSize};
 
         &:not(:first-of-type) {
           position: absolute;
@@ -95,16 +95,16 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
   }
 
   button.doors-post-it-shortcut figure picture:first-of-type {
-    height: 40px;
-    width: 40px;
+    height: clamp(28px, 5.2vh, 40px);
+    width: clamp(28px, 5.2vh, 40px);
   }
 
   button.doors-pastas-shortcut figure {
     gap: 0;
 
     picture:first-of-type {
-      height: 46px;
-      width: 46px;
+      height: clamp(28px, 5.2vh, 40px);
+      width: clamp(28px, 5.2vh, 40px);
     }
   }
 
@@ -131,7 +131,7 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     align-items: center;
     box-sizing: border-box;
     display: flex;
-    height: 100px;
+    height: var(--desktop-file-entry-height, 100px);
     justify-content: center;
     padding: 0;
     width: 100px;
@@ -160,9 +160,9 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
       }
 
       picture:first-of-type {
-        height: 40px;
+        height: clamp(28px, 5.2vh, 40px);
         transform: translateY(-5px);
-        width: 40px;
+        width: clamp(28px, 5.2vh, 40px);
       }
     }
   }

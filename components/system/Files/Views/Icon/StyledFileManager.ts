@@ -24,13 +24,15 @@ const StyledFileManager = styled.ol<StyledFileManagerProps>`
   pointer-events: ${({ $selecting }) => ($selecting ? "auto" : undefined)};
 
   main > &[aria-label="Desktop"] {
+    --desktop-file-entry-height: clamp(64px, calc((100dvh - 107px) / 7), 100px);
+
     grid-auto-flow: column;
-    grid-auto-rows: 100px;
+    grid-auto-rows: var(--desktop-file-entry-height);
     gap: 3px 0;
     grid-template-columns: repeat(auto-fill, 120px);
-    grid-template-rows: repeat(auto-fill, 100px);
+    grid-template-rows: repeat(auto-fill, var(--desktop-file-entry-height));
     height: calc(100% - ${TASKBAR_HEIGHT}px);
-    overflow: visible;
+    overflow: hidden;
     padding-bottom: 21px;
   }
 `;

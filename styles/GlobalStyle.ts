@@ -1648,6 +1648,14 @@ const GlobalStyle = styled.createGlobalStyle`
       padding: 32px clamp(14px, 4vw, 36px);
     }
     .doors-tutorial-slide-intro { flex: 0 0 auto; padding-top: 0; width: 100%; }
+    .doors-tutorial-slide-step-1,
+    .doors-tutorial-slide-step-2 {
+      gap: 20px !important;
+      grid-template-columns: minmax(0, 1fr) !important;
+      left: auto !important;
+      width: 100% !important;
+    }
+    .doors-tutorial-slide-step-3 { gap: 20px !important; }
     .doors-tutorial-intro-top {
       gap: clamp(12px, 3vw, 28px);
       grid-template-columns: clamp(64px, 12vw, 104px) minmax(0, 1fr);
@@ -1688,7 +1696,9 @@ const GlobalStyle = styled.createGlobalStyle`
       font-size: clamp(16px, 4.2vw, 19px); letter-spacing: 0.04em; line-height: 1.35;
     }
     .doors-tutorial-intro-summary { margin-top: 20px; }
-    .doors-tutorial-slide:not(.doors-tutorial-slide-intro) { gap: 16px; }
+    .doors-tutorial-slide-step-1,
+    .doors-tutorial-slide-step-2,
+    .doors-tutorial-slide-step-3 { gap: 16px !important; }
     .doors-tutorial-step-number { font-size: 42px; line-height: 1; margin-bottom: 10px; }
     .doors-tutorial-step-copy p { font-size: calc(clamp(18px, 5vw, 21px) - 2.6667px); letter-spacing: 0.035em; line-height: 1.38; }
     .doors-tutorial-preview-icons { gap: 0; }

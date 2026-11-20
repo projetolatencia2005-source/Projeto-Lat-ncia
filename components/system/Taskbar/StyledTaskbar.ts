@@ -80,6 +80,22 @@ const StyledTaskbar = styled.nav`
     }
   }
 
+  @media (max-width: 560px) {
+    background: linear-gradient(
+      90deg,
+      #7d94b8 0 calc(100% - 118px),
+      #d7e4f7 calc(100% - 118px) 100%
+    );
+
+    .doors-system-tray {
+      display: none;
+    }
+
+    &::after {
+      left: calc(100% - 118px);
+    }
+  }
+
   &::after {
     background: #31302c;
     border-radius: 0;
