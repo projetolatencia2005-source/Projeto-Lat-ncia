@@ -1212,6 +1212,7 @@ const Desktop: FC = ({ children }) => {
                     </div>
                   </article>
                 )}
+                </div>
                 <nav aria-label="Navegação do tutorial" className="doors-tutorial-actions">
                   <button
                     ref={tutorialButtonRef}
@@ -1233,7 +1234,7 @@ const Desktop: FC = ({ children }) => {
                       : "Continuar"}
                   </button>
                 </nav>
-              </div>
+              
             
               </div>
             </section>

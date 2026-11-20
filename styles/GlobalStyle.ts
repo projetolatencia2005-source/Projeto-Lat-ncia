@@ -1644,8 +1644,8 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-tutorial-screen { align-items: stretch; padding: 0; }
     .doors-tutorial-window { min-height: 0; }
     .doors-tutorial-content-multipage {
-      display: flex; flex-direction: column; height: 100%; overflow: hidden auto;
-      padding: 32px clamp(14px, 4vw, 36px);
+      display: flex; flex: 1 1 0; flex-direction: column; height: auto; min-height: 0;
+      overflow: hidden auto; padding: 32px clamp(14px, 4vw, 36px);
     }
     .doors-tutorial-slide-intro { flex: 0 0 auto; padding-top: 0; width: 100%; }
     .doors-tutorial-slide-step-1,
@@ -1674,15 +1674,20 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-tutorial-step-copy p { font-size: calc(clamp(20px, 2.7vw, 25px) - 2.6667px); line-height: 1.35; max-width: 100%; }
     .doors-tutorial-desktop-preview { margin: 0 auto; max-width: 912px; width: 100%; }
     .doors-tutorial-actions {
-      align-self: stretch;
-      background: linear-gradient(180deg, rgb(49 48 44 / 0%), #31302c 26%);
-      bottom: 0; flex: 0 0 auto; justify-content: center; left: auto;
-      margin-top: auto; padding: 20px 0 max(18px, env(safe-area-inset-bottom));
-      position: sticky; transform: none; width: 100%;
+      align-self: stretch; background: #31302c; bottom: auto; flex: 0 0 auto;
+      justify-content: center; left: auto; margin-top: 0;
+      padding: 20px 0 max(18px, env(safe-area-inset-bottom));
+      position: relative; transform: none; width: 100%;
     }
     .doors-tutorial-back { position: static; right: auto; }
     .doors-tutorial-start { font-size: clamp(16px, 2.4vw, 21px); min-width: 150px; }
   }
+  @media (width <= 900px) and (height <= 700px) {
+    .doors-tutorial-desktop-preview {
+      width: min(100%, max(240px, calc(88.89vh - 89px)));
+    }
+  }
+
   @media (width <= 700px) {
     .doors-tutorial-screen { align-items: stretch; padding: 0; }
     .doors-tutorial-window { height: 100%; width: 100%; }
