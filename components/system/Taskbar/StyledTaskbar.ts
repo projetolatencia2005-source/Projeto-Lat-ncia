@@ -91,9 +91,6 @@ const StyledTaskbar = styled.nav`
       display: none;
     }
 
-    &::after {
-      left: calc(100% - 118px);
-    }
   }
 
   &::after {
@@ -108,6 +105,12 @@ const StyledTaskbar = styled.nav`
     top: 0;
     width: 2px;
     z-index: 1;
+  }
+
+  @media (max-width: 560px) {
+    &::after {
+      left: calc(100% - 118px);
+    }
   }
 `;
 

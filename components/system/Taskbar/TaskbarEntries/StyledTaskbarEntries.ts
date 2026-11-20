@@ -28,9 +28,16 @@ const StyledTaskbarEntries = styled.ol<StyledTaskbarEntriesProps>`
   left: clamp(142px, 13.333vw, 180px);
   padding-right: 76px;
   right: ${({ $clockWidth, $hasAI, theme }) =>
-    `calc(${$clockWidth}px + ${theme.sizes.clock.padding * 2}px + ${$hasAI ? theme.sizes.taskbar.ai.buttonWidth : "0px"})`};
+    `calc(${$clockWidth}px + ${theme.sizes.clock.padding * 2}px + ${$hasAI ? theme.sizes.taskbar.ai.buttonWidth : "0px"} + 376px)`};
+
+  @media (max-width: 1000px) {
+    right: ${({ $clockWidth, $hasAI, theme }) =>
+      `calc(${$clockWidth}px + ${theme.sizes.clock.padding * 2}px + ${$hasAI ? theme.sizes.taskbar.ai.buttonWidth : "0px"} + 168px)`};
+  }
 
   @media (max-width: 560px) {
+    right: ${({ $clockWidth, $hasAI, theme }) =>
+      `calc(${$clockWidth}px + ${theme.sizes.clock.padding * 2}px + ${$hasAI ? theme.sizes.taskbar.ai.buttonWidth : "0px"} + 36px)`};
     overflow-x: auto;
     padding-right: 0;
     scrollbar-width: none;
