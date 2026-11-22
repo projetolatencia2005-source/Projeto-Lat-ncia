@@ -599,11 +599,75 @@ const Root = styled.div`
     .rb-community-category-cell button span:first-child { max-width: 100%; overflow-wrap: anywhere; }
     .rb-community-category-cell button span:last-child { font-size: 12px; line-height: 1; }
   }
+  /* Keep the full Bubble navigation on one line on 4:3 desktop screens. */
+  @media (min-width: 761px) and (max-aspect-ratio: 4/3) {
+    .rb-nav {
+      flex-wrap: nowrap;
+      gap: clamp(8px, 1vw, 12px);
+      min-height: 58px;
+      padding: 6px clamp(10px, 1.2vw, 16px);
+    }
+
+    .rb-brand {
+      margin-right: 0;
+    }
+
+    .rb-brand img {
+      height: 32px;
+      width: clamp(76px, 10vw, 100px);
+    }
+
+    .rb-nav-links {
+      flex: 0 1 auto;
+      gap: clamp(6px, 0.85vw, 12px);
+      min-width: 0;
+    }
+
+    .rb-nav-links button,
+    .rb-signout {
+      font-size: clamp(11px, 1vw, 14px);
+      padding: 6px 0;
+    }
+
+    .rb-nav-links button {
+      gap: 4px;
+    }
+
+    .rb-nav-links img {
+      height: 16px;
+      width: 16px;
+    }
+
+    .rb-search {
+      flex: 0 1 200px;
+      margin-left: auto;
+      min-width: 104px;
+    }
+
+    .rb-search input {
+      height: 34px;
+      padding: 0 8px;
+    }
+
+    .rb-search button {
+      flex-basis: 34px;
+    }
+
+    .rb-search img {
+      height: 16px;
+      width: 16px;
+    }
+
+    .rb-signout {
+      padding-left: 12px;
+    }
+  }
+
 `;
 
 const Footer = (): ReactElement => (
   <footer className="rb-footer">
-    <img alt="Bubble" src={bubbleImage("wordmark.png")} />
+    <img alt="Bubble" src={bubbleImage("bubble.svg")} />
     <nav aria-label="Links do Bubble">
       {["sobre", "segurança", "privacidade", "ajuda"].map((item) => <button key={item} type="button">{item}</button>)}
     </nav>

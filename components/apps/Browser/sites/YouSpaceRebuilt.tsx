@@ -75,7 +75,8 @@ const Root = styled.div`
   .ry-suggestions { background: #fff; border: 2px solid #222; left: 0; max-height: 260px; overflow: auto; position: absolute; right: 0; top: calc(100% + 3px); z-index: 5; }
   .ry-suggestions button { background: #fff; border: 0; border-bottom: 1px solid #ccc; display: block; padding: 10px; text-align: left; width: 100%; }
   .ry-user { justify-self: end; }
-  .ry-user button { background: white; border: 2px solid #222; border-radius: 50%; height: 40px; width: 40px; }
+  .ry-user button { align-items: center; background: transparent; border: 0; border-radius: 0; display: grid; height: 42px; padding: 0; place-items: center; width: 42px; }
+  .ry-user button img { display: block; height: 42px; object-fit: contain; width: 42px; }
   .ry-page { flex: 1 0 auto; margin: 0 auto; max-width: 1760px; padding: clamp(24px, 3.5vw, 64px) clamp(20px, 3.8vw, 72px); }
   .ry-layout { display: grid; gap: clamp(28px, 5vw, 90px); grid-template-columns: minmax(0, 1fr) minmax(260px, 0.32fr); }
   .ry-main { min-width: 0; }
@@ -193,6 +194,29 @@ const Root = styled.div`
     .ry-footer small { flex: 1 0 100%; margin-left: 0; }
     .ry-related-card { grid-template-columns: minmax(120px, 40%) minmax(0, 1fr); }
   }
+  /* Keep the category choices in one horizontal row in 4:3 layouts. */
+  @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .ry-categories {
+      flex-wrap: nowrap;
+      gap: clamp(6px, 0.8vw, 10px);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+    }
+
+    .ry-categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ry-button {
+      flex: 0 0 auto;
+      font-size: clamp(12px, 1.1vw, 15px);
+      min-height: 46px;
+      padding: 8px clamp(8px, 1vw, 14px);
+      white-space: nowrap;
+    }
+  }
+
 `;
 
 const Icon = ({ kind, active = false }: { kind: "like" | "dislike" | "comment"; active?: boolean }): ReactElement => {
@@ -324,7 +348,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
           <button aria-label="Pesquisar" type="submit"><img alt="" src="/System/Doors/search.svg" /></button>
           {searchOpen && suggestions.length > 0 && <div className="ry-suggestions">{suggestions.map((video) => <button key={video.id} onClick={() => openVideo(video.id)} type="button">{video.title}</button>)}</div>}
         </form>
-        <div className="ry-user"><button aria-label="Conta do YouSpace" type="button">●</button></div>
+        <div className="ry-user"><button aria-label="Conta do YouSpace" type="button"><img alt="" src="/System/Doors/sites/youspace/perfil-youtube.svg" /></button></div>
       </header>
 
       {!activeVideo && (

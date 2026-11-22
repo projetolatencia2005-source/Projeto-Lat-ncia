@@ -1726,9 +1726,11 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-session-status--centered {
     bottom: auto !important;
     left: 50% !important;
+    max-width: calc((100vw - 12px) / 1.1);
     right: auto !important;
     top: 8px !important;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(1.1);
+    transform-origin: top center;
   }
 
   .doors-session-status--centered .notice {
