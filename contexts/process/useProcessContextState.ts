@@ -16,6 +16,7 @@ import {
   type Processes,
 } from "contexts/process/types";
 import { startCloseEffect } from "utils/closeEffect";
+import { playWindowSound } from "utils/windowSound";
 import { TRANSITIONS_IN_MILLISECONDS } from "utils/constants";
 
 type ProcessContextState = {
@@ -70,7 +71,14 @@ const useProcessContextState = (
     setProcesses(setIcon(id, newIcon));
   const maximize = (id: string, maximized?: boolean): void =>
     setProcesses(maximizeProcess(id, maximized));
-  const minimize = (id: string): void => setProcesses(minimizeProcess(id));
+  const minimize = (id: string): void => {
+    const process = getState().processes[id];
+    if (process?.minimized && process.hasWindow !== false) {
+      playWindowSound("open");
+    }
+
+    setProcesses(minimizeProcess(id));
+  };
   const open = (
     id: string,
     processArguments?: ProcessArguments,
@@ -87,7 +95,23 @@ const useProcessContextState = (
         );
       }
     } else {
-      setProcesses(openProcess(id, processArguments || {}, initialIcon));
+      const currentProcesses = getState().processes;
+      const nextProcesses = openProcess(
+        id,
+        processArguments || {},
+        initialIcon
+      )(currentProcesses);
+      const newlyOpenedId = Object.keys(nextProcesses).find(
+        (processId) => !currentProcesses[processId]
+      );
+
+      setProcesses(nextProcesses);
+      if (
+        newlyOpenedId &&
+        nextProcesses[newlyOpenedId].hasWindow !== false
+      ) {
+        playWindowSound("open");
+      }
     }
   };
   const linkElement = (
@@ -107,7 +131,12 @@ const useProcessContextState = (
 
     closingIdsRef.current.add(id);
 
-    const { componentWindow, hasWindow } = getState().processes[id] || {};
+    const process = getState().processes[id];
+    const { componentWindow, hasWindow } = process || {};
+    if (process && hasWindow !== false) {
+      playWindowSound("close");
+    }
+
     let closeInitiated = false;
     const initClose = (): void => {
       if (closeInitiated) return;
