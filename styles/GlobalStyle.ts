@@ -1330,13 +1330,15 @@ const GlobalStyle = styled.createGlobalStyle`
     }
     .metrics time {
       color: #FF0000;
-      font-family: "Pixelify Sans", monospace;
+      font-family: "Silkscreen", monospace;
+      letter-spacing: -0.5px;
       font-weight: 600;
     }
 
     .metrics .key-count {
       color: #FF0505;
-      font-family: "Pixelify Sans", monospace;
+      font-family: "Silkscreen", monospace;
+      letter-spacing: -0.5px;
       font-weight: 700;
     }
 
@@ -1767,15 +1769,13 @@ const GlobalStyle = styled.createGlobalStyle`
     text-align: center;
   }
 
-  @media not (aspect-ratio: 4 / 3) {
-    .doors-session-status {
-      transform: scale(0.8) !important;
-      transform-origin: top left;
-    }
+  .doors-session-status {
+    transform: scale(0.8) !important;
+    transform-origin: top left;
+  }
 
-    .doors-session-status--centered {
-      transform: scale(0.8) translateX(-50%) !important;
-    }
+  .doors-session-status--centered {
+    transform: scale(0.8) translateX(-50%) !important;
   }
 
   /* Global overrides for the internal-site layouts in the Browser window. */
