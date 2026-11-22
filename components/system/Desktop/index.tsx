@@ -395,7 +395,7 @@ const SessionStatus: FC<SessionStatusProps> = ({
     <aside
       ref={statusRef}
       aria-label={
-        `Latência System. Tempo restante ${time}. ${keysCollected} de ${LOCKED_FOLDER_KEY_COUNT} chaves resgatadas. Valor R$ 4,00.`
+        `Latência System. Tempo restante ${time}. Chaves ${keysCollected} de 5. Para usar por mais tempo fale com o proprietário.`
       }
       className={`doors-session-status ${position ? "doors-session-status--movable" : "doors-session-status--centered"}`}
       onPointerCancel={endDrag}
@@ -420,20 +420,10 @@ const SessionStatus: FC<SessionStatusProps> = ({
         </span>
         <span className="brand">Latência System</span>
         <span>
-          <strong>Valor:</strong>{" "}<span className="doors-silkscreen-number">R$4,00</span>
+          <strong>Chaves</strong> <span className="key-count">{keysCollected}/5</span>
         </span>
       </div>
-      <p className="notice">
-        <span>
-          Você já pegou{" "}
-          <span className="doors-silkscreen-number">{keysCollected}</span>{" "}
-          de{" "}
-          <span className="doors-silkscreen-number">
-            {LOCKED_FOLDER_KEY_COUNT}
-          </span>{" "}
-          chaves
-        </span>
-      </p>
+      <p className="notice">Para usar por mais tempo fale com o propietário</p>
     </aside>
   );
 };
