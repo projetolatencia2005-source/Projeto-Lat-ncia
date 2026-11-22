@@ -619,8 +619,9 @@ const Root = styled.div`
     }
 
     .rb-nav-links {
-      flex: 0 1 auto;
+      flex: 1 1 0;
       gap: clamp(6px, 0.85vw, 12px);
+      justify-content: center;
       min-width: 0;
       order: 1;
     }
@@ -641,8 +642,8 @@ const Root = styled.div`
     }
 
     .rb-search {
-      flex: 0 1 200px;
-      margin-left: auto;
+      flex: 0 1 clamp(150px, 19vw, 200px);
+      margin-left: 0;
       min-width: 104px;
       order: 2;
     }
@@ -664,6 +665,60 @@ const Root = styled.div`
     .rb-signout {
       order: 3;
       padding-left: 12px;
+    }
+  }
+
+  /* Give the Bubble communities sidebar enough room on 4:3 screens. */
+  @media (min-width: 761px) and (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .rb-communities-layout {
+      gap: clamp(14px, 1.6vw, 20px);
+      grid-template-columns: minmax(0, 2.3fr) minmax(280px, 1fr);
+    }
+
+    .rb-community-sidebar .rb-box-title {
+      min-height: 58px;
+      padding: 8px 12px;
+    }
+
+    .rb-community-sidebar .rb-box-title h2 {
+      font-size: clamp(20px, 1.95vw, 24px);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .rb-community-sidebar > .rb-box:first-child {
+      min-height: 0;
+    }
+
+    .rb-community-list {
+      padding: 6px 12px;
+    }
+
+    .rb-community-list-item {
+      gap: 10px;
+      min-height: clamp(120px, 12vw, 140px);
+    }
+
+    .rb-community-list-item img {
+      flex: 0 0 clamp(72px, 8vw, 88px);
+      height: clamp(72px, 8vw, 88px);
+      width: clamp(72px, 8vw, 88px);
+    }
+
+    .rb-community-list-item span {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .rb-community-list-item strong {
+      font-size: clamp(16px, 1.65vw, 20px);
+      line-height: 1.08;
+      overflow-wrap: anywhere;
+    }
+
+    .rb-community-list-item small {
+      font-size: clamp(12px, 1.1vw, 14px);
+      overflow-wrap: anywhere;
     }
   }
 

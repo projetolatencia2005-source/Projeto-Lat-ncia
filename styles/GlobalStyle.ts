@@ -2726,11 +2726,21 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
-  /* Give the centered status panel one more proportional 10% increase on 4:3 screens. */
+  /* Keep the proportional 4:3 enlargement after the status panel is moved. */
   @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
-    .doors-session-status--centered {
+    .doors-session-status--centered,
+    .doors-session-status--movable {
       max-width: calc((100vw - 12px) / 1.21);
+    }
+
+    .doors-session-status--centered {
       transform: translateX(-50%) scale(1.21);
+      transform-origin: top center;
+    }
+
+    .doors-session-status--movable {
+      transform: scale(1.21);
+      transform-origin: top left;
     }
   }
 

@@ -198,8 +198,8 @@ const Root = styled.div`
   @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
     .ry-categories {
       flex-wrap: nowrap;
-      gap: clamp(6px, 0.8vw, 10px);
-      justify-content: space-between;
+      gap: clamp(8px, 1vw, 12px);
+      justify-content: flex-start;
       margin-bottom: 31px;
       overflow-x: auto;
       overflow-y: hidden;
@@ -217,7 +217,7 @@ const Root = styled.div`
       flex: 0 0 auto;
       font-size: clamp(12px, 1.1vw, 15px);
       min-height: 46px;
-      padding: 8px clamp(8px, 1vw, 14px);
+      padding: 8px clamp(14px, 1.55vw, 20px);
       white-space: nowrap;
     }
   }

@@ -384,7 +384,7 @@ const SessionStatus: FC<SessionStatusProps> = ({
       onPointerUp={endDrag}
       style={
         position
-          ? { left: position.x, right: "auto", top: position.y, transform: "none" }
+          ? { left: position.x, right: "auto", top: position.y }
           : undefined
       }
     >
