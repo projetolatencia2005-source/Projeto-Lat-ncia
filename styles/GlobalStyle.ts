@@ -485,8 +485,14 @@ const GlobalStyle = styled.createGlobalStyle`
     object-position: center;
     pointer-events: none;
     position: absolute;
-    transform: translateY(-100px);
+    transform: translateY(-80px);
     width: 100%;
+  }
+
+  @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .doors-splash-animation {
+      transform: translateY(-80px) scale(1.2);
+    }
   }
 
   .doors-splash-stack {
@@ -526,7 +532,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-start {
-    bottom: calc(clamp(28px, 8vh, 76px) + 160px);
+    bottom: calc(clamp(28px, 8vh, 76px) + 140px);
     left: 50%;
     margin: 0;
     position: absolute;
