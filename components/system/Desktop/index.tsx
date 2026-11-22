@@ -20,7 +20,6 @@ const KEYWORD_OVERLAY_FADE_MS = 500;
 const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
 const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
-const SESSION_SCORE_DURATION_MS = 7000;
 const AMBIENT_AUDIO_BASE_VOLUME = 0.2;
 const THEME_AUDIO_BASE_VOLUME = 0.1224;
 const BACKGROUND_AUDIO_FADE_INTERVAL_MS = 40;
@@ -128,21 +127,12 @@ type SessionStatusProps = {
   bonusSeconds: number;
   isPaused: boolean;
   keysCollected: number;
-  onElapsedSecondsChange: (seconds: number) => void;
   onTimeExpired: () => void;
   onTimeWarning: () => void;
   startedAt: number;
 };
 
 type StatusPosition = { x: number; y: number };
-
-const formatElapsedTime = (seconds: number): string => {
-  const elapsed = Math.max(0, Math.floor(seconds));
-  const minutes = Math.floor(elapsed / 60);
-  const remainder = elapsed % 60;
-
-  return `${String(minutes).padStart(2, "0")}:${String(remainder).padStart(2, "0")}`;
-};
 
 const STATUS_POSITION_KEY = "doors-session-status-position-v2";
 const RESET_ON_NEXT_LOAD_KEY = "doors-reset-on-next-load-v1";
@@ -172,7 +162,6 @@ const SessionStatus: FC<SessionStatusProps> = ({
   bonusSeconds,
   isPaused,
   keysCollected,
-  onElapsedSecondsChange,
   onTimeExpired,
   onTimeWarning,
   startedAt,
@@ -272,7 +261,6 @@ const SessionStatus: FC<SessionStatusProps> = ({
         SESSION_DURATION_SECONDS + bonusSeconds - elapsed,
       );
 
-      onElapsedSecondsChange(elapsed);
       setRemainingSeconds(nextRemainingSeconds);
 
       if (nextRemainingSeconds > 90) {
@@ -302,8 +290,7 @@ const SessionStatus: FC<SessionStatusProps> = ({
   }, [
     bonusSeconds,
     isPaused,
-    onElapsedSecondsChange,
-    onTimeExpired,
+      onTimeExpired,
     onTimeWarning,
     startedAt,
   ]);
@@ -569,7 +556,7 @@ const Desktop: FC = ({ children }) => {
   const [keywordOverlayPhase, setKeywordOverlayPhase] =
     useState<KeywordOverlayPhase>("hidden");
   const [lockedFolderVideoPhase, setLockedFolderVideoPhase] = useState<
-    "hidden" | "fading-in" | "playing" | "fading-out" | "score" | "blocked"
+    "hidden" | "fading-in" | "playing" | "blocked"
   >("hidden");
   const [typedNoticeCharacters, setTypedNoticeCharacters] = useState(0);
   const [activeKeyword, setActiveKeyword] = useState("");
@@ -580,11 +567,6 @@ const Desktop: FC = ({ children }) => {
   const keywordGifSequenceRef = useRef(0);
   const keywordGifTimeoutRef = useRef<null | number>(null);
   const collectedKeywordsRef = useRef(new Set<string>());
-  const elapsedSecondsRef = useRef(0);
-
-  const recordElapsedSeconds = useCallback((seconds: number): void => {
-    elapsedSecondsRef.current = seconds;
-  }, []);
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const { open: openProcess } = useProcessesActions();
   const postItOpenedForSessionRef = useRef(false);
@@ -674,7 +656,7 @@ const Desktop: FC = ({ children }) => {
     const video = lockedFolderVideoRef.current;
 
     if (!video) {
-      setLockedFolderVideoPhase("score");
+      resetAndReload();
       return;
     }
 
@@ -686,7 +668,7 @@ const Desktop: FC = ({ children }) => {
 
     setLockedFolderVideoPhase("fading-in");
     void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
-  }, [pauseBackgroundAudioForVideo]);
+  }, [pauseBackgroundAudioForVideo, resetAndReload]);
 
   useEffect(() => {
     window.addEventListener("doors-locked-folder-unlocked", startLockedFolderVideo);
@@ -702,38 +684,6 @@ const Desktop: FC = ({ children }) => {
     );
     return () => window.clearTimeout(timeout);
   }, [lockedFolderVideoPhase]);
-
-  useEffect(() => {
-    if (lockedFolderVideoPhase !== "fading-out") return;
-
-    const timeout = window.setTimeout(() => {
-      const video = lockedFolderVideoRef.current;
-      video?.pause();
-
-      if (video) {
-        try {
-          video.currentTime = 0;
-        } catch {
-          // The video can stay at its final frame until the overlay is hidden.
-        }
-      }
-
-      setLockedFolderVideoPhase("score");
-    }, LOCKED_FOLDER_VIDEO_FADE_MS);
-
-    return () => window.clearTimeout(timeout);
-  }, [lockedFolderVideoPhase]);
-
-  useEffect(() => {
-    if (lockedFolderVideoPhase !== "score") return;
-
-    const timeout = window.setTimeout(
-      resetAndReload,
-      SESSION_SCORE_DURATION_MS,
-    );
-
-    return () => window.clearTimeout(timeout);
-  }, [lockedFolderVideoPhase, resetAndReload]);
 
   useEffect(() => {
     const onKeywordCollected = (event: Event): void => {
@@ -1209,7 +1159,7 @@ const Desktop: FC = ({ children }) => {
         <video
           ref={lockedFolderVideoRef}
           aria-label="Vídeo exibido após desbloquear a pasta trancada"
-          onEnded={() => setLockedFolderVideoPhase("fading-out")}
+          onEnded={resetAndReload}
           onError={() => {
             if (lockedFolderVideoPhase !== "hidden") {
               setLockedFolderVideoPhase("blocked");
@@ -1217,7 +1167,7 @@ const Desktop: FC = ({ children }) => {
           }}
           playsInline
           preload="metadata"
-          src="/System/Doors/locked-folder-unlocked.mp4"
+          src="https://kawsfaac3od1dc51.public.blob.vercel-storage.com/locked-folder-final.mp4"
         />
         {lockedFolderVideoPhase === "blocked" && (
           <div className="doors-unlock-video-error">
@@ -1231,25 +1181,7 @@ const Desktop: FC = ({ children }) => {
             </button>
           </div>
         )}
-        {lockedFolderVideoPhase === "score" && (
-          <section
-            aria-labelledby="doors-session-score-title"
-            aria-modal="true"
-            className="doors-session-score"
-            role="dialog"
-          >
-            <h2 id="doors-session-score-title">Resultado da sessão</h2>
-            <p>
-              Chaves coletadas: {Math.min(
-                collectedKeywordsRef.current.size,
-                LOCKED_FOLDER_KEY_COUNT,
-              )} de {LOCKED_FOLDER_KEY_COUNT}
-            </p>
-            <p>
-              Tempo levado: <time>{formatElapsedTime(elapsedSecondsRef.current)}</time>
-            </p>
-          </section>
-        )}
+
       </div>
       {startedAt !== null && (
         <SessionStatus
@@ -1259,7 +1191,6 @@ const Desktop: FC = ({ children }) => {
             collectedKeywordsRef.current.size,
             LOCKED_FOLDER_KEY_COUNT,
           )}
-          onElapsedSecondsChange={recordElapsedSeconds}
           onTimeExpired={handleTimeExpired}
           onTimeWarning={handleTimeWarning}
           startedAt={startedAt}
