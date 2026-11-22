@@ -2,7 +2,9 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { type Props } from "react-rnd";
 import { useTheme } from "styled-components";
 import { minMaxSize } from "components/system/Window/functions";
-import useDefaultSize from "components/system/Window/RndWindow/useDefaultSize";
+import useDefaultSize, {
+  isCollapsedPostItSize,
+} from "components/system/Window/RndWindow/useDefaultSize";
 import useMinMaxRef from "components/system/Window/RndWindow/useMinMaxRef";
 import { useProcess } from "contexts/process";
 import { useSessionActions, useWindowState } from "contexts/session";
@@ -14,11 +16,15 @@ type Resizable = [Size, React.Dispatch<React.SetStateAction<Size>>];
 const useResizable = (id: string, autoSizing = false): Resizable => {
   const defaultSize = useDefaultSize(id);
   const { setWindowStates } = useSessionActions();
-  const { size: stateSize = defaultSize } = useWindowState(id);
-  const { lockAspectRatio = false, maximized = false } = useProcess(id);
+  const { size: savedSize } = useWindowState(id);
+  const { lockAspectRatio = false, maximized = false, url = "" } =
+    useProcess(id);
   const {
     sizes: { titleBar },
   } = useTheme();
+  const stateSize = isCollapsedPostItSize(url, savedSize, titleBar.height)
+    ? defaultSize
+    : savedSize ?? defaultSize;
   const [size, setSize] = useState<Size>(() =>
     minMaxSize(stateSize, lockAspectRatio, titleBar.height)
   );

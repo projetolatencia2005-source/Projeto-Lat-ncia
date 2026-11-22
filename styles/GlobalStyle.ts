@@ -1319,6 +1319,7 @@ const GlobalStyle = styled.createGlobalStyle`
     .metrics .brand {
       background: #D7E4F7;
       font-size: 16px;
+      font-weight: 700;
     }
 
     .metrics span:last-child {
@@ -1335,7 +1336,7 @@ const GlobalStyle = styled.createGlobalStyle`
       font-weight: 600;
     }
 
-    .metrics .key-count {
+    .metrics span:last-child .key-count {
       color: #FF0505;
       font-family: "Silkscreen", monospace;
       letter-spacing: -0.5px;

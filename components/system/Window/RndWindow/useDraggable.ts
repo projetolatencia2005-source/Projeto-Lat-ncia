@@ -13,6 +13,7 @@ import {
   isWindowOutsideBounds,
   WINDOW_OFFSCREEN_BUFFER_PX,
 } from "components/system/Window/functions";
+import { isCollapsedPostItSize } from "components/system/Window/RndWindow/useDefaultSize";
 import useMinMaxRef from "components/system/Window/RndWindow/useMinMaxRef";
 import { type Size } from "components/system/Window/RndWindow/useResizable";
 import { getProcesses, useProcess } from "contexts/process";
@@ -28,19 +29,32 @@ type Draggable = [Position, React.Dispatch<React.SetStateAction<Position>>];
 const useDraggable = (id: string, size: Size): Draggable => {
   const {
     sizes: {
+      titleBar,
       window: { cascadeOffset },
     },
   } = useTheme();
-  const { autoSizing, closing, componentWindow, initialRelativePosition } =
-    useProcess(id);
+  const {
+    autoSizing,
+    closing,
+    componentWindow,
+    initialRelativePosition,
+    url = "",
+  } = useProcess(id);
   const stackOrder = useStackOrder();
   const windowState = useWindowState(id);
   const { position: sessionPosition, size: sessionSize } = windowState;
+  const collapsedPostIt = isCollapsedPostItSize(
+    url,
+    sessionSize,
+    titleBar.height
+  );
   const [position, setPosition] = useState<Position>(
     () =>
-      (!isWindowOutsideBounds(windowState, getWindowViewport()) &&
+      (!collapsedPostIt &&
+        !isWindowOutsideBounds(windowState, getWindowViewport()) &&
         sessionPosition) ||
-      cascadePosition(id, getProcesses(), stackOrder, cascadeOffset) ||
+      (!collapsedPostIt &&
+        cascadePosition(id, getProcesses(), stackOrder, cascadeOffset)) ||
       centerPosition(size)
   );
   const blockAutoPositionRef = useMinMaxRef(id);
@@ -82,9 +96,17 @@ const useDraggable = (id: string, size: Size): Draggable => {
       !sessionPosition &&
       !blockAutoPositionRef.current
     ) {
-      setPosition(centerPosition(sessionSize));
+      setPosition(centerPosition(collapsedPostIt ? size : sessionSize));
     }
-  }, [autoSizing, blockAutoPositionRef, closing, sessionPosition, sessionSize]);
+  }, [
+    autoSizing,
+    blockAutoPositionRef,
+    closing,
+    collapsedPostIt,
+    sessionPosition,
+    sessionSize,
+    size,
+  ]);
 
   useLayoutEffect(() => {
     if (initialRelativePosition && componentWindow && size) {

@@ -1,8 +1,26 @@
 import { useTheme } from "styled-components";
 import { isPostItPath } from "components/apps/TinyMCE/functions";
+import {
+  MIN_WINDOW_HEIGHT,
+  MIN_WINDOW_WIDTH,
+} from "components/system/Window/RndWindow/rndDefaults";
 import { type Size } from "components/system/Window/RndWindow/useResizable";
 import { useProcess } from "contexts/process";
 import { DEFAULT_WINDOW_SIZE } from "utils/constants";
+import { pxToNum } from "utils/functions";
+
+export const isCollapsedPostItSize = (
+  url: string,
+  size: Size | undefined,
+  titleBarHeight: number
+): boolean => {
+  if (!isPostItPath(url) || !size) return false;
+
+  return (
+    pxToNum(size.width) <= MIN_WINDOW_WIDTH + 8 ||
+    pxToNum(size.height) <= MIN_WINDOW_HEIGHT + titleBarHeight + 4
+  );
+};
 
 const useDefaultSize = (id: string): Size => {
   const { defaultSize, url = "" } = useProcess(id);
