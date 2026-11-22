@@ -47,6 +47,11 @@ const FirstVisitHint: FC<FirstVisitHintProps> = ({
 
   useEffect(() => {
     if (!visible) return;
+    window.dispatchEvent(new Event("doors-first-visit-hint-shown"));
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
     const closeOnEscape = (event: KeyboardEvent): void => {
       if (event.key === "Escape") setVisible(false);
     };

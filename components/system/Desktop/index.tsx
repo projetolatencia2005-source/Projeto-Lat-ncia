@@ -540,6 +540,15 @@ const Desktop: FC = ({ children }) => {
     return () => window.removeEventListener("click", onMouseClick, true);
   }, []);
 
+  useEffect(() => {
+    const onFirstVisitHintShown = (): void => {
+      playAudioEffect(popupAudioRef.current, 0.8);
+    };
+    window.addEventListener("doors-first-visit-hint-shown", onFirstVisitHintShown);
+    return () =>
+      window.removeEventListener("doors-first-visit-hint-shown", onFirstVisitHintShown);
+  }, []);
+
   useEffect(
     () => () => {
       if (backgroundAudioFadeRef.current !== null) {
