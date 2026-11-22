@@ -532,7 +532,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-start {
-    bottom: calc(clamp(28px, 8vh, 76px) + 140px);
+    bottom: calc(clamp(28px, 8vh, 76px) + 160px);
     left: 50%;
     margin: 0;
     position: absolute;
