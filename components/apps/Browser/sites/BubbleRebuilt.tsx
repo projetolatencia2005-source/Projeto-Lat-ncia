@@ -522,7 +522,82 @@ const Root = styled.div`
     .rb-message-list { min-height: 0; padding: 16px 10px; }
     .rb-message-row { max-width: 94%; }
     .rb-message-avatar { height: 30px; width: 30px; }
-    .rb-message { padding: 9px 10px 21px; }
+  }
+
+  @media (min-width: 761px) and (max-width: 1100px) {
+    .rb-nav { flex-wrap: wrap; gap: 8px 16px; }
+    .rb-brand { flex: 0 0 auto; margin-right: auto; order: 0; }
+    .rb-search { flex: 0 1 clamp(180px, 25vw, 280px); margin-left: 0; min-width: 160px; order: 1; }
+    .rb-signout { flex: 0 0 auto; order: 2; padding-left: 14px; }
+    .rb-nav-links {
+      flex: 1 0 100%; gap: clamp(14px, 2vw, 22px); justify-content: flex-start;
+      min-width: 0; order: 3; overflow-x: auto; white-space: nowrap;
+    }
+    .rb-nav-links > * { flex: 0 0 auto; }
+
+    .rb-home-communities > .rb-box-title { gap: 6px; min-height: 58px; padding: 8px 10px; }
+    .rb-home-communities > .rb-box-title h2 { font-size: 17px; }
+    .rb-home-communities > .rb-box-title > button { font-size: 11px; min-height: 30px; padding: 3px 6px; }
+    .rb-home-community-list { padding: 0 10px; }
+    .rb-home-community-row {
+      gap: 8px 10px; grid-template-columns: 68px minmax(0, 1fr);
+      min-height: 0; padding: 12px 0;
+    }
+    .rb-home-community-row img {
+      grid-column: 1; grid-row: 1 / span 2; height: 68px; width: 68px;
+    }
+    .rb-home-community-row h3 {
+      font-size: clamp(16px, 1.55vw, 19px); grid-column: 2;
+      line-height: 1.1; min-width: 0; overflow-wrap: anywhere;
+    }
+    .rb-home-community-row .rb-button {
+      grid-column: 2; grid-row: 2; height: auto; justify-self: start;
+      line-height: 1.1; max-width: 100%; min-height: 32px;
+      white-space: normal; width: min(88px, 100%);
+    }
+
+    .rb-birthday-box { min-height: 0; }
+    .rb-birthday-box > .rb-box-title { min-height: 52px; padding: 8px 12px; }
+    .rb-birthday-box > .rb-box-title h2 {
+      font-size: clamp(17px, 1.8vw, 20px); line-height: 1.05; overflow-wrap: anywhere;
+    }
+    .rb-birthday {
+      gap: 10px; grid-template-columns: 80px minmax(0, 1fr);
+      min-height: 0; padding: 14px 10px;
+    }
+    .rb-birthday > .rb-calendar, .rb-birthday > .rb-birthday-copy { transform: none; }
+    .rb-calendar { height: 132px; width: 80px; }
+    .rb-calendar span { flex-basis: 26px; font-size: 16px; line-height: 26px; }
+    .rb-calendar strong { font-size: 50px; }
+    .rb-birthday-copy strong {
+      font-size: clamp(18px, 1.9vw, 21px); overflow-wrap: anywhere;
+    }
+    .rb-birthday-copy p { font-size: 13px; line-height: 1.25; margin: 4px 0 8px; }
+    .rb-birthday-copy p:first-of-type { margin-bottom: 8px; }
+    .rb-birthday-copy .rb-button {
+      font-size: 12px; height: auto; line-height: 1.1; max-width: 100%;
+      min-height: 32px; padding: 5px; white-space: normal; width: 100%;
+    }
+
+    .rb-profile-panel--communities { min-height: 0; }
+    .rb-profile-community-list { padding: 8px 10px; transform: none; }
+    .rb-profile-community-row { gap: 8px; min-height: 72px; padding: 10px 0; }
+    .rb-profile-community-row img { flex-basis: 46px; height: 46px; width: 46px; }
+    .rb-profile-community-row a {
+      display: block; flex: 1; font-size: clamp(14px, 1.4vw, 16px);
+      line-height: 1.15; min-width: 0; overflow-wrap: anywhere;
+    }
+
+    .rb-community-categories { padding: 10px 12px; }
+    .rb-community-category-row { min-height: 54px; }
+    .rb-community-category-cell { padding-right: 8px; }
+    .rb-community-category-cell + .rb-community-category-cell { padding-left: 8px; }
+    .rb-community-category-cell button {
+      align-items: flex-start; flex-direction: column; font-size: clamp(13px, 1.4vw, 15px);
+      gap: 2px; justify-content: center; min-height: 54px;
+    }
+    .rb-community-category-cell button span:first-child { max-width: 100%; overflow-wrap: anywhere; }
+    .rb-community-category-cell button span:last-child { font-size: 12px; line-height: 1; }
   }
 `;
 

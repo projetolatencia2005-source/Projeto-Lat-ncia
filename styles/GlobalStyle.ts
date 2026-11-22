@@ -2560,9 +2560,18 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
   /* Tighter intro-to-button spacing for the 1514 × 883 desktop layout. */
-  @media (min-width: 1450px) and (max-width: 1560px) and (min-height: 850px) and (max-height: 910px) {
-    .doors-tutorial-window-intro {
-      --tutorial-intro-shift: 256px;
+  }
+
+  /* Pull tutorial information closer to the action on 4:3 screens, with a height-based limit to keep the button clear. */
+  @media (min-width: 901px) and (max-aspect-ratio: 4/3) {
+    .doors-tutorial-slide-intro {
+      padding-top: calc(16.95vh + var(--tutorial-intro-shift, 100px) + clamp(0px, calc(50vh - 325px), 60px));
+    }
+    .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
+      top: calc(16.95vh + clamp(0px, calc(50vh - 325px), 60px));
+    }
+    .doors-tutorial-window-intro > .doors-tutorial-actions {
+      bottom: clamp(150px, 27vh, 220px);
     }
   }
 `;
