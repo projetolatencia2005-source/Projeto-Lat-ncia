@@ -22,9 +22,12 @@ const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const SESSION_SCORE_DURATION_MS = 7000;
 const AMBIENT_AUDIO_BASE_VOLUME = 0.2;
-const THEME_AUDIO_BASE_VOLUME = 0.16;
+const THEME_AUDIO_BASE_VOLUME = 0.136;
 const BACKGROUND_AUDIO_FADE_INTERVAL_MS = 40;
+const INITIAL_BOOT_AUDIO_SCALE = 0.6;
 const KEYWORD_AUDIO_DUCK_SCALE = 0.24;
+const TYPING_AUDIO_VOLUME = 0.55;
+const TYPING_AUDIO_FADE_DURATION_MS = 220;
 const playAudioEffect = (audio: HTMLAudioElement | null, volume = 1): void => {
   if (!audio) return;
 
@@ -444,6 +447,7 @@ const Desktop: FC = ({ children }) => {
   const keywordAudioRef = useRef<HTMLAudioElement | null>(null);
   const clickAudioRef = useRef<HTMLAudioElement | null>(null);
   const popupAudioRef = useRef<HTMLAudioElement | null>(null);
+  const typingAudioRef = useRef<HTMLAudioElement | null>(null);
   const backgroundAudioFadeRef = useRef<number | null>(null);
   const backgroundAudioScaleRef = useRef(0);
   const backgroundAudioStartedRef = useRef(false);
@@ -556,6 +560,7 @@ const Desktop: FC = ({ children }) => {
       }
       ambientAudioRef.current?.pause();
       themeAudioRef.current?.pause();
+      typingAudioRef.current?.pause();
     },
     [],
   );
@@ -778,18 +783,6 @@ const Desktop: FC = ({ children }) => {
   }, [fadeBackgroundAudio]);
 
   useEffect(() => {
-    if (keywordOverlayPhase === "notice" || keywordOverlayPhase === "confirmation") {
-      playAudioEffect(popupAudioRef.current, 0.8);
-    }
-  }, [keywordGifSequence, keywordOverlayPhase]);
-
-  useEffect(() => {
-    if (lockedFolderVideoPhase === "score" || lockedFolderVideoPhase === "blocked") {
-      playAudioEffect(popupAudioRef.current, 0.8);
-    }
-  }, [lockedFolderVideoPhase]);
-
-  useEffect(() => {
     if (sessionNotice !== null) {
       playAudioEffect(popupAudioRef.current, 0.8);
     }
@@ -799,8 +792,58 @@ const Desktop: FC = ({ children }) => {
     if (keywordOverlayPhase !== "notice") return;
 
     const startedAt = window.performance.now();
+    const typingAudio = typingAudioRef.current;
     let animationFrame = 0;
+    let fadeAnimationFrame = 0;
+    let fadeStartedAt = 0;
+    let fadeStartingVolume = 0;
     let lastRenderedCharacters = -1;
+
+    const fadeTypingAudioOut = (): void => {
+      if (!typingAudio || typingAudio.paused) return;
+      if (fadeAnimationFrame !== 0) {
+        window.cancelAnimationFrame(fadeAnimationFrame);
+        fadeAnimationFrame = 0;
+      }
+
+      fadeStartedAt = window.performance.now();
+      fadeStartingVolume = typingAudio.volume;
+      const fadeFrame = (now: number): void => {
+        const progress = Math.min(
+          1,
+          (now - fadeStartedAt) / TYPING_AUDIO_FADE_DURATION_MS,
+        );
+        typingAudio.volume = fadeStartingVolume * (1 - progress);
+        if (progress >= 1) {
+          typingAudio.pause();
+          try {
+            typingAudio.currentTime = 0;
+          } catch {
+            // Keep the last position if this audio cannot seek yet.
+          }
+          typingAudio.volume = TYPING_AUDIO_VOLUME;
+          fadeAnimationFrame = 0;
+          return;
+        }
+        fadeAnimationFrame = window.requestAnimationFrame(fadeFrame);
+      };
+      fadeAnimationFrame = window.requestAnimationFrame(fadeFrame);
+    };
+
+    if (typingAudio) {
+      if (fadeAnimationFrame !== 0) {
+        window.cancelAnimationFrame(fadeAnimationFrame);
+        fadeAnimationFrame = 0;
+      }
+      typingAudio.loop = true;
+      typingAudio.volume = TYPING_AUDIO_VOLUME;
+      try {
+        typingAudio.currentTime = 0;
+      } catch {
+        // Start at the current position if seeking is not available yet.
+      }
+      void typingAudio.play().catch(() => undefined);
+    }
 
     const updateCharacters = (now: number): void => {
       const nextCharacters = Math.min(
@@ -815,12 +858,17 @@ const Desktop: FC = ({ children }) => {
 
       if (nextCharacters < noticeTotalCharacters) {
         animationFrame = window.requestAnimationFrame(updateCharacters);
+      } else {
+        fadeTypingAudioOut();
       }
     };
 
     animationFrame = window.requestAnimationFrame(updateCharacters);
 
-    return () => window.cancelAnimationFrame(animationFrame);
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      fadeTypingAudioOut();
+    };
   }, [keywordOverlayPhase, noticeTotalCharacters]);
 
   useEffect(() => {
@@ -849,23 +897,23 @@ const Desktop: FC = ({ children }) => {
     (destination: BootDestination): void => {
       if (bootStage === "loading") return;
 
+      if (destination === "tutorial") {
+        startBackgroundAudio();
+        fadeBackgroundAudio(INITIAL_BOOT_AUDIO_SCALE, 2400);
+      }
+
       if (destination === "login") {
         playAudioEffect(startupAudioRef.current);
         startBackgroundAudio();
+        fadeBackgroundAudio(1, BOOT_LOADING_DURATION_MS);
       }
 
       setBootDestination(destination);
       setLoadingProgress(0);
       setBootStage("loading");
     },
-    [bootStage, startBackgroundAudio]
+    [bootStage, fadeBackgroundAudio, startBackgroundAudio]
   );
-
-  useEffect(() => {
-    if (bootStage === "login") {
-      fadeBackgroundAudio(1, 2400);
-    }
-  }, [bootStage, fadeBackgroundAudio]);
 
   useEffect(() => {
     if (bootStage !== "loading" || !bootDestination) return;
@@ -1055,6 +1103,13 @@ const Desktop: FC = ({ children }) => {
         aria-hidden="true"
         preload="auto"
         src="/System/Doors/audio/popup.mp3"
+      />
+      <audio
+        ref={typingAudioRef}
+        aria-hidden="true"
+        preload="auto"
+        src="/System/Doors/audio/digitando.mpeg"
+        type="audio/mpeg"
       />
       {keywordOverlayPhase !== "hidden" && (
         <div
