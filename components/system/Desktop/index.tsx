@@ -22,7 +22,7 @@ const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const SESSION_SCORE_DURATION_MS = 7000;
 const AMBIENT_AUDIO_BASE_VOLUME = 0.2;
-const THEME_AUDIO_BASE_VOLUME = 0.136;
+const THEME_AUDIO_BASE_VOLUME = 0.1224;
 const BACKGROUND_AUDIO_FADE_INTERVAL_MS = 40;
 const INITIAL_BOOT_AUDIO_SCALE = 0.6;
 const KEYWORD_AUDIO_DUCK_SCALE = 0.24;
@@ -1108,7 +1108,7 @@ const Desktop: FC = ({ children }) => {
         ref={typingAudioRef}
         aria-hidden="true"
         preload="auto"
-        src="/System/Doors/audio/digitando.mpeg"
+        src="/System/Doors/audio/digitando2.mp3"
       />
       {keywordOverlayPhase !== "hidden" && (
         <div
