@@ -1109,7 +1109,6 @@ const Desktop: FC = ({ children }) => {
         aria-hidden="true"
         preload="auto"
         src="/System/Doors/audio/digitando.mpeg"
-        type="audio/mpeg"
       />
       {keywordOverlayPhase !== "hidden" && (
         <div
