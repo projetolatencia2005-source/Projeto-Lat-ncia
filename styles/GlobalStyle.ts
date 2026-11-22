@@ -898,7 +898,7 @@ const GlobalStyle = styled.createGlobalStyle`
     flex-direction: column;
     grid-column: 1;
     justify-content: center;
-    transform: translateX(calc(9.3vw - 230px));
+    transform: translateX(-3.23vw);
   }
 
   .doors-login-wordmark {
@@ -2562,61 +2562,168 @@ const GlobalStyle = styled.createGlobalStyle`
   /* Tighter intro-to-button spacing for the 1514 × 883 desktop layout. */
   }
 
-  /* Pull tutorial information closer to the action on 4:3 screens, with a height-based limit to keep the button clear. */
+  /* Center the tutorial content and keep the action directly below it on 4:3 screens. */
   @media (min-width: 901px) and (max-aspect-ratio: 4/3) {
-    .doors-tutorial-slide-intro {
-      padding-top: calc(16.95vh + var(--tutorial-intro-shift, 100px) + clamp(0px, calc(50vh - 325px), 60px));
+    .doors-tutorial-window {
+      align-items: center;
+      justify-content: center;
     }
+
+    .doors-tutorial-window-intro {
+      --tutorial-intro-shift: 0px;
+      height: 100%;
+      transform: none;
+      transform-origin: center;
+    }
+
+    .doors-tutorial-content-multipage {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      flex: 0 1 auto;
+      flex-direction: column;
+      height: auto;
+      justify-content: center;
+      max-height: 100%;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: clamp(12px, 2vh, 20px) 0;
+      width: 100%;
+    }
+
+    .doors-tutorial-slide-intro {
+      margin: auto;
+      padding-top: 0;
+    }
+
     .doors-tutorial-intro-copy p,
     .doors-tutorial-intro-summary {
       font-size: calc(clamp(22px, 2.5vw, 48px) + 2.6666px);
     }
+
     .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
       align-items: stretch;
       display: flex !important;
+      flex: 0 0 auto;
       flex-direction: column;
       gap: clamp(18px, 2.2vh, 24px) !important;
-      left: 50% !important;
-      top: clamp(32px, 8vh, 56px) !important;
-      transform: translateX(-50%);
+      left: auto !important;
+      margin: auto;
+      position: relative !important;
+      top: auto !important;
+      transform: none !important;
       width: min(56vw, 530px) !important;
     }
+
     .doors-tutorial-step-copy {
       max-width: 100%;
       min-width: 0;
       width: 100%;
     }
+
     .doors-tutorial-step-copy p,
     .doors-tutorial-slide-step-1 .doors-tutorial-step-copy p {
       max-width: 100%;
     }
+
     .doors-tutorial-desktop-preview {
       flex: 0 0 auto;
       margin: 0;
       max-width: 100%;
       width: 100%;
     }
-    .doors-tutorial-window-intro > .doors-tutorial-actions {
-      bottom: clamp(150px, 27vh, 220px);
+
+    .doors-tutorial-window > .doors-tutorial-actions {
+      align-self: center;
+      background: transparent;
+      bottom: auto;
+      flex: 0 0 auto;
+      left: auto;
+      margin-top: clamp(14px, 2.2vh, 22px);
+      padding: 0 0 clamp(12px, 2vh, 20px);
+      position: relative;
+      transform: none;
+      width: max-content;
+    }
+
+    .doors-tutorial-window:not(.doors-tutorial-window-intro) .doors-tutorial-start-final {
+      width: min(34vw, 420px);
     }
   }
 
   @media (max-width: 900px) and (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .doors-tutorial-window {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .doors-tutorial-content-multipage {
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      flex: 0 1 auto;
+      flex-direction: column;
+      height: auto;
+      justify-content: center;
+      max-height: 100%;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 12px 0;
+      width: 100%;
+    }
+
+    .doors-tutorial-slide-intro {
+      margin: auto;
+      padding-top: 0;
+      width: min(84vw, 700px);
+    }
+
     .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
       align-items: stretch;
       display: flex !important;
+      flex: 0 0 auto;
       flex-direction: column;
       gap: clamp(18px, 2.2vh, 24px) !important;
       left: auto !important;
-      margin: 0 auto;
+      margin: auto;
       position: relative !important;
       top: auto !important;
       transform: none !important;
       width: min(56vw, 530px) !important;
     }
-    .doors-tutorial-step-copy { max-width: 100%; min-width: 0; width: 100%; }
-    .doors-tutorial-desktop-preview { margin: 0; max-width: 100%; width: 100%; }
+
+    .doors-tutorial-step-copy {
+      max-width: 100%;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .doors-tutorial-desktop-preview {
+      margin: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .doors-tutorial-window > .doors-tutorial-actions {
+      align-self: center;
+      background: transparent;
+      bottom: auto;
+      flex: 0 0 auto;
+      left: auto;
+      margin-top: 14px;
+      padding: 0 0 max(12px, env(safe-area-inset-bottom));
+      position: relative;
+      transform: none;
+      width: max-content;
+    }
+
+    .doors-tutorial-window:not(.doors-tutorial-window-intro) .doors-tutorial-start-final {
+      width: min(34vw, 420px);
+    }
   }
+
 `;
 
 export default GlobalStyle;

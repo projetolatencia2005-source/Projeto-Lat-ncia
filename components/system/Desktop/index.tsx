@@ -1130,11 +1130,9 @@ const Desktop: FC = ({ children }) => {
                       <div className="doors-tutorial-intro-copy">
                         <h1>O QUE É ESTE SITE?</h1>
                         <p>
-                          Esta experiência simula como eram as Lan Houses,
-                          espaços que, entre o fim dos anos{" "}
-                          <span className="doors-silkscreen-number">1990</span>{" "}
-                          e o início dos anos{" "}
-                          <span className="doors-silkscreen-number">2010</span>.
+                          Esta experiência simula como eram as Lan Houses,{" "}
+                          espaços que foram populares a partir dos anos{" "}
+                          <span className="doors-silkscreen-number">2000</span>.
                         </p>
                       </div>
                     </div>
@@ -1187,9 +1185,12 @@ const Desktop: FC = ({ children }) => {
                             Encontre as{" "}
                             <span className="doors-silkscreen-number">5</span>{" "}
                             <span>palavras</span> em até{" "}
-                            <span className="doors-silkscreen-number">5</span>{" "}
-                            minutos. Cada palavra achada você ganha 1 minuto e
-                            30 segundos.
+                            <span className="doors-silkscreen-number">7</span>{" "}
+                            minutos e{" "}
+                            <span className="doors-silkscreen-number">30</span>{" "}
+                            segundos. Cada palavra achada você ganha{" "}
+                            <span className="doors-silkscreen-number">90</span>{" "}
+                            segundos.
                           </p>
                           <p>
                             Com todas as chaves, a <span>pasta trancada</span>{" "}
