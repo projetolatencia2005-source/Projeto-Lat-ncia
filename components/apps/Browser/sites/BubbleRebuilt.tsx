@@ -610,6 +610,7 @@ const Root = styled.div`
 
     .rb-brand {
       margin-right: 0;
+      order: 0;
     }
 
     .rb-brand img {
@@ -621,6 +622,7 @@ const Root = styled.div`
       flex: 0 1 auto;
       gap: clamp(6px, 0.85vw, 12px);
       min-width: 0;
+      order: 1;
     }
 
     .rb-nav-links button,
@@ -642,6 +644,7 @@ const Root = styled.div`
       flex: 0 1 200px;
       margin-left: auto;
       min-width: 104px;
+      order: 2;
     }
 
     .rb-search input {
@@ -659,6 +662,7 @@ const Root = styled.div`
     }
 
     .rb-signout {
+      order: 3;
       padding-left: 12px;
     }
   }

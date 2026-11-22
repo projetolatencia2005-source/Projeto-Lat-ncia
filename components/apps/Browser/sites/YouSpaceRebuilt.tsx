@@ -199,9 +199,13 @@ const Root = styled.div`
     .ry-categories {
       flex-wrap: nowrap;
       gap: clamp(6px, 0.8vw, 10px);
+      justify-content: space-between;
+      margin-bottom: 31px;
       overflow-x: auto;
       overflow-y: hidden;
+      padding: 0 5px 5px 0;
       scrollbar-width: none;
+      width: 100%;
     }
 
     .ry-categories::-webkit-scrollbar {
@@ -209,11 +213,56 @@ const Root = styled.div`
     }
 
     .ry-button {
+      box-shadow: 3px 3px 0 #111;
       flex: 0 0 auto;
       font-size: clamp(12px, 1.1vw, 15px);
       min-height: 46px;
       padding: 8px clamp(8px, 1vw, 14px);
       white-space: nowrap;
+    }
+  }
+
+  /* Keep the YouSpace player beside its related videos on 4:3 desktop screens. */
+  @media (min-width: 901px) and (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .ry-watch {
+      gap: clamp(18px, 2.2vw, 28px);
+      grid-template-columns: minmax(0, 1.55fr) minmax(250px, 0.9fr);
+    }
+
+    .ry-watch-main,
+    .ry-watch-side {
+      min-width: 0;
+    }
+
+    .ry-watch-side {
+      border-left: 2px solid #c7c7c7;
+      border-top: 0;
+      padding: 0 0 20px clamp(14px, 1.8vw, 22px);
+    }
+
+    .ry-related {
+      gap: clamp(14px, 1.8vw, 20px);
+    }
+
+    .ry-related-card {
+      gap: clamp(8px, 1vw, 12px);
+      grid-template-columns: minmax(100px, 42%) minmax(0, 1fr);
+    }
+
+    .ry-related-card button {
+      min-width: 0;
+    }
+
+    .ry-related-card a {
+      display: block;
+      font-size: clamp(12px, 1.05vw, 15px);
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .ry-related-card p {
+      font-size: clamp(10px, 0.86vw, 12px);
+      line-height: 1.2;
     }
   }
 
