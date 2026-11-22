@@ -166,6 +166,8 @@ const FileEntry: FC<FileEntryProps> = ({
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const isVisible = useIsVisible(buttonRef, fileManagerRef, isDesktop);
   const isDirectory = stats.isDirectory();
+  const isPastasShortcut =
+    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
   const [{ comment, getIcon, icon, pid, subIcons, url }, setInfo] = useFileInfo(
     path,
     isDirectory,
@@ -203,8 +205,6 @@ const FileEntry: FC<FileEntryProps> = ({
   const isShortcut = extension === SHORTCUT_EXTENSION;
   const isComputerShortcut =
     !isDesktop && /^(?:meu computador|área de trabalho)$/i.test(name.trim());
-  const isPastasShortcut =
-    isDesktop && /^(?:documents|documentos|pastas)$/i.test(name.trim());
   const isRabiscoShortcut =
     name.trim().toLocaleLowerCase() === "rabisco" &&
     (isDesktop || dirname(path).toLocaleLowerCase() === DESKTOP_PATH.toLocaleLowerCase());
