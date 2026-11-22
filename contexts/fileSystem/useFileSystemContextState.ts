@@ -38,6 +38,7 @@ import {
   CLIPBOARD_FILE_EXTENSIONS,
   DEFAULT_MAPPED_NAME,
   DESKTOP_PATH,
+  DOWNLOADS_FOLDER,
   PROCESS_DELIMITER,
   TRANSITIONS_IN_MILLISECONDS,
 } from "utils/constants";
@@ -720,13 +721,30 @@ const useFileSystemContextState = (): {
       }
 
       const pastasShortcutPath = "/Users/Public/Desktop/Pastas.url";
+      const defaultPastasShortcut = [
+        "[InternetShortcut]",
+        "BaseURL=FileExplorer",
+        "Comment=Abra suas pastas e documentos",
+        "IconFile=/System/Doors/figma/icon-documents.png",
+        "Type=System",
+        `URL=${DOWNLOADS_FOLDER}`,
+      ].join("\n");
+      const currentPastasShortcut = (await exists(pastasShortcutPath))
+        ? (await readFile(pastasShortcutPath)).toString()
+        : "";
+      const updatedPastasShortcut = currentPastasShortcut
+        ? /^URL=.*$/m.test(currentPastasShortcut)
+          ? currentPastasShortcut.replace(
+              /^URL=.*$/m,
+              `URL=${DOWNLOADS_FOLDER}`
+            )
+          : `${currentPastasShortcut.trimEnd()}\nURL=${DOWNLOADS_FOLDER}`
+        : defaultPastasShortcut;
 
-      if (!(await exists(pastasShortcutPath))) {
+      if (updatedPastasShortcut !== currentPastasShortcut) {
         await writeFile(
           pastasShortcutPath,
-          Buffer.from(
-            "[InternetShortcut]\nBaseURL=FileExplorer\nComment=Abra suas pastas e documentos\nIconFile=/System/Doors/figma/icon-documents.png\nType=System\nURL=/Users/Public/Documents"
-          ),
+          Buffer.from(updatedPastasShortcut),
           true
         );
         await updateFolder(

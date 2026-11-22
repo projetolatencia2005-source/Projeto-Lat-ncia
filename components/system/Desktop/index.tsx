@@ -81,7 +81,10 @@ const KEYWORD_NOTICE_PARAGRAPHS_BY_KEY: Record<string, KeywordNoticePart[][]> = 
       { text: "Você sabia que a Wikipedia foi criada em 2001 e se tornou uma das maiores enciclopédias livres da internet?" },
     ],
     [
-      { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares. Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
+      { text: "Nas Lan Houses, muitas pessoas utilizavam a plataforma para pesquisar conteúdos, conhecer assuntos novos e encontrar informações para trabalhos escolares." },
+    ],
+    [
+      { text: "Antes dos mecanismos de busca atuais, a Wikipédia era uma importante fonte de conhecimento, permitindo que qualquer pessoa tivesse acesso a milhares de artigos gratuitamente." },
     ],
   ],
   sinal: [

@@ -47,6 +47,7 @@ import Button from "styles/common/Button";
 import Icon from "styles/common/Icon";
 import {
   DESKTOP_PATH,
+  DOWNLOADS_FOLDER,
   EXTENSIONS_WITH_ICON,
   FOLDER_ICON,
   ICON_CACHE,
@@ -171,7 +172,7 @@ const FileEntry: FC<FileEntryProps> = ({
     hasNewFolderIcon,
     isDesktop || isVisible
   );
-  const openFile = useFile(url, path);
+  const openFile = useFile(isPastasShortcut ? DOWNLOADS_FOLDER : url, path);
   const {
     createPath,
     exists,
@@ -287,7 +288,7 @@ const FileEntry: FC<FileEntryProps> = ({
       !window.globalKeyStates?.ctrlKey &&
       !MOUNTABLE_EXTENSIONS.has(urlExt)
     ) {
-      changeUrl(fileManagerId, url);
+      changeUrl(fileManagerId, isPastasShortcut ? DOWNLOADS_FOLDER : url);
       blurEntry();
     } else if (openInFileExplorer && listView) {
       setShowInFileManager((currentState) => !currentState);
@@ -600,6 +601,7 @@ const FileEntry: FC<FileEntryProps> = ({
               "doors-post-it-shortcut",
             isPastasShortcut && "doors-pastas-shortcut",
             isPictureThumbnail && "doors-picture-thumbnail",
+            IMAGE_FILE_EXTENSIONS.has(urlExt) && "doors-image-thumbnail",
             isComputerShortcut && "doors-computer-shortcut",
           ]
             .filter(Boolean)
@@ -634,6 +636,7 @@ const FileEntry: FC<FileEntryProps> = ({
           ref={(figureRef: HTMLElement) => {
             if (listView && hasFinePointer()) spotlightEffect(figureRef);
           }}
+          $imageThumbnail={IMAGE_FILE_EXTENSIONS.has(urlExt)}
           $renaming={renaming}
           style={showColumn ? lockWidthStyle : undefined}
           {...(isHeading && {
