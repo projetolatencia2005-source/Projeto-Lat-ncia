@@ -485,6 +485,7 @@ const GlobalStyle = styled.createGlobalStyle`
     object-position: center;
     pointer-events: none;
     position: absolute;
+    transform: translateY(-100px);
     width: 100%;
   }
 
@@ -525,7 +526,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-start {
-    bottom: calc(clamp(28px, 8vh, 76px) + 60px);
+    bottom: calc(clamp(28px, 8vh, 76px) + 160px);
     left: 50%;
     margin: 0;
     position: absolute;
