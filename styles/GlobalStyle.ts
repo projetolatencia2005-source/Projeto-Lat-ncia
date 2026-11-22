@@ -1245,21 +1245,22 @@ const GlobalStyle = styled.createGlobalStyle`
     background: #dbd0ba;
     border: 2px solid #31302c;
     border-radius: 0;
-    box-shadow: 3px 3px 0 #31302c;
+    box-shadow: 2px 2px 0 #31302c;
     color: #31302c;
     cursor: grab;
     display: grid;
     font-family: "Pixelify Sans", monospace;
-    font-size: clamp(10px, 0.94vw, 16px);
-    grid-template-rows: 1fr 1fr;
+    font-size: clamp(11px, 1.03vw, 17.6px);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
     max-width: calc(100vw - 12px);
     padding: 3px 4px 4px;
     position: absolute;
     bottom: 55px;
     right: 5px;
     top: auto;
-    width: min(432px, max(280px, 22.5vw), calc(100vw - 12px));
-    height: min(67px, 6.2vh);
+    width: min(475px, max(308px, 24.75vw), calc(100vw - 12px));
+    aspect-ratio: 432 / 67;
+    height: auto;
     touch-action: none;
     z-index: 10;
 
@@ -1270,7 +1271,7 @@ const GlobalStyle = styled.createGlobalStyle`
     .metrics {
       align-items: stretch;
       display: grid;
-      background: #31302c;
+      background: #d7e4f7;
       border: 2px solid #31302c;
       grid-template-columns: 1fr 1.48fr 1fr;
       min-height: 0;
@@ -1299,8 +1300,8 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     .metrics .brand {
-      background: #f7edd7;
-      font-size: clamp(10px, 0.94vw, 16px);
+      background: #d7e4f7;
+      font-size: inherit;
     }
 
     .metrics span:last-child {
@@ -1322,11 +1323,11 @@ const GlobalStyle = styled.createGlobalStyle`
       font-weight: 700;
     }
     .notice {
-      background: #D7E4F7;
+      background: #f7edd7;
       border: 2px solid #31302c;
       align-items: center;
       display: flex;
-      font-size: clamp(10px, 0.83vw, 16px);
+      font-size: clamp(11px, 0.913vw, 17.6px);
       line-height: 1.15;
       justify-content: center;
       margin: 0;
@@ -1347,7 +1348,7 @@ const GlobalStyle = styled.createGlobalStyle`
     @media (max-width: 560px) {
       right: 5px;
       top: 5px;
-      width: min(432px, max(280px, 22.5vw), calc(100vw - 12px));
+      width: min(475px, max(308px, 24.75vw), calc(100vw - 12px));
       .notice {
         display: block;
       }
@@ -1723,14 +1724,23 @@ const GlobalStyle = styled.createGlobalStyle`
     text-align: left;
   }
 
+  .doors-session-status--centered,
+  .doors-session-status--movable {
+    max-width: calc((100vw - 12px) / 1.1);
+    transform: scale(1.1);
+  }
+
   .doors-session-status--centered {
     bottom: auto !important;
     left: 50% !important;
-    max-width: calc((100vw - 12px) / 1.1);
     right: auto !important;
     top: 8px !important;
     transform: translateX(-50%) scale(1.1);
     transform-origin: top center;
+  }
+
+  .doors-session-status--movable {
+    transform-origin: top left;
   }
 
   .doors-session-status--centered .notice {
