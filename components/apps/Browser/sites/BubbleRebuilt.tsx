@@ -620,7 +620,7 @@ const Root = styled.div`
 
     .rb-nav-links {
       flex: 1 1 0;
-      gap: clamp(6px, 0.85vw, 12px);
+      gap: clamp(12px, 1.25vw, 18px);
       justify-content: center;
       min-width: 0;
       order: 1;
@@ -630,6 +630,10 @@ const Root = styled.div`
     .rb-signout {
       font-size: clamp(11px, 1vw, 14px);
       padding: 6px 0;
+    }
+
+    .rb-nav-links button {
+      font-size: calc(clamp(11px, 1vw, 14px) + 2pt);
     }
 
     .rb-nav-links button {
