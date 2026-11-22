@@ -2567,6 +2567,10 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-tutorial-slide-intro {
       padding-top: calc(16.95vh + var(--tutorial-intro-shift, 100px) + clamp(0px, calc(50vh - 325px), 60px));
     }
+    .doors-tutorial-intro-copy p,
+    .doors-tutorial-intro-summary {
+      font-size: calc(clamp(22px, 2.5vw, 48px) + 2.6666px);
+    }
     .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
       top: calc(16.95vh + clamp(0px, calc(50vh - 325px), 60px));
     }
