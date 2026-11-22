@@ -2572,11 +2572,50 @@ const GlobalStyle = styled.createGlobalStyle`
       font-size: calc(clamp(22px, 2.5vw, 48px) + 2.6666px);
     }
     .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
-      top: calc(16.95vh + clamp(0px, calc(50vh - 325px), 60px));
+      align-items: stretch;
+      display: flex !important;
+      flex-direction: column;
+      gap: clamp(18px, 2.2vh, 24px) !important;
+      left: 50% !important;
+      top: clamp(32px, 8vh, 56px) !important;
+      transform: translateX(-50%);
+      width: min(56vw, 530px) !important;
+    }
+    .doors-tutorial-step-copy {
+      max-width: 100%;
+      min-width: 0;
+      width: 100%;
+    }
+    .doors-tutorial-step-copy p,
+    .doors-tutorial-slide-step-1 .doors-tutorial-step-copy p {
+      max-width: 100%;
+    }
+    .doors-tutorial-desktop-preview {
+      flex: 0 0 auto;
+      margin: 0;
+      max-width: 100%;
+      width: 100%;
     }
     .doors-tutorial-window-intro > .doors-tutorial-actions {
       bottom: clamp(150px, 27vh, 220px);
     }
+  }
+
+  @media (max-width: 900px) and (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .doors-tutorial-slide:not(.doors-tutorial-slide-intro) {
+      align-items: stretch;
+      display: flex !important;
+      flex-direction: column;
+      gap: clamp(18px, 2.2vh, 24px) !important;
+      left: auto !important;
+      margin: 0 auto;
+      position: relative !important;
+      top: auto !important;
+      transform: none !important;
+      width: min(56vw, 530px) !important;
+    }
+    .doors-tutorial-step-copy { max-width: 100%; min-width: 0; width: 100%; }
+    .doors-tutorial-desktop-preview { margin: 0; max-width: 100%; width: 100%; }
   }
 `;
 
