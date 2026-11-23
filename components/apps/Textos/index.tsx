@@ -1142,28 +1142,30 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
 
     let keywordCursorEffect: CursorEffectResult | undefined;
     let keywordCursorHost: HTMLDivElement | undefined;
-    let activeKeywordElement: HTMLElement | undefined;
+    let activeKeywordElements: HTMLElement[] = [];
     let relayKeywordMouseMove: ((event: MouseEvent) => void) | undefined;
     let activeQuizSignature = "";
     let activeQuizQuestionIndex = 0;
     const selectedQuizAnswers = new Map<number, string>();
     let submittedQuizResult: { score: number; total: number } | undefined;
     const clearKeywordCursorEffect = (): void => {
-      if (activeKeywordElement && relayKeywordMouseMove) {
-        activeKeywordElement.removeEventListener(
-          "mousemove",
-          relayKeywordMouseMove
-        );
+      if (relayKeywordMouseMove) {
+        activeKeywordElements.forEach((keywordElement) => {
+          keywordElement.removeEventListener(
+            "mousemove",
+            relayKeywordMouseMove as (event: MouseEvent) => void
+          );
+        });
       }
       keywordCursorEffect?.destroy();
       keywordCursorEffect = undefined;
       keywordCursorHost?.remove();
       keywordCursorHost = undefined;
-      activeKeywordElement = undefined;
+      activeKeywordElements = [];
       relayKeywordMouseMove = undefined;
     };
     const enableKeywordCursorEffect = (
-      keywordElement: HTMLElement | undefined
+      keywordElements: HTMLElement[]
     ): void => {
       clearKeywordCursorEffect();
       const prefersReducedMotion =
@@ -1188,7 +1190,7 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
       }
 
       if (
-        !keywordElement ||
+        keywordElements.length === 0 ||
         !cursorView ||
         !overlayWindow ||
         !overlayDocument ||
@@ -1208,7 +1210,7 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
       overlayDocument.documentElement.append(cursorHost);
 
       keywordCursorHost = cursorHost;
-      activeKeywordElement = keywordElement;
+      activeKeywordElements = keywordElements;
       keywordCursorEffect = fairyDustCursor({
         colors: ["#f7edd7", "#86baff", "#7d94b8"],
         element: cursorHost,
@@ -1230,7 +1232,12 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
           })
         );
       };
-      keywordElement.addEventListener("mousemove", relayKeywordMouseMove);
+      keywordElements.forEach((keywordElement) => {
+        keywordElement.addEventListener(
+          "mousemove",
+          relayKeywordMouseMove as (event: MouseEvent) => void
+        );
+      });
     };
     const isQuizControl = (target: EventTarget | null): boolean => {
       const element = target as Element | null;
@@ -1441,9 +1448,9 @@ const TextosDocument: FC<ComponentProcessProps> = ({ id }) => {
       if (feedback) feedback.hidden = isPerfect;
       if (restartButton) restartButton.hidden = isPerfect;
       enableKeywordCursorEffect(
-        isPerfect
-          ? (keyRow?.querySelector<HTMLElement>(".doors-quiz-key") ?? undefined)
-          : undefined
+        isPerfect && keyRow
+          ? Array.from(keyRow.querySelectorAll<HTMLElement>(".doors-quiz-key"))
+          : []
       );
     };
 
