@@ -24,15 +24,25 @@ const walk = (directory) =>
 
 const toPublicUrl = (filePath) => {
   const relativePath = path.relative(outputDirectory, filePath);
+  const encodedPath = relativePath
+    .split(path.sep)
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+  const publicUrl = `/${encodedPath}`;
 
-  if (relativePath === "index.html") {
+  if (publicUrl === "/index.html") {
     return "/";
   }
 
-  return `/${relativePath
-    .split(path.sep)
-    .map((segment) => encodeURIComponent(segment))
-    .join("/")}`;
+  if (publicUrl.endsWith("/index.html")) {
+    return publicUrl.slice(0, -"/index.html".length) || "/";
+  }
+
+  if (publicUrl.endsWith(".html")) {
+    return publicUrl.slice(0, -".html".length);
+  }
+
+  return publicUrl;
 };
 
 const files = walk(outputDirectory).filter(
