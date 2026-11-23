@@ -6,6 +6,7 @@ import GlobalStyle from "styles/GlobalStyle";
 import themes from "styles/themes";
 import { ACCESSIBILITY_CHANGE_EVENT, readAccessibilityPreferences } from "utils/accessibility";
 import { DEFAULT_THEME } from "utils/constants";
+import { installDoorsCursorStyles } from "utils/doorsCursor";
 
 const motionFeatures = async (): Promise<FeatureBundle> =>
   (await import(/* webpackMode: "eager" */ "styles/motionFeatures")).default;
@@ -23,6 +24,10 @@ const StyledApp: FC = ({ children }) => {
     return () => window.removeEventListener(ACCESSIBILITY_CHANGE_EVENT, updateMotionPreference);
   }, []);
 
+  useEffect(() => {
+    installDoorsCursorStyles(document);
+  }, []);
+
   return (
     <StyleSheetManager enableVendorPrefixes>
       <ThemeProvider theme={themes[themeName] || themes[DEFAULT_THEME]}>
@@ -36,3 +41,4 @@ const StyledApp: FC = ({ children }) => {
 };
 
 export default StyledApp;
+
