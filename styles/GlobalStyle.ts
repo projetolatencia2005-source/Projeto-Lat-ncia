@@ -55,6 +55,11 @@ const GlobalStyle = styled.createGlobalStyle`
     font-family: ${({ theme }) => theme.formats.systemFont};
   }
 
+  .react-draggable,
+  iframe {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
+  }
+
   button:not(:disabled),
   a[href],
   [role="button"],
