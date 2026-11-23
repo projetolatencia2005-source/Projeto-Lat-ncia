@@ -131,7 +131,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   input,
   textarea {
-    cursor: text;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     user-select: text;
   }
 
@@ -258,7 +258,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #ded3b9;
     box-shadow: 3px 3px 0 #111;
     color: #111;
-    cursor: pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     font: inherit;
     padding: 12px 18px;
     position: absolute;
@@ -333,7 +333,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #171715;
     box-shadow: 3px 3px 0 #111;
     color: #31302c;
-    cursor: pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     font: inherit;
     font-size: 16px;
     margin-top: 2px;
@@ -1219,7 +1219,7 @@ const GlobalStyle = styled.createGlobalStyle`
     box-shadow: 2px 2px 0 #31302c;
     box-sizing: border-box;
     color: #31302c;
-    cursor: grab;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     display: block;
     font-family: "Pixelify Sans", monospace;
     font-size: 16px;
@@ -1246,7 +1246,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     &:active {
-      cursor: grabbing;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     }
 
     .metrics {
@@ -2195,7 +2195,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .site-youspace .you-load-more:disabled {
-    cursor: default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     opacity: 0.85;
   }
 
@@ -2378,12 +2378,12 @@ const GlobalStyle = styled.createGlobalStyle`
     margin: 0 -18px 18px;
     min-height: 38px;
     padding: 6px 10px;
-    cursor: grab;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     touch-action: none;
     user-select: none;
 
     &:active {
-      cursor: grabbing;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     }
   }
 

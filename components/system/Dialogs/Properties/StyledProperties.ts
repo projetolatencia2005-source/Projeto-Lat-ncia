@@ -63,7 +63,7 @@ const StyledProperties = styled.div`
       }
 
       td {
-        cursor: text;
+        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
         display: flex;
         max-width: ${cellWidth}px;
         overflow: auto;

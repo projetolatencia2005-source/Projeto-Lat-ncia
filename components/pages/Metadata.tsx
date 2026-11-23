@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useCursor } from "components/pages/hooks/useCursor";
 import { useFaviconAndTitle } from "components/pages/hooks/useFaviconAndTitle";
 import desktopIcons from "public/.index/desktopIcons.json";
 import {
@@ -60,7 +59,6 @@ const Metadata: FC = () => {
       <meta content="website" property="og:type" />
       <meta content={description} property="og:description" />
       <PreloadIcons />
-      {useCursor()}
     </Head>
   );
 };

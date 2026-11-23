@@ -7,6 +7,7 @@ import {
   FOCUSABLE_ELEMENT,
   TRANSITIONS_IN_MILLISECONDS,
 } from "utils/constants";
+import { installDoorsCursorStyles } from "utils/doorsCursor";
 import { restoreFocus } from "utils/keyboard";
 
 const ONE_TIME_PASSIVE_CAPTURE_EVENT = {
@@ -89,6 +90,7 @@ const ScreenSaver: FC<ComponentProcessProps> = ({ id }) => {
         const { contentWindow: iframeWindow } = event?.currentTarget || {};
 
         if (iframeWindow) {
+          installDoorsCursorStyles(iframeWindow.document);
           iframeWindow.focus();
 
           requestAnimationFrame(() =>

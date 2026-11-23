@@ -31,10 +31,10 @@ const StyledLockedFolderDialog = styled.div`
     padding: 0 7px 0 9px;
     touch-action: none;
     user-select: none;
-    cursor: grab;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
 
     &:active {
-      cursor: grabbing;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     }
   }
 
@@ -99,7 +99,7 @@ const StyledLockedFolderDialog = styled.div`
     border: 2px solid #171613;
     box-shadow: 3px 3px 0 #171613;
     color: #31302c;
-    cursor: text;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     font-family: ${({ theme }) => theme.formats.systemFont};
     font-size: 14px;
     height: 44px;

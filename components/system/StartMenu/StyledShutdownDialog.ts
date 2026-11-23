@@ -36,10 +36,10 @@ const StyledShutdownDialog = styled.div`
     padding: 0 8px 0 14px;
     touch-action: none;
     user-select: none;
-    cursor: grab;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
 
     &:active {
-      cursor: grabbing;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
     }
 
     strong {

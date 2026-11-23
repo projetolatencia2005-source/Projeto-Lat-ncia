@@ -123,7 +123,6 @@ const useFileContextMenu = (
 ): ContextMenuCapture => {
   const { close, minimize, open, url: changeUrl } = useProcessesActions();
   const {
-    setCursor,
     setForegroundId,
     setIconPositions,
     setWallpaper,
@@ -531,13 +530,6 @@ const useFileContextMenu = (
           if (url) updateRecentFiles(url, "Paint");
         },
         label: "Editar",
-      });
-    }
-
-    if (CURSOR_FILE_EXTENSIONS.has(urlExtension)) {
-      menuItems.unshift({
-        action: () => setCursor(url),
-        label: "Definir como ponteiro do mouse",
       });
     }
 

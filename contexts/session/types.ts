@@ -45,7 +45,6 @@ export type SessionData = {
   aiEnabled?: boolean;
   clockSource: ClockSource;
   closeEffect: string;
-  cursor: string | undefined;
   iconPositions: IconPositions;
   lazyZoo?: boolean;
   recentFiles: RecentFiles;
@@ -70,7 +69,6 @@ export type SessionContextActions = {
   setAiEnabled: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   setClockSource: React.Dispatch<React.SetStateAction<ClockSource>>;
   setCloseEffect: React.Dispatch<React.SetStateAction<string>>;
-  setCursor: React.Dispatch<React.SetStateAction<string | undefined>>;
   setForegroundId: React.Dispatch<React.SetStateAction<string>>;
   setHaltSession: React.Dispatch<React.SetStateAction<boolean>>;
   setIconPositions: React.Dispatch<React.SetStateAction<IconPositions>>;

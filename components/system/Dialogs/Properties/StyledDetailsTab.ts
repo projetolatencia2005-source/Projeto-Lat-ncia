@@ -73,7 +73,7 @@ const StyledDetailsTab = styled.div`
         }
 
         td {
-          cursor: text;
+          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
           max-width: 157px;
           overflow: hidden;
           text-overflow: ellipsis;

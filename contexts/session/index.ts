@@ -21,9 +21,6 @@ export const useClockSource = (): SessionContextState["clockSource"] =>
 export const useCloseEffect = (): string =>
   useStateSelector((state) => state.closeEffect);
 
-export const useCursorUrl = (): string | undefined =>
-  useStateSelector((state) => state.cursor);
-
 export const useForegroundId = (): string =>
   useStateSelector((state) => state.foregroundId);
 

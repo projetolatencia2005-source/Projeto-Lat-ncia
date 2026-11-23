@@ -24,6 +24,21 @@ const CONTENT_STYLE = `
     cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
   }
 
+  button:not(:disabled),
+  a[href],
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  label,
+  select,
+  summary {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+  }
+
   html,
   body {
     scrollbar-width: none;
@@ -107,7 +122,7 @@ const CONTENT_STYLE = `
     background: transparent;
     border: 0;
     color: inherit;
-    cursor: pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
     display: flex;
     font-size: 16px;
     font-family: inherit;
@@ -147,7 +162,7 @@ const CONTENT_STYLE = `
     border: 2px solid #31302c;
     box-shadow: 3px 3px 0 #31302c;
     color: #31302c;
-    cursor: pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
     font: inherit;
     font-size: 16px;
     margin: 4px 0 0;

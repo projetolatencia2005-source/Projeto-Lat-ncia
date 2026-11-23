@@ -1042,7 +1042,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-primary-button:disabled {
-      cursor: not-allowed;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
       opacity: 0.55;
       transform: none;
     }
@@ -2755,7 +2755,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
-        cursor: pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
         font: inherit;
         font-size: 12px;
         padding: 6px 14px;
@@ -2948,7 +2948,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
-        cursor: pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
         font: inherit;
         font-size: 12px;
         padding: 6px 14px;
@@ -3021,7 +3021,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 0;
         box-shadow: none;
         color: #31302c;
-        cursor: pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
         display: flex;
         flex: 0 0 32px;
         font: inherit;
@@ -3032,7 +3032,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       }
 
       button:disabled {
-        cursor: default;
+        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
         opacity: 0.55;
       }
     }
@@ -3528,7 +3528,11 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       margin: -18px -20px 17px; padding: 0 18px;
       button {
         background: #f3f3f3; border: 2px solid #31302c; border-bottom: 0;
-        color: #292929; cursor: pointer; font: inherit; font-size: 12px; line-height: 1;
+        color: #292929;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        font: inherit;
+        font-size: 12px;
+        line-height: 1;
         padding: 6px 14px 7px;
       }
       button[aria-current="page"] { background: #fff; font-weight: 700; margin-bottom: -1px; }
@@ -4669,7 +4673,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: stretch;
       background: #f3f3f3;
       border: 0;
-      cursor: default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -5346,7 +5350,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: stretch;
       background: #f3f3f3;
       border: 0;
-      cursor: default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -6461,7 +6465,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-load-more:disabled {
-    cursor: default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     opacity: 0.85;
   }
 
@@ -6847,7 +6851,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-comment-reply-form button:disabled {
-    cursor: default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     opacity: 0.6;
   }
 
@@ -7265,7 +7269,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   && .site-youspace .you-comment-reply-form button:disabled {
-    cursor: default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
     opacity: 0.6;
   }
 

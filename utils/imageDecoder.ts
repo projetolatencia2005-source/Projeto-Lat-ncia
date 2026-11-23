@@ -9,7 +9,6 @@ import {
   bufferToUrl,
   cleanUpBufferUrl,
   dataUrlToBuffer,
-  getExtension,
   getGifJs,
   getMimeType,
   imgDataToBuffer,
@@ -139,86 +138,6 @@ export const getFirstAniImage = async (
   }
 
   return undefined;
-};
-
-const getGlobalCursorCSS = (cursorUrl: string): string =>
-  `*, *::before, *::after { cursor: url(${cursorUrl}), default !important; }`;
-
-const aniToCss = async (
-  imageBuffer: Buffer,
-  mimeType: string
-): Promise<string> => {
-  const { parseAni } = await import("ani-cursor/dist/parser");
-  const { images, metadata } = parseAni(imageBuffer);
-  const toUrl = (image: Uint8Array): string =>
-    bufferToUrl(Buffer.from(image), mimeType);
-
-  if (images.length === 1) return getGlobalCursorCSS(toUrl(images[0]));
-
-  if (images.length > 1) {
-    const animationName = `cursor-ani-${Date.now()}`;
-    const keyframes = `
-      @keyframes ${animationName} {
-        ${images
-          .map(
-            (image, i) =>
-              `${((i / images.length) * 100).toFixed(1)}% { cursor: url(${toUrl(image)}), default; }`
-          )
-          .join("")}
-        100% { cursor: url(${toUrl(images[0])}), default; }
-      }
-    `;
-    const duration = Math.ceil(
-      ((metadata.iDispRate || DEFAULT_JIFFY_RATE) / JIFFIES_IN_SECOND) *
-        images.length *
-        1000
-    );
-
-    return `${keyframes}* { animation: ${animationName} ${duration}ms infinite steps(1) !important; }`;
-  }
-
-  return "";
-};
-
-const getLargestIcon = async (
-  imageBuffer: Buffer,
-  maxSize: number
-): Promise<string> => {
-  try {
-    const { default: icoData } = await import("decode-ico");
-    const [icon] = icoData(imageBuffer)
-      .filter(({ width }) => width <= maxSize)
-      .sort((a, b) => b.width - a.width);
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d", {
-      desynchronized: true,
-    });
-
-    canvas.width = icon.width;
-    canvas.height = icon.height;
-    context?.putImageData(icon as unknown as ImageData, 0, 0);
-
-    return canvas.toDataURL();
-  } catch {
-    return "";
-  }
-};
-
-export const cursorToCss = async (
-  buffer: Buffer,
-  path: string
-): Promise<string> => {
-  if (getExtension(path) === ".ani") {
-    const animatedCursorCss = await aniToCss(buffer, getMimeType(path));
-
-    if (animatedCursorCss) return animatedCursorCss;
-  }
-
-  const largestIcon = await getLargestIcon(buffer, 128);
-
-  return getGlobalCursorCSS(
-    largestIcon || bufferToUrl(buffer, getMimeType(path))
-  );
 };
 
 const canLoadNative = async (

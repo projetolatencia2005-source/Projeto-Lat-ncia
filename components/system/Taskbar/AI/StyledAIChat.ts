@@ -254,7 +254,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
       }
 
       .message {
-        cursor: text;
+        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
         overflow-wrap: anywhere;
         padding-left: 36px;
         user-select: text;
@@ -307,7 +307,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
       .thoughts,
       .message {
         * {
-          cursor: text;
+          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
           user-select: text;
         }
       }

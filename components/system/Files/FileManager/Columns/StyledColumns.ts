@@ -45,7 +45,7 @@ const StyledColumns = styled.span`
 
       .resize {
         border-left: 1px solid #8c8069;
-        cursor: col-resize;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
         height: ${({ theme }) => theme.sizes.fileManager.columnHeight}px;
         padding-left: ${({ theme }) =>
           theme.sizes.fileManager.columnResizeWidth}px;
