@@ -98,12 +98,11 @@ const playAudioEffect = (audio: HTMLAudioElement | null, volume = 1): void => {
 
   try {
     audio.currentTime = 0;
+    audio.volume = volume;
+    void audio.play().catch(() => undefined);
   } catch {
-    // The sound can still play when seeking is not available yet.
+    // Audio playback must not prevent the desktop from responding.
   }
-
-  audio.volume = volume;
-  void audio.play().catch(() => undefined);
 };
 
 type KeywordNoticePart = { text: string; strong?: boolean };
@@ -1213,20 +1212,24 @@ const Desktop: FC = ({ children }) => {
     (destination: BootDestination): void => {
       if (bootStage === "loading") return;
 
-      if (destination === "tutorial") {
-        startBackgroundAudio();
-        fadeBackgroundAudio(INITIAL_BOOT_AUDIO_SCALE, 2400);
-      }
-
-      if (destination === "login") {
-        playAudioEffect(startupAudioRef.current);
-        startBackgroundAudio();
-        fadeBackgroundAudio(1, BOOT_LOADING_DURATION_MS);
-      }
-
       setBootDestination(destination);
       setLoadingProgress(0);
       setBootStage("loading");
+
+      try {
+        if (destination === "tutorial") {
+          startBackgroundAudio();
+          fadeBackgroundAudio(INITIAL_BOOT_AUDIO_SCALE, 2400);
+        }
+
+        if (destination === "login") {
+          playAudioEffect(startupAudioRef.current);
+          startBackgroundAudio();
+          fadeBackgroundAudio(1, BOOT_LOADING_DURATION_MS);
+        }
+      } catch {
+        // Continue through the boot screens even if audio is unavailable.
+      }
     },
     [bootStage, fadeBackgroundAudio, startBackgroundAudio]
   );
@@ -1662,6 +1665,10 @@ const Desktop: FC = ({ children }) => {
               aria-label="Tela inicial Latência System"
               aria-modal="true"
               className="doors-boot-screen doors-intro-screen doors-splash-screen"
+              onClick={() => {
+                setTutorialPage(0);
+                beginBootLoading("tutorial");
+              }}
               role="dialog"
             >
               <img
@@ -1675,10 +1682,6 @@ const Desktop: FC = ({ children }) => {
                 <button
                   ref={splashButtonRef}
                   className="doors-splash-start"
-                  onClick={() => {
-                    setTutorialPage(0);
-                    beginBootLoading("tutorial");
-                  }}
                   type="button"
                 >
                   aperte qualquer tecla para iniciar
