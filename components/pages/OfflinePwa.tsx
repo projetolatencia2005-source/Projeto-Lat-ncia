@@ -304,7 +304,7 @@ const OfflinePwa: FC = () => {
       </div>
       <div style={{ padding: 10 }}>
         <div>{messages[status]}</div>
-        {(status === "downloading" || status === "ready" || progress.totalFiles > 0) && (
+        {(status === "downloading" || progress.totalFiles > 0) && (
           <>
             <div style={{ marginTop: 5 }}>
               {percent}% · {progress.files.toLocaleString("pt-BR")} de{" "}
