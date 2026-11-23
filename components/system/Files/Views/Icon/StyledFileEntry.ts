@@ -83,6 +83,19 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
         width: ${({ $desktop, theme }) =>
           $desktop ? "clamp(28px, 5.2vh, 40px)" : theme.sizes.fileEntry.iconSize};
 
+        ${({ $desktop }) =>
+          $desktop &&
+          `
+            > img {
+              height: clamp(28px, 5.2vh, 40px);
+              max-height: clamp(28px, 5.2vh, 40px);
+              max-width: clamp(28px, 5.2vh, 40px);
+              min-height: 0;
+              min-width: 0;
+              width: clamp(28px, 5.2vh, 40px);
+            }
+          `}
+
         &:not(:first-of-type) {
           position: absolute;
 
@@ -104,7 +117,17 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
 
     picture:first-of-type {
       height: clamp(28px, 5.2vh, 40px);
+      transform: translate(-3px, -5px);
       width: clamp(28px, 5.2vh, 40px);
+
+      > img {
+        height: clamp(28px, 5.2vh, 46px);
+        max-height: clamp(28px, 5.2vh, 46px);
+        max-width: clamp(28px, 5.2vh, 46px);
+        min-height: 0;
+        min-width: 0;
+        width: clamp(28px, 5.2vh, 46px);
+      }
     }
   }
 
@@ -226,3 +249,4 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
 `;
 
 export default StyledFileEntry;
+
