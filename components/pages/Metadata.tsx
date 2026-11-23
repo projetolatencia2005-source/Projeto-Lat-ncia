@@ -50,6 +50,9 @@ const Metadata: FC = () => {
     <Head>
       <title>{title}</title>
       {Favicon}
+      <link href="/manifest.webmanifest" rel="manifest" />
+      <meta content="#7d94b8" name="theme-color" />
+      <meta content="yes" name="mobile-web-app-capable" />
       <meta
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, interactive-widget=resizes-content"
         name="viewport"

@@ -3,6 +3,7 @@ import "utils/polyfills";
 import { type AppProps } from "next/app";
 import { ErrorBoundary } from "components/pages/ErrorBoundary";
 import Metadata from "components/pages/Metadata";
+import OfflinePwa from "components/pages/OfflinePwa";
 import StyledApp from "components/pages/StyledApp";
 import { FileSystemProvider } from "contexts/fileSystem";
 import { MenuProvider } from "contexts/menu";
@@ -17,6 +18,7 @@ const App: FC<AppProps> = ({ Component: Index, pageProps }) => (
         <SessionProvider>
           <ErrorBoundary>
             <Metadata />
+            <OfflinePwa />
             <StyledApp>
               <MenuProvider>
                 <Index {...pageProps} />

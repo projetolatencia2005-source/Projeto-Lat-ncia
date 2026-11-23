@@ -1,0 +1,25 @@
+{
+  "name": "Projeto Latência",
+  "short_name": "Latência",
+  "description": "Sistema operacional web da Lan House Latência.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#d7e4f5",
+  "theme_color": "#7d94b8",
+  "icons": [
+    {
+      "src": "/doors-app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/System/Doors/figma/icon-post-it.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
