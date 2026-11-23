@@ -1547,11 +1547,7 @@ const Desktop: FC = ({ children }) => {
         isSpeechAudible && (
         <div
           aria-live="polite"
-          className={
-            activeSpeechCue === "rihanna"
-              ? "doors-speech-caption doors-speech-caption--pictures"
-              : "doors-speech-caption"
-          }
+          className="doors-speech-caption"
           key={activeSpeechCue}
           role="status"
         >

@@ -209,6 +209,12 @@ const useFolder = (
   const sessionLoaded = useSessionLoaded();
   const [sortOrder, sortBy, sortAscending] = useSortOrder(directory);
   const [currentDirectory, setCurrentDirectory] = useState(directory);
+  const latestDirectoryRef = useRef(directory);
+  const loadSequenceRef = useRef(0);
+  const activeDirectoryLoadRef = useRef<{
+    directory: string;
+    requestId: number;
+  } | null>(null);
   const { close, closeProcessesByUrl } = useProcessesActions();
   const statsWithShortcutInfo = async (
     fileName: string,
@@ -234,8 +240,16 @@ const useFolder = (
     newFile?: string,
     oldFile?: string
   ): Promise<void> => {
+    const requestDirectory = directory;
+    const isCurrentDirectory = (): boolean =>
+      latestDirectoryRef.current === requestDirectory;
+
     if (oldFile) {
-      if (!(await exists(join(directory, oldFile)))) {
+      const oldFileExists = await exists(join(requestDirectory, oldFile));
+
+      if (!isCurrentDirectory()) return;
+
+      if (!oldFileExists) {
         const oldName = basename(oldFile);
 
         if (newFile) {
@@ -264,24 +278,36 @@ const useFolder = (
         isSimpleSort ? await lstat(filePath) : await stat(filePath)
       );
 
+      if (!isCurrentDirectory()) return;
+
       setFiles((currentFiles = {}) => ({
         ...currentFiles,
         [baseName]: fileStats,
       }));
     } else {
+      const requestId = ++loadSequenceRef.current;
+      const isCurrentLoad = (): boolean =>
+        isCurrentDirectory() && loadSequenceRef.current === requestId;
+
+      activeDirectoryLoadRef.current = {
+        directory: requestDirectory,
+        requestId,
+      };
       setIsLoading(true);
 
       const readFiles = async (): Promise<void> => {
-        const dirContents = (await readdir(directory)).filter(
-          filterSystemFiles(directory)
+        const dirContents = (await readdir(requestDirectory)).filter(
+          filterSystemFiles(requestDirectory)
         );
+        if (!isCurrentLoad()) return;
+
         const filesAccumulator: Files = Object.create(null) as Files;
         const effectiveSortOrder = (!skipSorting && sortOrder) || [];
         const sortFunction = isSimpleSort
           ? undefined
           : sortBy === "date"
-            ? sortByDate(directory)
-            : sortBySize(directory);
+            ? sortByDate(requestDirectory)
+            : sortBySize(requestDirectory);
         const sortAccumulator = (): Files =>
           sortContents(
             filesAccumulator,
@@ -293,22 +319,22 @@ const useFolder = (
 
         await Promise.allSettled(
           dirContents.map(async (file) => {
-            const filePath = join(directory, file);
+            const filePath = join(requestDirectory, file);
             const fileStats = isSimpleSort
               ? await lstat(filePath)
               : await stat(filePath);
             const hideEntry = hideFolders && fileStats.isDirectory();
 
-            if (!hideEntry) {
+            if (!hideEntry && isCurrentLoad()) {
               filesAccumulator[file] = await statsWithShortcutInfo(
                 file,
                 fileStats
               );
 
-              if (hideLoading && pendingFrame === 0) {
+              if (hideLoading && pendingFrame === 0 && isCurrentLoad()) {
                 pendingFrame = window.requestAnimationFrame(() => {
                   pendingFrame = 0;
-                  setFiles(sortAccumulator());
+                  if (isCurrentLoad()) setFiles(sortAccumulator());
                 });
               }
             }
@@ -318,6 +344,8 @@ const useFolder = (
         if (pendingFrame !== 0) {
           window.cancelAnimationFrame(pendingFrame);
         }
+
+        if (!isCurrentLoad()) return;
 
         if (dirContents.length > 0) {
           const sortedFiles = sortAccumulator();
@@ -331,9 +359,11 @@ const useFolder = (
             (!sortOrder ||
               sortOrder?.some((entry, index) => newSortOrder[index] !== entry))
           ) {
-            window.requestAnimationFrame(() =>
-              setSortOrder(directory, newSortOrder)
-            );
+            window.requestAnimationFrame(() => {
+              if (isCurrentLoad()) {
+                setSortOrder(requestDirectory, newSortOrder);
+              }
+            });
           }
         } else {
           setFiles(Object.create(null) as Files);
@@ -343,12 +373,16 @@ const useFolder = (
       try {
         await readFiles();
       } catch (error) {
-        if ((error as ApiError).code === "ENOENT") {
-          closeProcessesByUrl(directory);
+        if (isCurrentLoad() && (error as ApiError).code === "ENOENT") {
+          closeProcessesByUrl(requestDirectory);
         }
-      }
+      } finally {
+        if (activeDirectoryLoadRef.current?.requestId === requestId) {
+          activeDirectoryLoadRef.current = null;
+        }
 
-      setIsLoading(false);
+        if (isCurrentLoad()) setIsLoading(false);
+      }
     }
   };
   const deleteLocalPath = async (path: string): Promise<void> => {
@@ -730,12 +764,19 @@ const useFolder = (
     addToFolder: () => addFile(directory, newPath),
     newPath,
     pasteToFolder,
-    resetFiles: () => setFiles(NO_FILES),
+    resetFiles: () => {
+      loadSequenceRef.current += 1;
+      activeDirectoryLoadRef.current = null;
+      setIsLoading(true);
+      setFiles(NO_FILES);
+    },
     sortByOrder,
   };
-  const updatingFiles = useRef(false);
 
   if (directory !== currentDirectory) {
+    loadSequenceRef.current += 1;
+    latestDirectoryRef.current = directory;
+    activeDirectoryLoadRef.current = null;
     setIsLoading(true);
     setCurrentDirectory(directory);
     setFiles(NO_FILES);
@@ -773,11 +814,10 @@ const useFolder = (
             );
           }
         }
-      } else if (!updatingFiles.current) {
-        updatingFiles.current = true;
-        updateFiles().then(() => {
-          updatingFiles.current = false;
-        });
+      } else if (
+        activeDirectoryLoadRef.current?.directory !== directory
+      ) {
+        void updateFiles();
       }
     }
   }, [
