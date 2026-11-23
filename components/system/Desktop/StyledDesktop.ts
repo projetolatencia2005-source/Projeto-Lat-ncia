@@ -32,7 +32,7 @@ const StyledDesktop = styled.main`
   }
 
   .doors-speech-caption {
-    background: rgba(14, 77, 55, 0.88);
+    background: #31302C;
     bottom: clamp(54px, 7.5vh, 86px);
     box-sizing: border-box;
     color: #f7edd7;
@@ -52,8 +52,6 @@ const StyledDesktop = styled.main`
     transform: translateX(-50%);
     white-space: nowrap;
     width: 44vw;
-    -webkit-text-stroke: 2px #31302c;
-    paint-order: stroke fill;
     z-index: 2147483000;
   }
 

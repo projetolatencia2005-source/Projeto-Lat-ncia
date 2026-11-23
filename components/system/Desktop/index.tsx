@@ -747,8 +747,8 @@ const Desktop: FC = ({ children }) => {
     elapsedTwoMinutes: false,
     elapsedTwoFortyFive: false,
     elapsedFourMinutes: false,
-    elapsedSixMinutes: false,
-    elapsedSixFifteen: false,
+    elapsedFiveThirty: false,
+    elapsedFiveMinutes: false,
     remainingNinety: false,
     remainingThirty: false,
   });
@@ -783,7 +783,7 @@ const Desktop: FC = ({ children }) => {
       const triggered = triggeredSessionVoicesRef.current;
       if (elapsedSeconds >= 90 && !triggered.elapsedOneThirty) {
         triggered.elapsedOneThirty = true;
-        enqueueSpeech("gta", "euVi", "gritaria", "bronca");
+        enqueueSpeech("gta", "euVi", "dahora", "gritaria", "bronca");
       }
       if (elapsedSeconds >= 120 && !triggered.elapsedTwoMinutes) {
         triggered.elapsedTwoMinutes = true;
@@ -795,14 +795,14 @@ const Desktop: FC = ({ children }) => {
       }
       if (elapsedSeconds >= 240 && !triggered.elapsedFourMinutes) {
         triggered.elapsedFourMinutes = true;
-        enqueueSpeech("maisTempo", "dahora");
+        enqueueSpeech("maisTempo");
       }
-      if (elapsedSeconds >= 360 && !triggered.elapsedSixMinutes) {
-        triggered.elapsedSixMinutes = true;
+      if (elapsedSeconds >= 330 && !triggered.elapsedFiveThirty) {
+        triggered.elapsedFiveThirty = true;
         enqueueSpeech("vamoSoltarPipa", "bora");
       }
-      if (elapsedSeconds >= 375 && !triggered.elapsedSixFifteen) {
-        triggered.elapsedSixFifteen = true;
+      if (elapsedSeconds >= 300 && !triggered.elapsedFiveMinutes) {
+        triggered.elapsedFiveMinutes = true;
         enqueueSpeech("varado");
       }
       if (remainingSeconds <= 90 && !triggered.remainingNinety) {
