@@ -37,23 +37,27 @@ const TYPING_AUDIO_VOLUME = 0.55;
 const TYPING_AUDIO_FADE_DURATION_MS = 220;
 const SPEECH_AUDIO_VOLUME = 0.9;
 const SPEECH_AUDIO_CATEGORY = {
-  nerdola: { caption: "Nerdola", src: "/System/Doors/audio/falas/nerdola.mp3" },
-  maisTempo: { caption: "Mais tempo", src: "/System/Doors/audio/falas/mais-tempo.mp3" },
-  virus: { caption: "Vírus", src: "/System/Doors/audio/falas/virus.mp3" },
-  porra: { caption: "Porra!", src: "/System/Doors/audio/falas/porra.mp3" },
-  naoEnche: { caption: "Não enche!", src: "/System/Doors/audio/falas/nao-enche.wav" },
-  rihanna: { caption: "Rihanna", src: "/System/Doors/audio/falas/rihanna.wav" },
-  vamoSoltarPipa: { caption: "Vamo soltar pipa", src: "/System/Doors/audio/falas/vamo-soltar-pipa.wav" },
-  bora: { caption: "Bora", src: "/System/Doors/audio/falas/bora.mp3" },
-  bubble: { caption: "Bubble", src: "/System/Doors/audio/falas/bubble.wav" },
-  euVi: { caption: "Eu vi", src: "/System/Doors/audio/falas/eu-vi.mp3" },
-  dahora: { caption: "Dahora", src: "/System/Doors/audio/falas/dahora.mp3" },
-  gta: { caption: "GTA", src: "/System/Doors/audio/falas/gta.mp3" },
-  podeEntrar: { caption: "Pode entrar", src: "/System/Doors/audio/falas/pode-entrar.mp3" },
-  seuTempoTaAcabando: { caption: "Seu tempo está acabando", src: "/System/Doors/audio/falas/seu-tempo-ta-acabando.mp3" },
-  gritaria: { caption: "Gritaria", src: "/System/Doors/audio/falas/gritaria.mp3" },
-  bronca: { caption: "Bronca", src: "/System/Doors/audio/falas/bronca.wav" },
-  abaixaVolume: { caption: "Abaixa o volume", src: "/System/Doors/audio/falas/abaixa-o-volume.wav" },
+  nerdola: { caption: "De novo nesse joguinho, nerdola?", src: "/System/Doors/audio/falas/nerdola.mp3" },
+  maisTempo: { caption: "Quer colocar mais tempo? É dois reais.", src: "/System/Doors/audio/falas/mais-tempo.mp3" },
+  virus: { caption: "Não entra nesse site, se pegar vírus vai ter que pagar.", src: "/System/Doors/audio/falas/virus.mp3" },
+  porra: { caption: "Seu tempo tá acabando, PORRA!", src: "/System/Doors/audio/falas/porra.mp3" },
+  naoEnche: { caption: "Ai, não enche, Velhote, vou ficar aqui quanto tempo eu quiser.", src: "/System/Doors/audio/falas/nao-enche.wav" },
+  rihanna: { caption: "Olha esse look da Rihanna, acho que eu vou no Braz comprar uma blusinha igual.", src: "/System/Doors/audio/falas/rihanna.wav" },
+  vamoSoltarPipa: { caption: "Ô, Tavinho, quando a gente sair daqui, vamo lá pra casa soltar pipa?", src: "/System/Doors/audio/falas/vamo-soltar-pipa.wav" },
+  bora: { caption: "Oxe, vambora!", src: "/System/Doors/audio/falas/bora.mp3" },
+  bubble: { caption: "Vixe, alguém esqueceu de deslogar da conta do Bubble. Vou bisbilhotar.", src: "/System/Doors/audio/falas/bubble.wav" },
+  euVi: { caption: "Vi, mano. Esse jogo tá muito realista, véi.", src: "/System/Doors/audio/falas/eu-vi.mp3" },
+  dahora: { caption: "Cê é louco, vai ser muito da hora.", src: "/System/Doors/audio/falas/dahora.mp3" },
+  gta: { caption: "Ô, Tavin, cê viu que vai sair o GTA 4 mano?", src: "/System/Doors/audio/falas/gta.mp3" },
+  podeEntrar: { caption: "Pode entrar, o computador tá livre.", src: "/System/Doors/audio/falas/pode-entrar.mp3" },
+  seuTempoTaAcabando: { caption: "Seu tempo tá acabando.", src: "/System/Doors/audio/falas/seu-tempo-ta-acabando.mp3" },
+  gritaria: { caption: "Olha a gritaria aí, pessoal!", src: "/System/Doors/audio/falas/gritaria.mp3" },
+  bronca: { caption: "Iiih, tomaram bronca.", src: "/System/Doors/audio/falas/bronca.wav" },
+  abaixaVolume: { caption: "Ô menina, faz favor de abaixar o volume do seu vídeo que tá me atrapalhando?", src: "/System/Doors/audio/falas/abaixa-o-volume.wav" },
+  pc: { caption: "Oi, e aí? Eu queria usar o PC. Será que tem algum computador livre aí pra mim jogar?", src: "/System/Doors/audio/falas/pc.mp3" },
+  video: { caption: null, src: "/System/Doors/audio/falas/video.mp3" },
+  desculpa: { caption: "Caramba, mano, esqueci de botar o fone, mano. Foi mal.", src: "/System/Doors/audio/falas/desculpa.mp3" },
+  varado: { caption: "Mano, esse cara tá cheatado, mano. Não é possível que esse cara tá jogando normal, mano. Ele me atirou um tiro varado, mano. Que que é isso?", src: "/System/Doors/audio/falas/varado.mp3" },
 } as const;
 type SpeechCueId = keyof typeof SPEECH_AUDIO_CATEGORY;
 const GAME_PROCESS_IDS = new Set([
@@ -472,12 +476,14 @@ const Desktop: FC = ({ children }) => {
   const speechPlaybackActiveRef = useRef(false);
   const delayedSpeechTimersRef = useRef<number[]>([]);
   const maisTempoFollowUpScheduledRef = useRef(false);
+  const pcReplyScheduledRef = useRef(false);
   const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
   const themeAudioRef = useRef<HTMLAudioElement | null>(null);
   const startupAudioRef = useRef<HTMLAudioElement | null>(null);
   const keywordAudioRef = useRef<HTMLAudioElement | null>(null);
   const clickAudioRef = useRef<HTMLAudioElement | null>(null);
   const popupAudioRef = useRef<HTMLAudioElement | null>(null);
+  const gameOverAudioRef = useRef<HTMLAudioElement | null>(null);
   const typingAudioRef = useRef<HTMLAudioElement | null>(null);
   const backgroundAudioFadeRef = useRef<number | null>(null);
   const backgroundAudioScaleRef = useRef(0);
@@ -627,6 +633,19 @@ const Desktop: FC = ({ children }) => {
   );
   const handleSpeechPlay = useCallback((): void => {
     setIsSpeechAudible(true);
+
+    if (activeSpeechCue === "pc" && !pcReplyScheduledRef.current) {
+      pcReplyScheduledRef.current = true;
+      const replyTimer = window.setTimeout(() => {
+        delayedSpeechTimersRef.current = delayedSpeechTimersRef.current.filter(
+          (scheduledTimer) => scheduledTimer !== replyTimer,
+        );
+        speechQueueRef.current.unshift("podeEntrar");
+        playNextSpeech();
+      }, 1000);
+      delayedSpeechTimersRef.current.push(replyTimer);
+    }
+
     if (
       activeSpeechCue !== "maisTempo" ||
       maisTempoFollowUpScheduledRef.current
@@ -642,7 +661,7 @@ const Desktop: FC = ({ children }) => {
       enqueueSpeech("vamoSoltarPipa", "bora");
     }, 10_000);
     delayedSpeechTimersRef.current.push(timer);
-  }, [activeSpeechCue, enqueueSpeech]);
+  }, [activeSpeechCue, enqueueSpeech, playNextSpeech]);
 
   const finishSpeech = useCallback((): void => {
     if (!speechPlaybackActiveRef.current) return;
@@ -704,11 +723,14 @@ const Desktop: FC = ({ children }) => {
     bubble: false,
     encicloweb: false,
     elapsedFourMinutes: false,
+    elapsedFourThirty: false,
+    elapsedSixFifteen: false,
     remainingThreeFifteen: false,
     remainingNinety: false,
     remainingThirty: false,
   });
   const picturesFolderWasOpenRef = useRef(false);
+  const picturesVoiceTriggeredRef = useRef(false);
   const picturesVoiceTimerRef = useRef<number | null>(null);
   const rootFs = useRootFs();
   const resetInProgressRef = useRef(false);
@@ -738,7 +760,15 @@ const Desktop: FC = ({ children }) => {
       const triggered = triggeredSessionVoicesRef.current;
       if (elapsedSeconds >= 240 && !triggered.elapsedFourMinutes) {
         triggered.elapsedFourMinutes = true;
-        enqueueSpeech("gta", "euVi", "dahora", "gritaria", "bronca");
+        enqueueSpeech("pc", "gta", "euVi", "dahora", "gritaria", "bronca");
+      }
+      if (elapsedSeconds >= 270 && !triggered.elapsedFourThirty) {
+        triggered.elapsedFourThirty = true;
+        enqueueSpeech("video", "abaixaVolume", "desculpa");
+      }
+      if (elapsedSeconds >= 375 && !triggered.elapsedSixFifteen) {
+        triggered.elapsedSixFifteen = true;
+        enqueueSpeech("varado");
       }
       if (remainingSeconds <= 195 && !triggered.remainingThreeFifteen) {
         triggered.remainingThreeFifteen = true;
@@ -808,12 +838,16 @@ const Desktop: FC = ({ children }) => {
       }
       return;
     }
-    if (picturesFolderWasOpenRef.current) return;
+    if (
+      picturesFolderWasOpenRef.current ||
+      picturesVoiceTriggeredRef.current
+    ) return;
     picturesFolderWasOpenRef.current = true;
     picturesVoiceTimerRef.current = window.setTimeout(() => {
       picturesVoiceTimerRef.current = null;
+      picturesVoiceTriggeredRef.current = true;
       enqueueSpeech("rihanna");
-    }, 10_000);
+    }, 5_000);
     return () => {
       if (picturesVoiceTimerRef.current !== null) {
         window.clearTimeout(picturesVoiceTimerRef.current);
@@ -993,8 +1027,14 @@ const Desktop: FC = ({ children }) => {
   }, [fadeBackgroundAudio]);
 
   useEffect(() => {
-    if (sessionNotice !== null) {
+    if (sessionNotice === "warning") {
       playAudioEffect(popupAudioRef.current, 0.8);
+    }
+  }, [sessionNotice]);
+
+  useEffect(() => {
+    if (sessionNotice === "expired") {
+      playAudioEffect(gameOverAudioRef.current);
     }
   }, [sessionNotice]);
 
@@ -1323,6 +1363,12 @@ const Desktop: FC = ({ children }) => {
         src="/System/Doors/audio/popup.mp3"
       />
       <audio
+        ref={gameOverAudioRef}
+        aria-hidden="true"
+        preload="auto"
+        src="/System/Doors/audio/efeitos/small-game-over-1.mp3"
+      />
+      <audio
         ref={typingAudioRef}
         aria-hidden="true"
         preload="auto"
@@ -1429,7 +1475,9 @@ const Desktop: FC = ({ children }) => {
           )}
         </div>
       )}
-      {activeSpeechCue !== null && isSpeechAudible && (
+      {activeSpeechCue !== null &&
+        activeSpeechCue !== "video" &&
+        isSpeechAudible && (
         <div
           aria-live="assertive"
           className="doors-speech-caption"

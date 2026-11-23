@@ -292,6 +292,23 @@ const FileEntry: FC<FileEntryProps> = ({
       blurEntry();
     } else if (openInFileExplorer && listView) {
       setShowInFileManager((currentState) => !currentState);
+    } else if (isPastasShortcut) {
+      void (async () => {
+        try {
+          if (!(await exists(DOWNLOADS_FOLDER))) {
+            await mkdirRecursive(DOWNLOADS_FOLDER);
+            if (!(await exists(DOWNLOADS_FOLDER))) return;
+            await updateFolder(
+              dirname(DOWNLOADS_FOLDER),
+              basename(DOWNLOADS_FOLDER),
+            );
+          }
+
+          await openFile(pid, isDynamicIcon ? undefined : icon);
+        } catch (error) {
+          console.error("Não foi possível abrir Downloads pelo atalho Pastas.", error);
+        }
+      })();
     } else {
       openFile(pid, isDynamicIcon ? undefined : icon);
     }
