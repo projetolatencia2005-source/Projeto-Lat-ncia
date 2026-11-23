@@ -16,6 +16,7 @@ type Video = {
   duration: string;
   category: string;
   image: string;
+  avatar?: string;
   description: string;
   videoSrc?: string;
 };
@@ -33,7 +34,7 @@ type Comment = {
 };
 
 const videos: Video[] = [
-  { id: "eles-sabem", title: "A verdade que eles não te contam, mas nós vamso te contar, porque nós não somos eles!!", creator: "eles.sabem", views: "10,1 mil", duration: "4:45", category: "Comédia", image: "verdade.png", videoSrc: `${ASSETS}verdade-internet.mp4`, description: "Um vídeo que mostra tudo o que ninguém conta. Assista até o final e descubra a verdade." },
+  { id: "eles-sabem", title: "A verdade que eles não te contam, mas nós vamso te contar, porque nós não somos eles!!", creator: "eles.sabem", views: "10,1 mil", duration: "4:45", category: "Comédia", image: "thumbb.png", avatar: "perfil.png", videoSrc: `${ASSETS}verdade-internet.mp4`, description: "Um vídeo que mostra tudo o que ninguém conta. Assista até o final e descubra a verdade." },
   { id: "ensaio-banda", title: "ensaio de banda de garagem (deu tudo errado)", creator: "mari.mp3", views: "3,4 mil", duration: "4:38", category: "Música", image: "banda.png", description: "Primeiro ensaio com todo mundo junto, numa sala emprestada. O som ficou estranho e a viola desafinou no meio." },
   { id: "skate-amigos", title: "um dia inteiro andando de skate com meus amigos", creator: "guizera1993", views: "900", duration: "6:09", category: "Esportes", image: "skate.png", description: "Meu amigo tentando fazer uma manobra. Demorou, mas caiu no final." },
   { id: "role-centro", title: "rolê no centro gravando com uma câmera velha", creator: "nat.videos", views: "610", duration: "3:04", category: "Vlogs", image: "role-centro.png", description: "Passeio no centro, na Fonte da Fonte. A câmera é velha e a imagem ficou com chuviscos." },
@@ -480,7 +481,7 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
             </section>
             <h1 className="ry-watch-title">{activeVideo.title}</h1>
             <section className="ry-watch-meta">
-              <img alt="Canal" className="ry-channel-avatar" src={`${ASSETS}verdade.png`} />
+              <img alt="Canal" className="ry-channel-avatar" src={`${ASSETS}${activeVideo.avatar ?? "perfil-youtube.svg"}`} />
               <div><strong>{activeVideo.creator}</strong><div>{activeVideo.views} visualizações</div></div>
               <button aria-pressed={subscribed} className={`ry-subscribe${subscribed ? " is-subscribed" : ""}`} onClick={() => setSubscribed((current) => !current)} type="button">{subscribed ? "INSCRITO" : "INSCREVA-SE"}</button>
               <div className="ry-watch-actions"><button aria-pressed={liked} onClick={() => { setLiked((current) => !current); setDisliked(false); }} type="button"><Icon active={liked} kind="like" />{liked ? "67" : "66"}</button><button aria-pressed={disliked} className="ry-dislike" onClick={() => { setDisliked((current) => !current); setLiked(false); }} type="button"><Icon active={disliked} kind="dislike" />{disliked ? "13" : "12"}</button><button aria-label="Comentários" onClick={() => document.getElementById("ry-comments")?.scrollIntoView({ behavior: "smooth" })} type="button"><Icon kind="comment" />{commentCount}</button></div>
