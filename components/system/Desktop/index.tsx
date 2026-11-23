@@ -60,6 +60,25 @@ const SPEECH_AUDIO_CATEGORY = {
   varado: { caption: "Mano, esse cara tá cheatado, mano. Não é possível que esse cara tá jogando normal, mano. Ele me atirou um tiro varado, mano. Que que é isso?", src: "/System/Doors/audio/falas/varado.mp3" },
 } as const;
 type SpeechCueId = keyof typeof SPEECH_AUDIO_CATEGORY;
+const splitSpeechCaption = (caption: string): string[] => {
+  const maxCharacters = 40;
+  const words = caption.trim().split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+
+  words.forEach((word) => {
+    if (line.length > 0 && line.length + word.length + 1 > maxCharacters) {
+      lines.push(line);
+      line = word;
+      return;
+    }
+
+    line = line ? line + " " + word : word;
+  });
+
+  if (line) lines.push(line);
+  return lines;
+};
 const GAME_PROCESS_IDS = new Set([
   "Chess",
   "ClassiCube",
@@ -474,9 +493,6 @@ const Desktop: FC = ({ children }) => {
   const speechAudioRef = useRef<HTMLAudioElement | null>(null);
   const speechQueueRef = useRef<SpeechCueId[]>([]);
   const speechPlaybackActiveRef = useRef(false);
-  const delayedSpeechTimersRef = useRef<number[]>([]);
-  const maisTempoFollowUpScheduledRef = useRef(false);
-  const pcReplyScheduledRef = useRef(false);
   const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
   const themeAudioRef = useRef<HTMLAudioElement | null>(null);
   const startupAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -599,7 +615,6 @@ const Desktop: FC = ({ children }) => {
       themeAudioRef.current?.pause();
       typingAudioRef.current?.pause();
       speechAudioRef.current?.pause();
-      delayedSpeechTimersRef.current.forEach((timer) => window.clearTimeout(timer));
       if (picturesVoiceTimerRef.current !== null) {
         window.clearTimeout(picturesVoiceTimerRef.current);
       }
@@ -614,6 +629,12 @@ const Desktop: FC = ({ children }) => {
   const processes = useProcesses();
   const [activeSpeechCue, setActiveSpeechCue] = useState<SpeechCueId | null>(null);
   const [isSpeechAudible, setIsSpeechAudible] = useState(false);
+  const [activeSpeechCaptionLineIndex, setActiveSpeechCaptionLineIndex] = useState(0);
+  const activeSpeechCaption =
+    activeSpeechCue === null ? null : SPEECH_AUDIO_CATEGORY[activeSpeechCue].caption;
+  const activeSpeechCaptionLines = activeSpeechCaption
+    ? splitSpeechCaption(activeSpeechCaption)
+    : [];
   const playNextSpeech = useCallback((): void => {
     if (speechPlaybackActiveRef.current) return;
     const nextCue = speechQueueRef.current.shift();
@@ -622,6 +643,7 @@ const Desktop: FC = ({ children }) => {
       return;
     }
     speechPlaybackActiveRef.current = true;
+    setActiveSpeechCaptionLineIndex(0);
     setActiveSpeechCue(nextCue);
   }, []);
   const enqueueSpeech = useCallback(
@@ -633,35 +655,34 @@ const Desktop: FC = ({ children }) => {
   );
   const handleSpeechPlay = useCallback((): void => {
     setIsSpeechAudible(true);
+  }, []);
 
-    if (activeSpeechCue === "pc" && !pcReplyScheduledRef.current) {
-      pcReplyScheduledRef.current = true;
-      const replyTimer = window.setTimeout(() => {
-        delayedSpeechTimersRef.current = delayedSpeechTimersRef.current.filter(
-          (scheduledTimer) => scheduledTimer !== replyTimer,
-        );
-        speechQueueRef.current.unshift("podeEntrar");
-        playNextSpeech();
-      }, 1000);
-      delayedSpeechTimersRef.current.push(replyTimer);
-    }
+  const handleSpeechTimeUpdate = useCallback((): void => {
+    if (!activeSpeechCue) return;
 
-    if (
-      activeSpeechCue !== "maisTempo" ||
-      maisTempoFollowUpScheduledRef.current
-    ) {
+    const caption = SPEECH_AUDIO_CATEGORY[activeSpeechCue].caption;
+    const audio = speechAudioRef.current;
+    if (!caption || !audio || !Number.isFinite(audio.duration) || audio.duration <= 0) {
       return;
     }
 
-    maisTempoFollowUpScheduledRef.current = true;
-    const timer = window.setTimeout(() => {
-      delayedSpeechTimersRef.current = delayedSpeechTimersRef.current.filter(
-        (scheduledTimer) => scheduledTimer !== timer,
-      );
-      enqueueSpeech("vamoSoltarPipa", "bora");
-    }, 10_000);
-    delayedSpeechTimersRef.current.push(timer);
-  }, [activeSpeechCue, enqueueSpeech, playNextSpeech]);
+    const lines = splitSpeechCaption(caption);
+    if (lines.length <= 1) return;
+
+    const totalCharacters = lines.reduce((total, line) => total + line.length, 0);
+    const progress = Math.min(audio.currentTime / audio.duration, 1);
+    const targetCharacter = progress * totalCharacters;
+    let elapsedCharacters = 0;
+    const foundIndex = lines.findIndex((line) => {
+      elapsedCharacters += line.length;
+      return targetCharacter < elapsedCharacters;
+    });
+    const nextIndex = foundIndex < 0 ? lines.length - 1 : foundIndex;
+
+    setActiveSpeechCaptionLineIndex((currentIndex) =>
+      currentIndex === nextIndex ? currentIndex : nextIndex,
+    );
+  }, [activeSpeechCue]);
 
   const finishSpeech = useCallback((): void => {
     if (!speechPlaybackActiveRef.current) return;
@@ -722,10 +743,12 @@ const Desktop: FC = ({ children }) => {
     firstGame: false,
     bubble: false,
     encicloweb: false,
+    elapsedOneThirty: false,
+    elapsedTwoMinutes: false,
+    elapsedTwoFortyFive: false,
     elapsedFourMinutes: false,
-    elapsedFourThirty: false,
+    elapsedSixMinutes: false,
     elapsedSixFifteen: false,
-    remainingThreeFifteen: false,
     remainingNinety: false,
     remainingThirty: false,
   });
@@ -758,29 +781,37 @@ const Desktop: FC = ({ children }) => {
       }
 
       const triggered = triggeredSessionVoicesRef.current;
+      if (elapsedSeconds >= 90 && !triggered.elapsedOneThirty) {
+        triggered.elapsedOneThirty = true;
+        enqueueSpeech("gta", "euVi", "gritaria", "bronca");
+      }
+      if (elapsedSeconds >= 120 && !triggered.elapsedTwoMinutes) {
+        triggered.elapsedTwoMinutes = true;
+        enqueueSpeech("pc", "podeEntrar");
+      }
+      if (elapsedSeconds >= 165 && !triggered.elapsedTwoFortyFive) {
+        triggered.elapsedTwoFortyFive = true;
+        enqueueSpeech("video", "abaixaVolume", "desculpa");
+      }
       if (elapsedSeconds >= 240 && !triggered.elapsedFourMinutes) {
         triggered.elapsedFourMinutes = true;
-        enqueueSpeech("pc", "gta", "euVi", "dahora", "gritaria", "bronca");
+        enqueueSpeech("maisTempo", "dahora");
       }
-      if (elapsedSeconds >= 270 && !triggered.elapsedFourThirty) {
-        triggered.elapsedFourThirty = true;
-        enqueueSpeech("video", "abaixaVolume", "desculpa");
+      if (elapsedSeconds >= 360 && !triggered.elapsedSixMinutes) {
+        triggered.elapsedSixMinutes = true;
+        enqueueSpeech("vamoSoltarPipa", "bora");
       }
       if (elapsedSeconds >= 375 && !triggered.elapsedSixFifteen) {
         triggered.elapsedSixFifteen = true;
         enqueueSpeech("varado");
       }
-      if (remainingSeconds <= 195 && !triggered.remainingThreeFifteen) {
-        triggered.remainingThreeFifteen = true;
-        enqueueSpeech("maisTempo");
-      }
       if (remainingSeconds <= 90 && !triggered.remainingNinety) {
         triggered.remainingNinety = true;
-        enqueueSpeech("seuTempoTaAcabando");
+        enqueueSpeech("seuTempoTaAcabando", "naoEnche");
       }
       if (remainingSeconds <= 30 && !triggered.remainingThirty) {
         triggered.remainingThirty = true;
-        enqueueSpeech("porra", "naoEnche");
+        enqueueSpeech("porra");
       }
     },
     [enqueueSpeech, isSessionPaused, lockedFolderVideoPhase, startedAt],
@@ -931,8 +962,6 @@ const Desktop: FC = ({ children }) => {
     speechAudioRef.current?.pause();
     setActiveSpeechCue(null);
     setIsSpeechAudible(false);
-    delayedSpeechTimersRef.current.forEach((timer) => window.clearTimeout(timer));
-    delayedSpeechTimersRef.current = [];
     const video = lockedFolderVideoRef.current;
 
     if (!video) {
@@ -1321,6 +1350,7 @@ const Desktop: FC = ({ children }) => {
         aria-hidden="true"
         preload="none"
         onPlay={handleSpeechPlay}
+        onTimeUpdate={handleSpeechTimeUpdate}
         onEnded={finishSpeech}
         onError={finishSpeech}
       />
@@ -1476,15 +1506,16 @@ const Desktop: FC = ({ children }) => {
         </div>
       )}
       {activeSpeechCue !== null &&
-        activeSpeechCue !== "video" &&
+        activeSpeechCaption !== null &&
         isSpeechAudible && (
         <div
-          aria-live="assertive"
+          aria-live="polite"
           className="doors-speech-caption"
           key={activeSpeechCue}
           role="status"
         >
-          {SPEECH_AUDIO_CATEGORY[activeSpeechCue].caption}
+          {activeSpeechCaptionLines[activeSpeechCaptionLineIndex] ??
+            activeSpeechCaptionLines[0]}
         </div>
       )}
       <div

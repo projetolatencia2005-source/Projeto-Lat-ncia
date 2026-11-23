@@ -32,23 +32,37 @@ const StyledDesktop = styled.main`
   }
 
   .doors-speech-caption {
-    background: rgba(49, 48, 44, 0.92);
+    background: rgba(14, 77, 55, 0.88);
     bottom: clamp(54px, 7.5vh, 86px);
+    box-sizing: border-box;
     color: #f7edd7;
-    font-family: "Silkscreen", "Pixelify Sans", monospace;
-    font-size: clamp(12px, 1.1vw, 19px);
+    font-family: "Pixelify Sans", monospace;
+    font-size: clamp(12px, 1.25vw, 18px);
+    font-weight: 400;
     left: 50%;
-    line-height: 1.5;
+    line-height: 1.2;
     max-width: calc(100vw - 32px);
-    overflow-wrap: anywhere;
-    padding: 9px 14px;
+    overflow: hidden;
+    padding: 6px 12px;
     pointer-events: none;
     position: absolute;
     text-align: center;
+    text-overflow: ellipsis;
+    text-transform: none;
     transform: translateX(-50%);
+    white-space: nowrap;
+    width: 44vw;
     -webkit-text-stroke: 2px #31302c;
     paint-order: stroke fill;
     z-index: 2147483000;
+  }
+
+  @media (max-width: 600px) {
+    .doors-speech-caption {
+      font-size: clamp(12px, 3vw, 16px);
+      padding: 6px 10px;
+      width: calc(100vw - 32px);
+    }
   }
 
   > canvas {
