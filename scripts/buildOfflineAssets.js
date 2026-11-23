@@ -8,11 +8,12 @@ const serviceWorkerTemplate = path.join(publicDirectory, "sw.js");
 const outputManifest = path.join(outputDirectory, "offline-assets.json");
 const outputServiceWorker = path.join(outputDirectory, "sw.js");
 const publicManifest = path.join(publicDirectory, "offline-assets.json");
+const notFoundPage = path.join(outputDirectory, "404.html");
 
 const version =
   process.env.VERCEL_GIT_COMMIT_SHA ||
   process.env.GITHUB_SHA ||
-  `local-${Date.now()}`;
+  "local";
 
 const walk = (directory) =>
   fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -21,24 +22,31 @@ const walk = (directory) =>
     return entry.isDirectory() ? walk(fullPath) : [fullPath];
   });
 
-const toPublicUrl = (filePath) =>
-  `/${path
-    .relative(outputDirectory, filePath)
+const toPublicUrl = (filePath) => {
+  const relativePath = path.relative(outputDirectory, filePath);
+
+  if (relativePath === "index.html") {
+    return "/";
+  }
+
+  return `/${relativePath
     .split(path.sep)
     .map((segment) => encodeURIComponent(segment))
     .join("/")}`;
+};
 
 const files = walk(outputDirectory).filter(
   (filePath) =>
     path.resolve(filePath) !== path.resolve(outputManifest) &&
-    path.resolve(filePath) !== path.resolve(outputServiceWorker)
+    path.resolve(filePath) !== path.resolve(outputServiceWorker) &&
+    path.resolve(filePath) !== path.resolve(notFoundPage)
 );
 
 files.sort((left, right) => {
   const leftPath = toPublicUrl(left);
   const rightPath = toPublicUrl(right);
   const priority = (value) =>
-    value === "/index.html" ? 0 : value.startsWith("/_next/") ? 1 : 2;
+    value === "/" ? 0 : value.startsWith("/_next/") ? 1 : 2;
 
   return priority(leftPath) - priority(rightPath) || leftPath.localeCompare(rightPath);
 });

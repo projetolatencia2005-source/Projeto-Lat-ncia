@@ -110,7 +110,7 @@ const cachedResponse = async (
           ];
 
     if (includeAppShellFallback) {
-      alternatePaths.push("/index.html");
+      alternatePaths.push("/");
     }
 
     for (const pathname of alternatePaths) {
