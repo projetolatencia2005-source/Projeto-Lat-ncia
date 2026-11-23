@@ -100,10 +100,16 @@ const cachedResponse = async (
   if (includeRouteAlternates) {
     const path = url.pathname;
     const withoutTrailingSlash = path.endsWith("/") ? path.slice(0, -1) : path;
+    const cleanHtmlPath = path.endsWith("/index.html")
+      ? path.slice(0, -"/index.html".length) || "/"
+      : path.endsWith(".html")
+        ? path.slice(0, -".html".length)
+        : null;
     const alternatePaths =
       path === "/"
         ? ["/index.html"]
         : [
+            ...(cleanHtmlPath ? [cleanHtmlPath] : []),
             `${withoutTrailingSlash}.html`,
             `${withoutTrailingSlash}/index.html`,
             path.endsWith("/") ? path : `${path}/`,
@@ -149,7 +155,9 @@ self.addEventListener("fetch", (event) => {
       const lookupRequest = request.headers.has("Range")
         ? new Request(url.href, { credentials: request.credentials })
         : request;
-      const cached = await cachedResponse(lookupRequest, request.mode === "navigate");
+      const useRouteAlternates =
+        request.mode === "navigate" || url.pathname.endsWith(".html");
+      const cached = await cachedResponse(lookupRequest, useRouteAlternates);
 
       if (cached) {
         return request.headers.has("Range")
@@ -158,11 +166,28 @@ self.addEventListener("fetch", (event) => {
       }
 
       try {
-        return await fetch(request);
+        const response = await fetch(request);
+
+        if (!response.ok && url.pathname.endsWith(".html")) {
+          const cleanPath = url.pathname.endsWith("/index.html")
+            ? url.pathname.slice(0, -"/index.html".length) || "/"
+            : url.pathname.slice(0, -".html".length);
+          const cleanUrl = new URL(url.href);
+          cleanUrl.pathname = cleanPath;
+          const cleanResponse = await fetch(cleanUrl.href, {
+            credentials: request.credentials,
+          });
+
+          if (cleanResponse.ok) {
+            return cleanResponse;
+          }
+        }
+
+        return response;
       } catch {
         const fallback = await cachedResponse(
           lookupRequest,
-          request.mode === "navigate",
+          useRouteAlternates,
           request.mode === "navigate"
         );
 
