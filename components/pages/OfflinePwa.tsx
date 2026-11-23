@@ -259,7 +259,7 @@ const OfflinePwa: FC = () => {
     return () => window.removeEventListener("online", onOnline);
   }, [isInstalledMode, retryCount, startOfflineDownload]);
 
-  if (!isInstalledMode) {
+  if (!isInstalledMode || status === "ready") {
     return null;
   }
 
