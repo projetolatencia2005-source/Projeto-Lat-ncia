@@ -55,11 +55,22 @@ const StyledDesktop = styled.main`
     z-index: 2147483000;
   }
 
+  .doors-speech-caption--pictures {
+    background: rgb(49 48 44 / 50%);
+    width: fit-content;
+    max-width: min(38vw, calc(100vw - 32px));
+  }
+
   @media (max-width: 600px) {
     .doors-speech-caption {
       font-size: clamp(12px, 3vw, 16px);
       padding: 6px 10px;
       width: calc(100vw - 32px);
+    }
+
+    .doors-speech-caption--pictures {
+      max-width: min(82vw, calc(100vw - 32px));
+      width: fit-content;
     }
   }
 

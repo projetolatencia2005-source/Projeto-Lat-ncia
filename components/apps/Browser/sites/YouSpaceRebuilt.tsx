@@ -17,6 +17,7 @@ type Video = {
   category: string;
   image: string;
   description: string;
+  videoSrc?: string;
 };
 
 type CommentReply = { author: string; age: string; color?: string; keywordId?: number; text: string; };
@@ -32,7 +33,7 @@ type Comment = {
 };
 
 const videos: Video[] = [
-  { id: "eles-sabem", title: "A verdade que eles não te contam, mas nós vamso te contar, porque nós não somos eles!!", creator: "eles.sabem", views: "10,1 mil", duration: "11:42", category: "Comédia", image: "verdade.png", description: "Um vídeo que mostra tudo o que ninguém conta. Assista até o final e descubra a verdade." },
+  { id: "eles-sabem", title: "A verdade que eles não te contam, mas nós vamso te contar, porque nós não somos eles!!", creator: "eles.sabem", views: "10,1 mil", duration: "4:45", category: "Comédia", image: "verdade.png", videoSrc: `${ASSETS}verdade-internet.mp4`, description: "Um vídeo que mostra tudo o que ninguém conta. Assista até o final e descubra a verdade." },
   { id: "ensaio-banda", title: "ensaio de banda de garagem (deu tudo errado)", creator: "mari.mp3", views: "3,4 mil", duration: "4:38", category: "Música", image: "banda.png", description: "Primeiro ensaio com todo mundo junto, numa sala emprestada. O som ficou estranho e a viola desafinou no meio." },
   { id: "skate-amigos", title: "um dia inteiro andando de skate com meus amigos", creator: "guizera1993", views: "900", duration: "6:09", category: "Esportes", image: "skate.png", description: "Meu amigo tentando fazer uma manobra. Demorou, mas caiu no final." },
   { id: "role-centro", title: "rolê no centro gravando com uma câmera velha", creator: "nat.videos", views: "610", duration: "3:04", category: "Vlogs", image: "role-centro.png", description: "Passeio no centro, na Fonte da Fonte. A câmera é velha e a imagem ficou com chuviscos." },
@@ -121,6 +122,7 @@ const Root = styled.div`
   .ry-player { aspect-ratio: 16 / 9; background: #101010; border: 5px solid #111; box-shadow: 5px 5px 0 #111; justify-self: stretch; margin-top: 0; overflow: hidden; position: relative; width: 100%; }
   .ry-watch-title, .ry-watch-meta, .ry-comments { width: 100%; }
   .ry-player > img { display: block; height: 100%; object-fit: contain; width: 100%; }
+  .ry-player > video { background: #101010; display: block; height: 100%; object-fit: contain; width: 100%; }
   .ry-play { align-items: center; background: transparent; border: 0; display: grid; height: 66px; left: 50%; padding: 0; place-items: center; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 66px; }\n  .ry-play img { display: block; height: 100%; image-rendering: pixelated; width: 100%; }
   .ry-player-feedback { align-items: center; background: rgb(0 0 0 / 62%); color: white; display: flex; flex-direction: column; gap: 14px; inset: 0; justify-content: center; padding: 20px; position: absolute; text-align: center; }
   .ry-player-feedback--error { background: rgb(0 0 0 / 72%); }
@@ -295,7 +297,9 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const [search, setSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [loadState, setLoadState] = useState<"idle" | "loading" | "error">("idle");
-  const [playerState, setPlayerState] = useState<"idle" | "loading" | "error">("idle");
+  const [playerState, setPlayerState] = useState<
+    "idle" | "loading" | "error" | "playing"
+  >("idle");
   const [subscribed, setSubscribed] = useState(false);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -313,14 +317,20 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
   const suggestions = useMemo(() => videos.filter((video) => search.trim() && video.title.toLowerCase().includes(search.toLowerCase())).slice(0, 4), [search]);
 
   useEffect(() => {
-    if (playerState === "idle") return undefined;
+    if (
+      playerState === "idle" ||
+      playerState === "playing" ||
+      activeVideo?.videoSrc
+    ) {
+      return undefined;
+    }
     if (playerState === "loading") {
       const timer = window.setTimeout(() => setPlayerState("error"), 850);
       return () => window.clearTimeout(timer);
     }
     const timer = window.setTimeout(() => navigate(SITE_URLS.youspace), 1700);
     return () => window.clearTimeout(timer);
-  }, [playerState, navigate]);
+  }, [activeVideo?.videoSrc, navigate, playerState]);
 
   const openVideo = (id: string): void => {
     setPlayerState("idle");
@@ -424,10 +434,49 @@ const YouSpacePage = ({ url }: { url: string }): ReactElement => {
         <div className="ry-page ry-watch">
           <main className="ry-watch-main">
             <section aria-label="Player de vídeo" className="ry-player">
-              <img alt={activeVideo.title} src={`${ASSETS}${activeVideo.image}`} />
-              {playerState === "idle" && <button aria-label="Reproduzir vídeo" className="ry-play" onClick={() => setPlayerState("loading")} type="button"><img alt="" aria-hidden="true" src={`${REACTION_ASSETS}/play.svg`} /></button>}
+              {activeVideo.videoSrc && playerState === "playing" ? (
+                <video
+                  autoPlay
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster={`${ASSETS}${activeVideo.image}`}
+                  src={activeVideo.videoSrc}
+                  onError={() => setPlayerState("error")}
+                />
+              ) : (
+                <img alt={activeVideo.title} src={`${ASSETS}${activeVideo.image}`} />
+              )}
+              {playerState === "idle" && (
+                <button
+                  aria-label="Reproduzir vídeo"
+                  className="ry-play"
+                  onClick={() =>
+                    setPlayerState(activeVideo.videoSrc ? "playing" : "loading")
+                  }
+                  type="button"
+                >
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src={`${REACTION_ASSETS}/play.svg`}
+                  />
+                </button>
+              )}
               {playerState === "loading" && <div className="ry-player-feedback"><span className="ry-spinner" /><span>Carregando vídeo...</span></div>}
-              {playerState === "error" && <div aria-live="assertive" className="ry-player-feedback ry-player-feedback--error"><strong>Erro</strong><span>Erro ao carregar o vídeo. Voltando ao início do YouSpace.</span></div>}
+              {playerState === "error" && (
+                <div
+                  aria-live="assertive"
+                  className="ry-player-feedback ry-player-feedback--error"
+                >
+                  <strong>Erro</strong>
+                  <span>
+                    {activeVideo.videoSrc
+                      ? "Não foi possível reproduzir o vídeo."
+                      : "Erro ao carregar o vídeo. Voltando ao início do YouSpace."}
+                  </span>
+                </div>
+              )}
             </section>
             <h1 className="ry-watch-title">{activeVideo.title}</h1>
             <section className="ry-watch-meta">

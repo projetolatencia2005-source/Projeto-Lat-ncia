@@ -853,11 +853,19 @@ const Desktop: FC = ({ children }) => {
     startedAt !== null &&
     lockedFolderVideoPhase === "hidden" &&
     Object.entries(processes).some(
-      ([processId, process]) =>
-        !process.closing &&
-        (processId.split(PROCESS_DELIMITER)[0] === "Photos" ||
-          (processId.split(PROCESS_DELIMITER)[0] === "FileExplorer" &&
-            process.url?.toLocaleLowerCase("pt-BR").startsWith(PICTURES_FOLDER_PATH.toLocaleLowerCase("pt-BR")))),
+      ([processId, process]) => {
+        const folderPath = process.url
+          ?.toLocaleLowerCase("pt-BR")
+          .replace(/\/+$/, "");
+        const picturesPath = PICTURES_FOLDER_PATH.toLocaleLowerCase("pt-BR");
+
+        return (
+          !process.closing &&
+          processId.split(PROCESS_DELIMITER)[0] === "FileExplorer" &&
+          (folderPath === picturesPath ||
+            folderPath?.startsWith(`${picturesPath}/`))
+        );
+      },
     );
 
   useEffect(() => {
@@ -1510,7 +1518,11 @@ const Desktop: FC = ({ children }) => {
         isSpeechAudible && (
         <div
           aria-live="polite"
-          className="doors-speech-caption"
+          className={
+            activeSpeechCue === "rihanna"
+              ? "doors-speech-caption doors-speech-caption--pictures"
+              : "doors-speech-caption"
+          }
           key={activeSpeechCue}
           role="status"
         >
