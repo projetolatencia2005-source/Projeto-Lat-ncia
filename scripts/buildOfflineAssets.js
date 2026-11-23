@@ -3,9 +3,11 @@ const path = require("node:path");
 
 const projectRoot = process.cwd();
 const outputDirectory = path.join(projectRoot, "out");
-const serviceWorkerTemplate = path.join(projectRoot, "public", "sw.js");
+const publicDirectory = path.join(projectRoot, "public");
+const serviceWorkerTemplate = path.join(publicDirectory, "sw.js");
 const outputManifest = path.join(outputDirectory, "offline-assets.json");
 const outputServiceWorker = path.join(outputDirectory, "sw.js");
+const publicManifest = path.join(publicDirectory, "offline-assets.json");
 
 const version =
   process.env.VERCEL_GIT_COMMIT_SHA ||
@@ -52,14 +54,15 @@ const manifest = {
   totalFiles: assets.length,
   assets,
 };
+const manifestContents = JSON.stringify(manifest);
+const serviceWorkerContents = fs
+  .readFileSync(serviceWorkerTemplate, "utf8")
+  .replaceAll("__BUILD_VERSION__", version);
 
-fs.writeFileSync(outputManifest, JSON.stringify(manifest));
-fs.writeFileSync(
-  outputServiceWorker,
-  fs
-    .readFileSync(serviceWorkerTemplate, "utf8")
-    .replaceAll("__BUILD_VERSION__", version)
-);
+fs.writeFileSync(outputManifest, manifestContents);
+fs.writeFileSync(publicManifest, manifestContents);
+fs.writeFileSync(outputServiceWorker, serviceWorkerContents);
+fs.writeFileSync(serviceWorkerTemplate, serviceWorkerContents);
 
 console.log(
   `Prepared ${assets.length} offline assets (${manifest.totalBytes} bytes), version ${version}.`
