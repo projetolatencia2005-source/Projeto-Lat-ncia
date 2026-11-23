@@ -3,7 +3,7 @@ import StyledDesktop from "components/system/Desktop/StyledDesktop";
 import useWallpaper from "components/system/Desktop/Wallpapers/useWallpaper";
 import FileManager from "components/system/Files/FileManager";
 import LockedFolderProvider from "components/system/Files/LockedFolder";
-import { useProcessesActions } from "contexts/process";
+import { useProcesses, useProcessesActions } from "contexts/process";
 import { useFileSystemActions, useRootFs } from "contexts/fileSystem";
 import { resetStorage } from "contexts/fileSystem/functions";
 import { LOCKED_FOLDER_KEY_COUNT } from "components/system/Files/LockedFolder/constants";
@@ -11,13 +11,21 @@ import {
   applyAccessibilityPreferences,
   readAccessibilityPreferences,
 } from "utils/accessibility";
-import { DESKTOP_PATH, TASKBAR_HEIGHT } from "utils/constants";
+import {
+  DESKTOP_PATH,
+  PICTURES_FOLDER,
+  PROCESS_DELIMITER,
+  TASKBAR_HEIGHT,
+} from "utils/constants";
 
 const SESSION_DURATION_SECONDS = 7 * 60 + 30;
 const BOOT_LOADING_DURATION_MS = 4000;
 const KEYWORD_GIF_DURATION_MS = 8000;
 const KEYWORD_OVERLAY_FADE_MS = 500;
 const LOCKED_FOLDER_VIDEO_FADE_MS = 800;
+const LOCKED_FOLDER_VIDEO_PARTS = Array.from({ length: 10 }, (_, index) =>
+  "/System/Doors/video-final-2-part-" + String(index + 1).padStart(2, "0") + ".bin",
+);
 const KEYWORD_CONFIRMATION_DURATION_MS = 4000;
 const KEYWORD_NOTICE_TYPING_INTERVAL_MS = 45;
 const AMBIENT_AUDIO_BASE_VOLUME = 0.2;
@@ -27,6 +35,39 @@ const INITIAL_BOOT_AUDIO_SCALE = 0.6;
 const KEYWORD_AUDIO_DUCK_SCALE = 0.24;
 const TYPING_AUDIO_VOLUME = 0.55;
 const TYPING_AUDIO_FADE_DURATION_MS = 220;
+const SPEECH_AUDIO_VOLUME = 0.9;
+const SPEECH_AUDIO_CATEGORY = {
+  nerdola: { caption: "Nerdola", src: "/System/Doors/audio/falas/nerdola.mp3" },
+  maisTempo: { caption: "Mais tempo", src: "/System/Doors/audio/falas/mais-tempo.mp3" },
+  virus: { caption: "Vírus", src: "/System/Doors/audio/falas/virus.mp3" },
+  porra: { caption: "Porra!", src: "/System/Doors/audio/falas/porra.mp3" },
+  naoEnche: { caption: "Não enche!", src: "/System/Doors/audio/falas/nao-enche.wav" },
+  rihanna: { caption: "Rihanna", src: "/System/Doors/audio/falas/rihanna.wav" },
+  vamoSoltarPipa: { caption: "Vamo soltar pipa", src: "/System/Doors/audio/falas/vamo-soltar-pipa.wav" },
+  bora: { caption: "Bora", src: "/System/Doors/audio/falas/bora.mp3" },
+  bubble: { caption: "Bubble", src: "/System/Doors/audio/falas/bubble.wav" },
+  euVi: { caption: "Eu vi", src: "/System/Doors/audio/falas/eu-vi.mp3" },
+  dahora: { caption: "Dahora", src: "/System/Doors/audio/falas/dahora.mp3" },
+  gta: { caption: "GTA", src: "/System/Doors/audio/falas/gta.mp3" },
+  podeEntrar: { caption: "Pode entrar", src: "/System/Doors/audio/falas/pode-entrar.mp3" },
+  seuTempoTaAcabando: { caption: "Seu tempo está acabando", src: "/System/Doors/audio/falas/seu-tempo-ta-acabando.mp3" },
+  gritaria: { caption: "Gritaria", src: "/System/Doors/audio/falas/gritaria.mp3" },
+  bronca: { caption: "Bronca", src: "/System/Doors/audio/falas/bronca.wav" },
+  abaixaVolume: { caption: "Abaixa o volume", src: "/System/Doors/audio/falas/abaixa-o-volume.wav" },
+} as const;
+type SpeechCueId = keyof typeof SPEECH_AUDIO_CATEGORY;
+const GAME_PROCESS_IDS = new Set([
+  "Chess",
+  "ClassiCube",
+  "DXBall",
+  "Emulator",
+  "JSDOS",
+  "Quake3",
+  "Ruffle",
+  "SpaceCadet",
+  "Tic80",
+]);
+const PICTURES_FOLDER_PATH = PICTURES_FOLDER;
 const playAudioEffect = (audio: HTMLAudioElement | null, volume = 1): void => {
   if (!audio) return;
 
@@ -131,6 +172,7 @@ type SessionStatusProps = {
   isPaused: boolean;
   keysCollected: number;
   onTimeExpired: () => void;
+  onTimeProgressChange: (remainingSeconds: number, elapsedSeconds: number) => void;
   onTimeWarning: () => void;
   startedAt: number;
 };
@@ -166,6 +208,7 @@ const SessionStatus: FC<SessionStatusProps> = ({
   isPaused,
   keysCollected,
   onTimeExpired,
+  onTimeProgressChange,
   onTimeWarning,
   startedAt,
 }) => {
@@ -265,6 +308,7 @@ const SessionStatus: FC<SessionStatusProps> = ({
       );
 
       setRemainingSeconds(nextRemainingSeconds);
+      onTimeProgressChange(nextRemainingSeconds, elapsed);
 
       if (nextRemainingSeconds > 90) {
         timeWarningShownRef.current = false;
@@ -293,7 +337,8 @@ const SessionStatus: FC<SessionStatusProps> = ({
   }, [
     bonusSeconds,
     isPaused,
-      onTimeExpired,
+    onTimeExpired,
+    onTimeProgressChange,
     onTimeWarning,
     startedAt,
   ]);
@@ -421,6 +466,12 @@ const SessionStatus: FC<SessionStatusProps> = ({
 const Desktop: FC = ({ children }) => {
   const desktopRef = useRef<HTMLElement | null>(null);
   const lockedFolderVideoRef = useRef<HTMLVideoElement | null>(null);
+  const lockedFolderVideoObjectUrlRef = useRef<string | null>(null);
+  const speechAudioRef = useRef<HTMLAudioElement | null>(null);
+  const speechQueueRef = useRef<SpeechCueId[]>([]);
+  const speechPlaybackActiveRef = useRef(false);
+  const delayedSpeechTimersRef = useRef<number[]>([]);
+  const maisTempoFollowUpScheduledRef = useRef(false);
   const ambientAudioRef = useRef<HTMLAudioElement | null>(null);
   const themeAudioRef = useRef<HTMLAudioElement | null>(null);
   const startupAudioRef = useRef<HTMLAudioElement | null>(null);
@@ -541,9 +592,84 @@ const Desktop: FC = ({ children }) => {
       ambientAudioRef.current?.pause();
       themeAudioRef.current?.pause();
       typingAudioRef.current?.pause();
+      speechAudioRef.current?.pause();
+      delayedSpeechTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+      if (picturesVoiceTimerRef.current !== null) {
+        window.clearTimeout(picturesVoiceTimerRef.current);
+      }
+      if (lockedFolderVideoObjectUrlRef.current) {
+        URL.revokeObjectURL(lockedFolderVideoObjectUrlRef.current);
+        lockedFolderVideoObjectUrlRef.current = null;
+      }
     },
     [],
   );
+
+  const processes = useProcesses();
+  const [activeSpeechCue, setActiveSpeechCue] = useState<SpeechCueId | null>(null);
+  const [isSpeechAudible, setIsSpeechAudible] = useState(false);
+  const playNextSpeech = useCallback((): void => {
+    if (speechPlaybackActiveRef.current) return;
+    const nextCue = speechQueueRef.current.shift();
+    if (!nextCue) {
+      setActiveSpeechCue(null);
+      return;
+    }
+    speechPlaybackActiveRef.current = true;
+    setActiveSpeechCue(nextCue);
+  }, []);
+  const enqueueSpeech = useCallback(
+    (...cues: SpeechCueId[]): void => {
+      speechQueueRef.current.push(...cues);
+      playNextSpeech();
+    },
+    [playNextSpeech],
+  );
+  const handleSpeechPlay = useCallback((): void => {
+    setIsSpeechAudible(true);
+    if (
+      activeSpeechCue !== "maisTempo" ||
+      maisTempoFollowUpScheduledRef.current
+    ) {
+      return;
+    }
+
+    maisTempoFollowUpScheduledRef.current = true;
+    const timer = window.setTimeout(() => {
+      delayedSpeechTimersRef.current = delayedSpeechTimersRef.current.filter(
+        (scheduledTimer) => scheduledTimer !== timer,
+      );
+      enqueueSpeech("vamoSoltarPipa", "bora");
+    }, 10_000);
+    delayedSpeechTimersRef.current.push(timer);
+  }, [activeSpeechCue, enqueueSpeech]);
+
+  const finishSpeech = useCallback((): void => {
+    if (!speechPlaybackActiveRef.current) return;
+    speechPlaybackActiveRef.current = false;
+    setIsSpeechAudible(false);
+    setActiveSpeechCue(null);
+    window.setTimeout(playNextSpeech, 0);
+  }, [playNextSpeech]);
+
+  useEffect(() => {
+    if (!activeSpeechCue) return;
+    const audio = speechAudioRef.current;
+    if (!audio) {
+      finishSpeech();
+      return;
+    }
+
+    audio.src = SPEECH_AUDIO_CATEGORY[activeSpeechCue].src;
+    audio.volume = SPEECH_AUDIO_VOLUME;
+    audio.currentTime = 0;
+    void audio.play().catch(() => {
+      speechPlaybackActiveRef.current = false;
+      setIsSpeechAudible(false);
+      setActiveSpeechCue(null);
+      window.setTimeout(playNextSpeech, 0);
+    });
+  }, [activeSpeechCue, finishSpeech, playNextSpeech]);
 
   const [bootStage, setBootStage] = useState<BootStage>("splash");
   const [tutorialPage, setTutorialPage] = useState(0);
@@ -573,6 +699,17 @@ const Desktop: FC = ({ children }) => {
   const { exists, unlink, updateFolder } = useFileSystemActions();
   const { open: openProcess } = useProcessesActions();
   const postItOpenedForSessionRef = useRef(false);
+  const triggeredSessionVoicesRef = useRef({
+    firstGame: false,
+    bubble: false,
+    encicloweb: false,
+    elapsedFourMinutes: false,
+    remainingThreeFifteen: false,
+    remainingNinety: false,
+    remainingThirty: false,
+  });
+  const picturesFolderWasOpenRef = useRef(false);
+  const picturesVoiceTimerRef = useRef<number | null>(null);
   const rootFs = useRootFs();
   const resetInProgressRef = useRef(false);
   const resetAndReload = useCallback((): void => {
@@ -586,6 +723,105 @@ const Desktop: FC = ({ children }) => {
   const handleTimeWarning = useCallback((): void => {
     setSessionNotice("warning");
   }, []);
+
+  const handleTimeProgressChange = useCallback(
+    (remainingSeconds: number, elapsedSeconds: number): void => {
+      if (
+        startedAt === null ||
+        isSessionPaused ||
+        lockedFolderVideoPhase !== "hidden" ||
+        remainingSeconds <= 0
+      ) {
+        return;
+      }
+
+      const triggered = triggeredSessionVoicesRef.current;
+      if (elapsedSeconds >= 240 && !triggered.elapsedFourMinutes) {
+        triggered.elapsedFourMinutes = true;
+        enqueueSpeech("gta", "euVi", "dahora", "gritaria", "bronca");
+      }
+      if (remainingSeconds <= 195 && !triggered.remainingThreeFifteen) {
+        triggered.remainingThreeFifteen = true;
+        enqueueSpeech("maisTempo");
+      }
+      if (remainingSeconds <= 90 && !triggered.remainingNinety) {
+        triggered.remainingNinety = true;
+        enqueueSpeech("seuTempoTaAcabando");
+      }
+      if (remainingSeconds <= 30 && !triggered.remainingThirty) {
+        triggered.remainingThirty = true;
+        enqueueSpeech("porra", "naoEnche");
+      }
+    },
+    [enqueueSpeech, isSessionPaused, lockedFolderVideoPhase, startedAt],
+  );
+
+  useEffect(() => {
+    if (startedAt === null || lockedFolderVideoPhase !== "hidden") return;
+    const entries = Object.entries(processes).filter(([, process]) => !process.closing);
+    const triggered = triggeredSessionVoicesRef.current;
+
+    if (
+      !triggered.firstGame &&
+      entries.some(([processId]) => GAME_PROCESS_IDS.has(processId.split(PROCESS_DELIMITER)[0]))
+    ) {
+      triggered.firstGame = true;
+      enqueueSpeech("nerdola");
+    }
+
+    const browserUrls = entries
+      .filter(([processId]) => processId.split(PROCESS_DELIMITER)[0] === "Browser")
+      .map(([, process]) => process.url?.toLocaleLowerCase("pt-BR") ?? "");
+    if (
+      !triggered.encicloweb &&
+      browserUrls.some((url) => url.includes("encicloweb"))
+    ) {
+      triggered.encicloweb = true;
+      enqueueSpeech("virus");
+    }
+    if (
+      !triggered.bubble &&
+      browserUrls.some((url) => url.includes("bubble"))
+    ) {
+      triggered.bubble = true;
+      enqueueSpeech("bubble");
+    }
+  }, [enqueueSpeech, lockedFolderVideoPhase, processes, startedAt]);
+
+  const picturesFolderOpen =
+    startedAt !== null &&
+    lockedFolderVideoPhase === "hidden" &&
+    Object.entries(processes).some(
+      ([processId, process]) =>
+        !process.closing &&
+        (processId.split(PROCESS_DELIMITER)[0] === "Photos" ||
+          (processId.split(PROCESS_DELIMITER)[0] === "FileExplorer" &&
+            process.url?.toLocaleLowerCase("pt-BR").startsWith(PICTURES_FOLDER_PATH.toLocaleLowerCase("pt-BR")))),
+    );
+
+  useEffect(() => {
+    if (!picturesFolderOpen) {
+      picturesFolderWasOpenRef.current = false;
+      if (picturesVoiceTimerRef.current !== null) {
+        window.clearTimeout(picturesVoiceTimerRef.current);
+        picturesVoiceTimerRef.current = null;
+      }
+      return;
+    }
+    if (picturesFolderWasOpenRef.current) return;
+    picturesFolderWasOpenRef.current = true;
+    picturesVoiceTimerRef.current = window.setTimeout(() => {
+      picturesVoiceTimerRef.current = null;
+      enqueueSpeech("rihanna");
+    }, 10_000);
+    return () => {
+      if (picturesVoiceTimerRef.current !== null) {
+        window.clearTimeout(picturesVoiceTimerRef.current);
+        picturesVoiceTimerRef.current = null;
+        picturesFolderWasOpenRef.current = false;
+      }
+    };
+  }, [enqueueSpeech, picturesFolderOpen]);
   const handleTimeExpired = useCallback((): void => {
     setSessionNotice("expired");
     setKeywordOverlayPhase("hidden");
@@ -656,6 +892,13 @@ const Desktop: FC = ({ children }) => {
   const startLockedFolderVideo = useCallback((): void => {
     setIsSessionPaused(true);
     pauseBackgroundAudioForVideo();
+    speechQueueRef.current = [];
+    speechPlaybackActiveRef.current = false;
+    speechAudioRef.current?.pause();
+    setActiveSpeechCue(null);
+    setIsSpeechAudible(false);
+    delayedSpeechTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    delayedSpeechTimersRef.current = [];
     const video = lockedFolderVideoRef.current;
 
     if (!video) {
@@ -670,7 +913,31 @@ const Desktop: FC = ({ children }) => {
     }
 
     setLockedFolderVideoPhase("fading-in");
-    void video.play().catch(() => setLockedFolderVideoPhase("blocked"));
+    const loadAndPlayVideo = async (): Promise<void> => {
+      try {
+        if (!lockedFolderVideoObjectUrlRef.current) {
+          const responses = await Promise.all(
+            LOCKED_FOLDER_VIDEO_PARTS.map((path) => fetch(path)),
+          );
+          if (responses.some((response) => !response.ok)) {
+            throw new Error("Video final indisponível.");
+          }
+          const videoParts = await Promise.all(
+            responses.map((response) => response.arrayBuffer()),
+          );
+          lockedFolderVideoObjectUrlRef.current = URL.createObjectURL(
+            new Blob(videoParts, { type: "video/mp4" }),
+          );
+        }
+
+        video.src = lockedFolderVideoObjectUrlRef.current;
+        video.load();
+        await video.play();
+      } catch {
+        setLockedFolderVideoPhase("blocked");
+      }
+    };
+    void loadAndPlayVideo();
   }, [pauseBackgroundAudioForVideo, resetAndReload]);
 
   useEffect(() => {
@@ -1010,6 +1277,14 @@ const Desktop: FC = ({ children }) => {
         {children}
       </LockedFolderProvider>
       <audio
+        ref={speechAudioRef}
+        aria-hidden="true"
+        preload="none"
+        onPlay={handleSpeechPlay}
+        onEnded={finishSpeech}
+        onError={finishSpeech}
+      />
+      <audio
         ref={ambientAudioRef}
         aria-hidden="true"
         loop
@@ -1154,6 +1429,16 @@ const Desktop: FC = ({ children }) => {
           )}
         </div>
       )}
+      {activeSpeechCue !== null && isSpeechAudible && (
+        <div
+          aria-live="assertive"
+          className="doors-speech-caption"
+          key={activeSpeechCue}
+          role="status"
+        >
+          {SPEECH_AUDIO_CATEGORY[activeSpeechCue].caption}
+        </div>
+      )}
       <div
         aria-hidden={lockedFolderVideoPhase === "hidden"}
         className={`doors-unlock-video-overlay doors-unlock-video-overlay--${lockedFolderVideoPhase}`}
@@ -1169,8 +1454,7 @@ const Desktop: FC = ({ children }) => {
             }
           }}
           playsInline
-          preload="metadata"
-          src="https://kawsfaac3od1dc51.public.blob.vercel-storage.com/locked-folder-final.mp4"
+          preload="none"
         />
         {lockedFolderVideoPhase === "blocked" && (
           <div className="doors-unlock-video-error">
@@ -1195,6 +1479,7 @@ const Desktop: FC = ({ children }) => {
             LOCKED_FOLDER_KEY_COUNT,
           )}
           onTimeExpired={handleTimeExpired}
+          onTimeProgressChange={handleTimeProgressChange}
           onTimeWarning={handleTimeWarning}
           startedAt={startedAt}
         />

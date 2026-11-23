@@ -31,6 +31,26 @@ const StyledDesktop = styled.main`
     user-select: none;
   }
 
+  .doors-speech-caption {
+    background: rgba(49, 48, 44, 0.92);
+    bottom: clamp(54px, 7.5vh, 86px);
+    color: #f7edd7;
+    font-family: "Silkscreen", "Pixelify Sans", monospace;
+    font-size: clamp(12px, 1.1vw, 19px);
+    left: 50%;
+    line-height: 1.5;
+    max-width: calc(100vw - 32px);
+    overflow-wrap: anywhere;
+    padding: 9px 14px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    transform: translateX(-50%);
+    -webkit-text-stroke: 2px #31302c;
+    paint-order: stroke fill;
+    z-index: 2147483000;
+  }
+
   > canvas {
     background-color: inherit;
     height: 100%;

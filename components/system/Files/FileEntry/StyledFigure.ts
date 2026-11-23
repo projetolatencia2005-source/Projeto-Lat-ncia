@@ -11,6 +11,8 @@ const StyledFigure = styled.figure<StyledFigureProps>`
   > picture > img {
     box-shadow: ${({ $imageThumbnail }) =>
       $imageThumbnail ? "3px 3px 0 #31302C" : "none"};
+    outline: ${({ $imageThumbnail }) =>
+      $imageThumbnail ? "2px solid #31302C" : "none"};
   }
 
   figcaption {
