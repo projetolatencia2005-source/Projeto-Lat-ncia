@@ -2391,7 +2391,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
     ? {
         description:
           "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
-        image: "encicloweb-lan-house-author.jpg",
+        image: "encicloweb-japodi-author.jpg",
         name: "Japodi Almo’sá",
       }
     : isSociabilityArticle
@@ -2405,7 +2405,7 @@ const EncicloWebPage: FC<{ url: string }> = ({ url }) => {
         ? {
             description:
               "É um pesquisador independente dos avanços tecnológicos e de suas possíveis consequências para a sociedade. Tem interesse em teorias da conspiração, comportamento digital e nos termos de uso que ninguém lê.",
-            image: "encicloweb-einstein.jpg",
+            image: "encicloweb-japodi-author.jpg",
             name: "Japodi Almo’sá",
           }
         : null;

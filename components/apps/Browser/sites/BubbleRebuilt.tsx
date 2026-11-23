@@ -175,7 +175,7 @@ const Root = styled.div`
 
   *, *::before, *::after { box-sizing: border-box; }
   button, input, select, textarea { font: inherit; }
-  button { color: inherit; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; }
+  button { color: inherit; cursor: url("/System/Doors/cursors/hand.svg") 0 0, none; }
   a { color: #1768b2; text-decoration: underline; }
 
   .rb-nav {
@@ -430,8 +430,8 @@ const Root = styled.div`
   .rb-message { background: white; border: 2px solid #222; box-shadow: 2px 2px #222; min-width: 82px; padding: 12px 14px 22px; position: relative; }
   .rb-message-row--me .rb-message { background: var(--rb-peach); }
   .rb-message p { line-height: 1.35; margin: 0; }
-  .rb-keyword { background: transparent; border: 0; color: #7d94b8; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; font: inherit; padding: 0; text-decoration: underline; }
-  .rb-key-icon { background: transparent; border: 0; cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; display: inline-flex; margin-left: 5px; padding: 0; vertical-align: middle; }
+  .rb-keyword { background: transparent; border: 0; color: #7d94b8; cursor: url("/System/Doors/cursors/hand.svg") 0 0, none; font: inherit; padding: 0; text-decoration: underline; }
+  .rb-key-icon { background: transparent; border: 0; cursor: url("/System/Doors/cursors/hand.svg") 0 0, none; display: inline-flex; margin-left: 5px; padding: 0; vertical-align: middle; }
   .rb-key-icon svg { height: 18px; width: 24px; }
   .rb-message time { bottom: 5px; font-size: 11px; position: absolute; right: 8px; }
   .rb-message-compose { align-items: flex-end; border-top: 1px solid #aaa; display: flex; gap: 12px; padding: 12px; }

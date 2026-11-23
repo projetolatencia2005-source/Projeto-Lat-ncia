@@ -146,7 +146,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
             background-color: transparent;
             border-radius: 4px;
             color: #fff;
-            cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+            cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
             display: flex;
             flex-direction: column;
             max-width: 100px;
@@ -241,7 +241,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
         background-color: rgb(73 73 73);
         border-radius: 6px;
         color: #fff;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         font-family: ${({ theme }) => theme.formats.systemFont};
         font-size: 12px;
         letter-spacing: 0.5px;
@@ -249,12 +249,12 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
         padding: 7px 11px;
 
         &.thinking-responding {
-          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
         }
       }
 
       .message {
-        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
         overflow-wrap: anywhere;
         padding-left: 36px;
         user-select: text;
@@ -307,7 +307,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
       .thoughts,
       .message {
         * {
-          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
           user-select: text;
         }
       }
@@ -362,7 +362,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
 
           a {
             color: ${({ $primaryColor }) => $primaryColor};
-            cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+            cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
             text-decoration: underline;
           }
 
@@ -486,7 +486,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
           border: ${({ $primaryColor }) => `1px solid ${$primaryColor}`};
           border-radius: 8px;
           color: #fff;
-          cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+          cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
           display: flex;
           font-size: 13px;
           letter-spacing: 0.3px;
@@ -536,7 +536,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
         button[type="button"] {
           background-color: transparent;
           color: ${({ $primaryColor }) => $primaryColor};
-          cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+          cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
           font-family: inherit;
           font-size: inherit;
           margin-left: 4px;
@@ -659,7 +659,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
       background: ${({ $secondaryColor, $tertiaryColor }) =>
         `linear-gradient(135deg, ${$secondaryColor} 0%, ${$tertiaryColor} 100%)`};
       border-radius: 50%;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       height: 40px;
       place-content: center;
       place-items: center;
@@ -730,7 +730,7 @@ const StyledAIChat = styled(motion.section)<StyledAIChatProps>`
         background-color: ${({ $typing }) =>
           $typing ? "rgb(44, 44, 44)" : undefined};
         cursor: ${({ $typing }) =>
-          $typing ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer' : undefined};
+          $typing ? 'url("/System/Doors/cursors/hand.svg") 0 0, none' : undefined};
       }
 
       &:active {

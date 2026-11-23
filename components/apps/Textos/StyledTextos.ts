@@ -3,7 +3,7 @@ import styled from "styled-components";
 const StyledTextos = styled.div`
   background: #d7e4f7;
   color: #31302c;
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   display: flex;
   flex-direction: column;
   font-family: ${({ theme }) => theme.formats.systemFont};
@@ -40,7 +40,7 @@ const StyledTextos = styled.div`
     background: #d7e4f7;
     border: 2px solid transparent;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: inline-flex;
     font: inherit;
     font-size: clamp(12px, 1.15vw, 17px);
@@ -61,7 +61,7 @@ const StyledTextos = styled.div`
     }
 
     &:disabled {
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       opacity: 0.55;
     }
 
@@ -222,7 +222,7 @@ const StyledTextos = styled.div`
     background: #f7edd7;
     border: 2px solid #31302c;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: 15px;
     height: 22px;
@@ -247,7 +247,7 @@ const StyledTextos = styled.div`
   .textos-color-swatch {
     border: 2px solid #31302c;
     box-shadow: inset 1px 1px 0 rgb(255 255 255 / 45%);
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     height: 24px;
     padding: 0;
     width: 100%;
@@ -337,7 +337,7 @@ const StyledTextos = styled.div`
       border: 0;
       border-bottom: 2px solid #31302c;
       color: #31302c;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       font: inherit;
       font-size: clamp(12px, 1.1vw, 16px);
@@ -397,7 +397,7 @@ const StyledTextos = styled.div`
     background: transparent;
     border: 2px solid transparent;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 120px;
     flex-direction: column;
@@ -558,7 +558,7 @@ const StyledTextos = styled.div`
       border: 2px solid #31302c;
       box-shadow: 2px 2px 0 #31302c;
       color: #31302c;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       font: inherit;
       padding: 7px 10px;
 

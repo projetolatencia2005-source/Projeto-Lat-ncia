@@ -38,7 +38,7 @@ const PAN_STEPS: Record<string, [number, number]> = {
 
 const resetPhotoPointer = (event: ReactMouseEvent<HTMLButtonElement>): void => {
   const target = event.currentTarget;
-  target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+  target.style.cursor = 'url("/System/Doors/cursors/mouse.svg") 0 0, none';
 };
 
 const Photos: FC<ComponentProcessProps> = ({ id }) => {
@@ -161,8 +161,8 @@ const Photos: FC<ComponentProcessProps> = ({ id }) => {
     const target = event.currentTarget;
     const isOverKey = isSpecialKeyAt(event);
     target.style.cursor = isOverKey
-      ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
-      : 'url("/System/Doors/cursors/mouse.svg") 0 0, default';
+      ? 'url("/System/Doors/cursors/hand.svg") 0 0, none'
+      : 'url("/System/Doors/cursors/mouse.svg") 0 0, none';
 
     if (isOverKey && !specialKeyCursorCleanupRef.current) {
       specialKeyCursorCleanupRef.current = attachDoorsKeywordCursorEffect(target) ?? null;

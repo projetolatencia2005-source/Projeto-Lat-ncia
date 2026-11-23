@@ -131,7 +131,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
 
   .browser-tab {
     align-items: center;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     background: #d7e4f7;
     border: 2px solid #31302c;
     border-bottom: 0;
@@ -145,7 +145,7 @@ const StyledTitlebar = styled.header<StyledTitlebarProps>`
     padding: 0 3px 0 0;
 
     &:active {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
 
     &.active {

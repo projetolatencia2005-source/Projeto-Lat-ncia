@@ -37,7 +37,7 @@ const StyledTo = styled.div`
       }
 
       button {
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         padding: 6px 9px;
       }
 

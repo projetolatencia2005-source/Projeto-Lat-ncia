@@ -11,7 +11,7 @@ const StyledLoading = styled.div.attrs({
   "data-loading-cursor": "",
   role: "status",
 })<StyledLoadingProps>`
-  cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, wait;
+  cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, none;
   height: 100%;
   width: 100%;
 

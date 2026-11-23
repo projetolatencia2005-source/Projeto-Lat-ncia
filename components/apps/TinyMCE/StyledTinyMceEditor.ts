@@ -57,7 +57,7 @@ const StyledTinyMceEditor = styled.div`
           bottom: 0;
           color: rgb(200 200 200);
           content: "Edit Document";
-          cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+          cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
           display: flex;
           font-size: 12px;
           font-weight: 600;

@@ -5,7 +5,7 @@ import StyledIconFileEntry from "components/system/Files/Views/Icon/StyledFileEn
 import StyledIconFileManager from "components/system/Files/Views/Icon/StyledFileManager";
 
 const StyledFileExplorer = styled.div`
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -36,7 +36,7 @@ const StyledFileExplorer = styled.div`
     background: transparent;
     border: 1px solid transparent;
     color: #26364b;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 42px;
     font-family: inherit;

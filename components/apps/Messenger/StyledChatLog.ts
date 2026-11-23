@@ -76,7 +76,7 @@ const StyledChatLog = styled.ol`
     }
 
     div {
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, auto;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       overflow: hidden;
       overflow-wrap: break-word;
       user-select: text;

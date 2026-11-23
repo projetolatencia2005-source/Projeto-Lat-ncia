@@ -46,7 +46,7 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
   .doors-photo-special-key {
     background: transparent;
     border: 0;
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     height: 100%;
     inset: 0;
     padding: 0;
@@ -66,7 +66,7 @@ const StyledPhotos = styled.div<StyledPhotosProps>`
     border: 0;
     box-shadow: none;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     height: 25px;
     justify-content: center;

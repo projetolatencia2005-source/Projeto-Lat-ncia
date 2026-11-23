@@ -15,8 +15,8 @@ const StyledProfile = styled.figure<StyledProfileProps>`
     background-color: transparent;
     cursor: ${({ $clickable }) =>
       $clickable
-        ? 'url("/System/Doors/cursors/hand.svg") 0 0, pointer'
-        : 'url("/System/Doors/cursors/mouse.svg") 0 0, default'};
+        ? 'url("/System/Doors/cursors/hand.svg") 0 0, none'
+        : 'url("/System/Doors/cursors/mouse.svg") 0 0, none'};
     position: relative;
 
     > img,

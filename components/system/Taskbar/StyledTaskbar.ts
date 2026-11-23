@@ -5,11 +5,11 @@ const TASKBAR_Z_INDEX = 100000;
 
 const StyledTaskbar = styled.nav`
   &, * {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   }
 
   .doors-system-tray button:hover {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     opacity: 0.75;
   }
 
@@ -22,7 +22,7 @@ const StyledTaskbar = styled.nav`
   label,
   select,
   summary {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
   }
 
   background: linear-gradient(

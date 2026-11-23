@@ -4,7 +4,7 @@ const StyledCalculator = styled.main`
   align-items: stretch;
   background: #7d94b8;
   color: #31302c;
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   display: flex;
   font-family: ${({ theme }) => theme.formats.systemFont};
   height: 100%;
@@ -81,7 +81,7 @@ const StyledCalculator = styled.main`
     border: 2px solid #31302c;
     box-shadow: 3px 3px 0 #31302c;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: clamp(19px, 5vw, 25px);
     min-height: 0;

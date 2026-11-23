@@ -10,7 +10,7 @@ import { useProcess } from "contexts/process";
 import useResizeObserver from "hooks/useResizeObserver";
 
 export const panZoomConfig = {
-  cursor: 'url("/System/Doors/cursors/mouse.svg") 0 0, default',
+  cursor: 'url("/System/Doors/cursors/mouse.svg") 0 0, none',
   maxScale: 7,
   minScale: 1,
   panOnlyWhenZoomed: true,

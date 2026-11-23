@@ -28,14 +28,14 @@ const StyledSendMessage = styled.div`
   }
 
   svg {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     fill: #0084ff;
     height: 28px;
     margin: 2px 12px 0 10px;
     width: 28px;
 
     path {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
 
     &:hover {

@@ -2,6 +2,19 @@ import styled from "styled-components";
 import ScrollBars from "styles/common/ScrollBars";
 
 const StyledTerminal = styled.div`
+  &&&,
+  &&& * {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
+  }
+
+  &&& .xterm-cursor-pointer,
+  &&& .xterm.xterm-cursor-pointer,
+  &&& button:not(:disabled),
+  &&& a[href],
+  &&& [role="button"] {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
+  }
+
   height: 100%;
   width: 100%;
 

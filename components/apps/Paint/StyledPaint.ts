@@ -5,10 +5,10 @@ type StyledPaintProps = {
 };
 
 const StyledPaint = styled.div<StyledPaintProps>`
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
 
   iframe {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     opacity: ${({ $loaded }) => ($loaded ? "100%" : "0%")};
     transition: opacity 0.25s ease-in;
   }

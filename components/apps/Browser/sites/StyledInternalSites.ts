@@ -10,7 +10,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     $site === "gluugli" ? "#89c1ff" : "#fff"};
   box-sizing: border-box;
   color: #31302c;
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   flex: 1 1 auto;
   font-family: "Pixelify Sans", monospace;
   font-size: 16px;
@@ -51,7 +51,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
 
   button {
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
   }
 
   input {
@@ -342,7 +342,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #31302c;
       box-shadow: 2px 3px 0 #31302c;
       color: #31302c;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       font-size: clamp(13px, 0.83vw, 16px);
       padding: 5px 9px;
     }
@@ -354,7 +354,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-attach-photo input {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       height: 100%;
       inset: 0;
       opacity: 0;
@@ -974,7 +974,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       background: transparent;
       border: 0;
       color: #fff;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       padding: 0;
     }
 
@@ -1018,7 +1018,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       border: 2px solid #181818;
       box-shadow: 3px 4px 0 #181818;
       color: #fff;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: inline-flex;
       font-size: clamp(13px, 0.94vw, 18px);
       justify-content: center;
@@ -1042,7 +1042,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     }
 
     .bubble-primary-button:disabled {
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       opacity: 0.55;
       transform: none;
     }
@@ -2755,7 +2755,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         font: inherit;
         font-size: 12px;
         padding: 6px 14px;
@@ -2948,7 +2948,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 2px solid #31302c;
         border-bottom: 0;
         color: #31302c;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         font: inherit;
         font-size: 12px;
         padding: 6px 14px;
@@ -3021,7 +3021,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
         border: 0;
         box-shadow: none;
         color: #31302c;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         display: flex;
         flex: 0 0 32px;
         font: inherit;
@@ -3032,7 +3032,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       }
 
       button:disabled {
-        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+        cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
         opacity: 0.55;
       }
     }
@@ -3529,7 +3529,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       button {
         background: #f3f3f3; border: 2px solid #31302c; border-bottom: 0;
         color: #292929;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         font: inherit;
         font-size: 12px;
         line-height: 1;
@@ -3888,7 +3888,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     background: transparent;
     border: 0;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     padding: 0;
     text-decoration: underline;
@@ -3958,7 +3958,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     background: transparent;
     border: 0;
     color: #7d94b8;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     padding: 0;
     text-decoration: underline;
@@ -3967,7 +3967,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   && .site-encicloweb .wiki-key-icon {
     background: transparent;
     border: 0;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: inline-flex;
     margin-left: 5px;
     padding: 0;
@@ -4189,7 +4189,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     border: 2px solid #181818;
     box-shadow: 2px 2px 0 #181818;
     color: #fff;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: clamp(12px, 0.75vw, 14px);
     margin-top: 4px;
@@ -4234,7 +4234,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     background: transparent;
     border: 0;
     color: #181818;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: clamp(17px, 1.2vw, 23px);
     line-height: 1.12;
@@ -4253,7 +4253,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     border: 2px solid #181818;
     box-shadow: 2px 2px 0 #181818;
     color: #fff;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: clamp(12px, 0.75vw, 14px);
     margin-top: 4px;
@@ -4368,7 +4368,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     background: transparent;
     border: 0;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: clamp(12px, 0.8vw, 15px);
     padding: 0;
@@ -4448,7 +4448,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
     border: 0;
     border-bottom: 1px solid #aaa;
     color: #181818;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: grid;
     font: inherit;
     gap: clamp(8px, 0.8vw, 14px);
@@ -4673,7 +4673,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: stretch;
       background: #f3f3f3;
       border: 0;
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -4834,7 +4834,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: center;
       background: #31302c;
       color: #fff;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       gap: 5px;
       height: 28px;
@@ -5350,7 +5350,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: stretch;
       background: #f3f3f3;
       border: 0;
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -5510,7 +5510,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
       align-items: center;
       background: #31302c;
       color: #fff;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       gap: 5px;
       height: 28px;
@@ -6465,7 +6465,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-load-more:disabled {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     opacity: 0.85;
   }
 
@@ -6851,7 +6851,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   .site-youspace .you-comment-reply-form button:disabled {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     opacity: 0.6;
   }
 
@@ -7269,7 +7269,7 @@ const StyledInternalSites = styled.main<StyledInternalSitesProps>`
   }
 
   && .site-youspace .you-comment-reply-form button:disabled {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     opacity: 0.6;
   }
 

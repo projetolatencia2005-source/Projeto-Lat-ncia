@@ -31,10 +31,10 @@ const StyledLockedFolderDialog = styled.div`
     padding: 0 7px 0 9px;
     touch-action: none;
     user-select: none;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
 
     &:active {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
   }
 
@@ -57,7 +57,7 @@ const StyledLockedFolderDialog = styled.div`
     border: 2px solid #31302c;
     box-shadow: 2px 2px 0 #31302c;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     font: inherit;
     font-size: 17px;
@@ -99,7 +99,7 @@ const StyledLockedFolderDialog = styled.div`
     border: 2px solid #171613;
     box-shadow: 3px 3px 0 #171613;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     font-family: ${({ theme }) => theme.formats.systemFont};
     font-size: 14px;
     height: 44px;
@@ -141,7 +141,7 @@ const StyledLockedFolderDialog = styled.div`
     border: 2px solid #171613;
     box-shadow: 3px 3px 0 #171613;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: 12px;
     min-height: 34px;

@@ -79,7 +79,7 @@ const StyledStartMenu = styled(motion.section)<StyledStartMenuProps>`
       border: 0;
       box-sizing: border-box;
       color: #302e2a;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       font: inherit;
       font-size: clamp(12px, 1.08vw, 17px);
@@ -167,7 +167,7 @@ const StyledStartMenu = styled(motion.section)<StyledStartMenuProps>`
     background: transparent;
     border: 0;
     color: #302e2a;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     font: inherit;
     font-size: clamp(12px, 1.1vw, 17px);
@@ -196,7 +196,7 @@ const StyledStartMenu = styled(motion.section)<StyledStartMenuProps>`
     background: transparent;
     border: 0;
     box-shadow: none;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 auto;
     height: auto;

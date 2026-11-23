@@ -36,10 +36,10 @@ const StyledShutdownDialog = styled.div`
     padding: 0 8px 0 14px;
     touch-action: none;
     user-select: none;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
 
     &:active {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
 
     strong {
@@ -57,7 +57,7 @@ const StyledShutdownDialog = styled.div`
       border: 0;
       box-shadow: none;
       color: #302e2a;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       height: 27px;
       justify-content: center;
@@ -111,7 +111,7 @@ const StyledShutdownDialog = styled.div`
       border: 2px solid #302e2a;
       box-shadow: 3px 3px 0 #302e2a;
       color: #302e2a;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       font: inherit;
       font-size: 16px;
       line-height: 1.25;

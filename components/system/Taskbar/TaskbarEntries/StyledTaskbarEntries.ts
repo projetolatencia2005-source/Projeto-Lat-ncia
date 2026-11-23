@@ -9,7 +9,7 @@ const StyledTaskbarEntries = styled.ol<StyledTaskbarEntriesProps>`
   column-gap: 1px;
 
   > li > button[draggable="true"] {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
   }
 
   > li > button[data-taskbar-dragging="true"] {

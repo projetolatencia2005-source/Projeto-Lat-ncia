@@ -18,7 +18,7 @@ const StyledChess = styled.div`
   color: ${TEXT_COLOR};
   cursor:
     url("/System/Doors/cursors/mouse.svg") 0 0,
-    default;
+    none;
   display: flex;
   flex-direction: column;
   font-family: "Pixelify Sans", ${({ theme }) => theme.formats.systemFont};
@@ -96,7 +96,7 @@ const StyledChess = styled.div`
     color: ${TEXT_COLOR};
     cursor:
       url("/System/Doors/cursors/hand.svg") 0 0,
-      pointer;
+      none;
     flex: 1;
     font-family: inherit;
     font-size: 13px;
@@ -112,7 +112,7 @@ const StyledChess = styled.div`
   .action-btn:disabled {
     cursor:
       url("/System/Doors/cursors/mouse.svg") 0 0,
-      default;
+      none;
     opacity: 55%;
   }
 
@@ -150,7 +150,7 @@ const StyledChess = styled.div`
   .board {
     cursor:
       url("/System/Doors/cursors/hand.svg") 0 0,
-      pointer;
+      none;
     height: 100%;
     width: 100%;
   }
@@ -333,7 +333,7 @@ const StyledChess = styled.div`
     color: ${TEXT_COLOR};
     cursor:
       url("/System/Doors/cursors/hand.svg") 0 0,
-      pointer;
+      none;
     font-family: inherit;
     font-size: 14px;
     line-height: 1;
@@ -344,7 +344,7 @@ const StyledChess = styled.div`
   .pgn-btn:disabled {
     cursor:
       url("/System/Doors/cursors/mouse.svg") 0 0,
-      default;
+      none;
     opacity: 55%;
   }
 

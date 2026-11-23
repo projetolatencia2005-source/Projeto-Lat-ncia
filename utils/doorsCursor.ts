@@ -2,7 +2,7 @@ export const DOORS_CURSOR_STYLE_ID = "doors-custom-cursor-styles";
 
 const DOORS_CURSOR_STYLES = `
   html, body, body * {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
   }
 
   button:not(:disabled),
@@ -26,7 +26,7 @@ const DOORS_CURSOR_STYLES = `
   [class*="btn" i],
   [class*="link" i],
   [class*="cursor-pointer" i] {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
   }
 `;
 

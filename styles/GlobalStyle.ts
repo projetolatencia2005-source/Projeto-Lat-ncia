@@ -51,7 +51,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   body,
   html {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     font-family: ${({ theme }) => theme.formats.systemFont};
   }
 
@@ -64,7 +64,7 @@ const GlobalStyle = styled.createGlobalStyle`
   label,
   select,
   summary {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
   }
 
   body {
@@ -131,7 +131,7 @@ const GlobalStyle = styled.createGlobalStyle`
 
   input,
   textarea {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     user-select: text;
   }
 
@@ -258,7 +258,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #ded3b9;
     box-shadow: 3px 3px 0 #111;
     color: #111;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     padding: 12px 18px;
     position: absolute;
@@ -333,7 +333,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #171715;
     box-shadow: 3px 3px 0 #111;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font: inherit;
     font-size: 16px;
     margin-top: 2px;
@@ -392,26 +392,26 @@ const GlobalStyle = styled.createGlobalStyle`
   @keyframes doors-loading-mouse-cursor {
     0%,
     24.99% {
-      cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, wait;
+      cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, none;
     }
     25%,
     49.99% {
-      cursor: url("/System/Doors/cursors/loading-mouse-2.svg") 0 0, wait;
+      cursor: url("/System/Doors/cursors/loading-mouse-2.svg") 0 0, none;
     }
     50%,
     74.99% {
-      cursor: url("/System/Doors/cursors/loading-mouse-3.svg") 0 0, wait;
+      cursor: url("/System/Doors/cursors/loading-mouse-3.svg") 0 0, none;
     }
     75%,
     100% {
-      cursor: url("/System/Doors/cursors/loading-mouse-4.svg") 0 0, wait;
+      cursor: url("/System/Doors/cursors/loading-mouse-4.svg") 0 0, none;
     }
   }
 
   .doors-loading-screen,
   [data-loading-cursor] {
     animation: doors-loading-mouse-cursor 900ms steps(1, end) infinite;
-    cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, wait;
+    cursor: url("/System/Doors/cursors/loading-mouse-1.svg") 0 0, none;
   }
 
   .doors-loading-content {
@@ -437,7 +437,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-splash-screen {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     overflow: hidden;
   }
 
@@ -485,7 +485,7 @@ const GlobalStyle = styled.createGlobalStyle`
       inset 0 0 0 2px #31302c,
       2px 3px 0 #f7edd7;
     color: #f7edd7;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     font-family: "Pixelify Sans", monospace;
     font-size: clamp(18px, 1.1vw, 22px);
@@ -827,7 +827,7 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-tutorial-back {
     background: transparent;
     color: #f7ecd6;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     font-family: "Pixelify Sans", monospace;
     font-size: clamp(15px, 1.15vw, 22px);
     padding: 10px;
@@ -1219,7 +1219,7 @@ const GlobalStyle = styled.createGlobalStyle`
     box-shadow: 2px 2px 0 #31302c;
     box-sizing: border-box;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: block;
     font-family: "Pixelify Sans", monospace;
     font-size: 16px;
@@ -1246,7 +1246,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
 
     &:active {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
 
     .metrics {
@@ -1365,7 +1365,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #31302c;
     box-shadow: 3px 3px 0 #31302c;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     display: flex;
     flex-direction: column;
     font-family: "Pixelify Sans", monospace;
@@ -1413,7 +1413,7 @@ const GlobalStyle = styled.createGlobalStyle`
     }
     label {
       align-items: center;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       font-size: 14px;
       gap: 10px;
@@ -1423,7 +1423,7 @@ const GlobalStyle = styled.createGlobalStyle`
       accent-color: #f47a12;
       appearance: auto;
       border: 1px solid #31302c;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       flex: 0 0 18px;
       height: 18px;
       width: 18px;
@@ -1434,7 +1434,7 @@ const GlobalStyle = styled.createGlobalStyle`
       border: 2px solid #31302c;
       box-shadow: 3px 3px 0 #31302c;
       color: #31302c;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       font: inherit;
       padding: 7px 12px;
     }
@@ -1471,7 +1471,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 0;
     box-shadow: none;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 20px;
     height: 30px;
@@ -1486,7 +1486,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 0;
     box-shadow: none;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 20px;
     height: 30px;
@@ -1517,7 +1517,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 2px solid #31302c;
     box-shadow: 2px 2px 0 #31302c;
     color: #302e2a;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     flex: 0 0 26px;
     font-family: "Pixelify Sans", monospace;
     font-size: 18px;
@@ -1531,7 +1531,7 @@ const GlobalStyle = styled.createGlobalStyle`
     appearance: none;
     background: transparent;
     border: 0;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     flex: 1 1 auto;
     height: 20px;
     min-width: 0;
@@ -2195,7 +2195,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .site-youspace .you-load-more:disabled {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
     opacity: 0.85;
   }
 
@@ -2378,12 +2378,12 @@ const GlobalStyle = styled.createGlobalStyle`
     margin: 0 -18px 18px;
     min-height: 38px;
     padding: 6px 10px;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     touch-action: none;
     user-select: none;
 
     &:active {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
   }
 
@@ -2483,7 +2483,7 @@ const GlobalStyle = styled.createGlobalStyle`
     border: 0;
     box-shadow: none;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     flex: 0 0 20px;
     height: 30px;

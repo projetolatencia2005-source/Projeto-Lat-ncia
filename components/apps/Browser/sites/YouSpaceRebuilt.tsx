@@ -66,7 +66,7 @@ const Root = styled.div`
   width: 100%;
   *, *::before, *::after { box-sizing: border-box; }
   button, input, textarea { font: inherit; }
-  button { cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer; }
+  button { cursor: url("/System/Doors/cursors/hand.svg") 0 0, none; }
   .ry-topbar { align-items: center; background: #f5f5f5; border-bottom: 2px solid #222; display: grid; grid-template-columns: 1fr minmax(260px, 36vw) 1fr; min-height: 62px; padding: 8px 22px; }
   .ry-home { background: transparent; border: 0; justify-self: start; padding: 0; }
   .ry-logo { display: block; height: auto; max-height: 42px; max-width: 170px; object-fit: contain; object-position: left center; width: 100%; }

@@ -3,7 +3,7 @@ import ScrollBars from "styles/common/ScrollBars";
 
 const StyledBoxedWine = styled.div`
   canvas[style*="cursor: none;"] {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
   }
 
   canvas {

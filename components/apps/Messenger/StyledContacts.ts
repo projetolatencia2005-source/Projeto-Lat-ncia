@@ -16,26 +16,26 @@ const StyledContacts = styled(motion.ol)`
     align-items: center;
     border-radius: 10px;
     color: #fff;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     display: flex;
     margin: 8px;
     padding: 8px;
     position: relative;
 
     button {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     }
 
     input[type="checkbox"] {
       accent-color: #2d88ff;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       height: 16px;
       margin: 0 10px 0 2px;
       min-width: 16px;
     }
 
     &.toolbar {
-      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+      cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
       gap: 4px;
       margin-bottom: 0;
       padding: 0 8px;
@@ -55,7 +55,7 @@ const StyledContacts = styled(motion.ol)`
 
       label {
         align-items: center;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         display: flex;
         font-size: 13px;
       }
@@ -73,7 +73,7 @@ const StyledContacts = styled(motion.ol)`
         }
 
         &:disabled {
-          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+          cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
           opacity: 40%;
         }
       }
@@ -88,20 +88,20 @@ const StyledContacts = styled(motion.ol)`
     }
 
     figure {
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       display: flex;
       gap: 12px;
       width: calc(100% - 15px);
 
       div {
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       }
 
       img,
       svg {
         aspect-ratio: 1/1;
         border-radius: 50%;
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         height: 56px;
         max-height: 56px;
         max-width: 56px;
@@ -112,7 +112,7 @@ const StyledContacts = styled(motion.ol)`
       }
 
       figcaption {
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
         display: flex;
         flex-direction: column;
         gap: 3px;
@@ -122,21 +122,21 @@ const StyledContacts = styled(motion.ol)`
 
         > span {
           color: #e4e6eb;
-          cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+          cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
           font-size: 17px;
           font-weight: 600;
         }
 
         > div {
           color: #b0b3b8;
-          cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+          cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
           display: flex;
           font-size: 14px;
           gap: 3px;
           width: 100%;
 
           div:first-child {
-            cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+            cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -149,7 +149,7 @@ const StyledContacts = styled(motion.ol)`
 
           div:last-child {
             color: #8b8d92;
-            cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+            cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
             padding-right: 10px;
           }
         }
@@ -160,7 +160,7 @@ const StyledContacts = styled(motion.ol)`
       background-color: rgb(46 137 255);
       border-radius: 50%;
       content: "";
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       height: 10px;
       pointer-events: none;
       position: absolute;

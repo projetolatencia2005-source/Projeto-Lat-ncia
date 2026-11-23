@@ -21,7 +21,7 @@ const CONTENT_STYLE = `
   html,
   body,
   body * {
-    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default !important;
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
   }
 
   button:not(:disabled),
@@ -36,7 +36,7 @@ const CONTENT_STYLE = `
   label,
   select,
   summary {
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
   }
 
   html,
@@ -122,7 +122,7 @@ const CONTENT_STYLE = `
     background: transparent;
     border: 0;
     color: inherit;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
     display: flex;
     font-size: 16px;
     font-family: inherit;
@@ -162,7 +162,7 @@ const CONTENT_STYLE = `
     border: 2px solid #31302c;
     box-shadow: 3px 3px 0 #31302c;
     color: #31302c;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
     font: inherit;
     font-size: 16px;
     margin: 4px 0 0;
@@ -183,7 +183,7 @@ const CONTENT_STYLE = `
   }
   .doors-quiz-key {
     color: #7d94b8;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer !important;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
     display: inline-block;
     text-decoration: underline;
   }

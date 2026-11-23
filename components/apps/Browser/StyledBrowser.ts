@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledBrowser = styled.div`
   background: #dce5f0;
-  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, default;
+  cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none;
   display: flex;
   flex-direction: column;
   height: 100%;

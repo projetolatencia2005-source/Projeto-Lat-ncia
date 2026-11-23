@@ -27,7 +27,7 @@ const StyledProfileBanner = styled.div`
       aspect-ratio: 1/1;
       border: 2px solid #fff;
       border-radius: 50%;
-      cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+      cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       height: 38px;
       max-height: 38px;
       max-width: 38px;
@@ -36,7 +36,7 @@ const StyledProfileBanner = styled.div`
       width: 38px;
 
       path {
-        cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+        cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
       }
     }
 
@@ -52,7 +52,7 @@ const StyledProfileBanner = styled.div`
 
   > button:first-child {
     border-radius: 5px;
-    cursor: url("/System/Doors/cursors/hand.svg") 0 0, pointer;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
     height: 30px;
     padding-top: 3px;
     width: 30px;
