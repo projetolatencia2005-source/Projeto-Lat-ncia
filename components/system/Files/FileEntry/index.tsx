@@ -618,7 +618,6 @@ const FileEntry: FC<FileEntryProps> = ({
               "doors-post-it-shortcut",
             isPastasShortcut && "doors-pastas-shortcut",
             isPictureThumbnail && "doors-picture-thumbnail",
-            IMAGE_FILE_EXTENSIONS.has(urlExt) && "doors-image-thumbnail",
             isComputerShortcut && "doors-computer-shortcut",
           ]
             .filter(Boolean)

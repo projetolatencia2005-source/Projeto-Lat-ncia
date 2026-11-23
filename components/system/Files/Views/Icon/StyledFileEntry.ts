@@ -127,10 +127,6 @@ const StyledFileEntry = styled.li<StyledFileEntryProps>`
     }
   }
 
-  button.doors-image-thumbnail figure > picture:first-of-type {
-    background-color: #31302c;
-  }
-
   button.doors-computer-shortcut {
     align-items: center;
     box-sizing: border-box;

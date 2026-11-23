@@ -43,6 +43,7 @@ const SPEECH_AUDIO_CATEGORY = {
   porra: { caption: "Seu tempo tá acabando, PORRA!", src: "/System/Doors/audio/falas/porra.mp3" },
   naoEnche: { caption: "Ai, não enche, Velhote, vou ficar aqui quanto tempo eu quiser.", src: "/System/Doors/audio/falas/nao-enche.wav" },
   rihanna: { caption: "Olha esse look da Rihanna, acho que eu vou no Braz comprar uma blusinha igual.", src: "/System/Doors/audio/falas/rihanna.wav" },
+  estranhos: { caption: "Oxe, quem são esses estranhos que eu nunca vi?", src: "/System/Doors/audio/falas/estranhos.wav" },
   vamoSoltarPipa: { caption: "Ô, Tavinho, quando a gente sair daqui, vamo lá pra casa soltar pipa?", src: "/System/Doors/audio/falas/vamo-soltar-pipa.wav" },
   bora: { caption: "Oxe, vambora!", src: "/System/Doors/audio/falas/bora.mp3" },
   bubble: { caption: "Vixe, alguém esqueceu de deslogar da conta do Bubble. Vou bisbilhotar.", src: "/System/Doors/audio/falas/bubble.wav" },
@@ -91,6 +92,7 @@ const GAME_PROCESS_IDS = new Set([
   "Tic80",
 ]);
 const PICTURES_FOLDER_PATH = PICTURES_FOLDER;
+const DOCUMENTS_FOLDER_PATH = "/Users/Public/Documents";
 const playAudioEffect = (audio: HTMLAudioElement | null, volume = 1): void => {
   if (!audio) return;
 
@@ -753,6 +755,7 @@ const Desktop: FC = ({ children }) => {
     remainingThirty: false,
   });
   const picturesFolderWasOpenRef = useRef(false);
+  const documentsFolderWasOpenRef = useRef(false);
   const picturesVoiceTriggeredRef = useRef(false);
   const picturesVoiceTimerRef = useRef<number | null>(null);
   const rootFs = useRootFs();
@@ -848,6 +851,32 @@ const Desktop: FC = ({ children }) => {
       enqueueSpeech("bubble");
     }
   }, [enqueueSpeech, lockedFolderVideoPhase, processes, startedAt]);
+
+  const documentsFolderOpen =
+    startedAt !== null &&
+    lockedFolderVideoPhase === "hidden" &&
+    Object.entries(processes).some(([processId, process]) => {
+      const folderPath = process.url
+        ?.toLocaleLowerCase("pt-BR")
+        .replace(/\/+$/, "");
+
+      return (
+        !process.closing &&
+        processId.split(PROCESS_DELIMITER)[0] === "FileExplorer" &&
+        folderPath === DOCUMENTS_FOLDER_PATH.toLocaleLowerCase("pt-BR")
+      );
+    });
+
+  useEffect(() => {
+    if (!documentsFolderOpen) {
+      documentsFolderWasOpenRef.current = false;
+      return;
+    }
+    if (documentsFolderWasOpenRef.current) return;
+
+    documentsFolderWasOpenRef.current = true;
+    enqueueSpeech("estranhos");
+  }, [documentsFolderOpen, enqueueSpeech]);
 
   const picturesFolderOpen =
     startedAt !== null &&
