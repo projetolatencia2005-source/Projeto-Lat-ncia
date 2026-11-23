@@ -72,6 +72,22 @@ const GlobalStyle = styled.createGlobalStyle`
     cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
   }
 
+  .tox,
+  .tox * {
+    cursor: url("/System/Doors/cursors/mouse.svg") 0 0, none !important;
+  }
+
+  .tox button:not(:disabled),
+  .tox a[href],
+  .tox [role="button"],
+  .tox [role="menuitem"],
+  .tox [role="option"],
+  .tox input[type="checkbox"],
+  .tox input[type="radio"],
+  .tox select {
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
+  }
+
   body {
     height: 100%;
     overflow: hidden;
@@ -2765,4 +2781,5 @@ const GlobalStyle = styled.createGlobalStyle`
 `;
 
 export default GlobalStyle;
+
 
