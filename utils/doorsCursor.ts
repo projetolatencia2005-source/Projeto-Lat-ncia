@@ -84,7 +84,10 @@ const installDoorsCursorSprite = (document: Document): void => {
   };
 
   sprite.src = "/System/Doors/cursors/mouse.svg";
-  (document.body || document.documentElement).append(sprite);
+  // TinyMCE replaces the editable body's contents when it loads a document.
+  // Keep the cursor overlay on <html> so opening or editing a Post-it cannot
+  // remove it along with the editor content.
+  document.documentElement.append(sprite);
   document.addEventListener("pointermove", updateSprite, true);
   document.addEventListener("pointerover", updateSprite, true);
   document.documentElement.addEventListener("pointerleave", hideSprite, true);
