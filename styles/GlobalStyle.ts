@@ -288,20 +288,31 @@ const GlobalStyle = styled.createGlobalStyle`
   .doors-keyword-notice {
     box-sizing: border-box;
     color: #ffffff;
+    display: flex;
+    flex-direction: column;
     font-family: "Pixelify Sans", monospace;
-    font-size: clamp(21px, calc(2.2vw + 3px), 27px);
+    font-size: clamp(14px, min(calc(2.2vw + 3px), 3.5vh), 27px);
     font-weight: 400;
-    line-height: 1.7;
+    line-height: 1.45;
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
     max-width: calc(100% - 48px);
+    min-height: 0;
+    overflow: hidden;
+    padding: 12px 0;
     width: min(56vw, 860px);
   }
 
   .doors-keyword-notice-copy {
-    transform: translateY(-25px);
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .doors-keyword-notice-copy p {
-    margin: 0 0 20px;
+    margin: 0 0 clamp(8px, 1.5vh, 20px);
   }
 
   .doors-keyword-notice-copy p:last-child {
@@ -350,6 +361,7 @@ const GlobalStyle = styled.createGlobalStyle`
   }
 
   .doors-keyword-notice-continue {
+    align-self: flex-start;
     background: #f7edd7;
     border: 2px solid #171715;
     box-shadow: 3px 3px 0 #111;
@@ -370,16 +382,18 @@ const GlobalStyle = styled.createGlobalStyle`
     outline-offset: 3px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 600px), (max-height: 600px) {
     .doors-keyword-notice {
-      font-size: clamp(19px, calc(4.5vw + 3px), 23px);
-      line-height: 1.6;
-      max-width: calc(100% - 40px);
-      width: calc(100% - 40px);
+      font-size: clamp(14px, min(calc(4.5vw + 3px), 3.5vh), 23px);
+      line-height: 1.4;
+      max-height: calc(100vh - 24px);
+      max-height: calc(100dvh - 24px);
+      max-width: calc(100% - 32px);
+      width: calc(100% - 32px);
     }
 
     .doors-keyword-notice-copy p {
-      margin-bottom: 16px;
+      margin-bottom: clamp(8px, 1.5vh, 16px);
     }
 
     .doors-keyword-confirmation {

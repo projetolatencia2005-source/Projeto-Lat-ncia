@@ -81,6 +81,11 @@ const CONTENT_STYLE = `
     padding: 64px 68px;
   }
   p { margin: 0 0 1em; }
+  .doors-quiz,
+  .doors-quiz * {
+    -webkit-user-select: none;
+    user-select: none;
+  }
   .doors-quiz {
     color: #31302c;
     font-size: 18px;
@@ -120,6 +125,7 @@ const CONTENT_STYLE = `
   .doors-quiz-answer {
     align-items: flex-start;
     background: transparent;
+    box-sizing: border-box;
     border: 0;
     color: inherit;
     cursor: url("/System/Doors/cursors/hand.svg") 0 0, none !important;
@@ -128,8 +134,10 @@ const CONTENT_STYLE = `
     font-family: inherit;
     gap: 8px;
     margin: 5px 0;
-    padding: 0;
+    min-height: 36px;
+    padding: 6px 8px;
     text-align: left;
+    touch-action: manipulation;
     width: 100%;
   }
   .doors-quiz-answer:focus-visible { outline: 2px solid #7d94b8; outline-offset: 2px; }
