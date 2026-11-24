@@ -7,8 +7,6 @@ import {
 } from "contexts/viewport/types";
 import { isFirefox, isSafari } from "utils/functions";
 
-const FULLSCREEN_LOCKED_KEYS = ["MetaLeft", "MetaRight", "Escape"];
-
 const enterFullscreen = async (
   element: FullscreenElement,
   options: FullscreenOptions
@@ -53,19 +51,11 @@ export const getFullscreenElement = (): Element | null => {
   );
 };
 
-const toggleKeyboardLock = async (
-  fullscreenElement: Element | null
-): Promise<void> => {
+const releaseKeyboardLock = (): void => {
   try {
-    if (fullscreenElement === document.documentElement) {
-      await (navigator as NavigatorWithKeyboard)?.keyboard?.lock?.(
-        FULLSCREEN_LOCKED_KEYS
-      );
-    } else {
-      (navigator as NavigatorWithKeyboard)?.keyboard?.unlock?.();
-    }
+    (navigator as NavigatorWithKeyboard)?.keyboard?.unlock?.();
   } catch {
-    // Ignore failure to lock keys
+    // Ignore unsupported keyboard APIs
   }
 };
 
@@ -112,22 +102,31 @@ const useViewportContextState = (): ViewportContextState => {
 
   useEffect(() => {
     const onFullscreenChange = (): void => {
-      toggleKeyboardLock(getFullscreenElement()).then(() =>
-        setFullscreenElement(getFullscreenElement())
-      );
+      releaseKeyboardLock();
+      setFullscreenElement(getFullscreenElement());
+    };
+    const onFocusLoss = (): void => releaseKeyboardLock();
+    const onVisibilityChange = (): void => {
+      if (document.visibilityState === "hidden") releaseKeyboardLock();
+      setFullscreenElement(getFullscreenElement());
     };
 
+    releaseKeyboardLock();
     document.addEventListener("fullscreenchange", onFullscreenChange, {
       passive: true,
     });
-    // Mobile can exit fullscreen in the background without firing the event
-    document.addEventListener("visibilitychange", onFullscreenChange, {
+    document.addEventListener("visibilitychange", onVisibilityChange, {
       passive: true,
     });
+    window.addEventListener("blur", onFocusLoss);
+    window.addEventListener("pagehide", onFocusLoss);
 
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
-      document.removeEventListener("visibilitychange", onFullscreenChange);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("blur", onFocusLoss);
+      window.removeEventListener("pagehide", onFocusLoss);
+      releaseKeyboardLock();
     };
   }, []);
 

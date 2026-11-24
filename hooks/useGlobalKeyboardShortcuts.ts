@@ -44,8 +44,6 @@ export const getNavButtonByTitle = (
   }
 };
 
-let metaDown = false;
-let metaComboUsed = false;
 let triggeringBinding = false;
 
 const haltAndDebounceBinding = (event: KeyboardEvent): boolean => {
@@ -61,7 +59,16 @@ const haltAndDebounceBinding = (event: KeyboardEvent): boolean => {
   return false;
 };
 
-const metaCombos = new Set(["ARROWDOWN", "ARROWUP", "D", "E", "R", "S", "X"]);
+const reservedShiftShortcuts = new Set(["ARROWDOWN", "ARROWUP", "D", "E", "R", "S", "X"]);
+
+const clearModifierStates = (): void => {
+  window.globalKeyStates = {
+    altKey: false,
+    ctrlKey: false,
+    metaKey: false,
+    shiftKey: false,
+  };
+};
 
 // Text fields keep these for selecting text & their own context menu
 const TEXT_FIELD_KEYS = new Set(["ARROWDOWN", "ARROWUP", "F10"]);
@@ -113,7 +120,7 @@ const useGlobalKeyboardShortcuts = (): void => {
   const { minimize, open } = useProcessesActions();
   const foregroundId = useForegroundId();
   const stackOrder = useStackOrder();
-  const { fullscreenElement, toggleFullscreen } = useViewport();
+  const { fullscreenElement } = useViewport();
   const { onClose, onMaximize, onMinimize } = useWindowActions(foregroundId);
   const altBindingsRef = useRef<Record<string, () => void>>({});
   const shiftBindingsRef = useRef<Record<string, () => void>>({
@@ -171,16 +178,15 @@ const useGlobalKeyboardShortcuts = (): void => {
         }
 
         if (
-          (ctrlKey || !metaCombos.has(keyName)) &&
+          !ctrlKey &&
+          !event.metaKey &&
+          !reservedShiftShortcuts.has(keyName) &&
           shiftBindingsRef.current?.[keyName] &&
           !isTextFieldKey(keyName, activeElement) &&
           !haltAndDebounceBinding(event)
         ) {
           shiftBindingsRef.current[keyName]();
         }
-      } else if (keyName === "F11") {
-        haltEvent(event);
-        toggleFullscreen();
       } else if (
         document.activeElement === document.body &&
         keyName.startsWith("ARROW")
@@ -193,40 +199,23 @@ const useGlobalKeyboardShortcuts = (): void => {
       } else if (ctrlKey && altKey && altBindingsRef.current?.[keyName]) {
         haltEvent(event);
         altBindingsRef.current?.[keyName]?.();
-      } else if (fullscreenElement === document.documentElement) {
-        if (keyName === "META") metaDown = true;
-        else if (altKey && altBindingsRef.current?.[keyName]) {
-          haltEvent(event);
-          altBindingsRef.current?.[keyName]?.();
-        } else if (keyName === "ESCAPE") {
-          // Unless something in the page, like a menu or dialog, used it
-          whenUnhandled(event, () => {
-            if (document.pointerLockElement) document.exitPointerLock();
-            else toggleFullscreen();
-          });
-        } else if (
-          metaDown &&
-          metaCombos.has(keyName) &&
-          shiftBindingsRef.current?.[keyName] &&
-          !haltAndDebounceBinding(event)
-        ) {
-          metaComboUsed = true;
-          shiftBindingsRef.current[keyName]();
-        }
+      } else if (
+        fullscreenElement === document.documentElement &&
+        altKey &&
+        keyName !== "F4" &&
+        altBindingsRef.current?.[keyName]
+      ) {
+        haltEvent(event);
+        altBindingsRef.current?.[keyName]?.();
       }
     };
     const onKeyUp = (event: KeyboardEvent): void => {
       updateKeyStates(event);
+    };
 
-      if (
-        metaDown &&
-        fullscreenElement === document.documentElement &&
-        event.key?.toUpperCase() === "META"
-      ) {
-        metaDown = false;
-        if (metaComboUsed) metaComboUsed = false;
-        else getNavButtonByTitle(START_BUTTON_TITLE)?.click();
-      }
+    const onFocusLoss = (): void => clearModifierStates();
+    const onVisibilityChange = (): void => {
+      if (document.visibilityState === "hidden") clearModifierStates();
     };
 
     document.addEventListener("keydown", onKeyDown, {
@@ -236,6 +225,8 @@ const useGlobalKeyboardShortcuts = (): void => {
       capture: true,
       passive: true,
     });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("blur", onFocusLoss);
 
     return () => {
       document.removeEventListener("keydown", onKeyDown, {
@@ -244,6 +235,8 @@ const useGlobalKeyboardShortcuts = (): void => {
       document.removeEventListener("keyup", onKeyUp, {
         capture: true,
       });
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.removeEventListener("blur", onFocusLoss);
     };
   }, [fullscreenElement, toggleFullscreen]);
 
