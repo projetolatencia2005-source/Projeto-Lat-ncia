@@ -509,6 +509,7 @@ const Desktop: FC = ({ children }) => {
   const requestedFilesCleanupRef = useRef(false);
   const loginButtonRef = useRef<HTMLButtonElement | null>(null);
   const splashButtonRef = useRef<HTMLButtonElement | null>(null);
+  const splashStartHandledRef = useRef(false);
   const tutorialButtonRef = useRef<HTMLButtonElement | null>(null);
   const setBackgroundAudioScale = useCallback((scale: number): void => {
     backgroundAudioScaleRef.current = scale;
@@ -1234,6 +1235,32 @@ const Desktop: FC = ({ children }) => {
     [bootStage, fadeBackgroundAudio, startBackgroundAudio]
   );
 
+  const startTutorialFromSplash = useCallback((): void => {
+    if (bootStage !== "splash" || splashStartHandledRef.current) return;
+
+    splashStartHandledRef.current = true;
+    setTutorialPage(0);
+    beginBootLoading("tutorial");
+  }, [beginBootLoading, bootStage]);
+
+  useEffect(() => {
+    const bootWindow = window as Window & {
+      __doorsSplashStartRequested?: boolean;
+    };
+    const consumeStartRequest = (): void => {
+      if (!bootWindow.__doorsSplashStartRequested) return;
+
+      bootWindow.__doorsSplashStartRequested = false;
+      startTutorialFromSplash();
+    };
+
+    window.addEventListener("doors-splash-start-requested", consumeStartRequest);
+    consumeStartRequest();
+
+    return () =>
+      window.removeEventListener("doors-splash-start-requested", consumeStartRequest);
+  }, [startTutorialFromSplash]);
+
   useEffect(() => {
     if (bootStage !== "loading" || !bootDestination) return;
 
@@ -1335,8 +1362,7 @@ const Desktop: FC = ({ children }) => {
       }
 
       event.preventDefault();
-      setTutorialPage(0);
-      beginBootLoading("tutorial");
+      startTutorialFromSplash();
     };
 
     if (isSplashActive) {
@@ -1347,7 +1373,7 @@ const Desktop: FC = ({ children }) => {
       ? () => window.removeEventListener("keydown", startTutorial, true)
       : undefined;
     return cleanup;
-  }, [beginBootLoading, bootStage, startedAt]);
+  }, [bootStage, startedAt, startTutorialFromSplash]);
 
   const startSession = (): void =>
     setStartedAt((current) => current ?? Date.now());
@@ -1665,10 +1691,7 @@ const Desktop: FC = ({ children }) => {
               aria-label="Tela inicial Latência System"
               aria-modal="true"
               className="doors-boot-screen doors-intro-screen doors-splash-screen"
-              onClick={() => {
-                setTutorialPage(0);
-                beginBootLoading("tutorial");
-              }}
+              onClick={startTutorialFromSplash}
               role="dialog"
             >
               <img
