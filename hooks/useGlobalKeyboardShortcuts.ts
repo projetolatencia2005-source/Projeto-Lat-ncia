@@ -238,7 +238,7 @@ const useGlobalKeyboardShortcuts = (): void => {
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("blur", onFocusLoss);
     };
-  }, [fullscreenElement, toggleFullscreen]);
+  }, [fullscreenElement]);
 
   useEffect(trackKeyboardNavigation, []);
 
