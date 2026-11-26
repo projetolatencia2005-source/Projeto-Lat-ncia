@@ -2,12 +2,16 @@ export type AccessibilityPreferences = {
   highContrast: boolean;
   largeInterface: boolean;
   reduceMotion: boolean;
+  screenReaderEnabled: boolean;
+  screenReaderRate: number;
 };
 
 export const DEFAULT_ACCESSIBILITY_PREFERENCES: AccessibilityPreferences = {
   highContrast: false,
   largeInterface: false,
   reduceMotion: false,
+  screenReaderEnabled: false,
+  screenReaderRate: 1,
 };
 
 export const ACCESSIBILITY_CHANGE_EVENT = "doors-accessibility-change";
@@ -18,10 +22,16 @@ export const readAccessibilityPreferences = (): AccessibilityPreferences => {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     const saved = stored ? (JSON.parse(stored) as Partial<AccessibilityPreferences>) : {};
+    const rate =
+      typeof saved.screenReaderRate === "number" && Number.isFinite(saved.screenReaderRate)
+        ? Math.min(1.5, Math.max(0.7, saved.screenReaderRate))
+        : DEFAULT_ACCESSIBILITY_PREFERENCES.screenReaderRate;
     return {
       highContrast: saved.highContrast === true,
       largeInterface: saved.largeInterface === true,
       reduceMotion: saved.reduceMotion === true,
+      screenReaderEnabled: saved.screenReaderEnabled === true,
+      screenReaderRate: rate,
     };
   } catch {
     return { ...DEFAULT_ACCESSIBILITY_PREFERENCES };

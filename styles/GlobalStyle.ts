@@ -1500,6 +1500,48 @@ const GlobalStyle = styled.createGlobalStyle`
     }
   }
 
+  .doors-accessibility-panel .reader {
+    background: #f7edd7;
+    border: 2px solid #31302c;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+  .doors-accessibility-panel .reader p {
+    margin: 0;
+  }
+  .doors-accessibility-panel .reader .reader-rate {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .doors-accessibility-panel .reader input[type="range"] {
+    accent-color: #526889;
+    cursor: url("/System/Doors/cursors/hand.svg") 0 0, none;
+    flex: 1 1 110px;
+    min-width: 90px;
+  }
+  .doors-accessibility-panel .reader output {
+    font-size: 12px;
+    min-width: 38px;
+  }
+  .doors-accessibility-panel .reader .reader-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .doors-accessibility-panel .reader .reader-controls button {
+    align-self: auto;
+  }
+  .doors-accessibility-panel .reader button:disabled,
+  .doors-accessibility-panel .reader input:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  .doors-accessibility-panel .reader .reader-status {
+    min-height: 1.4em;
+  }
+
   .doors-accessibility-toggle {
     align-items: center;
     background: transparent;
@@ -2854,6 +2896,43 @@ const GlobalStyle = styled.createGlobalStyle`
     .doors-tutorial-content-multipage {
       max-height: calc(100% - 82px);
     }
+  }
+
+  /* Apply the saved accessibility preferences across the entire site. */
+  html.doors-high-contrast {
+    background: #000 !important;
+    color-scheme: dark;
+  }
+  html.doors-high-contrast body,
+  html.doors-high-contrast body :where(
+    main, article, aside, section, nav, header, footer, [role="dialog"],
+    [role="menu"], [role="menuitem"], button, input, select, textarea
+  ) {
+    background-color: #000 !important;
+    border-color: #fff !important;
+  }
+  html.doors-high-contrast body,
+  html.doors-high-contrast body :where(*) {
+    color: #fff !important;
+  }
+  html.doors-high-contrast body a {
+    color: #ffeb3b !important;
+    text-decoration: underline !important;
+  }
+  html.doors-high-contrast body :focus-visible {
+    outline: 3px solid #00e5ff !important;
+    outline-offset: 2px !important;
+  }
+  html.doors-large-interface body {
+    zoom: 1.1;
+  }
+  html.doors-reduced-motion *,
+  html.doors-reduced-motion *::before,
+  html.doors-reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 
 `;
